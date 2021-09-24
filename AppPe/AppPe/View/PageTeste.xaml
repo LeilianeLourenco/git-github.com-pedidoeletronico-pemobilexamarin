@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.PageTeste">
+  <StackLayout Padding="20">
+    <Button Text="PageTeste1" Clicked="Button_OnClicked" />
+    <Button Text="Page2" Clicked="Button2_OnClicked" />
+    <Button Text="Page3" Clicked="Button3_OnClicked"  />
+    <Button Text="Page4" Clicked="Button4_OnClicked"  />
+    <Button Text="Page5" Clicked="Button5_OnClicked"   />
+    <Button Text="Page6" Clicked="Button6_OnClicked" />
+    <Button Text="Page7"  Clicked="Button7_OnClicked"  />
+    <Button Text="VOLTAR" Clicked="Button8_OnClicked"   />
+
+    <Button Text="Button Class Default Small"  />
+    <Button Text="Button Class Default Large" />
+</StackLayout>
+</ContentPage>

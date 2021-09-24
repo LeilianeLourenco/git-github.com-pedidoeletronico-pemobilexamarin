@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:image="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Image;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Image.PageShowImages">
+
+  <ContentPage.BindingContext>
+    <image:ShowImageViewModel/>
+  </ContentPage.BindingContext>
+
+  <Grid x:Name="GridPrincipal" Padding="0,0,0,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid Padding="0,10,0,10">
+      <Label FontSize="Large" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}" x:Name="LabelTitle"></Label>
+    </Grid>
+    
+    <custom:ItemsView Grid.Row="1" x:Name="CompCatalogo" ItemsSource="{Binding RegistrosAll }" >
+      <custom:ItemsView.ItemTemplate>
+        <DataTemplate>
+          <Grid WidthRequest="{Binding width}" BackgroundColor="{StaticResource CinzaClarissimo}">
+            <Grid.Padding>
+              <OnPlatform x:TypeArguments="Thickness" Android="15,7,15,7" WinPhone="5,0,5,0" iOS="0,0,0,10"/>
+            </Grid.Padding>
+            <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
+              
+              <custom:PinchToZoomContainer Grid.Row="0" >
+                <custom:PinchToZoomContainer.Content>
+                  <Grid Padding="0,5,0,15">
+                    <!--<Image Source="{Binding image}" />-->
+                    <forms:CachedImage Source="{Binding image}" Aspect="Fill" />
+                  </Grid>
+                </custom:PinchToZoomContainer.Content>
+              </custom:PinchToZoomContainer>
+            </Grid>
+          </Grid>
+        </DataTemplate>
+      </custom:ItemsView.ItemTemplate>
+    </custom:ItemsView>
+  </Grid>
+</ContentPage>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.Custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom1="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             BackgroundColor="{StaticResource Branco}"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.PageRegister" Title="Registre-se">
+  <ContentPage.BindingContext>
+    <model:RegisterViewModel/>
+  </ContentPage.BindingContext>
+
+  <ScrollView>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="15*"/>
+        <RowDefinition Height="85*"/>
+      </Grid.RowDefinitions>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="8*" />
+        <ColumnDefinition Width="86*" />
+        <ColumnDefinition Width="8*" />
+      </Grid.ColumnDefinitions>
+
+      <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="1" Spacing="10">
+
+        <Label HorizontalTextAlignment="Center" Text="CRIAR NOVA CONTA" TextColor="{StaticResource CinzaPrincipal}" Margin="0,0,0,20" FontAttributes="Bold" FontSize="18" />
+
+        <custom1:ExtendedEntry isEmail="True" x:Name="EntryUsuario" Keyboard="Email" Placeholder="E-mail" Text="{Binding Email}" />
+
+        <Entry x:Name="EntryPassword"  IsPassword="True" Placeholder="Senha" Text="{Binding Password}" />
+
+        <Entry IsPassword="True" x:Name="EntryConfirmar" Placeholder="Confirmar senha" Text="{Binding ConfirmPassword}" />
+
+        <Frame HasShadow="True" Padding="0,0,0,0">
+          <Button x:Name="ButtonEntrar" HeightRequest="50"
+                   Style="{StaticResource Primary}"
+                   Command="{Binding RegistrarCommand , Mode=TwoWay }"
+                   Text="Registrar"/>
+        </Frame>
+
+        <xaml:ExtendedActivityIndicator IsRunning="True" IsVisible="{Binding isBusy}" Color="{StaticResource AzulPrincipal}"/>
+
+        <custom:GridButton x:Name="GridCondicoes">
+          <Label Text="Ao tocar em Registrar, você concorda com os Termos de Serviço." TextColor="{StaticResource AzulClaro}" Margin="0,0,0,0" HorizontalTextAlignment="Center" />
+        </custom:GridButton>
+
+      </StackLayout>
+
+    </Grid>
+  </ScrollView>
+
+</ContentPage>

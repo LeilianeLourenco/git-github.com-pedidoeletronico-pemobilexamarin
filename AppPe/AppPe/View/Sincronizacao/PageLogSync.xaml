@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sincronizacao="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Sincronizacao.PageLogSync" Title="Avisos">
+
+    <ContentPage.BindingContext>
+        <sincronizacao:LogSincronizacaoViewModel/>
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label FontSize="Medium" HorizontalTextAlignment="Center" Margin="5,5,5,5" TextColor="{StaticResource CinzaPrincipal}" Text="Avisos da sincronização"/>
+            <ListView Margin="0,5,0,5" x:Name="ListViewAvisosSync" HasUnevenRows="True" Grid.Row ="1" ItemSelected="ListView_OnItemSelected" ItemsSource="{Binding LAlertaSincronizacao}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <!--<TextCell Text="{Binding Display}"  TextColor="{StaticResource VermelhoPrincipal}"
+                                  Detail="{Binding Detail}" DetailColor="{StaticResource CinzaClaro}"/>-->
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding Display}" TextColor="{StaticResource VermelhoPrincipal}" FontSize="Medium" LineBreakMode="WordWrap"/>
+                                <Label Text="{Binding Detail}" TextColor="{StaticResource CinzaClaro}" LineBreakMode="WordWrap"/>
+                                <Label Text="{Binding DetailEstoque}" TextColor="{StaticResource CinzaClaro}" LineBreakMode="WordWrap"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ScrollView>
+
+
+</ContentPage>

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataTemplate xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido.DataTemplateFull">
+
+
+    <ViewCell>
+        <Grid RowSpacing="0" Padding="7,3,3,7">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="{Binding xDescricao}" 
+                   FontSize="17"
+                   TextColor="{Binding ItemJaIncluso, Converter={StaticResource BoolToColorConverterLitaItensPedido}}" 
+                   FontAttributes="Bold" />
+
+            <StackLayout Orientation="Horizontal" Grid.Row="1" Margin="0,2,0,0" VerticalOptions="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackLayout Grid.Row="0">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <Label Grid.Row="0"
+                                    Grid.Column="0"                          
+                                       Text="{Binding xQtde}"                          
+                                       HorizontalOptions="StartAndExpand"                           
+                                       HorizontalTextAlignment="Start"                        
+                                       FontSize="Small"                          
+                                       TextColor="{StaticResource CinzaClaro}"                         
+                                       LineBreakMode="NoWrap"/>
+
+                            <Label Grid.Row="0"
+                                       Grid.Column="1"                        
+                                       Text="{Binding xValorPromocional}"                        
+                                       TextColor="{StaticResource CinzaClaro}"                        
+                                       FontSize="Small"                         
+                                       LineBreakMode="NoWrap"/>
+
+                            <Label Grid.Row="0" 
+                                       Grid.Column="2"                           
+                                       Text="{Binding xValorPrincipal}"                           
+                                       FontSize="Small"                          
+                                       TextColor="{StaticResource CinzaEscuro}"                         
+                                       LineBreakMode="NoWrap"/>
+
+                        </Grid>
+                    </StackLayout>
+
+                    <StackLayout Grid.Row="1">
+
+                        <Label  IsVisible="{Binding bBloquearVisualizacaoEstoqueVendedor, Converter={StaticResource InvertBoolConvert}}"                         
+                           Text="{Binding xQtdEstoque}"                            
+                           FontSize="Small" 
+                           HorizontalOptions="Start"  
+                           HorizontalTextAlignment="Start"
+                           TextColor="{StaticResource CinzaClaro}" 
+                           LineBreakMode="NoWrap"/>
+
+                    </StackLayout>
+
+                    <StackLayout Grid.Row="2">
+
+                        <Label                       
+                           Text="{Binding xUltimaVendaInfo}"                            
+                           FontSize="Small" 
+                           HorizontalOptions="Start"  
+                           HorizontalTextAlignment="Start"
+                           TextColor="{StaticResource CinzaClaro}" 
+                           LineBreakMode="NoWrap"/>
+
+                    </StackLayout>
+
+                </Grid>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Grid.Row="2">
+                <Label Text="{Binding xValorSubTotal}" VerticalOptions="End" TextColor="{StaticResource VerdePedido}" FontSize="15" LineBreakMode="NoWrap" FontAttributes="Bold"/>
+                <Stepper 
+                    IsVisible="{Binding HasGrade, Converter={StaticResource InvertBoolConvert}}"
+                    HorizontalOptions="EndAndExpand" 
+                    ValueChanged="StepperValor_OnValueChanged" 
+                    Value="{Binding vQtdItem}"
+                    Maximum="999999999" Increment="1" Minimum="0"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Row="3" >
+                <Label IsVisible="{Binding bUsaMinimoVendas}"  Text="{Binding xMinimoVendas}" FontSize="15" TextColor="{StaticResource VermelhoPrincipal}" FontAttributes="Bold"/>
+            </StackLayout>
+        </Grid>
+    </ViewCell>
+</DataTemplate>

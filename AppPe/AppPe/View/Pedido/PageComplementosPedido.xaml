@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageComplementosPedido" Padding="20,20,20,20">
+    <!--<pages:PopupPage.BindingContext>
+        <pedido:PedidoNewViewModel />
+    </pages:PopupPage.BindingContext>-->
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+      PositionIn="Center"
+      PositionOut="Center"
+      ScaleIn="1.2"
+      ScaleOut="0.8"
+      DurationIn="400"
+      DurationOut="300"
+      EasingIn="SinOut"
+      EasingOut="SinIn"
+      HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+
+    <Frame Padding="0,0,0,0" BackgroundColor="White" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand"  OutlineColor="{StaticResource CinzaPrincipal}">
+        <Frame.HasShadow>
+            <OnPlatform x:TypeArguments="x:Boolean" Android="True" iOS="True" WinPhone="False"/>
+        </Frame.HasShadow>
+
+        <StackLayout Orientation="Vertical" Margin="5,2,5,2">
+            <Label Margin="5,5,0,0" Text="Valor do frete" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"   />
+            <custom:ExtendedEntry  MaxLength="14" x:Name="EntryvFretePed" Placeholder="0,00" TextChanged="EntryComplementos_OnTextChanged"
+                                            Text="{Binding currentModel.vFretePed, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  />
+
+            <Label Margin="5,5,0,0" Text="Valor de seguro" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
+            <custom:ExtendedEntry  MaxLength="14" x:Name="EntryvSeguroPed" Placeholder="0,00" TextChanged="EntryComplementos_OnTextChanged"
+                                            Text="{Binding currentModel.vSeguroPed, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  />
+
+            <Label Margin="5,5,0,0" Text="Outras despesas" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
+            <custom:ExtendedEntry  MaxLength="14" x:Name="EntryvOutrasPed" Placeholder="0,00" TextChanged="EntryComplementos_OnTextChanged"
+                                            Text="{Binding currentModel.vOutrasPed, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  />
+
+            <Label Margin="0,5,0,0" Text="{Binding vSubTotal, Converter={StaticResource FormatDecimalConverter}}" TextColor="{StaticResource VerdePedido}" FontSize="Large" HorizontalTextAlignment="End" HorizontalOptions="End"/>
+            
+            <Button x:Name="btnVoltar" Text="Voltar" Style="{StaticResource Info}" Clicked="Button_OnClicked" Margin="0,0,0,15"/>
+        </StackLayout>
+        
+    </Frame>
+</pages:PopupPage>

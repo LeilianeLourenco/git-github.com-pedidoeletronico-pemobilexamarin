@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActivityIndicator xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ExtendedActivityIndicator" >
+  <ActivityIndicator.VerticalOptions>
+    <OnPlatform x:TypeArguments="LayoutOptions">
+      <OnPlatform.WinPhone>Center</OnPlatform.WinPhone>
+      <OnPlatform.iOS>Center</OnPlatform.iOS>
+      <OnPlatform.Android>Center</OnPlatform.Android>
+    </OnPlatform>
+  </ActivityIndicator.VerticalOptions>
+  <ActivityIndicator.HeightRequest>
+    <OnPlatform x:TypeArguments="x:Double">
+      <OnPlatform.WinPhone>25</OnPlatform.WinPhone>
+      <OnPlatform.Android>40</OnPlatform.Android>
+      <OnPlatform.iOS>25</OnPlatform.iOS>
+    </OnPlatform>
+  </ActivityIndicator.HeightRequest>
+  <ActivityIndicator.WidthRequest>
+    <OnPlatform x:TypeArguments="x:Double">
+      <OnPlatform.iOS>25</OnPlatform.iOS>
+      <OnPlatform.Android>40</OnPlatform.Android>
+      <OnPlatform.WinPhone>200</OnPlatform.WinPhone>
+    </OnPlatform>
+  </ActivityIndicator.WidthRequest>
+
+</ActivityIndicator>

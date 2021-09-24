@@ -1,0 +1,634 @@
+﻿using Plugin.BLE;
+using Plugin.BLE.Abstractions.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
+using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda.Implementacoes;
+using Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda.Interfaces;
+using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
+using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository.Interfaces.PedidoVenda;
+
+namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
+{
+    public class PedidoToPrintViewModel : NotifyCommon
+    {
+        public bool bCanPrint { get; set; } = Device.RuntimePlatform == Device.Android;
+
+        private double vDescontoTotal { get; set; }
+        private double vSubTotal { get; set; }
+        private double vTotalComissao { get; set; }
+
+        public int idPedidoVendaOffLine { get; set; }
+
+        public string xFullText { get; set; }
+
+        private string _xTitle;
+        public string xTitle
+        {
+            get { return _xTitle; }
+            set { _xTitle = value; NotifyPropertyChanged(); }
+        }
+
+
+        private string _xEmpresa;
+        public string xEmpresa
+        {
+            get { return _xEmpresa; }
+            set { _xEmpresa = (value ?? "").ToUpper(); NotifyPropertyChanged(); }
+        }
+
+        private string _xEnderecoEmpresa;
+        public string xEnderecoEmpresa
+        {
+            get { return _xEnderecoEmpresa; }
+            set { _xEnderecoEmpresa = (value ?? "").ToUpper(); NotifyPropertyChanged(); }
+        }
+
+
+        private string _xCliente;
+        public string xCliente
+        {
+            get { return _xCliente; }
+            set { _xCliente = (value ?? "").ToUpper(); NotifyPropertyChanged(); }
+        }
+        private string _xheader_item;
+
+
+
+        private string _xTextoPrint;
+        public string xTextoPrint
+        {
+            get { return _xTextoPrint; }
+            set { _xTextoPrint = (value ?? "").ToUpper(); NotifyPropertyChanged(); }
+        }
+        public string xheader_item
+        {
+            get { return _xheader_item; }
+            set { _xheader_item = value; NotifyPropertyChanged(); }
+        }
+
+
+        private string _itens;
+        public string itens
+        {
+            get { return _itens; }
+            set { _itens = (value ?? "").ToUpper(); NotifyPropertyChanged(); }
+        }
+
+        private string _totais;
+
+        public string totais
+        {
+            get { return _totais; }
+            set { _totais = (value ?? "").ToUpper(); NotifyPropertyChanged(); }
+        }
+
+        private string _agradecimento;
+
+        public string agradecimento
+        {
+            get { return _agradecimento; }
+            set { _agradecimento = value; NotifyPropertyChanged(); }
+        }
+
+        private string _Separador1;
+
+        public string Separador1
+        {
+            get { return _Separador1; }
+            set { _Separador1 = value; NotifyPropertyChanged(); }
+        }
+        public ICommand PrintCommand { get; set; }
+
+        public ICommand CloseCommand { get; set; }
+
+        IDisposable _connectedDisposable;
+
+        public PedidoToPrintViewModel()
+        {
+            xTextoPrint = "IMPRIMIR VIA BLUETOOTH";
+            PrintCommand = new Command(() =>
+            {
+                //SendToPrintIos();
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    //SendToPrintIos();
+                }
+                else
+                {
+                    SendToPrint();
+                }
+            });
+
+            CloseCommand = new Command(() =>
+            {
+                UtilNavidate.PopPopupNew();
+            });
+        }
+
+
+
+        public bool Initialize()
+        {
+            if (canExecuteInicial)
+            {
+                canExecuteInicial = false;
+
+                //Refatorado em O.S. 33645
+                //var pedido = PedidoRepository.GetPedidoVendaModel(idPedidoVendaOffLine);
+                var xNumPedido = "";
+                IItensImpressaoPedido _buscaItensImpressao = new ItensImpressaoPedido();
+                var pedido = _buscaItensImpressao.RetornarItensParaImpressao(id: idPedidoVendaOffLine);
+
+                AtualizaTotalizadores(pedido);
+                xTitle = $"PEDIDOELETRONICO.COM{Environment.NewLine}";
+
+                if (pedido.stPedidoVenda == 1)
+                    xTitle += "CANCELADO" + Environment.NewLine;
+                var empresa = EmpresaRepository.GetEmpresa();
+                xEmpresa = empresa.xRazaoSocial + Environment.NewLine;
+
+                xEnderecoEmpresa =
+                    ($@"CNPJ: {empresa.xCnpj}, End: {empresa.xEndereco}, Numero: {empresa.cNumero}, Bairro: {empresa.xBairro}, Fones: {empresa
+                        .xTelefones} - Email: {(empresa.xEmails ?? "").Replace(',', ' ')}{Environment.NewLine}").ToUpper();
+                if (pedido.xDisplayIntegracao != null || App.tipouser == App.TipoUser.OMIE || App.tipouser == App.TipoUser.BLING)
+                {
+                    xNumPedido = pedido.xDisplayIntegracao != null ? pedido.xDisplayIntegracao.ToString().PadLeft(6, '0') : "------";
+                } 
+                else
+                {
+                    xNumPedido = pedido.idPedidoDisplay != null ? pedido.idPedidoDisplay.ToString().PadLeft(6, '0') : "------";
+                }
+                xCliente += $@"{Environment.NewLine}{(pedido.stLancamento == 0 ? "Orçamento" : "Pedido")}: {xNumPedido}{Environment.NewLine}";
+                xCliente += $@"Emissao: {pedido.dEmissao.ToLocalTime():dd/MM/yyyy HH:mm}{Environment.NewLine}";
+                if (pedido.stLancamento == 0)
+                {
+                    xCliente += $@"Valido até: {(pedido.dtValidadeOrcamento ?? DateTime.UtcNow).ToLocalTime():dd/MM/yyyy HH:mm}{Environment.NewLine}";
+                }
+                xCliente += $@"Prazo: {CondicaoPagamentoRepository.GetDisplay(pedido.idCondicaoPagamento ?? 0)}{Environment.NewLine}";
+                xCliente += $@"Vendedor: {EmpresaAspnetUsersRepository.GetDisplay(pedido.idRepresentantePedido ?? 0)}{Environment.NewLine}";
+                xCliente += $@"________________________________{Environment.NewLine}";
+                xCliente += $@"{Environment.NewLine}";
+                //xCliente += $@"=================================={Environment.NewLine}";    
+                var cliente = ClienteRepository.GetClienteModel(pedido.idClientesOffLine);
+                xCliente += $@"Fantasia: {cliente.xFantasia}{Environment.NewLine}";
+                xCliente += $@"Razao: {cliente.xRazaoSocial}{Environment.NewLine}";
+                xCliente += $@"Fone: {cliente.xTelefones}{Environment.NewLine}";
+                xCliente += $@"Email: {cliente.xEmails}{Environment.NewLine}";
+                EnderecoModel ender = null;
+                if (cliente.lEndereco.Any())
+                {
+                    ender = cliente.lEndereco.Any(c => c.stPrincipal) ? cliente.lEndereco.FirstOrDefault(c => c.stPrincipal) : cliente.lEndereco.FirstOrDefault();
+
+                }
+                if (ender != null)
+                {
+                    xCliente += $@"Ender: {ender.xEndereco}{Environment.NewLine}";
+                    xCliente += $@"Bairro: {ender.xBairro}{Environment.NewLine}";
+                    xCliente += $@"Numero: {ender.cNumero}{Environment.NewLine}";
+                    xCliente += $@"Cidade/UF: {ender.xCidade}/{ender.xEstado}{Environment.NewLine}";
+                    xCliente += $@"CEP: {ender.xCep}{Environment.NewLine}";
+                }
+
+                //xCliente += $@"Obs: {cliente.xAnotacao}{Environment.NewLine}";
+                xCliente += $@"CNPJ/CPF: {cliente.xCpfCnpj}{Environment.NewLine}";
+                xCliente += $@"IE/RG: {cliente.xRgIe}{Environment.NewLine}";
+
+                // sep1
+                xheader_item += $"{Environment.NewLine}CÓD. | DESCRIÇÃO{Environment.NewLine}";
+                // sep1
+
+                foreach (var item in pedido.lItens)
+                {
+                    var cAlternativo = item.cAlternativo;
+                    if ((item.idProduto ?? 0) > 0)
+                    {
+                        var resultado = ProdutoRepository.GetNomeByIdCliente(pedido.idClientesOffLine, item.idProduto ?? 0);
+                        if (resultado != "")
+                        {
+                            cAlternativo = resultado;
+                        }
+                    }
+
+                    //OS 35384 - Jessica Barbieri
+                    var xItem = "";
+
+                    var produto = ProdutoRepository.GetProduto(item.idProdutoOffLine);
+
+                    //por opção do paulo e gustavo, o desconto é aplicado no valor unitario de venda com impostos
+                    //para o cliente poder ver o valor cheio do produto e depois seu desconto
+                    var unitarioCheio = item.vUnitarioVendaComImpostos + Math.Round(item.vDesconto, 2, MidpointRounding.ToEven);
+                    item.vSubTotal = unitarioCheio * item.vQtdItem;
+                    if ((item.idGradeCor == 0 || item.idGradeCor == null) && (item.idGradeTamanho == 0 || item.idGradeTamanho == null))
+                    {
+                        xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                        if (item.vDesconto > 0)
+                        {
+                            xItem += $"\n unitário c/ desc:  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
+                        }
+
+                        itens += xItem;
+                    }
+
+                    else if ((item.idGradeCor == 0 || item.idGradeCor == null) && (item.idGradeTamanho != 0 || item.idGradeTamanho != null))
+                    {
+                        var gradeTamanho = ProdutoRepository.GetGradeTamahoProduto(produto.idProduto ?? 0);
+                        foreach (var tam in gradeTamanho)
+                        {
+                            if (tam.idGradeTamanho == item.idGradeTamanho)
+                            {
+                                xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { tam.xNome}{Environment.NewLine}{item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                if (item.vDesconto > 0)
+                                {
+                                    xItem += $"\n unitário c/ desc:  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
+                                }
+                                itens += xItem;
+                            }
+                        }
+                    }
+
+                    else if ((item.idGradeCor != 0 || item.idGradeCor != null) && (item.idGradeTamanho == 0 || item.idGradeTamanho == null))
+                    {
+                        var gradeCor = ProdutoRepository.GetGradeCorProduto(produto.idProduto ?? 0);
+                        foreach (var cor in gradeCor)
+                        {
+                            if (cor.idGradeCor == item.idGradeCor)
+                            {
+                                xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { cor.xNome}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                if (item.vDesconto > 0)
+                                    if (item.vDesconto > 0)
+                                    {
+                                        xItem += $"\n unitário c/ desc:  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
+                                    }
+                                itens += xItem;
+                            }
+                        }
+                    }
+
+                    else if ((item.idGradeCor != 0 || item.idGradeCor != null) && (item.idGradeTamanho != 0 || item.idGradeTamanho != null))
+                    {
+                        var gradeCor = ProdutoRepository.GetGradeCorProduto(produto.idProduto ?? 0);
+                        var gradeTamanho = ProdutoRepository.GetGradeTamahoProduto(produto.idProduto ?? 0);
+
+                        var nomeCor = "";
+                        var nomeTam = "";
+
+                        foreach (var cor in gradeCor)
+                        {
+                            if (cor.idGradeCor == item.idGradeCor)
+                            {
+                                nomeCor = cor.xNome;
+                            }
+                        }
+
+                        foreach (var tam in gradeTamanho)
+                        {
+                            if (tam.idGradeTamanho == item.idGradeTamanho)
+                            {
+                                nomeTam = tam.xNome;
+                            }
+                        }
+
+                        xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {nomeCor} | {nomeTam}{Environment.NewLine} {item.xQtde}  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                        if (item.vDesconto > 0)
+                        {
+                            xItem += $"\n unitário c/ desc:  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
+                        }
+                        itens += xItem;
+                    }
+
+                    //var xItem = $"{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} Qtde: {item.xQtde}  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                    //itens += xItem;
+                }
+
+                //totais += Separador3;
+
+                totais = $"{Environment.NewLine}{Environment.NewLine}";
+                //totais += $@"==================================={Environment.NewLine}";
+                totais += $@"________________________________{Environment.NewLine}";
+                totais += $@"{Environment.NewLine}";
+
+
+                //10/08/17 comentado por requisição em 33610
+                //totais += $"DESCONTO: {vDescontoTotal.ToCurrencyStringPtBr()}{Environment.NewLine}";
+
+                // OS 35414 - Jessica Barbieri
+                //totais += $"TOTAL: {pedido.VTotal.ToCurrencyStringPtBr()}{Environment.NewLine}";  
+
+                //existe este tratamento pra desconto e somas apeans aqui nesse print na bluetooth
+                double totalItens = pedido.lItens.Sum(p => p.vSubTotal);
+                double descontoPedido = totalItens - pedido.VTotal;
+
+                totais += $"TOTAL DOS ITENS ({pedido.lItens.Count}): {totalItens.ToCurrencyStringPtBr()}{Environment.NewLine}";
+                if (descontoPedido > 0)
+                    totais += $"TOTAL DE DESCONTO: {descontoPedido.ToCurrencyStringPtBr()}{Environment.NewLine}";
+                if (pedido.vFretePed > 0)
+                    totais += $"TOTAL DE FRETE: {pedido.vFretePed.ToCurrencyStringPtBr()}{Environment.NewLine}";
+                if (pedido.vSeguroPed > 0)
+                    totais += $"TOTAL DE SEGURO: {pedido.vSeguroPed.ToCurrencyStringPtBr()}{Environment.NewLine}";
+                if (pedido.vOutrasPed > 0)
+                    totais += $"TOTAL DE OUTROS: {pedido.vOutrasPed.ToCurrencyStringPtBr()}{Environment.NewLine}";
+                totais += $"TOTAL DO PEDIDO: {pedido.VTotal.ToCurrencyStringPtBr()}{Environment.NewLine}";
+                totais += $"\n";
+                //totais += $"TOTAL DE ITENS: ({pedido.lItens.Count}){Environment.NewLine}";
+
+                if (!string.IsNullOrEmpty(pedido.xInfAdicional))
+                    totais += $"INF. ADICIONAL: {pedido.xInfAdicional}{Environment.NewLine}";
+
+                if (!string.IsNullOrEmpty(pedido.xMotivoCancelamento))
+                    totais += $"MOTIVO DE CANCELAMENTO: {pedido.xMotivoCancelamento.ToUpper()}{Environment.NewLine}";
+
+                agradecimento += $"Obrigado pela preferência{Environment.NewLine}";
+                //totais += Separador2;
+                agradecimento += $"Gerado por pedidoeletronico.com{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}";
+
+                Separador1 = "=========================================================";
+
+
+
+            }
+            return canExecuteInicial;
+        }
+
+        public void AtualizaTotalizadores(PedidoVendaModel currentModel)
+        {
+            try
+            {
+                if (currentModel.lItens == null) return;
+                vSubTotal = currentModel.lItens.Sum(c => (c.ItensGrade != null ? c.ItensGrade.Sum(o => o.vSubTotal) : c.vSubTotal));
+                vDescontoTotal = currentModel.lItens.Sum(c => (c.ItensGrade != null ? c.ItensGrade.Sum(o => o.vDesconto * o.vQtdItem)
+                : (c.vDesconto * c.vQtdItem)));
+                vTotalComissao = currentModel.lItens.Sum(c => (c.ItensGrade != null ? c.ItensGrade.Sum(o => o.vComissao) : c.vComissao));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private bool _isConnected = false;
+
+        public bool isConnected
+        {
+            get { return _isConnected; }
+            set { _isConnected = value; NotifyPropertyChanged(); }
+        }
+        public int iColunas { get; set; } = 48;
+        public int iColunasPrinterMenor { get; set; } = 32;
+
+
+
+
+
+
+        public async void SendToPrintIos()
+        {
+            try
+            {
+                xTextoPrint = $"AGUARDE ENQUANTO CONECTAMOS...";
+                bool bOutraImpressora = false;
+                var separador = "=".PadLeft(32, '=');
+
+                IAdapter adapter;
+                IBluetoothLE bluetoothBLE;
+
+                bluetoothBLE = CrossBluetoothLE.Current;
+                adapter = CrossBluetoothLE.Current.Adapter;
+
+                if (bluetoothBLE.State == BluetoothState.Off || bluetoothBLE.State == BluetoothState.Unknown)
+                {
+                    await App.Messages.ShowAsync("Bluetooth desabilitado");
+                }
+                else
+                {
+                    adapter.ScanTimeout = 10000;
+                    adapter.ScanMode = ScanMode.Balanced;
+                    ObservableCollection<IDevice> lDevices = new ObservableCollection<IDevice>();
+
+
+
+                    adapter.DeviceDiscovered += (obj, a) =>
+                    {
+                        if (!lDevices.Contains(a.Device))
+                            lDevices.Add(a.Device);
+                    };
+
+                    if (!adapter.IsScanning)
+                    {
+                        await adapter.StartScanningForDevicesAsync();
+                    }
+
+
+                    if (lDevices?.Count() > 0)
+                    {
+                        IDevice device = lDevices.Where(t => t.Name == "MPT-II").FirstOrDefault();
+                        if (device == null)
+                        {
+                            device = lDevices.Where(t => t.Name == "MPT-III" || t.Name == "MPT-3").FirstOrDefault();
+                            if (device != null)
+                                separador = "=".PadLeft(iColunas, '=');
+                            else
+                            {
+                                device = lDevices.FirstOrDefault();
+                                bOutraImpressora = true;
+                            }
+                        }
+                        else
+                            separador = "=".PadLeft(iColunasPrinterMenor, '=');
+
+
+                        await adapter.ConnectToDeviceAsync(device);
+                        var _services = await device.GetServiceAsync(device.Id);
+                        var _caracteristicas = await _services.GetCharacteristicAsync(_services.Id);
+
+
+                        await _caracteristicas.WriteAsync(WriteBytesPosition("center"));
+                        await _caracteristicas.WriteAsync(WriteBytes((xTitle + Environment.NewLine).RemoverAcentos()));
+
+
+                        await _caracteristicas.WriteAsync(WriteBytesPosition("center"));
+                        await _caracteristicas.WriteAsync(WriteBytes(xEmpresa.RemoverAcentos()));
+
+
+                        await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
+                        await _caracteristicas.WriteAsync(WriteBytes(xEnderecoEmpresa.RemoverAcentos()));
+
+
+                        if (bOutraImpressora)
+                        {
+                            await _caracteristicas.WriteAsync(WriteBytesPosition("center"));
+                            await _caracteristicas.WriteAsync(WriteBytes(separador + Environment.NewLine));
+                        }
+                        else
+                        {
+                            await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
+                            await _caracteristicas.WriteAsync(WriteBytes(separador + Environment.NewLine));
+                        }
+
+
+                        await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
+                        await _caracteristicas.WriteAsync(WriteBytes(xCliente.RemoverAcentos()));
+
+
+
+                        if (bOutraImpressora)
+                        {
+                            await _caracteristicas.WriteAsync(WriteBytesPosition("center"));
+                            await _caracteristicas.WriteAsync(WriteBytes(separador + Environment.NewLine));
+                        }
+                        else
+                        {
+                            await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
+                            await _caracteristicas.WriteAsync(WriteBytes(separador + Environment.NewLine));
+                        }
+
+
+                        if (bOutraImpressora)
+                        {
+                            await _caracteristicas.WriteAsync(WriteBytesPosition("center"));
+                            await _caracteristicas.WriteAsync(WriteBytes(xheader_item.RemoverAcentos() + Environment.NewLine));
+                        }
+                        else
+                        {
+                            await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
+                            await _caracteristicas.WriteAsync(WriteBytes(xheader_item.RemoverAcentos()));
+                        }
+
+                        if (bOutraImpressora)
+                        {
+                            await _caracteristicas.WriteAsync(WriteBytesPosition("center"));
+                            await _caracteristicas.WriteAsync(WriteBytes(separador + Environment.NewLine));
+                        }
+                        else
+                        {
+                            await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
+                            await _caracteristicas.WriteAsync(WriteBytes(separador));
+                        }
+
+
+                        await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
+                        await _caracteristicas.WriteAsync(WriteBytes(itens.RemoverAcentos()));
+
+
+                        await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
+                        await _caracteristicas.WriteAsync(WriteBytes((totais + Environment.NewLine).RemoverAcentos()));
+
+
+                        await _caracteristicas.WriteAsync(WriteBytesPosition("right"));
+                        await _caracteristicas.WriteAsync(WriteBytes((agradecimento.RemoverAcentos() + Environment.NewLine + Environment.NewLine)));
+                        UtilNavidate.PopPopupNew();
+                    }
+                    else
+                    {
+                        await App.Messages.ShowAsync("Nenhum dispositivo foi encontrado");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                 
+            }
+        
+        }
+
+
+        public byte[] WriteBytes(string xValor)
+        {
+            return System.Text.Encoding.GetEncoding(Encoding.ASCII.CodePage).GetBytes(xValor);
+        }
+
+        public byte[] WriteBytesPosition(string position)
+        {
+
+            if (string.IsNullOrEmpty(position) || position.ToUpper().Equals("LEFT"))
+            {
+                byte[] left = { 0x1b, 0x61, 0x00 }; // left-aligned 
+                return left;
+            }
+            else if (position.ToUpper().Equals("RIGHT"))
+            {
+                byte[] right = { 0x1b, 0x61, 0x02 }; // right-aligned 
+                return right;
+            }
+            else if (position.ToUpper().Equals("CENTER"))
+            {
+                byte[] center = { 0x1b, (byte)'a', 0x01 }; // center alignment 
+                return center;
+            }
+
+            return System.Text.Encoding.GetEncoding(Encoding.ASCII.CodePage).GetBytes("");
+        }
+
+        public void SendToPrint()
+        {
+            if (App.BluetoothLe == null)
+            {
+                return;
+            }
+
+            bool bOutraImpressora = false;
+
+            if (App.BluetoothLe.Connect() == false)
+            {
+                App.Messages.ShowAsync("Nenhuma impressora bluetooth foi encontrada nos dispositivos pareados.");
+                UtilNavidate.PopPopupNew();
+                return;
+            }
+            var separador = "=".PadLeft(32, '=');
+
+            if (App.BluetoothLe.GetNameDevice().ToUpper().Equals("MPT-II"))
+            {
+                separador = "=".PadLeft(iColunasPrinterMenor, '=');
+            }
+            else if (App.BluetoothLe.GetNameDevice().ToUpper().Equals("MPT-III"))
+            {
+                separador = "=".PadLeft(iColunas, '=');
+            }
+            else
+            {
+                bOutraImpressora = true;
+            }
+
+
+            App.BluetoothLe.Write((xTitle + Environment.NewLine).RemoverAcentos(), "center");
+            App.BluetoothLe.Write(xEmpresa.RemoverAcentos(), "center");
+            App.BluetoothLe.Write(xEnderecoEmpresa.RemoverAcentos(), "left");
+            if (bOutraImpressora)
+                App.BluetoothLe.Write(separador + Environment.NewLine, "center");
+            else
+                App.BluetoothLe.Write(separador, "left");
+
+            App.BluetoothLe.Write(xCliente.RemoverAcentos(), "left");
+
+            if (bOutraImpressora)
+                App.BluetoothLe.Write(separador + Environment.NewLine, "center");
+            else
+                App.BluetoothLe.Write(separador, "left");
+
+
+            if (bOutraImpressora)
+                App.BluetoothLe.Write(xheader_item.RemoverAcentos() + Environment.NewLine, "center");
+            else
+                App.BluetoothLe.Write(xheader_item.RemoverAcentos(), "left");
+
+            if (bOutraImpressora)
+                App.BluetoothLe.Write(separador + Environment.NewLine, "center");
+            else
+                App.BluetoothLe.Write(separador, "left");
+
+
+            App.BluetoothLe.Write(itens.RemoverAcentos(), "left");
+            App.BluetoothLe.Write((totais + Environment.NewLine).RemoverAcentos(), "left");
+            App.BluetoothLe.Write((agradecimento.RemoverAcentos() + Environment.NewLine + Environment.NewLine), "right");
+            UtilNavidate.PopPopupNew();
+        }
+    }
+}

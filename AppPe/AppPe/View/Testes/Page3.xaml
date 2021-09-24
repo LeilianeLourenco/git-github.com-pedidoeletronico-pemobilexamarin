@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Testes.Page3">
+  <StackLayout Padding="10,0,10,0" VerticalOptions="Center"  >
+
+    <Entry Keyboard="Email" Placeholder="E-mail" Text="" >
+    </Entry>
+
+    <Entry IsPassword="True" Placeholder="Senha" Text="">
+
+    </Entry>
+
+    <Grid Padding="0,10,0,0">
+      <Button 
+              Text="Entrar" />
+    </Grid>
+    <Grid >
+      <xaml:ExtendedActivityIndicator IsRunning="True" IsVisible="True" Color="{StaticResource AzulPrincipal}"/>
+    </Grid>
+  </StackLayout>
+</ContentPage>

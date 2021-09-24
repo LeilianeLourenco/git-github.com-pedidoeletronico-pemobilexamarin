@@ -1,0 +1,87 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:agenda="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda;assembly=Xamarin.HLP.Mobile.AppPE"  
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE" 
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Agenda.PageEventoNew" BackgroundColor="{StaticResource CinzaMedio}" Title="Novo Evento" IsBusy="{Binding IsBusy}">
+
+    <ContentPage.BindingContext>
+        <agenda:EventoCadastroViewModel/>
+    </ContentPage.BindingContext>
+
+
+    <TableView HasUnevenRows="True" BackgroundColor="White">
+        <TableRoot>
+            <TableSection>
+
+                <SwitchCell On="{Binding currentModel.bRealizado}"  Text="Atividade Realizada ?"  />
+                <TextCell Command="{Binding GoToAtividadesCommand}" 
+                          Detail="{Binding ItemAtividade.Display}" 
+                          PropertyChanging="BindableAtividade_OnPropertyChanging"
+                          DetailColor="{StaticResource CinzaMaisEscuro}" 
+                          TextColor="{StaticResource AzulChart}"  Text="Tipo da Atividade*"/>
+
+                <ViewCell>
+                    <StackLayout Orientation="Vertical">
+                        <StackLayout.Margin>
+                            <OnPlatform x:TypeArguments="Thickness" Android="10,15,0,0" iOS="10,10,0,10"/>
+                        </StackLayout.Margin>
+                        <StackLayout.Padding>
+                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,15"/>
+                        </StackLayout.Padding>
+                        <Label Text="Descrição da atividade" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                        <custom:ExtendedEntry  MaxLength="500" x:Name="EditorAtividade" Text="{Binding currentModel.xDescricaoAtividade}" Placeholder="Atividade"/>  
+                    </StackLayout>
+                </ViewCell>
+
+                <TextCell IsEnabled="{Binding IsBusy}" 
+                          Command="{Binding ChangeTimeInicioCommand}" 
+                          Detail="{Binding currentModel.dtInicioEvento, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
+                          DetailColor="{StaticResource CinzaMaisEscuro}"
+                          TextColor="{StaticResource AzulChart}" 
+                          Text="Início de Evento"/>
+
+
+                <TextCell IsEnabled="{Binding IsBusy}" 
+                          Command="{Binding ChangeTimeFimCommand}" 
+                          Detail="{Binding currentModel.dtFimEvento, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
+                          DetailColor="{StaticResource CinzaMaisEscuro}"
+                          TextColor="{StaticResource AzulChart}" 
+                          Text="Fim de Evento"/>
+
+
+                <TextCell Command="{Binding GoToClientesCommand}" 
+                          PropertyChanging="BindableObject_OnPropertyChanging"
+                          Detail="{Binding ItemCliente.Display}" 
+                          DetailColor="{StaticResource CinzaMaisEscuro}" 
+                          TextColor="{StaticResource AzulChart}"  Text="Cliente*"/>
+
+
+                <ViewCell>
+                    <StackLayout Orientation="Vertical" Margin="10,15,0,0" MinimumHeightRequest="50"> 
+                        <Label Text="Endereço" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                        <custom:ExtendedEntry  MaxLength="200" x:Name="EditorEndereco" Text="{Binding currentModel.xEnderecoCompleto}" Placeholder="Endereço"/> 
+
+                        <Label Text="Anotação privada" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                        <Editor x:Name="EditorAnotacaoPrivada" 
+                                Text="{Binding currentModel.xAnotacaoPrivada}"
+                                Keyboard="Chat"  
+                                HeightRequest="{StaticResource HeightEditor}" /> 
+                    </StackLayout>
+                </ViewCell>
+
+            </TableSection>
+
+
+        </TableRoot>
+    </TableView>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Icon="{Binding ImageIconCancel}" Text="Cancelar" Command="{Binding CancelPedidoCommand}" >
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+            </ToolbarItem.Order>
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding SaveCommand}"  Icon="{Binding ImageIconSave}" Text="Salvar" />
+    </ContentPage.ToolbarItems>
+</ContentPage>

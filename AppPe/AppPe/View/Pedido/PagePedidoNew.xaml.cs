@@ -1,0 +1,159 @@
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using Xamarin.Forms;
+using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository;
+using Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;
+using PropertyChangingEventArgs = Xamarin.Forms.PropertyChangingEventArgs;
+
+namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
+{
+    public partial class PagePedidoNew : TabbedPage
+    {
+
+        private static PedidoNewViewModel _currentViewModel = null;
+
+        public static PedidoNewViewModel CurrentViewModel
+        {
+            get
+            {
+                _currentViewModel = _currentViewModel ?? new PedidoNewViewModel();
+                return _currentViewModel;
+            }
+            set { _currentViewModel = value; }
+        }
+
+
+
+        public PagePedidoNew(PedidoVendaModel currentModel, bool bPedidoByCliente = false)
+        {
+            InitializeComponent();
+            NavigationPage.SetHasBackButton(this, false);
+
+            SessionLancamento.Remove(TxtRepresentanteCell);
+            ViewModel.currentModel = currentModel ?? new PedidoVendaModel();
+            ViewModel.bPedidoByCliente = bPedidoByCliente;
+
+            CurrentViewModel = ViewModel;
+
+            ViewModel.DateOrcamentoVisibilityCommand = new Command(DateOrcamentoVisibility);
+
+            ViewModel.DateOrcamentoVisibilityCommand.Execute(null);
+
+            //ViewModel.IsBusy = true;
+
+            ButtonMostrarItens.Command = new Command(() =>
+            {
+                CurrentPage = PageItens;
+            });
+        }
+
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            ViewModel.ExecuttingAnyCommand = false;
+            Device.StartTimer(UtilMethods.GetStartTime, ViewModel.Initialize); 
+        }
+
+
+        public void DateOrcamentoVisibility()
+        {
+            try
+            {
+                if (ViewModel.currentModel.stLancamento == 1)
+                {
+                    if (SessionLancamento.Contains(DateOrcamentoCell))
+                        SessionLancamento.Remove(DateOrcamentoCell);
+                }
+                else
+                {
+                    if (!SessionLancamento.Contains(DateOrcamentoCell))
+                        SessionLancamento.Insert(2, DateOrcamentoCell);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+        }
+
+
+        public PedidoNewViewModel ViewModel => BindingContext as PedidoNewViewModel;
+
+        private void BindableObject_OnPropertyChanging(object sender, PropertyChangingEventArgs e)
+        {
+            var _entry = sender as TextCell;
+
+            if (ViewModel?.ItemCliente != null && ViewModel.ItemCliente.Id > 0 && (_entry.Detail != ViewModel.ItemCliente.Display || ViewModel.ItemCondicaoPgto.Id == 0))
+            {
+                try
+                {
+                    if (ViewModel.canExecuteInicial == false && ViewModel.IsBusy == false)
+                    {
+                        ViewModel.currentModel.idClientesOffLine = ViewModel.ItemCliente.Id;
+                        ViewModel.currentModel.xInfAdicional += "";
+                        ViewModel.SetConiguracoesDoCliente();
+                    }
+                    if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
+                    {
+                        if (SessionLancamento.Contains(TxtRepresentanteCell) == false)
+                        {
+                            SessionLancamento.Insert(SessionLancamento.Count == 7 ? 6 : 5, TxtRepresentanteCell);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    ex.TrakException();
+                }
+
+            }
+        }
+
+        private void StatusTextCell_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (ViewModel.canExecuteInicial == false && ViewModel.IsBusy == false)
+                if (ViewModel?.ItemSatus != null)
+                {
+                    ViewModel.VerificaStatusCancelado();
+                }
+        }
+
+        private void TxtRepresentanteCell_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (ViewModel.canExecuteInicial == false && ViewModel.IsBusy == false)
+                if (ViewModel?.ItemRepresentante != null)
+                {
+                    ViewModel.currentModel.idRepresentantePedido = ViewModel.ItemRepresentante.Id;
+                }
+        }
+
+        private bool _canClose = true;
+        protected override bool OnBackButtonPressed()
+        {
+            if (_canClose)
+            {
+                QuestionToBack();
+            }
+            return _canClose;
+        }
+
+        private async void QuestionToBack()
+        {
+            var answer = await App.Messages.ShowConfirmAsync("Deseja realmente sair do lançamento ?");
+            if (answer)
+            {
+                _canClose = false;
+                UtilNavidate.PopAsync();
+            }
+        }
+
+
+        
+    }
+}

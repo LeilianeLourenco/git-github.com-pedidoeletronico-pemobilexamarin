@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.GridBorder" RowSpacing="0">
+
+  <Grid.RowDefinitions>
+    <RowDefinition Height="*"/>
+    <RowDefinition Height="Auto"></RowDefinition>
+  </Grid.RowDefinitions>
+
+  <StackLayout Grid.Row="1" Orientation="Vertical" Spacing="0">
+    <Grid BackgroundColor="#9E9E9E" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#A4A4A4" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#AAAAAA" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#B0B0B0" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#B7B7B7" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#BDBDBD" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#C3C3C3" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#CACACA" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#D0D0D0" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#D6D6D6" HeightRequest="1.6" Padding="0,-1,0,0" />
+    <Grid BackgroundColor="#DDDDDD" HeightRequest="1.6" Padding="0,-1,0,0" />
+  </StackLayout>
+</Grid>

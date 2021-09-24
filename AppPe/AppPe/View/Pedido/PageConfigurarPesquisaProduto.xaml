@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageConfigurarPesquisaProduto" Title="Avançado">
+    <ContentPage.BindingContext>
+        <pedido:ConfigurarPesquisaProdutoViewModel/>
+    </ContentPage.BindingContext>
+    <TableView HasUnevenRows="True">
+        <TableRoot>
+            <TableSection>
+                <TableSection.Title>
+                    <OnPlatform x:TypeArguments="x:String" Android="Parâmetros de pesquisa"/>
+                </TableSection.Title>
+                <ViewCell>
+                    <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="PESQUISA AVANÇADA" TextColor="{StaticResource CinzaEscuro}" />
+                    </Grid>
+                </ViewCell>
+                <TextCell Command="{Binding ChangeTipoOrdenacaoCommand}" Detail="{Binding currentModel.xOrdenacao}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}" Text="Ordenação por" />
+
+                <TextCell x:Name="TextCellCategoria" PropertyChanged="TextCellCategoria_OnPropertyChanged" Command="{Binding GoToCategoriaCommand}"  Detail="{Binding categoria.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Categoria de produto"/>
+
+                <TextCell x:Name="TextCellRepresentacoes" PropertyChanged="TextCellRepresentacoes_OnPropertyChanged" Command="{Binding GoToRepresentacoesCommand}"  Detail="{Binding representada.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Representações"/>
+
+                <SwitchCell On="{Binding currentModel.bUltimasCompras}"  Text="Trazer últimas compras ?"  />
+
+            </TableSection>
+        </TableRoot>
+    </TableView>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="{Binding ImageIconSave}" Command="{Binding EfetivarPesquisaCommand}"/>
+    </ContentPage.ToolbarItems>
+</ContentPage>

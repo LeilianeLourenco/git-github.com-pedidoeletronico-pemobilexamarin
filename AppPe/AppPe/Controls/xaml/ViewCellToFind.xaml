@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ViewCell  xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ViewCellToFind"  >
+  <ViewCell.BindingContext>
+    <model:FindGenericModel/>
+  </ViewCell.BindingContext>
+
+  <Grid Padding="10,10,10,10" >
+    <Grid.RowDefinitions>
+      <RowDefinition Height="{StaticResource HeighRowDefault}" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="30"/>
+    </Grid.ColumnDefinitions>
+
+    <Grid IsVisible="{Binding Image, Converter={StaticResource IsNullOrEmptyConverter}}" Grid.Row="0" Grid.Column="0">
+      <Grid.Padding>
+        <OnPlatform x:TypeArguments="Thickness" Android="10,0,0,-8" WinPhone="10,0,0,-8" iOS="10,20,10,10"/>
+      </Grid.Padding>
+
+      <abstractions:SvgImage SvgPath="{Binding Image}"
+               WidthRequest="{StaticResource HeightandWidth}" HeightRequest="{StaticResource HeightandWidth}" HorizontalOptions="Center"
+               VerticalOptions="Center"/>
+
+    </Grid>
+
+    <Grid Grid.Column="1" Grid.Row="0">
+      <Grid.Padding>
+        <OnPlatform x:TypeArguments="Thickness" Android="20,0,0,-8" WinPhone="20,0,0,-8" iOS="10,20,10,10"/>
+      </Grid.Padding>
+
+      <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand">
+        <StackLayout Padding="0,2,0,0">
+          <Label Text="{Binding Display}" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" />
+        </StackLayout>
+        <StackLayout Padding="0,-5,0,0">
+          <Label Text="{Binding Detail}"   TextColor="{Binding SelectedItem.ColorDetail}" />
+        </StackLayout>
+      </StackLayout>
+
+    </Grid>
+
+    <abstractions:SvgImage
+                 SvgPath="{Binding ApplicationViewCellSelect}"
+                                 VerticalOptions="CenterAndExpand"
+                                 HorizontalOptions="StartAndExpand"
+                 Aspect="Fill" HeightRequest="40" WidthRequest="25" Grid.Column="2" Grid.Row="0"   />
+
+  </Grid>
+  <ViewCell.ContextActions>
+    <ToolbarItem Text="Limpar registro" Command="{Binding LimparRegistroCommand}" ></ToolbarItem>
+  </ViewCell.ContextActions>
+</ViewCell>

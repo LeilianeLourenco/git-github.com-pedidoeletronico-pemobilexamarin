@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.MainPage.RootPage"  >
+
+    <MasterDetailPage.BindingContext>
+        <viewmodel:MenuViewModel/>
+    </MasterDetailPage.BindingContext>
+
+    <MasterDetailPage.Master>
+        <ContentPage Icon="{Binding currentModel.Icon}" Title="Menu" BackgroundColor="White" >
+            <ContentPage.Padding>
+                <OnPlatform x:TypeArguments="Thickness" WinPhone="0,0,0,-45" Android="0,0,0,0" iOS="0,0,0,0"/>
+            </ContentPage.Padding>
+            <Grid ColumnSpacing="0" RowSpacing="0" Padding="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="StackLayoutCapa" Padding="0,0,0,0">
+                    <xaml:MyCardView IsCardView="True"  CardImage="{Binding capaImageSource}" Title="Pedido Eletrônico" Display="{Binding xEmail}" />
+
+                    <forms:CachedImage x:Name="userImage" Margin="10,0,0,15" Source="{Binding UserImageSource}"  TransformPlaceholders="{Binding currentModel.ltrasformationCircle}"
+                                       HorizontalOptions="Start" VerticalOptions="Center" Grid.Column="0" Grid.Row="0" CacheType="Disk" >
+                        <forms:CachedImage.HeightRequest>
+                            <OnPlatform x:TypeArguments="x:Double" Android="80" WinPhone="80" iOS="90"/>
+                        </forms:CachedImage.HeightRequest>
+                        <forms:CachedImage.WidthRequest>
+                            <OnPlatform x:TypeArguments="x:Double" Android="80" WinPhone="80" iOS="90"/>
+                        </forms:CachedImage.WidthRequest>
+                    </forms:CachedImage>
+                </Grid>
+
+                <!--Segunda parte do menu , Cadastros , Configuração e Relatorios-->
+
+                <Grid Margin="0,5,0,0"  Grid.Row="3" RowSpacing="0" ColumnSpacing="0">
+                    <Grid.Padding>
+                        <OnPlatform x:TypeArguments="Thickness" Android="0,0,0,0" iOS="0,0,0,0" WinPhone="0,0,0,30"/>
+                    </Grid.Padding>
+                    <ListView x:Name="MenuList" Grid.Column="0"
+                          CachingStrategy="RecycleElement"
+                          HasUnevenRows="True"
+                          ItemsSource="{Binding currentModel.LMenuItemModel}"
+                          VerticalOptions="FillAndExpand"
+                          ItemSelected="MenuList_OnItemSelected">
+                        <!--<ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>-->
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="1"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid ColumnSpacing="40">
+                                            <Grid.Padding>
+                                                <OnPlatform x:TypeArguments="Thickness" WinPhone="15,20,15,20" Android="15,17,15,11" iOS="15,12,15,10"/>
+                                            </Grid.Padding>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <abstractions:SvgImage
+                            SvgPath="{Binding Image}"
+                            HorizontalOptions="Center" VerticalOptions="Center">
+                                                <abstractions:SvgImage.HeightRequest>
+                                                    <OnPlatform x:TypeArguments="x:Double" Android="25" WinPhone="21" iOS="20"/>
+                                                </abstractions:SvgImage.HeightRequest>
+                                                <abstractions:SvgImage.WidthRequest>
+                                                    <OnPlatform x:TypeArguments="x:Double" Android="25" WinPhone="25" iOS="20"/>
+                                                </abstractions:SvgImage.WidthRequest>
+                                            </abstractions:SvgImage>
+
+                                            <Label Grid.Column="1" Text="{Binding Display}" TextColor="#4C4C4C" VerticalOptions="Center">
+                                                <Label.FontFamily>
+                                                    <OnPlatform x:TypeArguments="x:String">
+                                                        <OnPlatform.WinPhone>Calibri</OnPlatform.WinPhone>
+                                                        <OnPlatform.iOS>Helvetica</OnPlatform.iOS>
+                                                    </OnPlatform>
+                                                </Label.FontFamily>
+                                                <Label.FontSize>
+                                                    <OnPlatform x:TypeArguments="x:Double">
+                                                        <OnPlatform.Android>18</OnPlatform.Android>
+                                                        <OnPlatform.WinPhone>18</OnPlatform.WinPhone>
+                                                        <OnPlatform.iOS>14</OnPlatform.iOS>
+                                                    </OnPlatform>
+                                                </Label.FontSize>
+                                            </Label>
+
+                                        </Grid>
+                                        <!--<BoxView HeightRequest="1" Grid.Row="1" BackgroundColor="#edecec" />-->
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+
+            </Grid>
+        </ContentPage>
+    </MasterDetailPage.Master>
+    <!--<MasterDetailPage.ToolbarItems>
+    <ToolbarItem x:Name="ToolbarItemSync" Text="Sincronizar" Clicked="MenuItem_OnClicked" Icon="{Binding ImageIconSync}" />
+  </MasterDetailPage.ToolbarItems-->
+
+</MasterDetailPage>

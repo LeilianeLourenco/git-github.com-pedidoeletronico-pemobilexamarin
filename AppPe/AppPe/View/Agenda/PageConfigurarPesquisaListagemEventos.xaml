@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:agenda="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Agenda.PageConfigurarPesquisaListagemEventos" Title="Avançado">
+    <ContentPage.BindingContext>
+        <agenda:ConfiguracaoPesquisaListagemEventosViewModel/>
+    </ContentPage.BindingContext>
+    <TableView HasUnevenRows="True">
+        <TableRoot>
+            <TableSection>
+                <ViewCell>
+                    <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="PESQUISA AVANÇADA" TextColor="{StaticResource CinzaEscuro}" />
+                    </Grid>
+                </ViewCell>
+              
+                <SwitchCell On="{Binding currentModel.bTrazerRealizados}"  Text="Buscar atividades realizadas ?"  />
+
+                <SwitchCell On="{Binding currentModel.bTrazerCancelados}"  Text="Buscar atividades canceladas ?"  />
+
+                <SwitchCell On="{Binding currentModel.bTrazerTodosRepresentantes}"  Text="Buscar todos representantes ?"  />
+ 
+                <SwitchCell On="{Binding currentModel.bOrdernarCrescente}"  Text="Ordernar dt.Realização de forma crescente  ?"  />
+            </TableSection>
+        </TableRoot>
+    </TableView>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="{Binding ImageIconSave}" Command="{Binding EfetivarPesquisaCommand}"/>
+    </ContentPage.ToolbarItems>
+</ContentPage>

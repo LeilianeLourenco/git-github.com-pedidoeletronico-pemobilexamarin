@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:lancamento="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.GridEditItemPedido" Padding="5,5,5,5">
+    <Grid.BindingContext>
+        <lancamento:PedidoVendaItensModel/>
+    </Grid.BindingContext>
+    <Grid.Resources>
+        <ResourceDictionary>
+            <pedido:QtdeItemEditItemConverter x:Key="QtdeItemPedidoConverter"/>
+            <pedido:DescricaoGradeCorConverter x:Key="DescricaoGradeCorConverter"/>
+        </ResourceDictionary>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="60"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Grid Grid.Column="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Grid IsVisible="{Binding HasGradeCor}" WidthRequest="20" 
+          HeightRequest="20"           
+          VerticalOptions="Center" 
+          BackgroundColor="{StaticResource CinzaClaro}" 
+          Padding="1,1,1,1">
+            <BoxView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{Binding xCor}"/>
+        </Grid>
+
+        <Label Grid.Column="1"  
+           Text="{Binding . , Converter={StaticResource DescricaoGradeCorConverter}}"
+           VerticalOptions="Center" 
+           LineBreakMode="TailTruncation"
+           Style="{StaticResource Medium}" 
+           TextColor="{StaticResource CinzaPrincipal}" />
+
+        <Label Grid.Row="1"  IsVisible="{Binding bBloquearVisualizacaoEstoqueVendedor, Converter={StaticResource InvertBoolConvert}}"    
+               Grid.Column="1"  
+           Text="{Binding xQtdEstoque}"
+           VerticalOptions="Start" 
+           FontSize="Micro"
+           LineBreakMode="TailTruncation" 
+           TextColor="{StaticResource CinzaPrincipal}" />
+    </Grid>
+
+    <Grid Grid.Row="1" 
+        Grid.Column="1" 
+        Padding="3,-40,0,0" >
+        <Label HorizontalTextAlignment="Start" 
+           HorizontalOptions="FillAndExpand" 
+           VerticalOptions="Center" 
+           Grid.Column="0" 
+           FontSize="Medium" 
+           Text="{Binding vSubTotal, Converter={StaticResource FormatDecimalConverter}}" 
+           TextColor="{StaticResource VerdePrincipal}"/>
+    </Grid>
+
+    <Entry  Grid.Row="0" 
+          Grid.Column="0" 
+          Text="{Binding vQtdItem, Converter={StaticResource QtdeItemPedidoConverter}}" 
+          Keyboard="Numeric" />
+    <Grid Grid.Row="1" 
+        Grid.Column="0">
+        <Grid.Padding>
+            <OnPlatform x:TypeArguments="Thickness" 
+                  Android="0,-30,0,0"
+                  iOS="0,-30,0,0" 
+                  WinPhone="0,0,0,0"/>
+        </Grid.Padding>
+        <Stepper ValueChanged="StepperValor_OnValueChanged"  
+             Value="{Binding vQtdItem}" 
+             Increment="1" 
+             Minimum="0" 
+             Maximum="999999999" 
+             x:Name="StepperValor"  
+             VerticalOptions="Center" />
+    </Grid>
+
+</Grid>

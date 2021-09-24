@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ViewCellDefault">
+
+  <ViewCell.View>
+    <Grid Padding="10,10,0,10">
+      <Grid.HeightRequest>
+        <OnPlatform x:TypeArguments="x:Double" Android="40" WinPhone="40" iOS="50"/>
+      </Grid.HeightRequest>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="{StaticResource HeighRowDefault }" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="30"/>
+      </Grid.ColumnDefinitions>
+      <Grid IsVisible="{Binding Image, Converter={StaticResource IsNullOrEmptyConverter}}"
+            VerticalOptions="CenterAndExpand"
+            Grid.Column="0"
+            Grid.Row="0"
+            Padding="5,0,0,0">
+        <Grid.WidthRequest>
+          <OnPlatform x:TypeArguments="x:Double" Android="40" WinPhone="55" iOS="45"/>
+        </Grid.WidthRequest>
+        <abstractions:SvgImage  SvgPath="{Binding Image}"
+                 WidthRequest="{StaticResource HeightandWidth}" HeightRequest="{StaticResource HeightandWidth}" HorizontalOptions="Center"
+                 VerticalOptions="Center"/>
+      </Grid>
+      <StackLayout Orientation="Vertical" Grid.Column="1" VerticalOptions="CenterAndExpand" Padding="5,-3,0,0">
+        <StackLayout Padding="0,2,0,0">
+          <Label Text="{Binding Display}" FontAttributes="Bold" TextColor="{StaticResource  CinzaEscuro}" LineBreakMode="TailTruncation"/>
+        </StackLayout>
+        <StackLayout Padding="0,-10,0,0">
+          <Label Text="{Binding Detail}"   TextColor="{StaticResource CinzaClaro}" />
+        </StackLayout>
+      </StackLayout>
+      <abstractions:SvgImage
+                   SvgPath="{Binding ApplicationViewCellSelect}"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalOptions="StartAndExpand"
+                   Aspect="Fill" Grid.Column="2" Grid.Row="0" >
+        <abstractions:SvgImage.HeightRequest>
+          <OnPlatform x:TypeArguments="x:Double" Android="12" WinPhone="12" iOS="12"/>
+        </abstractions:SvgImage.HeightRequest>
+        <abstractions:SvgImage.WidthRequest>
+          <OnPlatform x:TypeArguments="x:Double" Android="12" WinPhone="12" iOS="12"/>
+        </abstractions:SvgImage.WidthRequest>
+      </abstractions:SvgImage>
+    </Grid>
+  </ViewCell.View>
+</ViewCell>

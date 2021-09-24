@@ -1,0 +1,24 @@
+<svg xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
+     xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
+     xmlns:graph="http://ns.adobe.com/Graphs/1.0/"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.1" id="Layer_1" x="0px" y="0px"
+     viewBox="0 0 80 80"
+     enable-background="new 0 0 100 100"
+     xml:space="preserve"
+     height="100px" width="100px">
+		<g fill="#4C4C4C">
+			<path class="st0" d="M48.2,17.4H31.2c-3,0-5.5-2.5-5.5-5.5V5.5c0-3,2.5-5.5,5.5-5.5l17.1,0c3,0,5.5,2.5,5.5,5.5v6.3
+       C53.8,14.9,51.3,17.4,48.2,17.4z"/>
+      <path class="st0" d="M57.4,14h5.4v55.7H17.3V14h5.2V3.6h-9.4c0,0-6.1,0-6.1,7.4v62.8c0,0,0.1,6.2,6.2,6.2s53.3,0,53.3,0
+       s6.5,0.7,6.5-6.9V9.5c0,0-0.1-5.9-6.6-5.9h-9V14z"/>
+      <path class="st0" d="M55.3,34.8H24.7c-0.2,0-0.4-0.2-0.4-0.4v-2.8c0-0.2,0.2-0.4,0.4-0.4h30.5c0.2,0,0.4,0.2,0.4,0.4v2.8
+       C55.6,34.7,55.5,34.8,55.3,34.8z"/>
+      <path class="st0" d="M55.3,45.3H24.7c-0.2,0-0.4-0.2-0.4-0.4v-2.8c0-0.2,0.2-0.4,0.4-0.4h30.5c0.2,0,0.4,0.2,0.4,0.4v2.8
+       C55.6,45.1,55.5,45.3,55.3,45.3z"/>
+      <path class="st0" d="M55.3,55.7H24.7c-0.2,0-0.4-0.2-0.4-0.4v-2.8c0-0.2,0.2-0.4,0.4-0.4h30.5c0.2,0,0.4,0.2,0.4,0.4v2.8
+       C55.6,55.6,55.5,55.7,55.3,55.7z"/>
+		</g>
+	
+</svg>

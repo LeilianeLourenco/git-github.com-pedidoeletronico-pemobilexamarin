@@ -1,0 +1,7 @@
+<Viewbox
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Grid>
+    <Path Fill="#4C4C4C" Data="M31.6,56l6.2,6.2L60,40L37.8,17.8L31.6,24l11.6,11.6H0v8.9h43.1L31.6,56z M71.1,0H8.9C4,0,0,4,0,8.9v17.8h8.9
+	V8.9h62.2v62.2H8.9V53.3H0v17.8C0,76,4,80,8.9,80h62.2c4.9,0,8.9-4,8.9-8.9V8.9C80,4,76,0,71.1,0z"/>
+  </Grid>
+</Viewbox>

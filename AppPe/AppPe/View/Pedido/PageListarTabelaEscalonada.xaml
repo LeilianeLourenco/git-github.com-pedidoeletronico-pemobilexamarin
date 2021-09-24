@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:binding="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageListarTabelaEscalonada">
+    <ContentPage.Title>
+        <OnPlatform x:TypeArguments="x:String" WinPhone="" Android="Faixas de Desconto" iOS="Faixas de Desconto"/>
+    </ContentPage.Title>
+    <ContentPage.BindingContext>
+        <binding:ListarTabelaEscalonadaViewModel/>
+    </ContentPage.BindingContext>
+        <Grid>
+            <CollectionView x:Name="collectionListView"
+                         ItemsSource="{Binding Escalonadas}"  
+                         VerticalScrollBarVisibility="Always"
+                         RemainingItemsThreshold="1"> 
+            <CollectionView.Header>
+                <Grid RowSpacing="0" ColumnSpacing="0" Padding="5,1,5,1" Margin="2,2,2,1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="FAIXA" Grid.Row="0" Grid.Column="0" HorizontalOptions="Center"/>
+                    <Label Text="DESC %" Grid.Row="0" Grid.Column="1" HorizontalOptions="Center"/>
+                    <Label Text="UN C/DESC" Grid.Row="0" Grid.Column="2" HorizontalOptions="Center"/>
+                    <Label Text="COM %" Grid.Row="0" Grid.Column="3" HorizontalOptions="Center"/>
+                </Grid>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate> 
+                    <DataTemplate>
+                     <Grid RowSpacing="0" ColumnSpacing="0" Padding="5,1,5,1" Margin="2,2,2,1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/> 
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions> 
+
+                            <Label Text="{Binding Sequencia}" Grid.Row="1" Grid.Column="0" HorizontalOptions="Center"/>
+                            <Label Text="{Binding pFimFaixa}" Grid.Row="1" Grid.Column="1" HorizontalOptions="Center"/>
+                            <Label Text="{Binding vMaxDesc}" TextColor="Crimson" Grid.Row="1" Grid.Column="2" HorizontalOptions="Center"/>
+                            <Label Text="{Binding pComissao}" TextColor="Green" Grid.Row="1" Grid.Column="3" HorizontalOptions="Center"/>
+                    </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+</ContentPage>

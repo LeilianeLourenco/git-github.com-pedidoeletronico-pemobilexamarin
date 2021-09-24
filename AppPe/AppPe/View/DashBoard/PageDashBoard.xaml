@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chartControls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml.ChartControls;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:dashBoard="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.DashBoard.PageDashBoard"
+             Title="DashBoard">
+    <ContentPage.BindingContext>
+        <dashBoard:DashBoardViewModel/>
+    </ContentPage.BindingContext>
+    <!--<ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" WinPhone="-18,0,-18,0" Android="0,5,0,7" iOS="0,5,0,7"/>
+    </ContentPage.Padding>-->
+    <ScrollView BackgroundColor="{StaticResource CinzaMedio}" Margin="5,0,5,0">
+        <StackLayout Orientation="Vertical" Margin="0">
+            <Frame Padding="0,0,0,0" HasShadow="True">
+                <StackLayout Orientation="Vertical" Spacing="5">
+                    <Grid>
+                        <Grid.Padding>
+                            <OnPlatform x:TypeArguments="Thickness" WinPhone="0,0,0,0" iOS="5,0,5,0" Android="0,0,0,0"/>
+                        </Grid.Padding>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="50*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="btnTotais" Margin="0" IsVisible="{Binding isAdm}" Text="{Binding labelTotal}" Style="{StaticResource Info}"/>
+                        <Button Grid.Column="1" x:Name="btntualizaChart"  Margin="0" Text="Atualizar" Style="{StaticResource Primary}"  />
+                    </Grid>
+
+                    <chartControls:GridChartFaturamentoSemestral  x:Name="ChartFaturamento" />
+                </StackLayout>
+            </Frame>
+
+            <Frame  HasShadow="True" Padding="0,0,0,0" >
+                <StackLayout Orientation="Vertical" Spacing="0">
+                    <Grid BackgroundColor="#7DB043" Padding="7,7,7,7">
+                        <Label Text="Informações Adicionais" TextColor="White" HorizontalTextAlignment="Center" Style="{StaticResource Medium}" FontAttributes="Bold"/>
+                    </Grid>
+                    <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Branco}" Spacing="10" Padding="7,7,7,7">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <abstractions:SvgImage SvgPath="{StaticResource ImagemHomeValor}" VerticalOptions="Center" HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}" WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}"/>
+
+                            <Grid Grid.Column="1">
+                                <Label Text="Vendas Hoje" TextColor="{StaticResource CinzaEscuro}" VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <Label Grid.Column="2" Text="{Binding VendasHoje, Converter={StaticResource FormatDecimalConverter}}" FontAttributes="Bold" TextColor="{StaticResource VerdePrincipal}" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <abstractions:SvgImage SvgPath="{StaticResource ImagemHomeValor}" VerticalOptions="Center" HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}" WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}"/>
+
+                            <Grid Grid.Column="1">
+                                <Label Text="Vendas Ontem" TextColor="{StaticResource CinzaEscuro}" VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <Label Grid.Column="2" Text="{Binding VendasOntem, Converter={StaticResource FormatDecimalConverter}}" FontAttributes="Bold" TextColor="{StaticResource VerdePrincipal}" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <abstractions:SvgImage SvgPath="{StaticResource ImagemHomePedido}" VerticalOptions="Center" HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}" WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}"/>
+
+                            <Grid Grid.Column="1">
+                                <Label Text="Orçamentos em Aberto" TextColor="{StaticResource CinzaEscuro}" VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <Label Grid.Column="2" Text="{Binding OrcamentosAbertos}" FontAttributes="Bold" TextColor="{StaticResource VerdePrincipal}" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <abstractions:SvgImage SvgPath="{StaticResource ImagemHomeCliente}" VerticalOptions="Center" HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}" WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}"/>
+
+                            <Grid Grid.Column="1">
+                                <Label Text="Clientes em Prospecção" TextColor="{StaticResource CinzaEscuro}" VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <Label Grid.Column="2" Text="{Binding Clientesprospect}" FontAttributes="Bold" TextColor="{StaticResource VerdePrincipal}" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+
+                        </Grid>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:agenda="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Agenda.PageApresentacaoEvento" Title="Detalhes do Evento">
+    <ContentPage.BindingContext>
+        <agenda:ApresentacaoEventoAgendaViewModel/>
+    </ContentPage.BindingContext>
+
+
+    <TableView HasUnevenRows="True" BackgroundColor="White">
+        <TableRoot>
+            <TableSection>
+
+                <ViewCell>
+                    <StackLayout Orientation="Vertical" HeightRequest="120">
+                        <Grid VerticalOptions="CenterAndExpand" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" LineBreakMode="NoWrap" Text="Status do evento" TextColor="{Binding currentModel.ColorPendencia}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
+                            <Label Grid.Row="1" LineBreakMode="NoWrap" Text="{Binding currentModel.xAtraso}" FontSize="Large" TextColor="{Binding currentModel.ColorPendencia}" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" />
+
+                        </Grid>
+                    </StackLayout> 
+                </ViewCell>
+
+                <SwitchCell On="{Binding currentModel.bRealizado, Mode=OneWay}"  Text="Atividade Realizada ?"   x:Name="bAtividadeRealizadaAction"  OnChanged="AtualizarEvento"/>
+                <SwitchCell On="{Binding currentModel.bEventoCancelado, Mode=OneWay}"  Text="Atividade Cancelada ?"   x:Name="bCancelamentoAction"  OnChanged="CancelarEvento"/>
+                <TextCell Detail="{Binding currentModel.xNomeAtividade}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Atividade" />
+                <ViewCell>
+                    <StackLayout  Orientation="Vertical">
+                        <StackLayout.Margin>
+                            <OnPlatform x:TypeArguments="Thickness" Android="15,5,5,5" iOS="10,10,0,10"/>
+                        </StackLayout.Margin>
+                        <StackLayout.Padding>
+                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,45"/>
+                        </StackLayout.Padding>
+                        <Grid VerticalOptions="StartAndExpand"  >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <Label Grid.Row="0" Grid.Column="0" Text="Descrição da atividade" TextColor="{StaticResource CinzaApresentacaoCliente}" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding currentModel.xDescricaoAtividade}" FontSize="Small" TextColor="{StaticResource CinzaMaisEscuro}" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
+
+                        </Grid>
+                    </StackLayout>
+                </ViewCell>
+                
+                <TextCell Detail="{Binding currentModel.xPeriodoEvento}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Período do evento" />
+                <TextCell Detail="{Binding currentModel.xNomeCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Cliente" />
+                <TextCell Detail="{Binding currentModel.xTelefoneCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Telefone" />
+
+                <ViewCell>
+                    <StackLayout Orientation="Vertical">
+                        <StackLayout.Margin>
+                            <OnPlatform x:TypeArguments="Thickness" Android="15,5,5,5" iOS="10,10,0,10"/>
+                        </StackLayout.Margin>
+                        <StackLayout.Padding>
+                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,25"/>
+                        </StackLayout.Padding>
+                        <Grid>
+                            <Grid.RowDefinitions> 
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+ 
+                            <Label Grid.Row="0"
+                                   Margin="0,13,0,0"
+                                   Grid.Column="0" 
+                                   LineBreakMode="NoWrap"
+                                   Text="{Binding currentModel.xEnderecoCompleto}" 
+                                   FontSize="Small"
+                                   TextColor="{StaticResource CinzaMaisEscuro}" 
+                                   HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
+
+
+                            <Grid Grid.Column="1" Grid.Row="0" MinimumHeightRequest="50" >
+                                <abstractions:SvgImage 
+                                    SvgPath="{StaticResource ImagemPesquisarLocation}"  
+                                    x:Name="SvgImagePinLocation" 
+                                    HeightRequest="{StaticResource HeightandWidth}"
+                                    WidthRequest="{StaticResource HeightandWidth}" 
+                                    HorizontalOptions="Center" VerticalOptions="Center" >
+                                    <abstractions:SvgImage.Margin>
+                                        <OnPlatform x:TypeArguments="Thickness">
+                                            <OnPlatform.Android>0,0,0,4</OnPlatform.Android>
+                                        </OnPlatform>
+                                    </abstractions:SvgImage.Margin>
+                                </abstractions:SvgImage>
+                            </Grid> 
+                        </Grid> 
+                    </StackLayout>
+                </ViewCell>
+
+                <TextCell Detail="{Binding currentModel.xListaVendedores}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Responsáveis" />
+
+                <ViewCell>
+                    <StackLayout Orientation="Vertical" MinimumHeightRequest="100" >
+                        <StackLayout.Margin>
+                            <OnPlatform x:TypeArguments="Thickness" Android="15,5,5,5" iOS="10,10,0,10"/>
+                        </StackLayout.Margin>
+                        <StackLayout.Padding>
+                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,35"/>
+                        </StackLayout.Padding>
+                        <Grid VerticalOptions="StartAndExpand"  >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <Label Grid.Row="0" Grid.Column="0" Text="Anotação Privada" TextColor="{StaticResource CinzaApresentacaoCliente}" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding currentModel.xAnotacaoPrivada}" FontSize="Small" TextColor="{StaticResource CinzaMaisEscuro}" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
+
+                        </Grid>
+                    </StackLayout>
+                </ViewCell>
+                
+          </TableSection>
+
+
+        </TableRoot>
+    </TableView>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Adiar"  Icon="{Binding ImageIconAdiar}" Command="{Binding AdiarCommand}"/>
+        <ToolbarItem Text="Editar" Command="{Binding EditarEventoCommand}" Icon="{Binding ImageIconEdit}"/> 
+    </ContentPage.ToolbarItems>
+
+
+
+</ContentPage>

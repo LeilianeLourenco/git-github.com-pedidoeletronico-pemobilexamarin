@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageSelectDate">
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" WinPhone="0,0,0,0" Android="0,0,0,0" iOS="0,25,0,0"/>
+  </ContentPage.Padding>
+  <ContentPage.BindingContext>
+    <pedido:SelectDateViewModel/>
+  </ContentPage.BindingContext>
+
+  <Grid>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="15*"/>
+      <RowDefinition Height="85*"/>
+    </Grid.RowDefinitions>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="8*" />
+      <ColumnDefinition Width="86*" />
+      <ColumnDefinition Width="8*" />
+    </Grid.ColumnDefinitions>
+
+    <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="1" Spacing="10">
+
+      <Label HorizontalTextAlignment="Center" Text="DATA" TextColor="{StaticResource CinzaPrincipal}" Margin="0,0,0,20" FontAttributes="Bold" FontSize="18" />
+
+      <DatePicker Date="{Binding date}" HorizontalOptions="FillAndExpand" />
+
+      <Label HorizontalTextAlignment="Center" Text="HORA" TextColor="{StaticResource CinzaPrincipal}" Margin="0,0,0,20" FontAttributes="Bold" FontSize="18" />
+
+
+      <TimePicker Time="{Binding time}" HorizontalOptions="FillAndExpand" />
+      
+
+      <Frame HasShadow="True" Padding="0,0,0,0" Margin="0,20,0,0">
+        <Button 
+             Style="{StaticResource Success}" HeightRequest="50"
+             Command="{Binding VoltarCommand, Mode=TwoWay}"  Text="CONFIRMAR" />
+      </Frame>
+
+    </StackLayout>
+
+  </Grid>
+
+</ContentPage>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             BackgroundColor="{StaticResource Branco}"
+             Title="Login"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.PageLogin" >
+
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" WinPhone="0,0,0,0" Android="0,0,0,0" iOS="0,25,0,0"/>
+    </ContentPage.Padding>
+    <ContentPage.BindingContext>
+        <local:InicioViewModel/>
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="85*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*" />
+                <ColumnDefinition Width="86*" />
+                <ColumnDefinition Width="8*" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="1" Spacing="10">
+
+                <Label HorizontalTextAlignment="Center" Text="ENTRAR" TextColor="{StaticResource CinzaPrincipal}" Margin="0,0,0,20" FontAttributes="Bold" FontSize="18" />
+
+                <custom:ExtendedEntry isEmail="True" x:Name="EntryUsuario" Keyboard="Email" Placeholder="E-mail" Text="{Binding currentModel.Email}" />
+
+                <Entry  x:Name="EntrySenha" IsPassword="True" Placeholder="Senha" Text="{Binding currentModel.Password}" />
+
+
+                <Frame HasShadow="True" Padding="0,0,0,0" Margin="0,5,0,2">
+                    <Button  x:Name="ButtonEntrar"
+               Style="{StaticResource Success}" HeightRequest="50"
+               Command="{Binding currentModel.LoginCommand, Mode=TwoWay}"  Text="Entrar" />
+                </Frame>
+                <xaml:ExtendedActivityIndicator IsRunning="True" IsVisible="{Binding currentModel.BProcessando}" Color="{StaticResource AzulPrincipal}"/>
+                <Button Command="{Binding EsqueciSenhaCommand}" BackgroundColor="#FFFFFF" Text="Esqueceu sua senha?" TextColor="#2196f3" >
+                    <Button.FontSize>
+                        <OnPlatform x:TypeArguments="x:Double" Android="11" iOS="11" WinPhone="16"/>
+                    </Button.FontSize>
+                </Button>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>
+

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ViewCellFoneEmail">
+
+  <Grid>
+    <Grid.Padding>
+      <OnPlatform x:TypeArguments="Thickness" Android="10,10,10,2" WinPhone="10,10,10,0" iOS="10,10,10,10"/>
+    </Grid.Padding>
+      <Grid.Resources>
+          <ResourceDictionary>
+                <Style TargetType="Grid" x:Key="GridImg">
+                    <Setter Property="Padding">
+                        <Setter.Value>
+                            <OnPlatform x:TypeArguments="Thickness" Android="5,5,5,5" WinPhone="0,10,10,10" iOS="10,0,0,0"/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ResourceDictionary>
+      </Grid.Resources>
+
+    <Grid.HeightRequest>
+      <OnPlatform x:TypeArguments="x:Double" Android="50" WinPhone="65" iOS="50"/>
+    </Grid.HeightRequest>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource GridImg}">
+      <abstractions:SvgImage x:Name="SvgImageComp"
+     SvgPath="Xamarin.HLP.Mobile.AppPE.Images.PagesIcon.ApplicationPhone.svg"
+     HeightRequest="{StaticResource HeightandWidth}" WidthRequest="{StaticResource HeightandWidth}" HorizontalOptions="Center" VerticalOptions="Start" />
+    </Grid>
+
+    <Grid Grid.Column="1" Grid.Row="0">
+      <Grid.Padding>
+        <OnPlatform x:TypeArguments="Thickness" Android="10,5,0,-8" WinPhone="10,5,0,-8" iOS="0,5,0,-8"/>
+      </Grid.Padding>
+      <StackLayout>
+        <Label x:Name="labelTipo" Text="" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold"/>
+      </StackLayout>
+    </Grid>
+
+    <Grid Grid.Column="1" Grid.Row="1">
+      <Grid.Padding>
+        <OnPlatform x:TypeArguments="Thickness" WinPhone="10,0,0,0" Android="10,0,0,0"  iOS="10,20,0,0"/>
+      </Grid.Padding>
+      <StackLayout>
+        <Label x:Name="labelValor" Text="" TextColor="{StaticResource CinzaEscuro}"/>
+      </StackLayout>
+    </Grid>
+
+  </Grid>
+
+
+
+</ViewCell>

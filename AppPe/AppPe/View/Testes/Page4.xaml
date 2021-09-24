@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:viewModel="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:behaviors="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Testes.Page4">
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" WinPhone="0,0,0,0" Android="0,0,0,0" iOS="0,25,0,0"/>
+  </ContentPage.Padding>
+  <ContentPage.BindingContext>
+    <viewModel:InicioViewModel/>
+  </ContentPage.BindingContext>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <!--<xaml:MyCardView IsCardView="True"  CardImage="{Binding currentModel.imageLogin}" Title="Pedido Eletrônico" Display="Login" />-->
+
+    <StackLayout Padding="10,0,10,0" Grid.Row="1" VerticalOptions="Center"  >
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" >
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+
+          <Grid VerticalOptions="Center">
+            <abstractions:SvgImage SvgPath="{StaticResource ImagemEmailContato}">
+              <abstractions:SvgImage.HeightRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="22" WinPhone="30" iOS="20"/>
+              </abstractions:SvgImage.HeightRequest>
+              <abstractions:SvgImage.WidthRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="22" WinPhone="30" iOS="20"/>
+              </abstractions:SvgImage.WidthRequest>
+            </abstractions:SvgImage>
+          </Grid>
+
+          <Entry Grid.Column="1" x:Name="EntryUsuario" Keyboard="Email" Placeholder="E-mail"
+                                Text="{Binding currentModel.Email}" >
+            <Entry.Behaviors>
+              <behaviors:EmailBehaviors x:Name="EmailBehaviors"/>
+            </Entry.Behaviors>
+          </Entry>
+
+          <Grid Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center">
+            <abstractions:SvgImage HorizontalOptions="End"
+                                  SvgPath="{StaticResource ImagemCheck}"
+                                  IsVisible="{Binding Source={x:Reference EmailBehaviors}, Path=IsValid}">
+              <abstractions:SvgImage.HeightRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="15"/>
+              </abstractions:SvgImage.HeightRequest>
+              <abstractions:SvgImage.WidthRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="15"/>
+              </abstractions:SvgImage.WidthRequest>
+            </abstractions:SvgImage>
+            <abstractions:SvgImage  HorizontalOptions="End"
+                                                        SvgPath="{StaticResource ImagemErro}"
+                                                        IsVisible="{Binding Source={x:Reference EmailBehaviors}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}">
+              <abstractions:SvgImage.HeightRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="15"/>
+              </abstractions:SvgImage.HeightRequest>
+              <abstractions:SvgImage.WidthRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="15"/>
+              </abstractions:SvgImage.WidthRequest>
+
+            </abstractions:SvgImage>
+          </Grid>
+
+        </Grid>
+
+        <Grid Grid.Row="1" >
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+
+
+          <Grid VerticalOptions="Center">
+            <abstractions:SvgImage SvgPath="{StaticResource ImagemLock}">
+              <abstractions:SvgImage.HeightRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="22" WinPhone="30" iOS="20"/>
+              </abstractions:SvgImage.HeightRequest>
+              <abstractions:SvgImage.WidthRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="22" WinPhone="30" iOS="20"/>
+              </abstractions:SvgImage.WidthRequest>
+            </abstractions:SvgImage>
+          </Grid>
+
+
+
+          <Entry Grid.Row="0" Grid.Column="1"  x:Name="EntrySenha" IsPassword="True" Placeholder="Senha"
+                                    Text="{Binding currentModel.Password}">
+            <Entry.Behaviors>
+              <behaviors:TextNotNullBehaviors x:Name="TextNotNullBehaviors" />
+            </Entry.Behaviors>
+          </Entry>
+
+          <Grid Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <abstractions:SvgImage HorizontalOptions="End"
+                                  SvgPath="{StaticResource ImagemCheck}"
+                                  IsVisible="{Binding Source={x:Reference TextNotNullBehaviors}, Path=IsValid}">
+              <abstractions:SvgImage.HeightRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="15"/>
+              </abstractions:SvgImage.HeightRequest>
+              <abstractions:SvgImage.WidthRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="15"/>
+              </abstractions:SvgImage.WidthRequest>
+            </abstractions:SvgImage>
+
+            <abstractions:SvgImage HorizontalOptions="End"
+                                                        SvgPath="{StaticResource ImagemErro}"
+                                                        IsVisible="{Binding Source={x:Reference TextNotNullBehaviors}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}">
+              <abstractions:SvgImage.HeightRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="15"/>
+              </abstractions:SvgImage.HeightRequest>
+              <abstractions:SvgImage.WidthRequest>
+                <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="15"/>
+              </abstractions:SvgImage.WidthRequest>
+            </abstractions:SvgImage>
+
+          </Grid>
+
+
+
+        </Grid>
+
+        <Grid Grid.Row="2" Padding="5,10,5,10">
+          <Button  x:Name="ButtonEntrar"
+                  Command="{Binding currentModel.LoginCommand, Mode=TwoWay}"  Text="Entrar" />
+        </Grid>
+
+        <Grid Grid.Row="3">
+          <xaml:ExtendedActivityIndicator IsRunning="True" IsVisible="{Binding currentModel.BProcessando}" Color="{StaticResource AzulPrincipal}"/>
+        </Grid>
+      </Grid>
+    </StackLayout>
+  </Grid>
+</ContentPage>

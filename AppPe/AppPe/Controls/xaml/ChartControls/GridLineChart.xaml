@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:horizontal="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Chart.Horizontal;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ChartControls.GridLineChart" Padding="0,5,0,2">
+
+  <Grid.BindingContext>
+    <horizontal:SerieHorizontalModel Display="..." Valor="0"/>
+  </Grid.BindingContext>
+
+  <Grid.RowDefinitions>
+    <RowDefinition Height="Auto"/>
+    <RowDefinition Height="Auto"/>
+  </Grid.RowDefinitions>
+
+  <Grid Padding="5,0,5,0">
+    <Label HorizontalOptions="Start" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" HorizontalTextAlignment="Start" Text="{Binding Display}" />
+    <Label Grid.Row="0" TextColor="{StaticResource VerdePrincipal}" FontAttributes="Bold" Text="{Binding Valor, Converter={StaticResource FormatDecimalConverter}}" HorizontalOptions="End" HorizontalTextAlignment="End" />
+  </Grid>
+
+  <Grid Grid.Row="1" Padding="5,0,5,0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <BoxView Grid.Column="0" HeightRequest="5" Grid.ColumnSpan="2" BackgroundColor="{StaticResource CinzaMedio}" />
+    <BoxView Grid.Column="0" HeightRequest="5" WidthRequest="{Binding WidthLine}" BackgroundColor="{Binding CorLine}" />
+  </Grid>
+</Grid>

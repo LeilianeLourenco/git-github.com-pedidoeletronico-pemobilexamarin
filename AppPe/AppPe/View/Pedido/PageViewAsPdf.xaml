@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE" Title="PDF"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageViewAsPdf">
+  <ContentPage.Content>
+        <custom:CustomWebView x:Name="CustomWebViewTeste" Uri="PedidoVenda.pdf" idPK="" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+    </ContentPage.Content>
+  
+</ContentPage>

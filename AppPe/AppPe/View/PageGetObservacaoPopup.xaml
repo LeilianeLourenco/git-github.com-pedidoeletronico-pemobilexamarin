@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.PageGetObservacaoPopup">
+    
+    
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+      PositionIn="Center"
+      PositionOut="Center"
+      ScaleIn="1.2"
+      ScaleOut="0.8"
+      DurationIn="400"
+      DurationOut="300"
+      EasingIn="SinOut"
+      EasingOut="SinIn"
+      HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+
+
+    <Frame BackgroundColor="White" Margin="15,50,15,0"  Padding="0,0,0,0"  VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand"  OutlineColor="{StaticResource CinzaPrincipal}">
+        <Frame.HasShadow>
+            <OnPlatform x:TypeArguments="x:Boolean" Android="True" iOS="True" WinPhone="False"/>
+        </Frame.HasShadow>
+
+        <Grid Padding="2,2,2,2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid VerticalOptions="Center" HorizontalOptions="End"  >
+                <Grid.Margin>
+                    <OnPlatform x:TypeArguments="Thickness" WinPhone="20,-27,0,0"/>
+                </Grid.Margin>
+                <abstractions:SvgImage Command="{Binding ClosePopupCommand}" SvgPath="{StaticResource ImagemErrorPopup}" HeightRequest="25" WidthRequest="25"/>
+            </Grid>
+            
+            <StackLayout Orientation="Vertical" Grid.Row="1">
+                <Label Margin="5,5,0,0" Text="Motivo do cancelamento" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}" />
+                <Editor HeightRequest="120" Keyboard="Chat" x:Name="EditorMotivoCancelamento" Text="{Binding xMotivoCancelamento}"/>
+            </StackLayout>
+            
+            <Button Style="{StaticResource Danger}" Command="{Binding ClosePopupCommand}" Text="Confirmar" Grid.Row="2" Margin="2,2,2,2"/>
+        </Grid>
+    </Frame>
+</pages:PopupPage>

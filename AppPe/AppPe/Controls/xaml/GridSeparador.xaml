@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.GridSeparador">
+  <Grid.Padding>
+    <OnPlatform x:TypeArguments="Thickness" WinPhone="-10,10,0,0" Android="-10,0,0,0" iOS="-10,0,-10,5"/>
+  </Grid.Padding>
+  <Grid.RowDefinitions>
+    <RowDefinition Height="Auto"/>
+    <RowDefinition Height="0.3"/>
+  </Grid.RowDefinitions>
+
+  <Grid>
+    <Grid.Padding>
+      <OnPlatform x:TypeArguments="Thickness" Android="5,2,0,7" iOS="10,5,0,3" WinPhone="20,7,0,0"/>
+    </Grid.Padding>
+    <Label x:Name="LabelSeparador" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" TextColor="{StaticResource CinzaMaisEscuro}" Opacity="0.8">
+      <Label.FontSize>
+        <OnPlatform x:TypeArguments="x:Double">
+          <OnPlatform.Android>14</OnPlatform.Android>
+          <OnPlatform.WinPhone>14</OnPlatform.WinPhone>
+          <OnPlatform.iOS>12</OnPlatform.iOS>
+        </OnPlatform>
+      </Label.FontSize>
+      <Label.FontFamily>
+        <OnPlatform x:TypeArguments="x:String">
+          <OnPlatform.WinPhone>Segoe WP</OnPlatform.WinPhone>
+          <OnPlatform.iOS>Helvetica</OnPlatform.iOS>
+        </OnPlatform>
+      </Label.FontFamily>
+    </Label>
+  </Grid>
+
+  <BoxView Grid.Row="1"  BackgroundColor="{StaticResource CinzaMaisEscuro}" Opacity="0.3" HorizontalOptions="FillAndExpand" Margin="0,0,-10,0"></BoxView>
+
+</Grid>

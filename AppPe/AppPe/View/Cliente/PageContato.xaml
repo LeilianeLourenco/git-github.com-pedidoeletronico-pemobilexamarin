@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:cadastro="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageContato" Padding="{StaticResource PaddingContentPageComHeader}">
+    <ContentPage.Title>
+        <OnPlatform x:TypeArguments="x:String">
+            <OnPlatform.iOS></OnPlatform.iOS>
+            <OnPlatform.WinPhone>Contato</OnPlatform.WinPhone>
+            <OnPlatform.Android>Contato</OnPlatform.Android>
+        </OnPlatform>
+    </ContentPage.Title>
+    <ContentPage.BindingContext>
+        <cadastro:ContatoViewModel />
+    </ContentPage.BindingContext>
+
+
+    <ScrollView>
+        <StackLayout Orientation="Vertical">
+            <StackLayout.Padding>
+                <OnPlatform x:TypeArguments="Thickness" Android="20,10,20,0" iOS="20,10,20,0" WinPhone="30,10,30,0"/>
+            </StackLayout.Padding>
+
+            <xaml:GridSeparador Text="DADOS DO CONTATO" />
+
+            <!--Nome-->
+
+            <Label Text="Nome do Contato" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+            <custom:ExtendedEntry MaxLength="45" x:Name="EntryNome" Placeholder="Digite o nome do contato" Text="{Binding currentModel.xNome}"/>
+
+            <!--Departamento-->
+
+            <Label Text="Departamento" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+            <custom:BindablePicker x:Name="BindableDpto" ItemsSource="{Binding LDepartamentoBasicPickerModels, Mode=TwoWay}" SelectedItem="{Binding DepartamentoBasicPickerModel, Mode=TwoWay}"  />
+
+            <!--Cargo-->
+
+            <Label Text="Cargo" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+            <custom:ExtendedEntry MaxLength="25" x:Name="EntryCargo" Placeholder="Digite um cargo" Text="{Binding currentModel.xCargo}" />
+
+            <!--FONE-->
+
+            <Label Text="Telefone" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+            <custom:ExtendedEntry MaxLength="16" PropertyChanged="EntryFone_OnPropertyChanged" x:Name="EntryFone" Placeholder="Telefone" Text="{Binding currentModel.xTelefone}" Keyboard="Numeric" />
+
+            <!--E-MAIL-->
+
+            <Label Text="Email" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+            <custom:ExtendedEntry MaxLength="256" PropertyChanged="EntryEmail_OnPropertyChanged" x:Name="EntryEmail" Placeholder="Digite um E-mail válido" Text="{Binding currentModel.xEmail}" Keyboard="Email" />
+
+            <!--Utiliza Catalogo Online-->
+
+            <Label Text="Utiliza o Catalogo Online" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+            <Switch x:Name="SwitchUsaCatalogo" IsEnabled="False"  HorizontalOptions="Start" IsToggled="{Binding currentModel.stUsaCatalogo}"/>
+
+            <!--Anotações-->
+
+            <Label Text="Anotações" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+            <Editor x:Name="EditorAnotacao" Text="{Binding currentModel.xAnotacao}" Keyboard="Chat"  HeightRequest="{StaticResource HeightEditor}" />
+
+        </StackLayout>
+    </ScrollView>
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="{Binding ImageIconCancel}" Text="Cancelar" Command="{Binding CancelCommand}"  >
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+            </ToolbarItem.Order>
+        </ToolbarItem>
+        <ToolbarItem Icon="{Binding ImageIconDelete}" Text="Deletar" Clicked="MenuItemDelete_OnClicked">
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+            </ToolbarItem.Order>
+        </ToolbarItem>
+        <ToolbarItem Icon="{Binding ImageIconSave}" Text="Salvar" Clicked="MenuItem_OnClicked" />
+    </ContentPage.ToolbarItems>
+
+</ContentPage>

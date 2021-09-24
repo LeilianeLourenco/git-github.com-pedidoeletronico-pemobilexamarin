@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:produto="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Produto;assembly=Xamarin.HLP.Mobile.AppPE" 
+            x:Class="Xamarin.HLP.Mobile.AppPE.View.Produto.PageApresentacaoProduto" >
+    <ContentPage.BindingContext>
+        <produto:ProdutoAprosentacaoViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelApresentacao" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource CinzaApresentacaoCliente}"/>
+                <Setter Property="FontSize" Value="{StaticResource FontSizeContentApresentacao}"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Title>
+        <OnPlatform x:TypeArguments="x:String" WinPhone="Apresentação" Android="Apresentação" iOS="Apresentação"/>
+    </ContentPage.Title>
+
+    <ScrollView Orientation="Vertical" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" BackgroundColor="{StaticResource CinzaMedio}">
+        <StackLayout Orientation="Vertical">
+            <!--<xaml:MyCardView ShowImage="True" IsCardView="True"  CardImage="{Binding currentModel.GetImageSource}" Title="{Binding currentModel.xNome}"
+                             Display="{Binding xUN}" />-->
+
+            <Grid RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <CarouselView x:Name="ImageCarouselView" 
+                                            Grid.Row="0"  
+                                            HorizontalOptions="FillAndExpand"  
+                                            VerticalOptions="FillAndExpand"
+                                            HeightRequest="250"
+                                            ItemsSource="{Binding ListaImagens}" >
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate>
+                            <Image Aspect="AspectFill"
+                                           HorizontalOptions="FillAndExpand" 
+                                           VerticalOptions="FillAndExpand"
+                                           Source="{Binding .}"/>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+
+                <StackLayout BackgroundColor="{StaticResource Branco}"  Padding="18,8,0,10" Orientation="Vertical" Grid.Row="1">
+                    <Label Text="{Binding currentModel.cAlternativo}" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontSize="Medium"/>
+                    <Label  Text="{Binding currentModel.xDescricao}"  VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaApresentacaoCliente}" FontSize="Small"/>
+                </StackLayout>
+
+                <Frame Grid.Row="2" HasShadow="True" Padding="0,0,0,0">
+                    <Grid RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid x:Name="GridHeader" BackgroundColor="{StaticResource Rosa}" Padding="5,5,5,5">
+                            <Label Text="DADOS PRINCIPAIS" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                        </Grid>
+
+                        <Grid x:Name="GridContent" Grid.Row="1" BackgroundColor="White">
+                            <Grid.Padding>
+                                <OnPlatform x:TypeArguments="Thickness" Android="5,5,5,5" WinPhone="5,5,5,5" iOS="12,5,12,5"/>
+                            </Grid.Padding>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!--NOME / CÓDIGO-->
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="55*"/>
+                                    <ColumnDefinition Width="45*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="NOME" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label Grid.Row="1" Text="{Binding currentModel.xNome}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                </Grid>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="CÓDIGO" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label Grid.Row="1" Text="{Binding currentModel.cAlternativo}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                </Grid>
+
+
+                            </Grid>
+
+                            <!--UNIDADE / REPRESENTAÇÃO-->
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="55*"/>
+                                    <ColumnDefinition Width="45*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="UNIDADE" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label Grid.Row="1" Text="{Binding xUN}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                </Grid>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="REPRESENTAÇÃO" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label Grid.Row="1" Text="{Binding xRepresentada}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                </Grid>
+
+
+                            </Grid>
+
+                            <!--CATEGORIA / FABRICANTE-->
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="55*"/>
+                                    <ColumnDefinition Width="45*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="CATEGORIA" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label Grid.Row="1" Text="{Binding xCategoria}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                </Grid>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="FABRICANTE" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label Grid.Row="1" Text="{Binding currentModel.xFabricante}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                </Grid>
+
+
+                            </Grid>
+
+                            <!--VENDA SEM ESTOQUE / ATIVO -->
+
+                            <Grid Grid.Row="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="55*"/>
+                                    <ColumnDefinition Width="45*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="VENDA SEM ESTOQUE" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label Grid.Row="1" Text="{Binding currentModel.stVendaSemEstoque, Converter={StaticResource BoolToStringConverter}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                </Grid>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="ATIVO" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label Grid.Row="1" Text="{Binding currentModel.stAtivo, Converter={StaticResource BoolToStringConverter}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                </Grid>
+
+
+                            </Grid>
+
+                            <!--OBSERVAÇÃO-->
+
+                            <Grid Grid.Row="4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Text="OBSERVAÇÃO" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                <Label Grid.Row="1" Text="{Binding currentModel.xAnotacao}" LineBreakMode="WordWrap" Style="{StaticResource LabelApresentacao}"/>
+
+                            </Grid>
+
+                        </Grid>
+
+                    </Grid>
+                </Frame>
+
+                <Frame Grid.Row="1" HasShadow="True" Padding="0,0,0,0">
+                    <Grid RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid x:Name="GridHeaderValores" BackgroundColor="{StaticResource VerdePedido}" Padding="5,5,5,5">
+                            <Label Text="VALORES" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                        </Grid>
+
+                        <Grid x:Name="GridContentValores" Grid.Row="1" BackgroundColor="White">
+                            <Grid.Padding>
+                                <OnPlatform x:TypeArguments="Thickness" Android="5,5,5,5" WinPhone="5,5,5,5" iOS="12,5,12,5"/>
+                            </Grid.Padding>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!--CUSTO DO PRODUTO-->
+
+                            <Grid IsVisible="{Binding isAdm }">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Padding="0,2,0,0">
+                                    <Label Text="CUSTO DO PRODUTO" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                </Grid>
+                                <Label Grid.Column="1" LineBreakMode="NoWrap" Text="{Binding xDot}" Style="{StaticResource LabelApresentacao}"></Label>
+                                <Label Grid.Column="2" Text="{Binding currentModel.vCusto , Converter={StaticResource FormatDecimalConverter}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+
+                            </Grid>
+
+                            <!--LUCRO-->
+
+                            <Grid Grid.Row="1" IsVisible="{Binding isAdm }">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Padding="0,2,0,0">
+                                    <Label Text="LUCRO" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                </Grid>
+                                <Label Grid.Column="1" LineBreakMode="NoWrap" Text="{Binding xDot}" Style="{StaticResource LabelApresentacao}"></Label>
+                                <Label Grid.Column="2" Text="{Binding currentModel.pLucro , Converter={StaticResource FormatToPorcentConvert}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+
+
+                            </Grid>
+
+                            <!--IPI SOBRE VENDA-->
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Padding="0,2,0,0">
+                                    <Label Text="IPI SOBRE VENDA" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                </Grid>
+                                <Label Grid.Column="1" LineBreakMode="NoWrap" Text="{Binding xDot}" Style="{StaticResource LabelApresentacao}"></Label>
+                                <Label Grid.Column="2" Text="{Binding currentModel.pIpiVenda , Converter={StaticResource FormatToPorcentConvert}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+
+
+                            </Grid>
+
+                            <!--IPI SOBRE VENDA-->
+
+                            <Grid Grid.Row="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Padding="0,2,0,0">
+                                    <Label Text="ST SOBRE VENDA" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                </Grid>
+                                <Label Grid.Column="1" LineBreakMode="NoWrap" Text="{Binding xDot}" Style="{StaticResource LabelApresentacao}"></Label>
+                                <Label Grid.Column="2" Text="{Binding currentModel.pStVenda , Converter={StaticResource FormatToPorcentConvert}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+
+
+                            </Grid>
+
+                            <!--SEPARADOR-->
+
+                            <Grid Grid.Row="4" Padding="-5,10,-5,0">
+                                <BoxView HeightRequest="1" BackgroundColor="{StaticResource Rosa}"></BoxView>
+                            </Grid>
+
+                            <!--VALO DE VENDA-->
+
+                            <Grid Grid.Row="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Padding="0,2,0,0">
+                                    <Label Text="VALOR DE VENDA" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" TextColor="{StaticResource VerdePedido}" FontAttributes="Bold" FontSize="14"/>
+                                </Grid>
+
+                                <Label Grid.Column="2" Text="{Binding currentModel.vVenda ,Converter={StaticResource FormatDecimalConverter}}" LineBreakMode="TailTruncation" FontSize="14" TextColor="{StaticResource VerdePedido}" FontAttributes="Bold"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+                <Frame Grid.Row="3" IsVisible="{Binding currentModel.stControleEstoque}" HasShadow="True" Padding="0,0,0,0">
+                    <Grid RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid x:Name="GridHeaderEstoque" BackgroundColor="{StaticResource AzulClaro}" Padding="5,5,5,5">
+                            <Label Text="ESTOQUE" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding currentModel.dtUltimaSincronizacaoEstoque}"
+                                   FontSize="Micro"
+                                   TextColor="White"
+                                   FontAttributes="None" 
+                                   HorizontalTextAlignment="End"/>
+                        </Grid>
+
+                        <Grid x:Name="GridContentEstoque" Grid.Row="1" BackgroundColor="White">
+                            <!--<Grid.Padding>
+                                <OnPlatform x:TypeArguments="Thickness" Android="5,5,5,5" WinPhone="5,5,5,5" iOS="12,5,12,5"/>
+                            </Grid.Padding>-->
+
+                            <ListView ItemsSource="{Binding currentModel.lEstoqueProduto}"
+                                      MinimumHeightRequest="5"
+                                      HasUnevenRows="True"
+                                      SeparatorVisibility="None">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <Grid Padding="5" RowSpacing="5" ColumnSpacing="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--<Image Source="box.png"
+                                                       HeightRequest="33"
+                                                       HorizontalOptions="CenterAndExpand"
+                                                       Aspect="AspectFill"
+                                                       WidthRequest="33"/>-->
+
+                                                <Label Grid.Column="1"
+                                                       Text="{Binding xNomeGrade}"
+                                                       TextColor="Gray"
+                                                       FontAttributes="Bold"
+                                                       FontSize="Small"
+                                                       Opacity="0.8"/>
+                                                
+                                            </Grid>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+
+                            </ListView>
+
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+            </Grid>
+        </StackLayout>
+
+    </ScrollView>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Alterar" Command="{Binding AtualizarCommand}" Icon="{Binding ImageIconEdit}" />
+        <ToolbarItem  Text="Deletar" Command="{Binding DeleteCommand}" Icon="{Binding ImageIconDelete}">
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+            </ToolbarItem.Order>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+</ContentPage>

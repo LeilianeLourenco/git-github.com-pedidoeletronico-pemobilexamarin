@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.Custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Login.PageBeforeLogin" BackgroundColor="#FFFFFF" Title="Inicio">
+  <Grid ColumnSpacing="0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <Grid RowSpacing="0" ColumnSpacing="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+     <Grid.ColumnDefinitions>
+       <ColumnDefinition Width="*" />
+       <ColumnDefinition Width="Auto" />
+       <ColumnDefinition Width="*" />
+     </Grid.ColumnDefinitions>
+
+      
+        <abstractions:SvgImage Grid.Row="1" Grid.Column="1" SvgPath="{StaticResource ImagemPEBranco}" Margin="0,0,0,50">
+          <abstractions:SvgImage.HeightRequest>
+            <OnPlatform x:TypeArguments="x:Double" iOS="140" Android="140" WinPhone="140"/>
+          </abstractions:SvgImage.HeightRequest>
+          <abstractions:SvgImage.WidthRequest>
+            <OnPlatform x:TypeArguments="x:Double" iOS="140" Android="140" WinPhone="140"/>
+          </abstractions:SvgImage.WidthRequest>
+        </abstractions:SvgImage>
+      
+
+      
+    </Grid>
+
+    <Grid Grid.Row="1" RowSpacing="0">
+      
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <custom:GridButton x:Name="ButtonEntrar" BackgroundColor="#2196f3" Padding="0,25,0,25">
+        <custom:GridButton.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </custom:GridButton.ColumnDefinitions>
+        <Label Grid.Column="1" FontFamily="Segoe UI" FontSize="20" TextColor="White">ENTRAR</Label>
+      </custom:GridButton>
+
+      <custom:GridButton Grid.Row="1" x:Name="ButtonCriarConta" BackgroundColor="#4caf50" Padding="0,25,0,25">
+        <custom:GridButton.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </custom:GridButton.ColumnDefinitions>
+        <Label Grid.Column="1" FontFamily="Segoe UI" FontSize="20" TextColor="White">CRIAR CONTA</Label>
+      </custom:GridButton>
+
+    </Grid>
+
+  </Grid>
+
+
+</ContentPage>

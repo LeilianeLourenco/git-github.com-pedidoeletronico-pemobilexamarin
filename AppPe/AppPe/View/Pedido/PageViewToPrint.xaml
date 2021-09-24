@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageViewToPrint" Padding="15,30,15,15">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+      PositionIn="Center"
+      PositionOut="Center"
+      ScaleIn="1.2"
+      ScaleOut="0.8"
+      DurationIn="400"
+      DurationOut="300"
+      EasingIn="SinOut"
+      EasingOut="SinIn"
+      HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.BindingContext>
+        <pedido:PedidoToPrintViewModel/>
+    </pages:PopupPage.BindingContext>
+    <Frame BackgroundColor="White" Padding="0,0,0,0"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"  OutlineColor="{StaticResource CinzaPrincipal}">
+        <Frame.HasShadow>
+            <OnPlatform x:TypeArguments="x:Boolean" Android="True" iOS="True" WinPhone="False"/>
+        </Frame.HasShadow>
+        <Grid Padding="2,2,2,2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!--Margin=""-->
+            <Grid VerticalOptions="Center" HorizontalOptions="End"  >
+                <Grid.Margin>
+                    <OnPlatform x:TypeArguments="Thickness" WinPhone="20,-27,0,0" Android="0,2,2,0"/>
+                </Grid.Margin>
+                <abstractions:SvgImage Command="{Binding CloseCommand}" SvgPath="{StaticResource ImagemErrorPopup}" HeightRequest="25" WidthRequest="25"/>
+            </Grid>
+
+            <ScrollView Grid.Row="1">
+                <StackLayout Margin="5,5,5,5" Orientation="Vertical">
+                    <Label LineBreakMode="WordWrap" Text="{Binding xTitle}" HorizontalTextAlignment="Center"/>
+                    <Label LineBreakMode="WordWrap" Text="{Binding xEmpresa}" HorizontalTextAlignment="Center"/>
+                    <Label LineBreakMode="WordWrap" Text="{Binding xEnderecoEmpresa}"/>
+                    <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Center" FontSize="Medium" Text="{Binding Separador1 }"/>
+                    <Label LineBreakMode="WordWrap" Text="{Binding xCliente}"/>
+                    <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Center" FontSize="Medium" Text="{Binding Separador1 }"/>
+                    <Label LineBreakMode="WordWrap" Text="{Binding xheader_item}"/>
+                    <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Center" FontSize="Medium" Text="{Binding Separador1 }"/>
+                    <Label LineBreakMode="WordWrap" Text="{Binding itens}"/>
+                    <Label LineBreakMode="WordWrap" Text="{Binding totais}"/>
+                    <Label LineBreakMode="WordWrap" Text="{Binding agradecimento}" HorizontalTextAlignment="End"/>
+                </StackLayout>
+            </ScrollView>
+
+            <!--<Button IsVisible="{Binding bCanPrint}" Text="IMPRIMIR VIA BLUETOOTH" Style="{StaticResource Success}" Grid.Row="2" Command="{Binding PrintCommand}" Margin="2,2,2,0" />-->
+
+            <Button Text="{Binding xTextoPrint}" Style="{StaticResource Success}" Grid.Row="2" Command="{Binding PrintCommand}" Margin="2,2,2,0" />
+        </Grid>
+    </Frame>
+</pages:PopupPage>

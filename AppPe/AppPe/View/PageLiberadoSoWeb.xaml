@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.PageLiberadoSoWeb" Title="Aviso" BackgroundColor="White">
+
+
+
+
+
+
+    <ScrollView Orientation="Vertical">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Padding="0,5,0,0">
+                <abstractions:SvgImage SvgPath="{StaticResource ImagemLampada}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40" />
+            </Grid>
+
+            <Label Grid.Row="1" HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaClaro}" FontSize="Medium" LineBreakMode="WordWrap" Text="Você está utilizando o aplicativo do pedidoeletronico.com, este aplicativo possui algumas funcionalidades vitais para que possa desempenhar suas vendas no dia a dia."/>
+
+            <Label Grid.Row="2" HorizontalOptions="Center" HorizontalTextAlignment="Center"  TextColor="{StaticResource CinzaClaro}" FontSize="Medium" LineBreakMode="WordWrap" Text="Para mais opções como definição de metas para seus vendedores, cadastro dos seus representantes, listas de preços, campanhas, tabela escalonada, gerenciamento de sua conta, pagamento e planos, entre outras opções acesse a opção abaixo tenha acesso ao nosso portal utilizando o mesmo login e senha de seu aplicativo."/>
+
+            <Grid Grid.Row="3"  Padding="0,10,0,10">
+                <Button x:Name="GridRedirect" Style="{StaticResource Success}" Text="NOSSO PORTAL »"/>
+            </Grid>
+
+            <Label Grid.Row="4" HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource AzulChart}" FontSize="Medium" LineBreakMode="WordWrap" Text="Aproveite também e acesse nosso blog, você irá encontrar o passo a passo de como utilizar o pedidoeletronico.com !"/>
+
+            <Grid Grid.Row="5"  Padding="0,10,0,10">
+                <Button x:Name="GridRedirectBlog" Style="{StaticResource Info}" Text="NOSSO BLOG »"/>
+            </Grid>
+        </Grid>
+    </ScrollView>
+
+    <!--<Grid Padding="10,10,10,10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    
+    <abstractions:SvgImage SvgPath="{StaticResource ImagemLampada}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="60" WidthRequest="60" />
+
+    <StackLayout Orientation="Vertical" Grid.Row="1" HorizontalOptions="Center">
+      <Label Text="Opção liberada apenas no" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center" VerticalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}" FontSize="24"/>
+      <Label Text="www.pedidoeletronico.com" HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="24"/>
+    </StackLayout>
+
+    <Grid  Grid.Row="2" Padding="0,10,0,10">
+      <Button x:Name="GridRedirect" Style="{StaticResource Success}" Text="Clique aqui para acessar »"/>
+    </Grid>
+  </Grid>-->
+</ContentPage>

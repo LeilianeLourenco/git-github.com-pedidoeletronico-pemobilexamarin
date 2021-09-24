@@ -1,0 +1,178 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
+    <FileVersion>1.0.0.2</FileVersion>
+    <Version>1.0.2</Version>
+    <Authors>HLP MOBILE</Authors>
+    <Product>pedidoeletronico</Product> 
+    <PackageId />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\ApplicationPhone.svg" />
+    <None Remove="Images\ApplicationTabelaPreco.svg" />
+    <None Remove="Images\HomeIcon\ApplicationHomeCliente.svg" />
+    <None Remove="Images\HomeIcon\ApplicationHomePedido.svg" />
+    <None Remove="Images\HomeIcon\ApplicationHomeValor.svg" />
+    <None Remove="Images\HomeIcon\ApplicationListaPreco.svg" />
+    <None Remove="Images\ImagesPNG\Logo.png" />
+    <None Remove="Images\ImagesPNG\PEDEFAULT.png" />
+    <None Remove="Images\ImagesPNG\PEDEFAULTCOVERCOMBORDA.png" />
+    <None Remove="Images\ImagesPNG\ProdutoDefaultImage.jpg" />
+    <None Remove="Images\ImagesPNG\ProdutoDefaultImage2.png" />
+    <None Remove="Images\ImagesPNG\StatusSincronismo_EstoqueInvalido.png" />
+    <None Remove="Images\ImagesPNG\StatusSincronismo_NaoSincronizado.png" />
+    <None Remove="Images\ImagesPNG\StatusSincronismo_Sincronizado.png" />
+    <None Remove="Images\ImagesPNG\UserDefaultImage.png" />
+    <None Remove="Images\MenuIcon\ApplicationArrowRightMenuDefault.svg" />
+    <None Remove="Images\MenuIcon\ApplicationListaPreco.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuAgenda.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuChat.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuCliente.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuExit.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuHome.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuLancamento.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuProduto.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuRelatorio.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuSobre.svg" />
+    <None Remove="Images\MenuIcon\ApplicationMenuSync.svg" />
+    <None Remove="Images\PagesIcon\Applicat.svg" />
+    <None Remove="Images\PagesIcon\ApplicationAngry.svg" />
+    <None Remove="Images\PagesIcon\ApplicationAtencao.svg" />
+    <None Remove="Images\PagesIcon\ApplicationAtivoCinzaPedido.svg" />
+    <None Remove="Images\PagesIcon\ApplicationAtivoPedido.svg" />
+    <None Remove="Images\PagesIcon\ApplicationCheck.svg" />
+    <None Remove="Images\PagesIcon\ApplicationCloudDelete.svg" />
+    <None Remove="Images\PagesIcon\ApplicationCloudDownload.svg" />
+    <None Remove="Images\PagesIcon\ApplicationCloudUpload.svg" />
+    <None Remove="Images\PagesIcon\ApplicationContactBook.svg" />
+    <None Remove="Images\PagesIcon\ApplicationContactBookCatalogo.svg" />
+    <None Remove="Images\PagesIcon\ApplicationEmail.svg" />
+    <None Remove="Images\PagesIcon\ApplicationEnviarEmail.svg" />
+    <None Remove="Images\PagesIcon\ApplicationError.svg" />
+    <None Remove="Images\PagesIcon\ApplicationErrorPopup.svg" />
+    <None Remove="Images\PagesIcon\ApplicationFeliz.svg" />
+    <None Remove="Images\PagesIcon\ApplicationInativo.svg" />
+    <None Remove="Images\PagesIcon\ApplicationLamp.svg" />
+    <None Remove="Images\PagesIcon\ApplicationNemFelizNemTriste.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPeBranco.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPesquisarBarCode.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPesquisarLista.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPesquisarListaAndroid.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPesquisarListaAndroidNovo.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPesquisarListaNormal.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPesquisarLocation.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPhone.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPin.svg" />
+    <None Remove="Images\PagesIcon\ApplicationPinEnderecoPrincipal.svg" />
+    <None Remove="Images\PagesIcon\ApplicationSyncComplete.svg" />
+    <None Remove="Images\PagesIcon\ApplicationTriste.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\ApplicationPhone.svg" />
+    <EmbeddedResource Include="Images\ApplicationTabelaPreco.svg" />
+    <EmbeddedResource Include="Images\HomeIcon\ApplicationHomeCliente.svg" />
+    <EmbeddedResource Include="Images\HomeIcon\ApplicationHomePedido.svg" />
+    <EmbeddedResource Include="Images\HomeIcon\ApplicationHomeValor.svg" />
+    <EmbeddedResource Include="Images\HomeIcon\ApplicationListaPreco.svg" />
+    <EmbeddedResource Include="Images\ImagesPNG\Logo.png" />
+    <EmbeddedResource Include="Images\ImagesPNG\PEDEFAULT.png" />
+    <EmbeddedResource Include="Images\ImagesPNG\PEDEFAULTCOVERCOMBORDA.png" />
+    <EmbeddedResource Include="Images\ImagesPNG\ProdutoDefaultImage.jpg" />
+    <EmbeddedResource Include="Images\ImagesPNG\ProdutoDefaultImage2.png" />
+    <EmbeddedResource Include="Images\ImagesPNG\StatusSincronismo_EstoqueInvalido.png" />
+    <EmbeddedResource Include="Images\ImagesPNG\StatusSincronismo_NaoSincronizado.png" />
+    <EmbeddedResource Include="Images\ImagesPNG\StatusSincronismo_Sincronizado.png" />
+    <EmbeddedResource Include="Images\ImagesPNG\UserDefaultImage.png" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationArrowRightMenuDefault.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationListaPreco.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuAgenda.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuChat.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuCliente.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuExit.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuHome.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuLancamento.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuProduto.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuRelatorio.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuSobre.svg" />
+    <EmbeddedResource Include="Images\MenuIcon\ApplicationMenuSync.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\Applicat.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationAngry.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationAtencao.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationAtivoCinzaPedido.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationAtivoPedido.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationCheck.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationCloudDelete.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationCloudDownload.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationCloudUpload.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationContactBook.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationContactBookCatalogo.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationEmail.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationEnviarEmail.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationError.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationErrorPopup.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationFeliz.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationInativo.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationLamp.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationNemFelizNemTriste.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPeBranco.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPesquisarBarCode.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPesquisarLista.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPesquisarListaAndroid.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPesquisarListaAndroidNovo.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPesquisarListaNormal.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPesquisarLocation.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPhone.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPin.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationPinEnderecoPrincipal.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationSyncComplete.svg" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationTriste.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CarouselView.FormsPlugin" Version="5.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Plugin.BLE" Version="2.1.2" />
+    <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.9" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+    <PackageReference Include="Xam.Plugin.Connectivity" Version="3.2.0" />
+    <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Hlp.PedidoEletronico.Domain.Business">
+      <HintPath>dllextern\Hlp.PedidoEletronico.Domain.Business.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="App.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\xaml\ListagemProdutoPedido\DataTemplateCollectionFull.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\Pedido\PageFinanceiroCliente.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\Pedido\PageListarTabelaEscalonada.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

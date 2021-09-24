@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageEstoqueInvalido" Title="Estoque inválido">
+<ContentPage.Resources>
+  <ResourceDictionary>
+    <pedido:GroupDisplayEstoqueProdutosConverter x:Key="GroupDisplayEstoqueProdutosConverter"/>
+  </ResourceDictionary>
+</ContentPage.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Padding="5,0,5,0">
+      <Label TextColor="{StaticResource VermelhoPrincipal}" HorizontalTextAlignment="Center" Text="Os itens abaixo tiveram inconsistencia na validação de estoque no momento da sincronização."/>
+    </Grid>
+
+    <Grid Grid.Row="1" BackgroundColor="{StaticResource CinzaMedio}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <ListView  BackgroundColor="{StaticResource CinzaMedio}"
+             HasUnevenRows="True"
+             IsGroupingEnabled="True"
+             GroupShortNameBinding="{Binding Key}"
+             GroupDisplayBinding="{Binding Key}"
+             ItemsSource="{Binding RegistrosEstoqueAgrupados}">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <Grid Padding="10,10,10,10" RowSpacing="0">
+                <Grid.HeightRequest>
+                  <OnPlatform x:TypeArguments="x:Double" Android="185" WinPhone="231" iOS="185"/>
+                </Grid.HeightRequest>
+
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid RowSpacing="5" Padding="10,10,10,10" BackgroundColor="White">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Orientation="Horizontal">
+                      <Label Text="Cod" FontSize="Small" HorizontalTextAlignment="Start" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}"/>
+                      <Label Text="{Binding cAlternativo}" FontSize="Small" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}"/>
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="End">
+                      <Label HorizontalTextAlignment="Start" VerticalOptions="Start" LineBreakMode="TailTruncation" FontSize="Medium" Text="{Binding vSubTotal, Converter={StaticResource FormatDecimalConverter}}" TextColor="{StaticResource VerdePrincipal}"/>
+                    </StackLayout>
+
+                  </Grid>
+
+                  <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="1" HorizontalOptions="End">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                      </Grid.RowDefinitions>
+
+                      <Label Grid.Row="0" Text="{Binding xQtde}" HorizontalOptions="End" HorizontalTextAlignment="End"></Label>
+                      <Stepper  Grid.Row="1" IsVisible="{Binding HasGrade, Converter={StaticResource InvertBoolConvert}}"  ValueChanged="StepperValor_OnValueChanged" HorizontalOptions="End" VerticalOptions="Start" Maximum="999999999" Value="{Binding vQtdItem}" Increment="1" Minimum="0">
+                        <Stepper.HeightRequest>
+                          <OnPlatform x:TypeArguments="x:Double" WinPhone="60" Android="60" iOS="60"/>
+                        </Stepper.HeightRequest>
+                      </Stepper>
+                    </Grid>
+
+                  </Grid>
+                </Grid>
+
+              </Grid>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.GroupHeaderTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource VerdePedido}" >
+                <Label HorizontalTextAlignment="Center" Text="{Binding Key, Converter={StaticResource GroupDisplayEstoqueProdutosConverter}}" TextColor="White" Style="{StaticResource Medium}"/>
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.GroupHeaderTemplate>
+      </ListView>
+
+      <StackLayout Orientation="Vertical" Spacing="0" Grid.Row="1" HorizontalOptions="FillAndExpand">
+        <Grid  BackgroundColor="{StaticResource AzulSeparador}">
+          <Grid Padding="3">
+            <Label Text="Total" TextColor="White" HorizontalOptions="Start" FontAttributes="Bold"></Label>
+            <Label Text="Comissão" HorizontalOptions="End" TextColor="White" FontAttributes="Bold"></Label>
+          </Grid>
+        </Grid>
+        <Grid BackgroundColor="{StaticResource AzulClaro}">
+          <Grid Padding="3">
+            <Label HorizontalOptions="Start" TextColor="White" Text="{Binding vSubTotal,  Converter={StaticResource FormatDecimalConverter}}" />
+            <Label HorizontalOptions="End" TextColor="White" Text="{Binding vTotalComissao,  Converter={StaticResource FormatDecimalConverter}}" />
+          </Grid>
+        </Grid>
+      </StackLayout>
+
+    </Grid>
+
+  </Grid>
+    
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Clicked="MenuItem_OnClicked" Icon="{Binding ImageIconSave}"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+  
+</ContentPage>

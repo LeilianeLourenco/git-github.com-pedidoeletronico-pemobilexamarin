@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:empresa="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Empresa;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Empresa.PageEmpresa" Title="Empresas">
+  <ContentPage.BindingContext>
+    <empresa:EmpresaViewModel/>
+  </ContentPage.BindingContext>
+  <ScrollView Orientation="Vertical" Padding="{StaticResource PaddingScrollView}" BackgroundColor="{StaticResource CinzaMedio}">
+
+    <Grid Padding="10,10,10,10">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="GridHeader" BackgroundColor="{StaticResource AzulMedio}" Padding="5,5,5,5">
+          <Label Text="MUDAR DE EMPRESA" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+        </Grid>
+
+        <Grid x:Name="GridContent" Grid.Row="1" RowSpacing="10" BackgroundColor="White" Padding="5,5,5,5">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="EMPRESA ATUAL" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+            <custom:BindablePicker Grid.Row="1" x:Name="BindableTipoPessoa" ItemsSource="{Binding LEmpresaBasicPickerModels, Mode=TwoWay}" SelectedItem="{Binding CurrentEmpresaBasicPickerModel, Mode=TwoWay}"  />
+
+
+            <Button Style="{StaticResource Danger}" Text="Entrar" Command="{Binding EntrarCommand}" Grid.Row="2"/>
+          </Grid>
+
+        </Grid>
+
+        
+      </Grid>
+
+      <Grid Grid.Row="1" RowSpacing="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid BackgroundColor="{StaticResource VerdePrincipal}" Padding="5,5,5,5">
+          <Label Text="DADOS DA EMPRESA" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="1" RowSpacing="10" BackgroundColor="White" Padding="5,5,5,5">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <!--RAZAO SOCIAL-->
+
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="RAZÃO SOCIAL" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+            <Label Grid.Row="1" LineBreakMode="TailTruncation" Text="{Binding currentModel.xRazaoSocial}" TextColor="{StaticResource CinzaEscuro}"/>
+
+          </Grid>
+
+          <!--NOME FANTASIA / APELIDO-->
+
+          <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="NOME FANTASIA / APELIDO" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+            <Label Grid.Row="1" LineBreakMode="TailTruncation" Text="{Binding currentModel.xFantasia}" TextColor="{StaticResource CinzaEscuro}"/>
+
+          </Grid>
+
+          <!--ENDEREÇO COMPLETO-->
+
+          <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="ENDEREÇO COMPLETO" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+            <Label Grid.Row="1" LineBreakMode="TailTruncation" Text="{Binding currentModel.xEnderecoCompleto}" TextColor="{StaticResource CinzaEscuro}"/>
+
+          </Grid>
+
+          <!--CIDADE-->
+
+          <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="CIDADE" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+            <Label Grid.Row="1" LineBreakMode="TailTruncation" Text="{Binding currentModel.xCidadeCompleto}" TextColor="{StaticResource CinzaEscuro}"/>
+
+          </Grid>
+
+        </Grid>
+
+      </Grid>
+
+    </Grid>
+
+  </ScrollView>
+
+</ContentPage>

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:viewModel="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.ListPopup.PageFindGeneric" Title="Listagem" >
+  <TabbedPage.BindingContext>
+    <viewModel:ListagemGenericViewModel/>
+  </TabbedPage.BindingContext>
+  <ContentPage x:Name="ContentPageLista" Icon="{StaticResource IconListagem}">
+    <Grid Padding="0,0,0,5">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <Grid Grid.Row="0">
+        <Grid.Padding>
+          <OnPlatform x:TypeArguments="Thickness" iOS="5,5,5,5"/>
+        </Grid.Padding>
+        <xaml:SearchPE x:Name="SearchBarPesquisa" SearchCommand="{Binding PesquisarCommand}" Placeholder="pesquisar..." Text="{Binding  currentModel.Filtro , Mode=TwoWay}" />
+      </Grid>
+
+      <AbsoluteLayout Grid.Row="1" >
+        <xaml:GridDefaultToListGeneric AbsoluteLayout.LayoutFlags="All"
+                                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                       IsVisibleList="{Binding isVisibleListView, Mode=TwoWay}"
+                                IsRunning="{Binding IsBusy, Mode=TwoWay}">
+
+          <xaml:GridDefaultToListGeneric.Padding>
+            <OnPlatform x:TypeArguments="Thickness" WinPhone="-2,0,0,-10" iOS="10,0,10,0" Android="0,0,0,0"/>
+          </xaml:GridDefaultToListGeneric.Padding>
+
+          <ListView x:Name="ListViewDados"
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0,0,1,1"
+                    IsVisible="{Binding isVisibleListView}"
+              ItemsSource="{Binding currentModel.RegistrosAgrupados}"
+              CachingStrategy="RecycleElement"
+              ItemSelected="ListViewDados_OnItemSelected"
+              HasUnevenRows="True"
+              IsGroupingEnabled="true"
+              GroupDisplayBinding="{Binding Key}">
+            <ListView.GroupShortNameBinding>
+              <OnPlatform x:TypeArguments="BindingBase" iOS="{Binding Key}" Android="{Binding Key}" />
+            </ListView.GroupShortNameBinding>
+            <!--<ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>-->
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <TextCell
+                          Text="{Binding Display}"
+                          TextColor="{Binding ColorDisplay}"
+                          Detail="{Binding Detail}"
+                          DetailColor="{Binding ColorDetail}">
+                </TextCell>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+        </xaml:GridDefaultToListGeneric>
+
+        <xaml:ExtendedActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}"
+                                        Color="{StaticResource AzulPrincipal}"
+                                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                                        AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize" />
+      </AbsoluteLayout>
+    </Grid>
+  </ContentPage>
+</TabbedPage>

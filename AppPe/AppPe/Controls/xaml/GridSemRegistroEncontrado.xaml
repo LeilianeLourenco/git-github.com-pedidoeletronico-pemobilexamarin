@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.GridSemRegistroEncontrado" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+
+  <StackLayout Orientation="Vertical" VerticalOptions="Center">
+    <abstractions:SvgImage
+           SvgPath="{StaticResource ImagemSad}"
+           HeightRequest="{StaticResource HeightImageNenhumRegistro}" WidthRequest="{StaticResource HeightImageNenhumRegistro}" HorizontalOptions="Center" VerticalOptions="Center" Opacity="0.5" />
+
+    <Label Text="Nenhum registro encontrado" TextColor="{StaticResource CinzaClaro}" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Center" Opacity="0.5"/>
+
+
+  </StackLayout>
+</Grid>

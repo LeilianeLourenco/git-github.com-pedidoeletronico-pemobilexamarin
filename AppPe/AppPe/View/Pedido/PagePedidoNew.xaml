@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:pedido1="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PagePedidoNew" Title="{Binding currentModel.TipoLancamento}" >
+
+    <TabbedPage.BindingContext>
+        <pedido:PedidoNewViewModel/>
+    </TabbedPage.BindingContext>
+
+    <TabbedPage.Resources>
+        <ResourceDictionary>
+            <pedido1:DisplayToCountConverter x:Key="DisplayToCountConverter"/>
+        </ResourceDictionary>
+    </TabbedPage.Resources>
+    <TabbedPage.Children>
+        <ContentPage Title="Montagem" Icon="{StaticResource IconPrincipalPedido}">
+            <ContentPage.Padding>
+                <OnPlatform x:TypeArguments="Thickness" Android="0,0,0,0" iOS="0,0,0,0" WinPhone="-18,0,-18,0"/>
+            </ContentPage.Padding>
+            <TableView HasUnevenRows="True" BackgroundColor="White">
+                <TableRoot>
+                    <TableSection x:Name="SessionLancamento">
+                        <TableSection.Title>
+                            <OnPlatform x:TypeArguments="x:String" Android="Preencha os campos obrigatórios ( * ) !"/>
+                        </TableSection.Title>
+                        
+                        <ViewCell>
+                            <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="INFO. CLIENTE" TextColor="{StaticResource CinzaEscuro}" />
+                            </Grid>
+                        </ViewCell>
+                        
+                        <TextCell Command="{Binding GoToClientesCommand}" PropertyChanging="BindableObject_OnPropertyChanging" Detail="{Binding ItemCliente.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Cliente *"/>
+
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical" Margin="10,10,10,10">
+
+                                <Grid Margin="10,10,10,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50*"/>
+                                        <ColumnDefinition Width="50*"/> 
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/> 
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="1" Grid.Column="0" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" Text="ABERTO" TextColor="{StaticResource CinzaPrincipal}" FontAttributes="Bold" FontSize="Micro" />
+                                    <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" Text="VENCIDO" TextColor="{StaticResource CinzaPrincipal}" FontAttributes="Bold" FontSize="Micro" />
+
+                                    <Label Grid.Row="2" Grid.Column="0" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" Text="{Binding vFinanceiroEmAberto, Converter={StaticResource FormatDecimalConverter}}" TextColor="{StaticResource LaranjaPrincipal}" FontSize="Small" />
+                                    <Label Grid.Row="2" Grid.Column="1" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" Text="{Binding vFinanceiroVencido, Converter={StaticResource FormatDecimalConverter}}" TextColor="{StaticResource VermelhoPrincipal}"  FontSize="Small" />
+                                    
+                                </Grid>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> 
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0"  x:Name="ButtonFinanceiro" Style="{StaticResource Info}"  Command="{Binding GoToFinanceiroCommand}" Text="Financeiro" HorizontalOptions="FillAndExpand" />
+                                </Grid> 
+
+                            </StackLayout>
+                        </ViewCell>
+                        
+                        <ViewCell>
+                            <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="LANÇAMENTO" TextColor="{StaticResource CinzaEscuro}" />
+                            </Grid>
+                        </ViewCell>
+                        
+                        
+                        
+                        <TextCell IsEnabled="{Binding IsBusy}"  Command="{Binding ChangeTimePedidoCommand}" Detail="{Binding currentModel.dEmissao, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
+                       DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Data de Emissão"/>
+                       
+                        <TextCell x:Name="DateOrcamentoCell"  Command="{Binding ChangeTimeOrcamentoCommand}"
+                      Detail="{Binding currentModel.dtValidadeOrcamento, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
+                      DetailColor="{StaticResource CinzaMaisEscuro}"
+                      TextColor="{StaticResource AzulChart}"
+                      Text="Validade de Orçamento"/>
+
+
+                        <TextCell Command="{Binding ChangeTipoLancamentoCommand}" Detail="{Binding currentModel.TipoLancamento}"
+                      DetailColor="{Binding ColorTipoLancamento}" TextColor="{StaticResource AzulChart}"  Text="Tipo de Documento"/>
+
+                        <TextCell x:Name="StatusTextCell" Command="{Binding GoToStatusCommand}" PropertyChanged="StatusTextCell_OnPropertyChanged"  Detail="{Binding ItemSatus.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Status do Lançamento"/>
+                        
+
+                        <TextCell x:Name="TxtRepresentanteCell" PropertyChanged="TxtRepresentanteCell_OnPropertyChanged" Command="{Binding GoToRepresentantesCommand}" Detail="{Binding ItemRepresentante.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Representante*"/>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical" Margin="10,10,10,10">
+                                
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50*"/>
+                                        <ColumnDefinition Width="50*"/>
+                                    </Grid.ColumnDefinitions> 
+                                    <Button Grid.Column="0"  x:Name="ButtonMostrarItens" Style="{StaticResource Info}"  Text="{Binding CountItens, Converter={StaticResource DisplayToCountConverter}, ConverterParameter='Mostrar Itens ({0})'}" HorizontalOptions="FillAndExpand" />
+                                    <Button Grid.Column="1"  Style="{StaticResource Success}" Margin="0,0,0,0" Text="Adicionar*" HorizontalOptions="FillAndExpand" Command="{Binding GoToProdutosCommand}"/>
+                                </Grid>
+
+                                <!--<Label  IsVisible="{Binding currentModel.bUsaMinimoVendas}"
+                                        Text="{Binding currentModel.xMinimoVendas}" TextColor="{StaticResource VermelhoPrincipal}" FontSize="Small" />-->
+
+                                <Grid Margin="10,10,10,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30*"/>
+                                        <ColumnDefinition Width="30*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="1" Grid.Column="0" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" Text="DESCONTO" TextColor="{StaticResource CinzaPrincipal}" FontAttributes="Bold" FontSize="Micro" />
+                                    <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" Text="COMISSÃO" TextColor="{StaticResource CinzaPrincipal}" FontAttributes="Bold" FontSize="Micro" />
+                                    <Label Grid.Row="1" Grid.Column="2" HorizontalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Center" Text="TOTAL" TextColor="{StaticResource CinzaPrincipal}" FontAttributes="Bold" FontSize="Micro" />
+
+                                    <Label Grid.Row="2" Grid.Column="0" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" Text="{Binding vDescontoTotal, Converter={StaticResource FormatDecimalConverter}}" TextColor="{StaticResource VermelhoPrincipal}" FontSize="Small" />
+                                    <Label Grid.Row="2" Grid.Column="1" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" Text="{Binding vTotalComissao, Converter={StaticResource FormatDecimalConverter}}" TextColor="{StaticResource AzulPrincipal}"  FontSize="Small" />
+                                    <Label Grid.Row="2" Grid.Column="2" HorizontalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Center" Text="{Binding vSubTotal, Converter={StaticResource FormatDecimalConverter}}" TextColor="{StaticResource VerdePrincipal}" FontSize="Small" />
+                                    
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </TableSection>
+'   
+                    <TableSection> 
+
+                        <!--<TextCell Command="{Binding GoToDescontoCommand}" Detail="{Binding xDisplayDesconto}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Adicionar Desconto"/>-->
+
+                        <ViewCell>
+                            <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="PAGAMENTO" TextColor="{StaticResource CinzaEscuro}" />
+                            </Grid>
+                        </ViewCell>
+
+
+                        <TextCell Command="{Binding GoToConficaoPgtoCommand}" Detail="{Binding ItemCondicaoPgto.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Condição de Pagamento *"/>
+
+
+                        <ViewCell>
+                            <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="ENTREGA" TextColor="{StaticResource CinzaEscuro}" />
+                            </Grid>
+                        </ViewCell>
+                        
+                        
+                        <TextCell Command="{Binding GoToTransportadoraCommand}" Detail="{Binding ItemTransportadora.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Transportadora"/>
+
+                        <TextCell Command="{Binding GoToComplementosCommand}" Detail="{Binding xDisplayComplementos}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Adicionar complementos"/>
+
+                        <TextCell Command="{Binding GoToRedespachoCommand}" Detail="{Binding ItemRedespacho.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Redespacho"/>
+
+                        <TextCell IsEnabled="{Binding IsBusy}"  Command="{Binding ChangeTimePrevisaoCommand}" Detail="{Binding currentModel.dtPrevisto, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
+                       DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Data de Previsão"/>
+
+                        <ViewCell>
+                            <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="INFO. ADICIONAIS" TextColor="{StaticResource CinzaEscuro}" />
+                            </Grid>
+                        </ViewCell>
+                        
+                        
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical" Margin="10,5,10,0">
+                                <Button IsVisible="{Binding currentModel.EstoqueInvalido}" Style="{StaticResource Danger}" Margin="5,0,5,5" Text="Produtos sem estoque" HorizontalOptions="FillAndExpand" Command="{Binding GoToEstoqueCommand}"/>
+
+
+                                <!--Pedido de compra-->
+
+                                <Label Text="Pedido de compra" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                                <custom:ExtendedEntry MaxLength="50" x:Name="EntryPedidoCompra" Text="{Binding currentModel.xPedidoCompra}" />
+
+                                <!--Observação -->
+                                <Label Text="Observações" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                                <Editor x:Name="InfoAdicionais" Keyboard="Chat" HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand" HeightRequest="{StaticResource HeightEditor}"
+                                Text="{Binding currentModel.xInfAdicional}" />
+
+                                <!--Anotação interna -->
+                                <Label Text="Anotação privada" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                                <Editor x:Name="ObsInterna" Keyboard="Chat" HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand" HeightRequest="{StaticResource HeightEditor}"
+                                Text="{Binding currentModel.xObsInterna}" />
+
+
+                                <StackLayout IsVisible="{Binding bCancelado}" Orientation="Vertical">
+                                    <Label Text="Motivo do Cancelamento" TextColor="{StaticResource VermelhoPrincipal}" FontAttributes="Bold"/>
+                                    <Editor HeightRequest="80" Keyboard="Chat" x:Name="EditorMotivoCancelamento" Text="{Binding currentModel.xMotivoCancelamento}"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </TableSection>
+
+                </TableRoot>
+            </TableView>
+        </ContentPage>
+        <ContentPage x:Name="PageItens" Title="Itens" Icon="{StaticResource IconEstoque}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ListView x:Name="ListViewDados" Grid.Row="0" ItemsSource="{Binding currentModel.lItens}"
+                                       HasUnevenRows="True" CachingStrategy="RecycleElement"
+                                     SelectedItem="{Binding currentModel.CurrentItemModel, Mode=TwoWay}">
+                    <!--<ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell x:Name="TextCellItem" Text="{Binding xDescricao }" TextColor="{Binding ItemJaIncluso, Converter={StaticResource BoolToColorConverterLitaItensPedido}}" Detail="{Binding xDetalheItem}" DetailColor="{StaticResource VerdePrincipal}" >
+                                <TextCell.ContextActions>
+                                    <ToolbarItem Text="Editar" Command="{Binding EditItemPedidoCommand}"/>
+                                    <ToolbarItem Text="Excluir" Command="{Binding RemoveItemCommand}" />
+                                </TextCell.ContextActions>
+                            </TextCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Label Grid.Row="1" Margin="5,5,5,5" Text="{Binding CountItens, Converter={StaticResource DisplayToCountConverter}, ConverterParameter='Total de itens ( {0} )'}" LineBreakMode="NoWrap" FontAttributes="Bold" TextColor="{StaticResource CinzaPrincipal}"/>
+            </Grid>
+
+        </ContentPage>
+    </TabbedPage.Children>
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem  Icon="{Binding ImageIconCancel}" Text="Cancelar" Command="{Binding CancelPedidoCommand}" >
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+            </ToolbarItem.Order>
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding SaveCommand}"  Icon="{Binding ImageIconSave}" Text="Salvar" />
+    </TabbedPage.ToolbarItems>
+</TabbedPage>

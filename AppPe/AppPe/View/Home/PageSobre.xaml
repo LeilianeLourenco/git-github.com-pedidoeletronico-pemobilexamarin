@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Home.PageSobre" Title="Sobre" BackgroundColor="{StaticResource CinzaMedio}">
+    <ContentPage.BindingContext>
+        <viewModel:SobreViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--<pages:CardView ImageSource="{Binding currentModel.imagePe}" Detail="{Binding currentModel.versao}" Text="Versão Pedido Eletrônico" />-->
+        <xaml:MyCardView IsCardView="True" CardImage="{Binding currentModel.imagePe}" Title="Versão" Display="{Binding currentModel.versao}" />
+
+        <Frame HasShadow="True" Padding="0,0,0,0" Grid.Row="1">
+            <StackLayout Orientation="Vertical" Spacing="5" BackgroundColor="{StaticResource Branco}" Padding="6,15,6,0" >
+
+                <Button HorizontalOptions="FillAndExpand" Style="{StaticResource Info}" Margin="0,5,0,5" Text="Política de privacidade" Command="{Binding TermosEpoliticaCommand}"/>
+                <Button HorizontalOptions="FillAndExpand" Style="{StaticResource Success}" Margin="0,5,0,5" Text="Suporte remoto" Command="{Binding SuporteRemotoDownloadCommand}">
+                    <Button.IsVisible>
+                        <OnPlatform x:TypeArguments="x:Boolean"  Android="True" WinPhone="False" iOS="True"/>
+                    </Button.IsVisible>
+                </Button>
+
+                <Button HorizontalOptions="FillAndExpand" Style="{StaticResource Danger}" Margin="0,5,0,5" Text="Forçar sincronização inicial" Command="{Binding ForcarSyncInitCommand}"/>
+            </StackLayout>
+        </Frame>
+    </Grid>
+
+
+
+
+</ContentPage>

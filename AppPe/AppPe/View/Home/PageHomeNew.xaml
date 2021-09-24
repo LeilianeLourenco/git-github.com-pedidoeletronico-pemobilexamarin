@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:home="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Home;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.Custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Home.PageHomeNew"
+             BackgroundColor="{StaticResource CinzaMedio}"
+             Title="Início">
+    <ContentPage.BindingContext>
+        <home:HomeNewViewModel/>
+    </ContentPage.BindingContext>
+
+    <ScrollView Orientation="Vertical">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <xaml:MyCardView BackgroundColor="White" Grid.Row="0" IsCardView="True" CardImage="{Binding ImgEmpresa}" Title="{Binding xEmpresaAtual}" Display="{Binding xEmailUser}" />
+
+            <Frame x:Name="GridCard" Grid.Row="1" BackgroundColor="White"  HasShadow="True" Padding="0,0,0,0" Margin="0,1,0,1" >
+                <Grid  ColumnSpacing="3" Margin="0,10,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Text="Meta mensal" FontSize="Large" TextColor="{StaticResource CinzaPrincipal}" HorizontalOptions="Center" HorizontalTextAlignment="Center" Margin="0,5,0,5"/>
+
+                    <Grid Grid.Row="1" Padding="5,0,5,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="50*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" 
+                           TextColor="{StaticResource VerdePrincipal}"
+                           FontSize="Micro" HorizontalTextAlignment="Start"  HorizontalOptions="Start"
+                           Text="{Binding dashmensal.dVendido, Converter={StaticResource FormatDecimalConverter}}"/>
+
+                        <Label Grid.Column="1" 
+                           TextColor="{StaticResource VermelhoPrincipal}"
+                           FontSize="Micro" HorizontalTextAlignment="End" HorizontalOptions="End"
+                           Text="{Binding dashmensal.dFaltante, Converter={StaticResource FormatDecimalConverter}}"/>
+                    </Grid>
+
+                    <Grid Grid.Row="2" ColumnSpacing="0" RowSpacing="0" Margin="5,0,5,0">
+                        <BoxView  HorizontalOptions="End" WidthRequest="{Binding dashmensal.WidthGridBoxDashFaltante}" HeightRequest="8" BackgroundColor="{StaticResource VermelhoPrincipal}" />
+                        <BoxView HorizontalOptions="Start" WidthRequest="{Binding dashmensal.WidthGridBoxDashVendido}" HeightRequest="8" BackgroundColor="{StaticResource VerdePrincipal}" />
+                    </Grid>
+
+
+                    <Label Grid.Row="3"
+                           TextColor="{StaticResource CinzaPrincipal}"
+                           FontSize="Micro" HorizontalTextAlignment="Center" HorizontalOptions="Center"
+                           Text="{Binding dashmensal.xMeta}"/>
+
+                    <Grid RowSpacing="0" Grid.Row="4" Margin="5,0,5,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="50*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0"  Grid.Row="0" 
+                           TextColor="{StaticResource CinzaApresentacaoCliente}"
+                           FontSize="Micro" HorizontalTextAlignment="Start" HorizontalOptions="Start"
+                           Text="Vendido"/>
+
+                        <Label Grid.Column="1"  Grid.Row="0" 
+                           TextColor="{StaticResource CinzaApresentacaoCliente}"
+                           FontSize="Micro" HorizontalTextAlignment="End" HorizontalOptions="End"
+                           Text="Faltante"/>
+
+                        <Label Grid.Column="0"  Grid.Row="1" 
+                           TextColor="{StaticResource CinzaPrincipal}"
+                           FontSize="Large" HorizontalTextAlignment="Start" HorizontalOptions="Start"
+                           Text="{Binding dashmensal.pVendido}"/>
+
+                        <Label Grid.Column="1"  Grid.Row="1"
+                           TextColor="{StaticResource CinzaPrincipal}" 
+                           FontSize="Large" HorizontalTextAlignment="End" HorizontalOptions="End"
+                           Text="{Binding dashmensal.pFaltante}"/>
+                    </Grid>
+
+                    <StackLayout Margin="5,5,0,0" Orientation="Vertical" Grid.Row="5">
+                        <Label Text="{Binding dashmensal.xDisplay1}" FontSize="13" TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                        <Label Text="{Binding dashmensal.xDisplay2}" 
+                               IsVisible="{Binding dashmensal.xDisplay2, Converter={StaticResource IsNullOrEmptyConverter}}" 
+                               FontSize="11"
+                               TextColor="{StaticResource VermelhoPrincipal}" />
+                    </StackLayout>
+
+                </Grid>
+            </Frame>
+
+            <Frame Grid.Row="2" BackgroundColor="White" HasShadow="True" Padding="0,0,0,0" Margin="0,0,0,1" >
+                <StackLayout Orientation="Vertical" Margin="2,10,2,10">
+                    <Grid ColumnSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <custom:GridButton x:Name="GridEmpresa" Grid.Column="0" BackgroundColor="{StaticResource AzulChart}" Padding="0,15,0,15" Margin="1,0,0,0">
+                            <custom:GridButton.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </custom:GridButton.ColumnDefinitions>
+                            <Label Grid.Column="1" FontAttributes="Bold" FontFamily="Segoe UI" TextColor="White" Text="EMPRESA">
+                                <Label.FontSize>
+                                    <OnPlatform x:TypeArguments="x:Double">
+                                        <OnPlatform.Android>16</OnPlatform.Android>
+                                        <OnPlatform.WinPhone>16</OnPlatform.WinPhone>
+                                        <OnPlatform.iOS>12</OnPlatform.iOS>
+                                    </OnPlatform>
+                                </Label.FontSize>
+                            </Label>
+                        </custom:GridButton>
+
+                        <custom:GridButton x:Name="GridDash" Grid.Column="1" BackgroundColor="{StaticResource LaranjaPrincipal}" Padding="0,15,0,15" Margin="1,0,1,0">
+                            <custom:GridButton.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </custom:GridButton.ColumnDefinitions>
+                            <Label Grid.Column="1" FontAttributes="Bold" FontFamily="Segoe UI" TextColor="White" Text="DASHBOARD">
+                                <Label.FontSize>
+                                    <OnPlatform x:TypeArguments="x:Double">
+                                        <OnPlatform.Android>16</OnPlatform.Android>
+                                        <OnPlatform.WinPhone>16</OnPlatform.WinPhone>
+                                        <OnPlatform.iOS>12</OnPlatform.iOS>
+                                    </OnPlatform>
+                                </Label.FontSize>
+                            </Label>
+                        </custom:GridButton>
+
+                        <custom:GridButton x:Name="GridSincronizar" Grid.Column="2" BackgroundColor="{StaticResource VerdeClaro}" Padding="0,15,0,15">
+                            <custom:GridButton.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </custom:GridButton.ColumnDefinitions>
+                            <Label Grid.Column="1" FontAttributes="Bold" FontFamily="Segoe UI" TextColor="White" Text="SINCRONIZAR">
+                                <Label.FontSize>
+                                    <OnPlatform x:TypeArguments="x:Double">
+                                        <OnPlatform.Android>16</OnPlatform.Android>
+                                        <OnPlatform.WinPhone>16</OnPlatform.WinPhone>
+                                        <OnPlatform.iOS>12</OnPlatform.iOS>
+                                    </OnPlatform>
+                                </Label.FontSize>
+                            </Label>
+                        </custom:GridButton>
+                    </Grid>
+
+                    <Label Text="Informações" FontSize="Large" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaPrincipal}"/>
+                    <Grid Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="50*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackLayout Spacing="0" Orientation="Vertical" HorizontalOptions="Center">
+                            <Label Text="{Binding xDisplayConexao }"  TextColor="{Binding corConexao}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+                            <Label Text="internet" TextColor="{StaticResource CinzaApresentacaoCliente}" FontSize="Micro" HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+
+                        <StackLayout Spacing="0" Grid.Column="1" Orientation="Vertical" HorizontalOptions="Center">
+                            <Label Text="{Binding xDateSync}"  TextColor="{StaticResource CinzaPrincipal}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+                            <Label Text="sincronizado"  TextColor="{StaticResource CinzaApresentacaoCliente}" FontSize="Micro" HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+
+                    </Grid>
+                </StackLayout>
+            </Frame>
+        </Grid>
+
+    </ScrollView>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Agenda" Icon="{Binding ImageIconListarAgenda}" Command="{Binding GoToAgendaCommand}" >
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" WinPhone="Secondary"/>
+            </ToolbarItem.Order>
+        </ToolbarItem>
+        <ToolbarItem Text="Lista Preço" Icon="{Binding ImageIconListarPreco}" Command="{Binding GoToListaPreCommand}"/>
+        <ToolbarItem Text="Clientes" Icon="{Binding ImageIconListarClientes}" Command="{Binding GoToClientesCommand}">
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" WinPhone="Secondary"/>
+            </ToolbarItem.Order>
+        </ToolbarItem>
+        <!--<ToolbarItem Text="Produtos" Icon="{Binding ImageIconListarProdutos}" Command="{Binding GoToProdutosCommand}" >
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" WinPhone="Secondary"/>
+            </ToolbarItem.Order>
+        </ToolbarItem>-->
+        <ToolbarItem Text="Pedidos"  Icon="{Binding ImageIconPedido}" Command="{Binding GoToPedidosCommand}"/>
+    </ContentPage.ToolbarItems>
+</ContentPage>

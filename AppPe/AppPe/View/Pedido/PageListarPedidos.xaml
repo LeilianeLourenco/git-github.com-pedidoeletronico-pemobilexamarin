@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageListarPedidos" BackgroundColor="{StaticResource CinzaMedio}" Title="Pedidos" IsBusy="{Binding IsBusy}">
+
+    <ContentPage.BindingContext>
+        <pedido:ListarPedidoViewModelNew/>
+    </ContentPage.BindingContext>
+
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid IsVisible="{Binding bFind}" Padding="5,5,5,2" BackgroundColor="White">
+            <xaml:SearchPE x:Name="SearchBarPesquisa" SearchCommand="{Binding SearchCommand}" Placeholder="pesquisar..." Text="{Binding xFiltro, Mode=TwoWay}" />
+        </Grid>
+
+        <custom:InfiniteSimpleListView x:Name="ListViewDados" HasUnevenRows="True" 
+                                       Grid.Row="1"
+                                       ItemsSource="{Binding pedidos}"  
+                                      LoadMoreCommand="{Binding LoadItensCommand}" 
+                                      BackgroundColor="{StaticResource CinzaMedio}" 
+                                      Opacity="{Binding dOpacityLista}"
+                                      ItemSelected="ListView_OnItemSelected">
+            <x:Arguments>
+                <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
+            </x:Arguments>
+            <custom:InfiniteSimpleListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid BackgroundColor="White" RowSpacing="0" ColumnSpacing="0" Padding="5,5,5,5" Margin="2,2,2,1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" TextColor="White" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" BackgroundColor="{Binding ColorTipoLancamento}" HorizontalOptions="FillAndExpand" FontAttributes="Bold" Text="{Binding TipoLancamento}"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding xDisplayPedidoNew}" LineBreakMode="TailTruncation" TextColor="White" BackgroundColor="{Binding ColorTipoLancamento}" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand" FontAttributes="Bold"/>
+
+                            <Label Margin="1,2,1,0" Grid.Row="1"  Grid.Column="0" Text="{Binding DisplaySincronizacao}" TextColor="{Binding ColorSincronizacao}" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="Start" />
+                            <Label Margin="1,2,1,0" Grid.Row="1"  Grid.Column="1" Text="{Binding xSigla}" TextColor="{StaticResource Branco}" BackgroundColor="{Binding ColorSigla}" LineBreakMode="TailTruncation" HorizontalTextAlignment="End" HorizontalOptions="End" FontAttributes="Bold" />
+
+                            <Label Margin="1,2,1,0" Grid.Row="2"  Grid.Column="0" Text="{Binding DisplayPrazo}" TextColor="{StaticResource CinzaEscuro}" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="Start" />
+                            <Label Margin="1,2,1,0" Grid.Row="2"  Grid.Column="1" Text="{Binding XdEmissao}" TextColor="{StaticResource CinzaEscuro}" LineBreakMode="TailTruncation" HorizontalTextAlignment="End" HorizontalOptions="End" />
+
+                            <Label Margin="1,2,1,0" Grid.Row="3" Grid.Column="0" Text="{Binding DisplayCliente}" TextColor="{StaticResource CinzaPrincipal}" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start"/>
+
+
+                            <Label Margin="1,2,1,0" Grid.Row="4" Grid.Column="0" Text="{Binding DisplayEmail}" TextColor="{StaticResource CinzaEscuro}" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="Start" />
+                            <Label Margin="1,2,1,2" Grid.Row="4" Grid.Column="1" Text="{Binding VTotal, Converter={StaticResource FormatDecimalConverter}}" LineBreakMode="TailTruncation" HorizontalTextAlignment="End" HorizontalOptions="End" FontAttributes="Bold" />
+                        </Grid>
+                        <ViewCell.ContextActions>
+                            <ToolbarItem Text="Excluir" Clicked="MenuItem_OnClicked" />
+                            <ToolbarItem Text="Detalhes" Clicked="MenuItem_OnClicked" />
+                        </ViewCell.ContextActions>
+                    </ViewCell>
+                </DataTemplate>
+            </custom:InfiniteSimpleListView.ItemTemplate>
+            <!--<ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>-->
+        </custom:InfiniteSimpleListView>
+
+        <Grid Grid.Row="2" Margin="0,0,0,0" BackgroundColor="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label HorizontalTextAlignment="Start" TextColor="{StaticResource CinzaPrincipal}" Text="{Binding xFooter1}" Grid.Column="0" Margin="5,0,5,5" />
+            <Label HorizontalTextAlignment="End" TextColor="{StaticResource CinzaPrincipal}" Text="{Binding xFooter2}" Grid.Column="1" Margin="5,0,5,5" />
+        </Grid>
+    </Grid>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Pesquisar" Icon="{Binding ImageIconSearch}" Command="{Binding HabiliteToSearchCommand}"/>
+        <ToolbarItem x:Name="RepresentantesToolbarItem"  Text="Representantes" Command="{Binding GoToRepresentantesCommand}" Icon="{Binding ImageIconListarRepresentantes}">
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
+            </ToolbarItem.Order>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ToolbarItemNovoPedido" Text="Adicionar" Command="{Binding NovoCommand}" Icon="{Binding ImageIconAdd}"/>
+        <ToolbarItem Text="Sincronizar" Priority="2" Command="{Binding SincronizarCommand}" Icon="{Binding ImageIconSync}" >
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" WinPhone="Secondary" />
+            </ToolbarItem.Order>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+</ContentPage>

@@ -1,0 +1,17 @@
+<svg xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
+     xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
+     xmlns:graph="http://ns.adobe.com/Graphs/1.0/"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.1" id="Layer_1" x="0px" y="0px"
+     viewBox="0 0 100 000"
+     enable-background="new 0 0 100 100"
+     xml:space="preserve"
+     height="100px" width="100px">
+		<g>
+      <path fill="#9ccc65" d="M81,100H19C7.1,100,0,92.9,0,81V19C0,7.1,7.1,0,19,0h62c11.9,0,19,7.1,19,19v62C100,92.9,92.9,100,81,100z
+	 M63.9,43.1c0-11.5-9.3-20.8-20.8-20.8c-11.5,0-20.8,9.3-20.8,20.8s9.3,20.8,20.8,20.8C54.6,63.9,63.9,54.6,63.9,43.1z M43.1,58.7
+	c-8.6,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6c8.6,0,15.6,7,15.6,15.6S51.7,58.7,43.1,58.7z M76.3,68.9L63.5,56.1
+	c-1.9,3-4.4,5.5-7.4,7.4l12.8,12.8c2,2,5.3,2,7.4,0C78.3,74.2,78.3,70.9,76.3,68.9z"/>
+		</g>
+</svg>

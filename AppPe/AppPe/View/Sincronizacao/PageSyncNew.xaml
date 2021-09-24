@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage
+            xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+            xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+            xmlns:sincronizacao="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao;assembly=Xamarin.HLP.Mobile.AppPE"
+            x:Class="Xamarin.HLP.Mobile.AppPE.View.Sincronizacao.PageSyncNew" HasSystemPadding="True" Padding="40,40,40,40" >
+
+    <pages:PopupPage.BindingContext>
+        <sincronizacao:SincronizacaoNewViewModel/>
+    </pages:PopupPage.BindingContext>
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+      PositionIn="Center"
+      PositionOut="Center"
+      ScaleIn="1.2"
+      ScaleOut="0.8"
+      DurationIn="400"
+      DurationOut="300"
+      EasingIn="SinOut"
+      EasingOut="SinIn"
+      HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+
+
+
+    <Frame HorizontalOptions="FillAndExpand" BackgroundColor="White" VerticalOptions="Center"  OutlineColor="{StaticResource CinzaPrincipal}">
+        <Frame.HasShadow>
+            <OnPlatform x:TypeArguments="x:Boolean" Android="True" iOS="True" WinPhone="False"/>
+        </Frame.HasShadow>
+        <Grid Margin="5,5,5,5" RowSpacing="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label FontSize="Medium"  LineBreakMode="NoWrap" Text="Sincronizando" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaMaisEscuro}"/>
+
+            <Label Grid.Row="1" FontSize="Medium" LineBreakMode="NoWrap"  Text="{Binding currentModel.xDetail }" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}"/>
+
+            <ActivityIndicator Margin="0,5,0,5" IsRunning="True" Grid.Row="2" Color="#27B5F3" />
+
+            <Label Grid.Row="3" FontSize="Medium" LineBreakMode="NoWrap"  Text="{Binding currentModel.iCount}" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaClaro}"/>
+
+
+        </Grid>
+    </Frame>
+</pages:PopupPage>

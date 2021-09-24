@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:cadastro="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:cliente="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Cliente;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageListagemContato">
+  <ContentPage.Title>
+    <OnPlatform x:TypeArguments="x:String">
+      <OnPlatform.Android>Contatos</OnPlatform.Android>
+      <OnPlatform.WinPhone>Contatos</OnPlatform.WinPhone>
+    </OnPlatform>
+  </ContentPage.Title>
+
+  <ContentPage.BindingContext>
+    <cadastro:ListagemContatoViewModel/>
+  </ContentPage.BindingContext>
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <cliente:CollectionToBasicListConverter x:Key="CollectionToBasicListConverter"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <AbsoluteLayout >
+    <Grid AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <xaml:GridSemRegistroEncontrado IsVisible="{Binding currentModel.lContato, Converter={StaticResource AnyRegisterListConverter}, ConverterParameter='N'}" Grid.Row="1"/>
+
+      <ListView x:Name="ListContato" Grid.Row="1"
+             ItemsSource="{Binding currentModel.lContato, Converter={StaticResource CollectionToBasicListConverter}}"
+             HasUnevenRows="True"
+              IsVisible="{Binding currentModel.lContato, Converter={StaticResource AnyRegisterListConverter},ConverterParameter='L'}"
+             ItemSelected="ListView_OnItemSelected" >
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <xaml:ViewCellDefault>
+              <xaml:ViewCellDefault.ContextActions>
+                <MenuItem Text="Excluir" Clicked="MenuItemContato_OnClicked"/>
+              </xaml:ViewCellDefault.ContextActions>
+            </xaml:ViewCellDefault>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+
+      </ListView>
+    </Grid>
+  </AbsoluteLayout>
+
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Text="Adicionar" Command="{Binding NovoCommand}" Icon="{Binding ImageIconAdd}">
+      <ToolbarItem.Order>
+        <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+      </ToolbarItem.Order>
+    </ToolbarItem>
+  </ContentPage.ToolbarItems>
+</ContentPage>
