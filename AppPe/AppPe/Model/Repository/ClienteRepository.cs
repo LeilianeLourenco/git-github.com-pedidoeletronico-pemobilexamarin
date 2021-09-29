@@ -75,15 +75,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 if (bAplicaMelhoriaTl.GetValueOrDefault() && objClienteModel.idClientes.GetValueOrDefault() == 0)
                 {
                     var _estadoCliente = objClienteModel.lEndereco.Select(t => t.xEstado).FirstOrDefault();
-                    var idTransportadora = App.Data.Connection.Table<EnderecoModel>()
-                    .FirstOrDefault(c => c.idEmpresa == _idEmpresa && c.idTransportadora > 0 && c.xEstado == _estadoCliente)
-                    .idTransportadora ?? 0;
-
-                   
-
-                    if (idTransportadora > 0)
+                    if (!string.IsNullOrEmpty(_estadoCliente))
                     {
-                        objClienteModel.idTransportadora = idTransportadora;
+                        var idTransportadora = App.Data.Connection.Table<EnderecoModel>()
+                            .FirstOrDefault(c => c.idEmpresa == _idEmpresa && c.idTransportadora > 0 && c.xEstado == _estadoCliente)
+                            .idTransportadora ?? 0;
+
+                        if (idTransportadora > 0)
+                        {
+                            objClienteModel.idTransportadora = idTransportadora;
+                        }
                     }
                 }
 
