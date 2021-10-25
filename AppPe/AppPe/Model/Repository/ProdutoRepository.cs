@@ -185,7 +185,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 }
 
 
-                if (idProdutos != null)
+                if (idProdutos != null && idProdutos?.Count() > 0)
                 {
                     var _inProdutos = idProdutos.Select(pr => pr)
                         .ToList().Aggregate("", (current, item) => current + (current == "" ? "" : " , ") + item);

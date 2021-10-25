@@ -68,7 +68,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.ptbr.pedidoeletronico</string>
 	<key>CFBundleVersion</key>
-	<string>19.63</string>
+	<string>19.64</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
@@ -76,7 +76,7 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleShortVersionString</key>
-	<string>19.63</string>
+	<string>19.64</string>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
 </dict>

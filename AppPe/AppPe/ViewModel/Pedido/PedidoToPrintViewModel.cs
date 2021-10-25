@@ -229,10 +229,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     item.vSubTotal = unitarioCheio * item.vQtdItem;
                     if ((item.idGradeCor == 0 || item.idGradeCor == null) && (item.idGradeTamanho == 0 || item.idGradeTamanho == null))
                     {
-                        xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                         if (item.vDesconto > 0)
                         {
-                            xItem += $"\n unitário c/ desc:  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
+                            xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                            xItem += $"\n C/ desc: {item.xQtde} {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
+                        }
+                        else
+                        { 
+                            xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                         }
 
                         itens += xItem;
@@ -244,12 +248,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         foreach (var tam in gradeTamanho)
                         {
                             if (tam.idGradeTamanho == item.idGradeTamanho)
-                            {
-                                xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { tam.xNome}{Environment.NewLine}{item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                            { 
                                 if (item.vDesconto > 0)
                                 {
-                                    xItem += $"\n unitário c/ desc:  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
+                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { tam.xNome}{Environment.NewLine} S/ Desc: {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                    xItem += $"\n C/ Desc: {item.xQtde}  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                                 }
+                                else
+                                {
+                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                }
+
                                 itens += xItem;
                             }
                         }
@@ -261,13 +270,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         foreach (var cor in gradeCor)
                         {
                             if (cor.idGradeCor == item.idGradeCor)
-                            {
-                                xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { cor.xNome}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                            {  
                                 if (item.vDesconto > 0)
-                                    if (item.vDesconto > 0)
-                                    {
-                                        xItem += $"\n unitário c/ desc:  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
-                                    }
+                                {
+                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { cor.xNome}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                    xItem += $"\n C/ desc: {item.xQtde} {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = R$ {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
+                                }
+                                else
+                                {
+                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { cor.xNome}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                }
+
+
                                 itens += xItem;
                             }
                         }
@@ -296,12 +310,20 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                 nomeTam = tam.xNome;
                             }
                         }
+                         
 
-                        xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {nomeCor} | {nomeTam}{Environment.NewLine} {item.xQtde}  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                         if (item.vDesconto > 0)
                         {
-                            xItem += $"\n unitário c/ desc:  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
+                            xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {nomeCor} | {nomeTam}{Environment.NewLine} S/ Desc: {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                            xItem += $"\n C/ Desc: {item.xQtde} {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = R$ {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                         }
+                        else
+                        {
+                            xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {nomeCor} | {nomeTam}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                        }
+
+
+
                         itens += xItem;
                     }
 

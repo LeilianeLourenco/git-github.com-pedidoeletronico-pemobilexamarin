@@ -772,7 +772,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var httpClient = new HttpClient { BaseAddress = new Uri(@"https://www.receitaws.com.br/") };
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                httpClient.Timeout = TimeSpan.FromSeconds(30);
+                httpClient.Timeout = TimeSpan.FromSeconds(100);
 
                 var jsonResponse = httpClient.GetStringAsync(requestUri).Result;
 
@@ -902,7 +902,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var httpclienteGoogle = new HttpClient { BaseAddress = new Uri("https://maps.googleapis.com/") };
                 httpclienteGoogle.DefaultRequestHeaders.Accept.Clear();
                 httpclienteGoogle.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                httpclienteGoogle.Timeout = TimeSpan.FromSeconds(30);
+                httpclienteGoogle.Timeout = TimeSpan.FromSeconds(100);
 
                 var requestUri = $"/maps/api/geocode/json?address=BrasilCEP{xParam.Replace(" ", "+")}&key=AIzaSyCnq3d96u9Ng6kEdDTfgVPaXQ2eeWHTkpY";
                 var jsonResponse = await httpclienteGoogle.GetStringAsync(requestUri);
@@ -1033,7 +1033,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 _currentHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlWebApi) };
                 _currentHttpClient.DefaultRequestHeaders.Accept.Clear();
                 _currentHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                _currentHttpClient.Timeout = TimeSpan.FromSeconds(30); 
+                _currentHttpClient.Timeout = TimeSpan.FromSeconds(100); 
                 return _currentHttpClient;
             }
             set { _currentHttpClient = value; }
@@ -1051,7 +1051,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 _currentApiMobileHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlWebApiMobile) };
                 _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Clear();
                 _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                _currentApiMobileHttpClient.Timeout = TimeSpan.FromSeconds(30);
+                _currentApiMobileHttpClient.Timeout = TimeSpan.FromSeconds(100);
                 return _currentApiMobileHttpClient;
             }
             set { _currentApiMobileHttpClient = value; }

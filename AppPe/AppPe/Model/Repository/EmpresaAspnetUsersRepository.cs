@@ -33,6 +33,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return retorno;
         }
 
+        public static List<int> GetListaRepsLinkados(int idEmpresa)
+        {   
+            var xQuery =
+              $@"select  idEmpresa_aspnetUsers Id from {TableMobile.TB_EMPRESA_ASPNETUSERS}
+                                                    where idEmpresa = {idEmpresa} and stAtivo = 1 ";
+             
+            var retorno = App.Data.Connection.Query<ListItemModel>(xQuery);
+
+            return retorno.Select(t => t.Id).ToList();
+        }
+
         public static ListItemModel GetRegistro(int idEmpresa_aspnetUsers)
         {
             var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.idEmpresa;

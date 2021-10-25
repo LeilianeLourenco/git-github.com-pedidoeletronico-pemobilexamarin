@@ -373,10 +373,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownload<TabelaEscalonadaFaixaComissaoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<TabelaEscalonadaRepresentanteModel>();
-                //if (!ocorreuErro && !bFalhaConexao)
-                //    await SincronizacaoDownload<RecebimentoTitulosModel>();
-                //if (!ocorreuErro && !bFalhaConexao)
-                //    await SincronizacaoDownload<RecebimentoTitulosMovimentacaoModel>();
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownload<RecebimentoTitulosModel>();
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownload<RecebimentoTitulosMovimentacaoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<UnidadeMedidaModel>();
 
@@ -916,23 +916,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     if (xTableName == TableMobile.GetTableNameByModel<RepresentadaAspnetUsersModel>())
                     {
                         //primeiro busca tudo
-                        lsync = await UtilHttp.GetListRegistroSync<T>(param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
+                        lsync = await UtilHttp.GetListRegistroSync<T>(param1: idEmp,
                                                           param2: _ultimaDataSinc,
                                                           param3:
                                                           xTableName == TableMobile.TB_PEDIDOVENDA ? App.CurrentAspnetUserModel.Id : null);
 
                         List<RepresentadaAspnetUsersModel> _listRep = lsync as List<RepresentadaAspnetUsersModel>;
-
+                        var _representantesLinkados = EmpresaAspnetUsersRepository.GetListaRepsLinkados(idEmp);
                         //aqui estou buscando as representadas que os vendedores sincronizados pra essa conta possuem acesso.
-                        foreach (var empresaAspnetUsersModel in App.CurrentAspnetUserModel.lEpresaAspnetUsersModel)
-                        {
-                            var idEmpresa = empresaAspnetUsersModel.idEmpresa;
-                            var idRepresentanteAspNetUsers = empresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0;
+                        foreach (var empresaAspnetUsersModel in _representantesLinkados)
+                        {  
                             //RepresentadaRepository.DeleteAllByRepresentante(idRepresentanteAspNetUsers);
-
-
-                            var _listRepresentadasParaSalvar = _listRep.Where(r => r.idEmpresa_aspnetUsers == idRepresentanteAspNetUsers).ToList();
-
+                             
+                            var _listRepresentadasParaSalvar = _listRep.Where(r => r.idEmpresa_aspnetUsers == empresaAspnetUsersModel).ToList(); 
                             await SavePrivate(_listRepresentadasParaSalvar, xTableName);
                         }
                     }
@@ -940,7 +936,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     { 
                         lsync = await
                             UtilHttp.GetListRegistroSync<T>(
-                                    param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
+                                    param1: idEmp,
                                     param2: _ultimaDataSinc,
                                     param3:
                                     xTableName == TableMobile.TB_PEDIDOVENDA ? App.CurrentAspnetUserModel.Id : null);
