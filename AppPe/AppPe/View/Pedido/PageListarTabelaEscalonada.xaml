@@ -13,6 +13,8 @@
             <CollectionView x:Name="collectionListView"
                          ItemsSource="{Binding Escalonadas}"  
                          VerticalScrollBarVisibility="Always"
+                         SelectionMode="Single"
+                         SelectionChanged="OnCollectionViewSelectionChanged"
                          RemainingItemsThreshold="1"> 
             <CollectionView.Header>
                 <Grid RowSpacing="0" ColumnSpacing="0" Padding="5,1,5,1" Margin="2,2,2,1">

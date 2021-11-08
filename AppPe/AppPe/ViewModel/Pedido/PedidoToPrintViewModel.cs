@@ -159,7 +159,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 xEnderecoEmpresa =
                     ($@"CNPJ: {empresa.xCnpj}, End: {empresa.xEndereco}, Numero: {empresa.cNumero}, Bairro: {empresa.xBairro}, Fones: {empresa
                         .xTelefones} - Email: {(empresa.xEmails ?? "").Replace(',', ' ')}{Environment.NewLine}").ToUpper();
-                if (pedido.xDisplayIntegracao != null || App.tipouser == App.TipoUser.OMIE || App.tipouser == App.TipoUser.BLING)
+                
+                if (!string.IsNullOrEmpty(pedido.xDisplayIntegracao) || App.tipouser == App.TipoUser.OMIE || App.tipouser == App.TipoUser.BLING)
                 {
                     xNumPedido = pedido.xDisplayIntegracao != null ? pedido.xDisplayIntegracao.ToString().PadLeft(6, '0') : "------";
                 } 
@@ -167,6 +168,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 {
                     xNumPedido = pedido.idPedidoDisplay != null ? pedido.idPedidoDisplay.ToString().PadLeft(6, '0') : "------";
                 }
+
                 xCliente += $@"{Environment.NewLine}{(pedido.stLancamento == 0 ? "Orçamento" : "Pedido")}: {xNumPedido}{Environment.NewLine}";
                 xCliente += $@"Emissao: {pedido.dEmissao.ToLocalTime():dd/MM/yyyy HH:mm}{Environment.NewLine}";
                 if (pedido.stLancamento == 0)

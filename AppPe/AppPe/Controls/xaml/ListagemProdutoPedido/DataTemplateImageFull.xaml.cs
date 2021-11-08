@@ -61,7 +61,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
                     if (itemPedido != null)
                     {
                         var page = UtilNavidate.GetTypeCurrentPage();
-                        if (page == typeof(PageListarProdutosNew) || page == typeof(PageListarProdutosByCliente) || page == typeof(PageEditarItem))
+                        if (page == typeof(PageListarProdutosNew) || page == typeof(PageListarProdutosByCliente) || page == typeof(PageEditarItem) || page == typeof(PageListarTabelaEscalonada))
                         {
                             if (itemPedido.vUnitarioVendaComImpostos > 0)
                             {

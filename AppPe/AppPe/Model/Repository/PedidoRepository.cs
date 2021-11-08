@@ -1176,6 +1176,24 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         }
 
 
+        public static string GetTotalVendasMesAtual()
+        {  
+            var xMes = DateTime.Today.ToString("MM/yyyy");
+            var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+            var idRepresentante = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers;
+
+            var xQuery = $@"SELECT SUM(VTotal + vFretePed + vOutrasPed + vSeguroPed) FROM {TableMobile.TB_PEDIDOVENDA} 
+                                WHERE 
+                                      XdEmissao like '%{xMes}%' and stLancamento = 1 and
+                                      stPedidoVenda = 2 and
+                                      idEmpresa = {idEmpresa} and
+                                      idRepresentantePedido = {idRepresentante}";
+
+            var dfaturado = App.Data.Connection.ExecuteScalar<double>(xQuery);
+
+
+            return dfaturado.ToCurrencyStringPtBr();
+        }
 
 
         public static DashMetaMensalModel GetDadosDashMensal(double widthGridBoxDash)

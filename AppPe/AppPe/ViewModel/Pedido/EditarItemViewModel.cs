@@ -460,7 +460,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 ListaLocalEstoque = new List<BasicPickerModel>();
 
 
-                foreach (var tabelaPrecoSimplificada in PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.lTabelaPreco)
+                foreach (var tabelaPrecoSimplificada in currentModel.lTabelaPreco)
                 {
                     ListaTabelaPreco.Add(new BasicPickerModel
                     {
@@ -469,7 +469,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     });
                 }
 
-                foreach (var localestoque in PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.lLocaisEstoque)
+                foreach (var localestoque in currentModel.lLocaisEstoque)
                 {
                     ListaLocalEstoque.Add(new BasicPickerModel
                     {

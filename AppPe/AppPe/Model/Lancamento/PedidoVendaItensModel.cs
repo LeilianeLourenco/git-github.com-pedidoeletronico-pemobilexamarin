@@ -1061,7 +1061,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                         { 
                             editting = true;
                             await Task.Yield(); // Delay(300);
-                            UtilNavidate.PushAsync(new PageListarTabelaEscalonada(valorVenda, idProduto, faixaComissao, idEmpresa));
+                            UtilNavidate.PushAsync(new PageListarTabelaEscalonada(valorVenda, idProduto, faixaComissao, idEmpresa, _modelItem));
                         }
                     }
                 } 

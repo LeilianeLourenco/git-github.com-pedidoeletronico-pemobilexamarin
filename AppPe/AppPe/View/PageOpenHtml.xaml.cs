@@ -34,32 +34,10 @@ namespace Xamarin.HLP.Mobile.AppPE.View
                                     </span>
                                 </div>
 
-                                <div style='padding: 20px 20px !important'>
-                                    <span id='spanConectando' style='font-size: 17px !important; font-weight: 600 !important; color: #2B3D8C !important; font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif !important; margin: 0 auto !important'>
-                                        carregando. . .
-                                    </span>
-                                </div>
-
                             </div>
 
                         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-                        <script>                                
-                            window.intercomSettings = {
-                                'app_id' : 'c4hid8oi',
-                                'email' : '" + $"{App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail}" + @"' ,
-                                'nome' : '" + $"{App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xNome}" + @"' ,
-                                'Código Empresa' : '" + $"{App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.idEmpresa}" + @"' }
-                        </script>
-            <script>
-             (function (o, c, t, a, d, e, s, k) {
-            o.octadesk = o.octadesk || {};
-            s = c.getElementsByTagName('body')[0];
-            k = c.createElement('script');
-                k.async = 1;
-                k.src = t + '/' + a + '?showButton=' + d + '&openOnMessage=' + e;
-                s.appendChild(k);
-            })(window, document, 'https://chat.octadesk.services/api/widget', 'pedidoeletronico', true, true);
-            </script>
+                        <script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=a9a732e1-57d9-42ef-b3c6-a21dc7472898'></script>
                         </body>
                         </html>";
 

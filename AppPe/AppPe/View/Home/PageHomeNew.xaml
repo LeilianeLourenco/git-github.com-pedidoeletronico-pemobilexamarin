@@ -30,6 +30,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Label Text="Meta mensal" FontSize="Large" TextColor="{StaticResource CinzaPrincipal}" HorizontalOptions="Center" HorizontalTextAlignment="Center" Margin="0,5,0,5"/>
@@ -98,6 +99,12 @@
                                IsVisible="{Binding dashmensal.xDisplay2, Converter={StaticResource IsNullOrEmptyConverter}}" 
                                FontSize="11"
                                TextColor="{StaticResource VermelhoPrincipal}" />
+                    </StackLayout>
+
+
+                    <StackLayout Margin="5,5,0,0" Orientation="Vertical" Grid.Row="6">
+                        <Label Text="Total de vendas emitidas no mês" FontSize="13" TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                        <Label Text="{Binding xVendasEmitidasMes}"  TextColor="{StaticResource VerdeClaro}"/>
                     </StackLayout>
 
                 </Grid>

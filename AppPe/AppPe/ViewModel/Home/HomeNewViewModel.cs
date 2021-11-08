@@ -61,6 +61,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
             set { _xDateSync = value; NotifyPropertyChanged(); }
         }
 
+        private string _xVendasEmitidasMes;
+
+        public string xVendasEmitidasMes
+        {
+            get { return _xVendasEmitidasMes; }
+            set { _xVendasEmitidasMes = value; NotifyPropertyChanged(); }
+        }
+
         private Color _corConexao = ColorStaticModel.AzulMedio;
 
         public Color corConexao
@@ -97,7 +105,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
                 NotifyPropertyChanged();
             }
         }
-        
+
         private DashMetaMensalModel _dashmensal = new DashMetaMensalModel();
 
         public DashMetaMensalModel dashmensal
@@ -106,7 +114,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
             set { _dashmensal = value; NotifyPropertyChanged(); }
         }
 
-        
+
 
 
 
@@ -160,7 +168,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
                 }
             });
 
-            
+
             GoToClientesCommand = new Command(() =>
             {
                 if (!ExecuttingAnyCommand)
@@ -225,6 +233,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
             else
                 dashmensal = PedidoRepository.GetDadosDashMensalPorDataFaturamento(page.Width - 10);
 
+
+            xVendasEmitidasMes = PedidoRepository.GetTotalVendasMesAtual();
         }
 
         public void Sincronizar()
@@ -233,7 +243,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
             {
                 ExecuttingAnyCommand = true;
                 var pageSync = new PageSyncNew();
-                pageSync.ViewModel.bForcarSyncInit = App.ForcarAtualizacao;
+                //pageSync.ViewModel.bForcarSyncInit = App.ForcarAtualizacao;
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(CarregarInformacoesHome);
                 UtilNavidate.Sincronizar(pageSync);
             }

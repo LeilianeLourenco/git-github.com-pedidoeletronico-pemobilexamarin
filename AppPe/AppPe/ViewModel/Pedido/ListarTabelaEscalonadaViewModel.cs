@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros.Escalonada;
+using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 
 namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
@@ -16,6 +18,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public class EscalonadaCollection : NotifyCommon
         {
             public string pFimFaixa { get; set; }
+            public double pDescFimFaixa { get; set; }
+            public double pComissaoDouble { get; set; }
+            public double vUnitarCDesc { get; set; }
             public string pComissao { get; set; }
             public string vMaxDesc { get; set; }
             public string Sequencia { get; set; }
@@ -25,7 +30,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public int idEmpresa { get; set; }
         public double valorVenda { get; set; }
         public List<TabelaEscalonadaFaixaComissaoModel> lEscalonada { get; set; }
-        public int idProduto { get; set; }  
+        public int idProduto { get; set; }
         private ObservableCollection<EscalonadaCollection> _escalonadas;
         public ObservableCollection<EscalonadaCollection> Escalonadas
         {
@@ -37,9 +42,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        public PedidoVendaItensModel modelItem { get; set; }
+
         public ListarTabelaEscalonadaViewModel()
         {
-            
+
         }
 
         public bool Initialize()
@@ -59,18 +66,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 if (!IsBusy)
                 {
-                    if(lEscalonada == null)
+                    if (lEscalonada == null)
                     {
                         Escalonadas.Add(new EscalonadaCollection
                         {
                             pFimFaixa = "",
                             pComissao = "",
                             vMaxDesc = ""
-                         });
+                        });
                     }
                     else
                     {
-                        foreach(var val in lEscalonada)
+                        foreach (var val in lEscalonada)
                         {
                             vDesc.Add((valorVenda / 100) * Convert.ToDouble(val.pFimFaixa));
                         }
@@ -82,17 +89,20 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                 IsBusy = true;
 
                                 int indexEscalonada = 0;
-                                foreach (var item in lEscalonada)
+                                foreach (var item in lEscalonada.OrderBy(t => t.pFimFaixa))
                                 {
                                     indexEscalonada++;
                                     Escalonadas.Add(new EscalonadaCollection
-                                    { 
+                                    {
+                                        pDescFimFaixa = item.pFimFaixa,
+                                        vUnitarCDesc = Math.Round((valorVenda - (valorVenda * (item.pFimFaixa / 100))), 2),
+                                        pComissaoDouble = item.pComissao,
                                         pFimFaixa = item.pFimFaixa.ToString().ToCurrencyStringSimplesPtBr(),
                                         pComissao = item.pComissao.ToString().ToCurrencyStringSimplesPlacesPtBr(),
                                         vMaxDesc = (valorVenda - (valorVenda * (item.pFimFaixa / 100))).ToCurrencyStringPtBr(),
-                                        Sequencia = $"{indexEscalonada}" 
-                                    }); 
-                                } 
+                                        Sequencia = $"{indexEscalonada}"
+                                    });
+                                }
 
                                 IsBusy = false;
                             });

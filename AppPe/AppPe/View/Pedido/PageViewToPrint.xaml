@@ -56,9 +56,9 @@
                 </StackLayout>
             </ScrollView>
 
-            <!--<Button IsVisible="{Binding bCanPrint}" Text="IMPRIMIR VIA BLUETOOTH" Style="{StaticResource Success}" Grid.Row="2" Command="{Binding PrintCommand}" Margin="2,2,2,0" />-->
+            <Button IsVisible="{Binding bCanPrint}" Text="IMPRIMIR VIA BLUETOOTH" Style="{StaticResource Success}" Grid.Row="2" Command="{Binding PrintCommand}" Margin="2,2,2,0" />
 
-            <Button Text="{Binding xTextoPrint}" Style="{StaticResource Success}" Grid.Row="2" Command="{Binding PrintCommand}" Margin="2,2,2,0" />
+            <!--<Button Text="{Binding xTextoPrint}" Style="{StaticResource Success}" Grid.Row="2" Command="{Binding PrintCommand}" Margin="2,2,2,0" />-->
         </Grid>
     </Frame>
 </pages:PopupPage>

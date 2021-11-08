@@ -424,7 +424,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (bFalhaConexao)
                     AnaliseFinalSincronizacao("Ocorreu um erro de conexão com a internet durante a sincronização, tente novamente.");
                 else if (ocorreuErro)
-                    AnaliseFinalSincronizacao("Ocorreu um erro durante a sincronização dos itens, tente novamente.");
+                    AnaliseFinalSincronizacao("Houve uma queda na conexão da internet durante a sincronização, tente novamente.");
                 else
                     AnaliseFinalSincronizacao();
             }
@@ -558,6 +558,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         }
                     }
                 }
+
                 integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
             }
             catch (Exception ex)
@@ -634,41 +635,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                 }
             }
+             
 
-            //await Task.Run(() =>
-            //{
-            //    var xapi = TableMobile.GetApiRegistroByModel<PedidoVendaModel>();
-            //listaID = await
-            //    UtilHttp.GetRegistroIDSync(
-            //        param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
-            //        param2: lastDateServerSync,
-            //        ApiController: $"{xapi}/Get",
-            //        param3: App.CurrentAspnetUserModel.Id);
-            ////});
-
-            //if (listaID.Count > 0 && !bFalhaConexao)
-            //{
-            //    var xPrimaryKeyName = TableMobile.GetPrimaryKeyNameByModel<PedidoVendaModel>();
-            //    currentModel.iCount = listaID.Count();
-            //    foreach (var item in listaID)
-            //    {
-            //        if (App.ForcarAtualizacao ||
-            //            PedidoRepository.PedidoPrecisaSerAtualizado(item.idPedidoVenda, item.dtUltimaAlteracao))
-            //        {
-            //            var registro =
-            //                await
-            //                    UtilHttp.GetRegistroSync<PedidoVendaModel>(
-            //                        idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
-            //                        idPK: item.idPedidoVenda);
-            //            if (bFalhaConexao)
-            //                break;
-
-            //            if (registro != null)
-            //                await SaveSincronizacao(registro, xPrimaryKeyName, xTableName);
-            //        }
-            //        currentModel.iCount--;
-            //    }
-            //}
+            integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
             ocorreuErro = currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0;
         }
 
@@ -679,10 +648,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             var xTableName = TableMobile.GetTableNameByModel<LocalEstoqueModel>();
             currentModel.Display = xTableName;
 
+            IntegracaoRepository integ = new IntegracaoRepository();
+            int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
+
+            if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
+                _ultimaDataSinc = lastDateServerSync;
+
             listaID = await
                 UtilHttp.GetQuantidadeTotalLocaisEstoque(
                     idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
-                    dtUltimaAlteracao: lastDateServerSync,
+                    dtUltimaAlteracao: _ultimaDataSinc,
                     stTipoBuscar: 0);
 
             int _pagina = 1;
@@ -697,7 +673,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                   UtilHttp.GetLocaisEstoque<LocalEstoqueModel>(
                                       idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
                                       page: _pagina,
-                                      dtUltimaAlteracao: lastDateServerSync,
+                                      dtUltimaAlteracao: _ultimaDataSinc,
                                       stTipoBuscar: 0);
 
                     if (lRegistros?.Count() > 0 && !bFalhaConexao)
@@ -719,6 +695,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 }
             }
 
+
+            integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
             ocorreuErro = currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0;
         }
 
@@ -727,11 +705,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             var xapi = TableMobile.GetApiRegistroByModel<AtividadeAgendaModel>();
             var xTableName = TableMobile.GetTableNameByModel<AtividadeAgendaModel>();
+
+            IntegracaoRepository integ = new IntegracaoRepository();
+            int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
+
+            if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
+                _ultimaDataSinc = lastDateServerSync;
+
             currentModel.Display = xTableName;
             currentModel.iCount = await
                                   UtilHttp.GetCountAtividades(
                                       idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
-                                      dtUltimaAlteracao: lastDateServerSync,
+                                      dtUltimaAlteracao: _ultimaDataSinc,
                                       idAspNetUsers: App.CurrentAspnetUserModel.Id);
 
 
@@ -746,7 +732,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                   UtilHttp.GetAtividadesAgenda<AtividadeAgendaModel>(
                                       idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
                                       page: _pagina,
-                                      dtUltimaAlteracao: lastDateServerSync,
+                                      dtUltimaAlteracao: _ultimaDataSinc,
                                       idAspNetUsers: App.CurrentAspnetUserModel.Id);
 
                     if (lRegistros?.Count() > 0 && !bFalhaConexao)
@@ -768,6 +754,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 }
             }
 
+
+            integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
             ocorreuErro = currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0;
         }
 
@@ -777,10 +765,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             var xapi = TableMobile.GetApiRegistroByModel<TipoAtividadeAgendaModel>();
             var xTableName = TableMobile.GetTableNameByModel<TipoAtividadeAgendaModel>();
             currentModel.Display = xTableName;
+
+            IntegracaoRepository integ = new IntegracaoRepository();
+            int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
+
+            if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
+                _ultimaDataSinc = lastDateServerSync;
+
+
             currentModel.iCount = await
                                   UtilHttp.GetCountTipoAtividades(
                                       idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
-                                      dtUltimaAlteracao: lastDateServerSync);
+                                      dtUltimaAlteracao: _ultimaDataSinc);
 
 
             int _pagina = 1;
@@ -794,7 +791,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                   UtilHttp.GetTipoAtividadesAgenda<TipoAtividadeAgendaModel>(
                                       idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
                                       page: _pagina,
-                                      dtUltimaAlteracao: lastDateServerSync);
+                                      dtUltimaAlteracao: _ultimaDataSinc);
 
                     if (lRegistros?.Count() > 0 && !bFalhaConexao)
                     {
@@ -815,6 +812,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 }
             }
 
+
+            integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
             ocorreuErro = currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0;
         }
 
