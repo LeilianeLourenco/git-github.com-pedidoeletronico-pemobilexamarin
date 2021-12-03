@@ -41,17 +41,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda.Implementacoes
                 stBusca: Model.Repository.Interfaces.TipoPrecoBusca.tud,
                 idCliente: this.idCliente, idClienteOffLine: this.idClienteOffLine,
                 idRepresentante: this.idRepresentante, idRepresentacao: this.idRepresentacao
-                );
-
-            //Linha comentada por erro levantado por cliente. OS 33944
-
-            //Linha abaixo não havia sentido nenhum por conta de que no estado atual do processo ainda não há uma representação definida.
-
-            //if ((_tbls?.Count ?? 0) == 0) 
-            //{
-            //    return new List<int>();
-            //}
-
+                ); 
 
             //processo de trazer apenas a tabela de preço vinculada na condição
             int? _idTabelaPrecoNaCondicao = null;
@@ -96,9 +86,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda.Implementacoes
                     _prodsRetorno.AddRange(_idsProdutosManual);
                 }
             }
-
-
-
+             
 
             //Obter representações do representante ativo
             var _idsRpras = _rprasRep.ObterRepresentadas(idRepresentante: idRepresentante);
@@ -123,6 +111,61 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda.Implementacoes
                     }
                 }
             }            
+
+            return _prodsRetorno.Distinct().ToList();
+        }
+
+
+
+        public List<int> BuscarProdutosCampanha(int idEmpresa, int? idCondicaoParaTabelaPreco = null)
+        {
+            var _tbls = this._precoReposit.Buscar(idEmpresa: idEmpresa, idProduto: 0,
+                stBusca: Model.Repository.Interfaces.TipoPrecoBusca.cmp,
+                idCliente: this.idCliente, idClienteOffLine: this.idClienteOffLine,
+                idRepresentante: this.idRepresentante, idRepresentacao: this.idRepresentacao
+                );
+
+            //processo de trazer apenas a tabela de preço vinculada na condição
+            int? _idTabelaPrecoNaCondicao = null;
+            if (idCondicaoParaTabelaPreco.GetValueOrDefault() > 0)
+            {
+                _idTabelaPrecoNaCondicao = CondicaoPagamentoRepository.GetIdTabelaPrecoCondicao(idCondicaoParaTabelaPreco.GetValueOrDefault());
+                if (_idTabelaPrecoNaCondicao.GetValueOrDefault() > 0)
+                {
+                    _tbls = _tbls.Where(t => t.idTabelaPreco == _idTabelaPrecoNaCondicao).ToList();
+                }
+            }
+
+            if (_tbls.Count(t => t.stValor != 2) > 0) //Em tabelas disponíveis existe tabela automática
+            {
+
+                if (_tbls.Count(t => t.stTabelaPrecoRepresentacao == false) > 0)
+                {
+                    return null; //Não há tabela manual ou configurada para uma representação em específica,
+                    //portanto ao menos uma tabela preço estará disponível aos produtos.
+                }
+            }
+
+            List<int> _prodsRetorno = new List<int>();
+
+            IPrecoProdutoRepositorio _precoProdRep;
+            IPrecoProdutoRepositorio _precoProdRpraRep;
+            IRepresentacaoRepresentanteRepositorio _rprasRep = new RepresentacaoRepresentanteRepositorio();
+
+            var _tblsManual = _tbls.Where(tb => tb.stValor == 2).ToList();
+
+            if ((_tblsManual?.Count ?? 0) > 0)
+            {
+                _precoProdRep = new PrecoProdutoManuaisRepositorio(
+                    idTabelasManuais: _tblsManual.Select(t => t.idTabelaPreco).ToList());
+
+                var _idsProdutosManual = _precoProdRep.BuscarProdutosDisponiveis(idEmpresa: idEmpresa);
+
+                if (_idsProdutosManual.Count > 0)
+                {
+                    _prodsRetorno.AddRange(_idsProdutosManual);
+                }
+            }
 
             return _prodsRetorno.Distinct().ToList();
         }

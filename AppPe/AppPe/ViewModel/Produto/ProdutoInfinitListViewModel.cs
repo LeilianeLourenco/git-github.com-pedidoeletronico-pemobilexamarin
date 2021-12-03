@@ -29,22 +29,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Produto
 
 
         private async void LoadItens()
-        {
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                IsBusy = true;
-            });
-
+        { 
             await Task.Run(() =>
             {
-                var characters = ProdutoRepository.GetToPesquisa(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), false);
-                foreach (var character in characters)
+                Device.BeginInvokeOnMainThread(() =>
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    IsBusy = true;
+
+                    var characters = ProdutoRepository.GetToPesquisa(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), false);
+                    foreach (var character in characters)
                     {
                         LItens.Add(character);
-                    });
-                }
+                    }
+                     
+                    IsBusy = false; 
+                }); 
             });
 
             Device.BeginInvokeOnMainThread(() =>
@@ -57,17 +56,22 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Produto
 
         public async void Search()
         {
-            await Task.Run(() =>
+            if (!IsBusy)
             {
-                Device.BeginInvokeOnMainThread(() =>
+                await Task.Run(() =>
                 {
-                    IsUsingSearch = true;
-                    LItens = new ObservableCollection<ListItemModel>();
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        IsUsingSearch = true;
+                        LItens = new ObservableCollection<ListItemModel>();
 
 
-                    LoadItens();
+                        LoadItens();
+                    });
                 });
-            });
+            }
+
+         
         }
 
         public ListItemModel ItemSelected
@@ -145,10 +149,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Produto
             if (canExecuteInicial)
             {
                 canExecuteInicial = false;
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    IsBusy = true;
-                });
+                //Device.BeginInvokeOnMainThread(() =>
+                //{
+                //    IsBusy = true;
+                //});
                 LItens = new ObservableCollection<ListItemModel>();
                 LoadItens();
             }

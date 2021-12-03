@@ -261,8 +261,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
 
                         if (_tblDefParaVenda != null)
                         {
-                            pr.lTabelaPreco.Add(_tblDefParaVenda);
-                            pr.currentTabelaPreco = _tblDefParaVenda;
+                            if (idTabelaPrecoCondicao.GetValueOrDefault() == 0 || idTabelaPrecoCondicao.GetValueOrDefault() == _tblDefParaVenda.idTabelaPreco)
+                            { 
+                                pr.lTabelaPreco.Add(_tblDefParaVenda);
+                                pr.currentTabelaPreco = _tblDefParaVenda;
+                            }
+                            else
+                            {
+                                TabelaPrecoRepository.SetTabelaPrecoByProduto(item: pr,
+                            idClienteOffLine: idClienteOff, idCliente: idCliente, _idRepresentante: idRepresentante, idTabelaPrecoCondicao: idTabelaPrecoCondicao);
+                            }
                         }
                         else
                         {

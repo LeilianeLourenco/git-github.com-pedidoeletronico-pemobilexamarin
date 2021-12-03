@@ -52,13 +52,19 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     ViewModel.canExecuteInicial = false;
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        if (StackLayoutItens.Children.Count == 0)
+                        if (StackLayoutItens.Children.Count == 0 && ViewModel.currentModel.ItensGrade != null)
                         {
                             foreach (var item in ViewModel.currentModel.ItensGrade)
                             {
-
                                 StackLayoutItens.Children.Add(new GridEditItemPedido() { BindingContext = item });
                             }
+                        }
+
+                        if (ViewModel.currentModel.currentTabelaPreco == null)
+                        { 
+                            App.Messages.ShowAsync($"Item sem Tabela de preço, contate o administrador para checar as configurações!");
+                            ViewModel.IsBusy = false;
+                            return;
                         }
 
                         ViewModel.xDescontoMaximo = $"desconto permitido {ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo}%";
@@ -151,10 +157,10 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                         var entry = sender as Entry;
                         if (entry != null && entry.IsFocused)
                         {
-                           ViewModel.vDesconto = ViewModel.pDesconto = ViewModel.currentModel.pDesconto = ViewModel.currentModel.vDesconto = 0;
-                                ViewModel.vUnitarioVendaComImpostos = 
-                                PedidoVendaCalculos.CalculoValorUnitarioComImpostos(ViewModel.vUnitarioVendaSemImposto,
-                                    ViewModel.pStVenda ?? 0, ViewModel.pIpiVenda ?? 0);
+                            ViewModel.vDesconto = ViewModel.pDesconto = ViewModel.currentModel.pDesconto = ViewModel.currentModel.vDesconto = 0;
+                            ViewModel.vUnitarioVendaComImpostos =
+                            PedidoVendaCalculos.CalculoValorUnitarioComImpostos(ViewModel.vUnitarioVendaSemImposto,
+                                ViewModel.pStVenda ?? 0, ViewModel.pIpiVenda ?? 0);
 
                             ViewModel.vUnitarioVenda = ViewModel.currentModel.vUnitarioVenda = ViewModel.vUnitarioVendaComImpostos;
                             PedidoVendaCalculos.AtualizaValores(ViewModel.currentModel);

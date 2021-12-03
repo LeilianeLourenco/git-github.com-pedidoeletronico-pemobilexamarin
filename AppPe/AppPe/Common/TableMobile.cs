@@ -56,7 +56,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_TABELAESCALONADA_FAIXACOMISSAO = "TB_TABELAESCALONADA_FAIXACOMISSAO";
         public const string TB_TABELAESCALONADA_REPRESENTANTE = "TB_TABELAESCALONADA_REPRESENTANTE";
         public const string TB_GRADETAMANHO = "TB_GRADETAMANHO";
-        public const string TB_GRADECOR = "TB_GRADECOR";
+        public const string TB_GRADECOR = "TB_GRADECOR"; 
+        public const string TB_PRODUTO_GRADES = "TB_PRODUTO_GRADES";
+        public const string TB_PRODUTO_GRADES_COMPOSICAO = "TB_PRODUTO_GRADES_COMPOSICAO";
         public const string TB_TABELAPRECO = "TB_TABELAPRECO";
         public const string TB_TABELAPRECOITEM = "TB_TABELAPRECOITEM";
         public const string TB_TABELA_PRECO_CLIENTES = "TB_TABELA_PRECO_CLIENTES";
@@ -379,6 +381,26 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                         return "APIgradeCor";
                     default:
                         return TB_GRADECOR;
+                }
+            if (classe == typeof(GradeVariacaoProdutoModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idGradeProduto";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiVariacaoGradesMobile";
+                    default:
+                        return TB_PRODUTO_GRADES;
+                }
+            if (classe == typeof(GradeVariacaoProdutoComposicaoModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idGradeProdutoComposicao";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiVariacaoGradesComposicaoMobile";
+                    default:
+                        return TB_PRODUTO_GRADES_COMPOSICAO;
                 }
             if (classe == typeof(GradeTamanhoModel))
                 switch (tipoRetornoInfoClass)

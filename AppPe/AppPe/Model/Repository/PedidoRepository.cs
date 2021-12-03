@@ -173,6 +173,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         }
 
         /// <summary>
+        /// Mostra as variações dos produtos 
+        /// </summary>
+        /// <param name="idEmpresa"></param>
+        /// <returns></returns>
+        public static bool MostrarProdutoVariacoesVenda(int idEmpresa)
+        { 
+            return App.Data.Connection.Table<ConfiguracaoGeralModel>().Where(c => c.idEmpresa == idEmpresa).Select(t => t.bMostraProdutosVariacoesNaVenda).FirstOrDefault() ?? false;
+        }
+
+        /// <summary>
         /// Aqui já busca o local ordenado por prioridade
         /// </summary>
         /// <param name="idCliente"></param>
@@ -1194,6 +1204,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
             return dfaturado.ToCurrencyStringPtBr();
         }
+
 
 
         public static DashMetaMensalModel GetDadosDashMensal(double widthGridBoxDash)

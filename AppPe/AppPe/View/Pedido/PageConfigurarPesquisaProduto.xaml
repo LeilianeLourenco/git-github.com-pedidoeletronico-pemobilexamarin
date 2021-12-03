@@ -33,7 +33,7 @@
 
                 <TextCell x:Name="TextCellRepresentacoes" PropertyChanged="TextCellRepresentacoes_OnPropertyChanged" Command="{Binding GoToRepresentacoesCommand}"  Detail="{Binding representada.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Representações"/>
 
-                <SwitchCell On="{Binding currentModel.bUltimasCompras}"  Text="Trazer últimas compras ?"  />
+                <!--<SwitchCell On="{Binding currentModel.bUltimasCompras}"  Text="Trazer últimas compras ?"  />-->
 
             </TableSection>
         </TableRoot>

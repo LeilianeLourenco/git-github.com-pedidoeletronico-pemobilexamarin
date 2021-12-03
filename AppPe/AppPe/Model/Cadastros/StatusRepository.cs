@@ -206,7 +206,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
                     //{
                     //    where = $"idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} and stVenda == 2 and stAparecerStatus <> 0";
                     //}
-                    where = $"idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} and stVenda == 2 and stAparecerStatus <> 0";
+                    where = $"idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} and stVenda = 2 and stAparecerStatus <> 0";
                 }
 
 
@@ -253,7 +253,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             catch (Exception ex)
             {
                 ex.TrakException();
-                return new ListItemModel { Display = "ocorreu um erro ao buscar o status defalut." };
+                return new ListItemModel { Display = "ocorreu um erro ao buscar o status default." };
             }
 
         }

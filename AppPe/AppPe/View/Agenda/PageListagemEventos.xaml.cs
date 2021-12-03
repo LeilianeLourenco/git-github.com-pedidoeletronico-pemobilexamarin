@@ -51,14 +51,14 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Agenda
 
 
             viewModel.ExecuttingAnyCommand = false; 
-            if (viewModel.canExecuteInicial)
-            {
-                if (Device.RuntimePlatform == Device.iOS)
-                {
-                    viewModel.TratamentoErroToiOS();
-                    await Task.Yield();
-                }
-            }
+            //if (viewModel.canExecuteInicial)
+            //{
+            //    if (Device.RuntimePlatform == Device.iOS)
+            //    {
+            //        viewModel.TratamentoErroToiOS();
+            //        await Task.Yield();
+            //    }
+            //}
 
 
             Device.StartTimer(UtilMethods.GetStartTime, viewModel.Initialize);

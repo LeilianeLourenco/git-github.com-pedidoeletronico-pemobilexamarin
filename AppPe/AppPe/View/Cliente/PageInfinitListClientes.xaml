@@ -16,10 +16,12 @@
         <Grid IsVisible="{Binding bFind}" Padding="5,5,5,5">
             <xaml:SearchPE x:Name="SearchBarPesquisa" SearchCommand="{Binding SearchCommand}" Placeholder="pesquisar..." Text="{Binding xFiltro, Mode=TwoWay}" />
         </Grid>
-        <custom:InfiniteSimpleListView x:Name="ListViewDados" Grid.Row="1" ItemsSource="{Binding LItens}"
+        <custom:InfiniteSimpleListView x:Name="ListViewDados" Grid.Row="1"
+                                 ItemsSource="{Binding LItens}"
+                                 HasUnevenRows="True"
                                  SelectedItem="{Binding ItemSelected}"
                                  LoadMoreCommand="{Binding LoadItensCommand}"
-                                  ItemSelected="ListView_OnItemSelected">
+                                 ItemSelected="ListView_OnItemSelected">
             <x:Arguments>
                 <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
             </x:Arguments>

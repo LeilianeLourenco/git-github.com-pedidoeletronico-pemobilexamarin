@@ -96,8 +96,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                                     where stAtivo = 1 and idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} limit 1";
 
             var dados = App.Data.Connection.Query<BasicPickerModel>(xQuery);
-            if (dados == null)
+            if (dados?.Count() == 0)
                 return new ListItemModel();
+
+
             var item = dados.FirstOrDefault();
             return new ListItemModel
             {
@@ -640,7 +642,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     var _group = _lTabelas.GroupBy(gr => gr.stPrioridade)
                         .OrderByDescending(gr => gr.FirstOrDefault().stPrioridade).FirstOrDefault();
 
-                    item.currentTabelaPreco = _group.OrderBy(gr => gr.vUnitario).FirstOrDefault();
+
+                    if (_group != null)
+                        item.currentTabelaPreco = _group.OrderBy(gr => gr.vUnitario).FirstOrDefault();
                 }
                 item.bTabelasCarregadas = true;
             }
@@ -922,7 +926,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             //        .Where(c => c.idTabelaEscalonada == tabela.idTabelaPrecoEscalonada)
                             //        .ToList();
                             retorno.Add(item);
-                        } 
+                        }
                     }
                 }
 

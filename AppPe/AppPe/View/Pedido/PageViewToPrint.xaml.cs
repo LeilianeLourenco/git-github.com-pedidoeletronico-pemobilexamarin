@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Rg.Plugins.Popup.Pages;
+﻿using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;
@@ -18,6 +13,15 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             
             
             ViewModel.idPedidoVendaOffLine = idPedidoVendaOffLine;
+
+            if(Device.RuntimePlatform == Device.iOS)
+            {
+                OSAppTheme currentTheme = Application.Current.RequestedTheme;
+                if (currentTheme == OSAppTheme.Dark)
+                {
+                    FrameImpressao.BackgroundColor = Color.Black;
+                }
+            }
         }
 
 
@@ -29,6 +33,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             base.OnAppearing();
 
             Device.StartTimer(UtilMethods.GetStartTime, ViewModel.Initialize);
+
         }
     }
 }

@@ -21,7 +21,7 @@
     <pages:PopupPage.BindingContext>
         <pedido:PedidoToPrintViewModel/>
     </pages:PopupPage.BindingContext>
-    <Frame BackgroundColor="White" Padding="0,0,0,0"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"  OutlineColor="{StaticResource CinzaPrincipal}">
+    <Frame x:Name="FrameImpressao" BackgroundColor="White" Padding="0,0,0,0"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"  OutlineColor="{StaticResource CinzaPrincipal}">
         <Frame.HasShadow>
             <OnPlatform x:TypeArguments="x:Boolean" Android="True" iOS="True" WinPhone="False"/>
         </Frame.HasShadow>

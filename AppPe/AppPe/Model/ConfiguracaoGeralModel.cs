@@ -28,6 +28,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public bool bMostraFaixaTabelaEscalonada { get; set; } 
         public int? idStatusVendaDefault { get; set; }
         public int? idStatusOrcamentoDefault { get; set; }
+
+        public bool? bMostraProdutosVariacoesNaVenda { get; set; }
     }
 
 

@@ -134,7 +134,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         public static List<PedidoVendaItensModel> Get(int skip, int take, string xFiltro,
             ConfiguracaoPesquisaProdutoModel config, int idClientesOffLine, int? idClientes, int _idRepresentante,
-            List<int> idProdutos = null, bool? bUsaLocaisEstoque = null)
+            List<int> idProdutos = null, bool? bUsaLocaisEstoque = null, bool? bMostraVariacoes = null, bool? bBotaoFiltroUltimasCompras = false, bool? bBotaoFiltroDestques = false)
         {
             try
             {
@@ -149,6 +149,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                   or UPPER(tb_produto.cEan) like('%{xFiltro.ToUpper()}%')
                                   or UPPER(tb_produto.cEanEmb) like('%{xFiltro.ToUpper()}%')) ";
                 }
+
+
+                //se for mostrar eu não coloco o where
+                if(!bMostraVariacoes.GetValueOrDefault())
+                    xWhere += $@" and tb_produto.idProdutoPai is null "; 
 
                 if (config.paramCategoria != null && config.paramCategoria.Id > 0)
                 {
@@ -179,10 +184,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     }
                 }
 
-                if (config.bUltimasCompras)
+
+                if (config.bUltimasCompras || bBotaoFiltroUltimasCompras.GetValueOrDefault())
                 {
                     xWhere += $" and tb_pedidovenda.idClientesOffLine = {idClientesOffLine} ";
                 }
+
+                //fitlro de destques
+                if(bBotaoFiltroDestques.GetValueOrDefault())
+                    xWhere += $" and tb_produto.bDestaqueCatalogo = '1' ";
 
 
                 if (idProdutos != null && idProdutos?.Count() > 0)
@@ -195,7 +205,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 var xFrom = "";
                 var xFields = "";
-                if (config.bUltimasCompras)
+                if (config.bUltimasCompras || bBotaoFiltroUltimasCompras.GetValueOrDefault())
                 {
                     List<int?> idsPedidosCliente = App.Data.Connection.Table<PedidoVendaModel>().Where(p => p.idClientesOffLine == idClientesOffLine).Select(p => p.idPedidoVendaOffLine).ToList();
                     IEnumerable<IGrouping<int, PedidoVendaItensModel>> itens = App.Data.Connection.Table<PedidoVendaItensModel>().Where(p => idsPedidosCliente.Contains(p.idPedidoVendaOffLine)).GroupBy(p => p.idProdutoOffLine);

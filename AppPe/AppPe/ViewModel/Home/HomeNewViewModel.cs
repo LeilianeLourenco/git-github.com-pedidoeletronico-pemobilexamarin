@@ -235,6 +235,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
 
 
             xVendasEmitidasMes = PedidoRepository.GetTotalVendasMesAtual();
+
         }
 
         public void Sincronizar()

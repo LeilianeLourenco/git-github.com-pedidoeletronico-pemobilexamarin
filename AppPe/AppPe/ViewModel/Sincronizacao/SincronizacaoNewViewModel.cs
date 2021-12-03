@@ -387,6 +387,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<ProdutoModel>();
 
+
+                //if (!ocorreuErro && !bFalhaConexao)
+                //    await SincronizacaoDownloadPaginado<GradeVariacaoProdutoModel>();
+                //if (!ocorreuErro && !bFalhaConexao)
+                //    await SincronizacaoDownloadPaginado<GradeVariacaoProdutoComposicaoModel>();
+
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<tb_produto_codigocliente>();
                 if (!ocorreuErro && !bFalhaConexao)

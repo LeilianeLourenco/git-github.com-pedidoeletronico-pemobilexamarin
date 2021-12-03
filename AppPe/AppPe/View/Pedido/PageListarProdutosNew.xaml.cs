@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -24,8 +25,6 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
         {
             try
             {
-
-
                 InitializeComponent();
                 if (Device.RuntimePlatform == Device.UWP || Device.RuntimePlatform == Device.WPF)
                 {
@@ -336,6 +335,37 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                 ex.TrakException();
             }
         }
+
+        private void ButtonFiltros_OnClicked(object sender, EventArgs e)
+        {
+            if (ViewModel.IsBusy)
+                return;
+
+            var _buttonClicked = sender as Button;
+            foreach (var buttons in ScrollButtonsFiltros.Children)
+            {
+                var _btn = buttons as Button;
+
+                if (_buttonClicked.Text == _btn.Text)
+                {
+
+                    if (Device.RuntimePlatform != Device.iOS)
+                    { 
+                        _btn.TextColor = Color.FromHex("#FFFFFF");
+                        _btn.BackgroundColor = Color.FromHex("#555555");
+                    }
+                    else
+                        _btn.TextColor = Color.FromHex("#555555");
+                }
+                else
+                {
+                    _btn.TextColor = Color.FromHex("");
+                    _btn.BackgroundColor = Color.FromHex("");
+                }
+            }
+
+        }
+
 
 
         private void SetTemplateLista()

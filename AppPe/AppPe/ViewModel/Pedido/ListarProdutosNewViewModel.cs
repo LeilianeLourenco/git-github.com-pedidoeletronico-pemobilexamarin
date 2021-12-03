@@ -26,6 +26,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public ICommand HabiliteToSearchCommand { get; set; }
 
         public ICommand ConfiguracaoCommand { get; set; }
+        public ICommand AplicaFiltroItensCommand { get; set; }
+        public ICommand AplicaFiltroRecorrenciaCommand { get; set; }
+        public ICommand AplicaFiltroCampanhaCommand { get; set; }
+        public ICommand AplicaFiltroDestaquesCommand { get; set; }
 
 
         private PedidoNewViewModel _currentPedidoViewModel;
@@ -88,6 +92,57 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+
+        private bool _bFiltroBotaoItens = false;
+
+        public bool bFiltroBotaoItens
+        {
+            get { return _bFiltroBotaoItens; }
+            set
+            {
+                _bFiltroBotaoItens = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
+        private bool _bFiltroBotaoRecorrencia = false;
+
+        public bool bFiltroBotaoRecorrencia
+        {
+            get { return _bFiltroBotaoRecorrencia; }
+            set
+            {
+                _bFiltroBotaoRecorrencia = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _bFiltroBotaoCampanhas = false;
+
+        public bool bFiltroBotaoCampanhas
+        {
+            get { return _bFiltroBotaoCampanhas; }
+            set
+            {
+                _bFiltroBotaoCampanhas = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _bBotaoFiltroDestaques = false;
+
+        public bool bBotaoFiltroDestaques
+        {
+            get { return _bBotaoFiltroDestaques; }
+            set
+            {
+                _bBotaoFiltroDestaques = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
+
         private bool _bListaItensHabilitada = true;
 
         public bool bListaItensHabilitada
@@ -112,7 +167,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
-  
+        private bool _bMostraProdutosVariacoes = false;
+
+        public bool bMostraProdutosVariacoes
+        {
+            get { return _bMostraProdutosVariacoes; }
+            set
+            {
+                _bMostraProdutosVariacoes = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private string _xtitleButtonEditar = "Editar";
 
@@ -206,10 +271,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             CurrentTabelaPreco = ListaTabelaPreco.FirstOrDefault();
             CurrentLocalEstoque = ListaLocalEstoque.FirstOrDefault();
+            bFiltroBotaoItens = true; // coloco isso pra que quando abra a tela o botão de itens seja o marcado inicial.
             Config = new ConfiguracaoPesquisaProdutoModel();
             Produtos = new ObservableCollection<PedidoVendaItensModel>();
             LoadItensCommand = new Command(LoadItens);
             SearchCommand = new Command(Search);
+            AplicaFiltroItensCommand = new Command(AplicaFiltroItens);
+            AplicaFiltroRecorrenciaCommand = new Command(AplicaFiltroRecorrencia);
+            AplicaFiltroCampanhaCommand = new Command(AplicaFiltroCampanhas);
+            AplicaFiltroDestaquesCommand = new Command(AplicaFiltroDestaques);
+            
             HabiliteToSearchCommand = new Command(() =>
             {
                 bFind = !bFind;
@@ -234,8 +305,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 UtilNavidate.PushAsync(new PageConfigurarPesquisaProduto(Config));
             });
 
+
             this._buscaPreco = new BuscaPreco();
         }
+
+
 
         public bool Initialize()
         {
@@ -247,10 +321,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 //{
                 //    IsBusy = true;
                 //});
-                 
+
                 VerificaLocaisEstoque();
-                PreparaInformacoesConfigs();  
-                LoadItens(); 
+                VerificaMostraVariacoes();
+                PreparaInformacoesConfigs();
+                LoadItens();
             }
             return canExecuteInicial;
         }
@@ -263,7 +338,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 if (IsBusy)
                     return;
-                 
+
 
                 await Task.Run(() =>
                 {
@@ -276,7 +351,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         var idClientes = ClienteRepository.GetIdClienteNuvem(idClientesOffLine);
                         var idRepresentante = (currentPedidoViewModel.currentModel.idRepresentantePedido ?? App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers) ?? 0;
 
-                   
+
                         var iCountToFind = 30;
 
                         if (App.EnvironmentPE.TipoPageProdutos == 0)
@@ -292,8 +367,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             idCliente: idClientes, idClienteOffLine: idClientesOffLine, idRepresentante: idRepresentante, idRepresentacao: 0
                             );
 
-                        var _idProdutos = _buscaProdutos.BuscarProdutos(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
-                            currentPedidoViewModel.ItemCondicaoPgto.Id);
+
+                        List<int> _idProdutos = new List<int>();
+
+
+                        if (bFiltroBotaoCampanhas)
+                        {
+                            _idProdutos = _buscaProdutos.BuscarProdutosCampanha(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
+                    currentPedidoViewModel.ItemCondicaoPgto.Id);
+
+                            if (_idProdutos?.Count() == 0)
+                                _idProdutos.Add(0);
+                        } 
+                        else
+                            _idProdutos = _buscaProdutos.BuscarProdutos(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
+                         currentPedidoViewModel.ItemCondicaoPgto.Id);
 
                         var lItens = ProdutoRepository.Get(
                             Produtos.Count,
@@ -304,7 +392,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             idClientes,
                             idRepresentante,
                             _idProdutos,
-                            bUsaLocaisEstoque
+                            bUsaLocaisEstoque,
+                            false,
+                            bFiltroBotaoRecorrencia,
+                            bBotaoFiltroDestaques
                             );
 
                         this._buscaPreco.Buscar(itens: lItens,
@@ -322,7 +413,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         }
 
                         foreach (var item in lItens)
-                        { 
+                        {
                             item.bBloquearVisualizacaoEstoqueVendedor = bAplicaBloquearVisualizacaoEstoque;
                             if (ItensSelecionados != null)
                             {
@@ -368,6 +459,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
         public async void Search()
         {
+            
             try
             {
                 await Task.Run(() =>
@@ -390,6 +482,128 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         }
 
 
+
+        public async void AplicaFiltroItens()
+        { 
+            try
+            {
+                await Task.Run(() =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        bFiltroBotaoItens = true;
+                        bFiltroBotaoCampanhas = false;
+                        bBotaoFiltroDestaques = false;
+                        bFiltroBotaoRecorrencia = false;
+
+                        if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
+                            Produtos.Clear();
+                        else
+                            Produtos = new ObservableCollection<PedidoVendaItensModel>();
+
+
+                        LoadItens();
+                    });
+                }); 
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+        }
+
+        public async void AplicaFiltroCampanhas()
+        { 
+            try
+            {
+                await Task.Run(() =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        bFiltroBotaoItens = false;
+                        bFiltroBotaoCampanhas = true;
+                        bBotaoFiltroDestaques = false;
+                        bFiltroBotaoRecorrencia = false;
+
+                        if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
+                            Produtos.Clear();
+                        else
+                            Produtos = new ObservableCollection<PedidoVendaItensModel>();
+
+
+                        LoadItens();
+                    });
+                });
+
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+        }
+
+        public async void AplicaFiltroRecorrencia()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        bFiltroBotaoItens = false;
+                        bFiltroBotaoCampanhas = false;
+                        bBotaoFiltroDestaques = false;
+                        bFiltroBotaoRecorrencia = true;
+
+                        if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
+                            Produtos.Clear();
+                        else
+                            Produtos = new ObservableCollection<PedidoVendaItensModel>();
+
+
+                        LoadItens();
+                    });
+                });
+
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+           
+        }
+
+        public async void AplicaFiltroDestaques()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        bFiltroBotaoItens = false;
+                        bFiltroBotaoCampanhas = false;
+                        bBotaoFiltroDestaques = true;
+                        bFiltroBotaoRecorrencia = false;
+
+                        if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
+                            Produtos.Clear();
+                        else
+                            Produtos = new ObservableCollection<PedidoVendaItensModel>();
+
+
+                        LoadItens();
+                    });
+                });
+             
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+        }
+
+
         public async void VerificaLocaisEstoque()
         {
             try
@@ -397,8 +611,26 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 await Task.Run(() =>
                 {
                     Device.BeginInvokeOnMainThread(() =>
-                    { 
+                    {
                         bUsaLocaisEstoque = PedidoRepository.EmpresaUtilizaLocaisEstoque(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
+                    });
+                });
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+        }
+
+        public async void VerificaMostraVariacoes()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        bMostraProdutosVariacoes = PedidoRepository.EmpresaUtilizaLocaisEstoque(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
                     });
                 });
             }
@@ -416,7 +648,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 {
                     Config.bUtilizaMinimoVendasProduto = true;
                     Config.stCalculoVendas = currentPedidoViewModel.currentModel.stCalculoMinimoVenda;
-                } 
+                }
             }
             catch (Exception ex)
             {

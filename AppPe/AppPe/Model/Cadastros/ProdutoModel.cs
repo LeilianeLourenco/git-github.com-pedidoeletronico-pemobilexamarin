@@ -27,6 +27,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             set { _idProdutoOffLine = value; NotifyPropertyChanged(); }
         }
 
+
+
         private string _cAlternativo;
         [NotNull]
         public string cAlternativo
@@ -34,6 +36,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             get { return (_cAlternativo ?? "").ToUpper(); }
             set { _cAlternativo = value; NotifyPropertyChanged(); }
         }
+
+        private int? _idProdutoPai; 
+        public int? idProdutoPai
+        {
+            get { return _idProdutoPai; }
+            set { _idProdutoPai = value; NotifyPropertyChanged(); }
+        } 
 
         private string _xNome;
         [NotNull]
