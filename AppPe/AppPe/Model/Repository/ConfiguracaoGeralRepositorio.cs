@@ -184,13 +184,26 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             var infoProduto = InformacoesBasicasProduto(idProduto: item.Select(p => p.idProduto).FirstOrDefault());
                             if (modelPedido.stCalculoMinimoVenda == 1)
                             {
-                                validaConfig = item.Sum(p => p.vQtdItem) >= _vLimiteMinimoProdutoAux;
-                                _xmsgRetorno = $"O item {infoProduto} não possui a quantidade mínima de {Extensions.ToCurrencyStringSimplesPtBr(_vLimiteMinimoProdutoAux)} itens";
+                                double _qtd = 0;
+                                var _itensGrade = item.Select(t => t.ItensGrade);
+                                foreach (var grades in _itensGrade)
+                                {
+                                    _qtd += grades.Sum(t => t.vQtdItem);
+                                }
 
+                                validaConfig = _qtd >= _vLimiteMinimoProdutoAux;
+                                _xmsgRetorno = $"O item {infoProduto} não possui a quantidade mínima de {Extensions.ToCurrencyStringSimplesPtBr(_vLimiteMinimoProdutoAux)} itens"; 
                             }
                             else
                             {
-                                validaConfig = item.Sum(p => p.vSubTotal) >= _vLimiteMinimoProdutoAux;
+                                double _vsubtotal = 0;
+                                var _itensGrade = item.Select(t => t.ItensGrade);
+                                foreach (var grades in _itensGrade)
+                                {
+                                    _vsubtotal += grades.Sum(t => t.vSubTotal);
+                                }
+
+                                validaConfig = _vsubtotal >= _vLimiteMinimoProdutoAux;
                                 _xmsgRetorno = $"O item {infoProduto} não possui o valor total mínimo de {Extensions.ToCurrencyStringPtBr(_vLimiteMinimoProdutoAux)}";
                             }
                         }
