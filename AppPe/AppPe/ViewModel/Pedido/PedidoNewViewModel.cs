@@ -1289,7 +1289,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     }
                     else if (!_retornoValidacao.bValidado && !App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador && currentModel.bForcarMinimoVendas)
                     {
-                        await App.Messages.ShowConfirmAsync($"{_retornoValidacao.xMensagemValidacao}");
+                        await App.Messages.ShowAsync($"{_retornoValidacao.xMensagemValidacao}");
                         return;
                     }
                     else if (!_retornoValidacao.bValidado && !App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador && !currentModel.bForcarMinimoVendas)
