@@ -426,6 +426,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadLocalEstoque();
+                 
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadPaginado<JornadaModel>(); 
+                 
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadPaginado<JornadaHorariosModel>();
 
                 if (bFalhaConexao)
                     AnaliseFinalSincronizacao("Ocorreu um erro de conexão com a internet durante a sincronização, tente novamente.");

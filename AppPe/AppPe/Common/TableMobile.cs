@@ -25,7 +25,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_RECEBIMENTOTITULOS_MOVIMENTACOES = "TB_RECEBIMENTOTITULOS_MOVIMENTACOES";
         public const string TB_CONFIGURACOES_GERAIS = "TB_CONFIGURACOES_GERAIS";
         public const string TB_CONFIGURACOES_ESPECIFICAS = "TB_CONFIGURACOES_ESPECIFICAS";
-        
+        public const string TB_JORNADA_TRABALHO = "TB_JORNADA_TRABALHO";
+        public const string TB_JORNADA_TRABALHO_HORARIOS = "TB_JORNADA_TRABALHO_HORARIOS";
+
         public const string TB_CATEGORIA = "TB_CATEGORIA";
         public const string TB_UNIDADEMEDIDA = "TB_UNIDADEMEDIDA";
         public const string TB_LOGSYNC = "TB_LOGSYNC";
@@ -279,6 +281,26 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                         return "idConfiguracaoEspecifica";
                     case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
                         return "ApiConfiguracoesEspecificas";
+                    default:
+                        return TB_CONFIGURACOES_ESPECIFICAS;
+                }
+            if (classe == typeof(JornadaModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idJornada";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiJornadaTrabalho";
+                    default:
+                        return TB_CONFIGURACOES_ESPECIFICAS;
+                }
+            if (classe == typeof(JornadaHorariosModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idJornadaDia";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiJornadaTrabalhoHorarios";
                     default:
                         return TB_CONFIGURACOES_ESPECIFICAS;
                 }
