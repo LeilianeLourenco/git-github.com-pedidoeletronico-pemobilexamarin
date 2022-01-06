@@ -62,7 +62,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Integracao
                 if (Resultado)
                     setQuery = $" xLogIntegracao = '{xLogIntegracao}' ";
                 else
-                    setQuery = $" dtUltimaSincronizacao = DATETIME('now')";
+                    setQuery = $" dtUltimaSincronizacao = '{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}'";
                 
 
                 App.Data.Connection.Execute($"update TB_INTEGRACAO set {setQuery} where idIntegracao = {idIntegracao}");                  
