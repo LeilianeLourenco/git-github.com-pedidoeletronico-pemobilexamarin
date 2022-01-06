@@ -59,6 +59,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
 
         public byte? stPeriodoNovosClientes { get; set; }
 
+        private int? _idJornadaTrabalho; 
+        public int? idJornadaTrabalho
+        {
+            get { return _idJornadaTrabalho; }
+            set { _idJornadaTrabalho = value; NotifyPropertyChanged(); }
+        } 
+         
         public int? qVisitaClientesAtivos { get; set; } = 0;
 
         public byte? stPeriodoClientesAtivos { get; set; }

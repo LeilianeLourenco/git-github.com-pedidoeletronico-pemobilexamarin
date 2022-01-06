@@ -288,6 +288,44 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         }
 
 
+        public static bool bPermiteJornada(int idEmpresa, int idRepresentante)
+        {
+            try
+            {
+
+                if (idRepresentante == 0)
+                    return true;
+
+
+                var _idJornadaAtrelada =
+                 App.Data.Connection.Table<EmpresaAspnetUsersModel>()
+                     .Where(c => c.idEmpresa == idEmpresa && c.idEmpresa_aspnetUsers == idRepresentante).Select(t => t.idJornadaTrabalho).FirstOrDefault();
+
+
+                if (_idJornadaAtrelada.GetValueOrDefault() == 0)
+                    return true;
+
+                var _jornadaHorarios =
+                 App.Data.Connection.Table<JornadaHorariosModel>()
+                     .Where(c => c.idJornada == _idJornadaAtrelada).ToList();
+
+                var _dateNow = DateTime.Now.TimeOfDay;
+                var _dayOfWeek = (int)DateTime.Now.DayOfWeek;
+
+                //se o count for > 0 é porque existe um horário permitido e ele pode entrar na tela de pedido.
+                return _jornadaHorarios.Where(t => t.nDiaSemana == _dayOfWeek && t.tHorarioInicio >= _dateNow && t.tHorarioFim <= _dateNow).ToList().Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+                return false;
+
+                //Insights.Report(ex, Insights.Severity.Error);
+            }
+           
+        }
+
+
         public static PedidoVendaModel GetPedidoVendaModel(int idPedidoVendaOffLine)
         {
             PedidoVendaModel objPedidoVendaModel = null;

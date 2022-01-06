@@ -9,6 +9,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
     {
         [PrimaryKey()]
         public int idJornada { get; set; }
+        public int idEmpresa { get; set; }
         public bool bDeletado { get; set; }
         public string xNomeJornada { get; set; }
     }

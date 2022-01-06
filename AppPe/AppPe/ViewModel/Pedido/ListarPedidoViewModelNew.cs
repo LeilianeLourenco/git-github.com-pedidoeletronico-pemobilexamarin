@@ -149,7 +149,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             });
 
             NovoCommand = new Command(() =>
-            { 
+            {
+                if(!PedidoRepository.bPermiteJornada(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers.GetValueOrDefault()))
+                {
+                    App.Messages.ShowAsync("Horário fora do expediente, operação não permitida!");
+                    return;
+                }
+
                 UtilNavidate.PushAsync(new PagePedidoNew(new PedidoVendaModel()));
             });
 
