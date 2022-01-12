@@ -292,7 +292,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
                         return "ApiJornadaTrabalho";
                     default:
-                        return TB_CONFIGURACOES_ESPECIFICAS;
+                        return TB_JORNADA_TRABALHO;
                 }
             if (classe == typeof(JornadaHorariosModel))
                 switch (tipoRetornoInfoClass)
@@ -302,7 +302,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
                         return "ApiJornadaTrabalhoHorarios";
                     default:
-                        return TB_CONFIGURACOES_ESPECIFICAS;
+                        return TB_JORNADA_TRABALHO_HORARIOS;
                 }
             if (classe == typeof(EstoqueModel))
                 switch (tipoRetornoInfoClass)

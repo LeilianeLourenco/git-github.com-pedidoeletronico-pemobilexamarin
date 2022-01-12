@@ -186,10 +186,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             {
                                 double _qtd = 0;
                                 var _itensGrade = item.Select(t => t.ItensGrade);
-                                foreach (var grades in _itensGrade)
+
+                                if(_itensGrade?.Where(t => t != null).Count() > 0)
                                 {
-                                    _qtd += grades.Sum(t => t.vQtdItem);
+                                    foreach (var grades in _itensGrade)
+                                    {
+                                        _qtd += grades.Sum(t => t.vQtdItem);
+                                    }
                                 }
+                                else
+                                {
+                                    _qtd += item.Sum(t => t.vQtdItem);
+                                }
+                              
 
                                 validaConfig = _qtd >= _vLimiteMinimoProdutoAux;
                                 _xmsgRetorno = $"O item {infoProduto} não possui a quantidade mínima de {Extensions.ToCurrencyStringSimplesPtBr(_vLimiteMinimoProdutoAux)} itens"; 

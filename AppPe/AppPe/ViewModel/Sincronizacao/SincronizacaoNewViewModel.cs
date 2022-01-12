@@ -879,6 +879,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         empresaLocal.xMeuID = representante.xMeuID;
                         empresaLocal.vMetaCorrente = representante.vMetaCorrente;
                         empresaLocal.imUsuario = representante.imUsuario;
+                        empresaLocal.idJornada = representante.idJornada;
                         App.Data.Connection.Update(empresaLocal);
 
                         if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa == empresaLocal.idEmpresa &&

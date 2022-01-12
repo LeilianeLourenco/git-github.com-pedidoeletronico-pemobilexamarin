@@ -68,7 +68,7 @@ namespace Xamarin.HLP.Mobile.AppPE
 
         public static CurrentUserLoginModel EnvironmentPE { get; set; }
 
-        public static Ambiente AmbienteApp = Ambiente.Producao;
+        public static Ambiente AmbienteApp = Ambiente.HomologacaoProducao;
 
         public static bool LoginHlp { get; set; } = false;
 
@@ -77,7 +77,8 @@ namespace Xamarin.HLP.Mobile.AppPE
             Producao,
             Homologacao,
             Local,
-            HlpHom
+            HlpHom,
+            HomologacaoProducao
         }
 
         public static string UrlWebApi
@@ -94,6 +95,8 @@ namespace Xamarin.HLP.Mobile.AppPE
                         return "http://hom-pedidoeletronico.azurewebsites.net/";
                     case Ambiente.HlpHom:
                         return "http://hlpsistemas.no-ip.org:8088/";
+                    case Ambiente.HomologacaoProducao:
+                        return "http://homologacao.pedidoeletronico.com/";
                     default:
                         return "https://pedidoeletronico.azurewebsites.net/";
                 }
@@ -111,6 +114,8 @@ namespace Xamarin.HLP.Mobile.AppPE
                         return "http://hlpsistemas.sytes.net:8085/";
                     case Ambiente.Producao:
                         return "http://apimobile.pedidoeletronico.com/";
+                    case Ambiente.HomologacaoProducao:
+                        return "http://prodhomapimobile.azurewebsites.net/";
                     default:
                         return "http://apimobile.pedidoeletronico.com/";
                 }
@@ -134,6 +139,8 @@ namespace Xamarin.HLP.Mobile.AppPE
                     //return "https://prod-pereport.sytes.net/";  link interno hlp
                     case Ambiente.Local:
                         return "http://hlpsistemas.sytes.net:8094/";
+                    case Ambiente.HomologacaoProducao:
+                        return "http://pe-reports.sytes.net/";
                     default:
                         return "http://hlpsistemas.no-ip.org:8087/";
                 }
@@ -155,6 +162,8 @@ namespace Xamarin.HLP.Mobile.AppPE
 
                     case Ambiente.Local:
                         return "http://hom-portalpedidoeletronico.azurewebsites.net/";
+                    case Ambiente.HomologacaoProducao: 
+                        return "http://portalpagamentos.pedidoeletronico.com/";
                     default:
                         return "http://hom-portalpedidoeletronico.azurewebsites.net/";
                 }

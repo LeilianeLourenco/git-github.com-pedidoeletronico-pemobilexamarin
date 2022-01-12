@@ -295,25 +295,24 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 if (idRepresentante == 0)
                     return true;
+                 
 
+                var xQuery =  $"Select idJornada from {TableMobile.TB_EMPRESA_ASPNETUSERS} where idEmpresa = {idEmpresa} and idEmpresa_aspnetUsers = {idRepresentante}";
 
-                var _idJornadaAtrelada =
-                 App.Data.Connection.Table<EmpresaAspnetUsersModel>()
-                     .Where(c => c.idEmpresa == idEmpresa && c.idEmpresa_aspnetUsers == idRepresentante).Select(t => t.idJornadaTrabalho).FirstOrDefault();
+                var _representante = App.Data.Connection.Query<EmpresaAspnetUsersModel>(xQuery).FirstOrDefault(); 
 
-
-                if (_idJornadaAtrelada.GetValueOrDefault() == 0)
+                if (_representante.idJornada.GetValueOrDefault() == 0)
                     return true;
 
                 var _jornadaHorarios =
                  App.Data.Connection.Table<JornadaHorariosModel>()
-                     .Where(c => c.idJornada == _idJornadaAtrelada).ToList();
+                     .Where(c => c.idJornada == _representante.idJornada).ToList();
 
                 var _dateNow = DateTime.Now.TimeOfDay;
                 var _dayOfWeek = (int)DateTime.Now.DayOfWeek;
 
                 //se o count for > 0 é porque existe um horário permitido e ele pode entrar na tela de pedido.
-                return _jornadaHorarios.Where(t => t.nDiaSemana == _dayOfWeek && t.tHorarioInicio >= _dateNow && t.tHorarioFim <= _dateNow).ToList().Count() > 0;
+                return _jornadaHorarios.Where(t => t.nDiaSemana == _dayOfWeek && _dateNow >= t.tHorarioInicio && _dateNow <= t.tHorarioFim).ToList().Count() > 0;
             }
             catch (Exception ex)
             {
