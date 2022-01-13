@@ -170,10 +170,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
 
                 xCliente += $@"{Environment.NewLine}{(pedido.stLancamento == 0 ? "Orçamento" : "Pedido")}: {xNumPedido}{Environment.NewLine}";
-                xCliente += $@"Emissao: {pedido.dEmissao.ToLocalTime():dd/MM/yyyy HH:mm}{Environment.NewLine}";
+                xCliente += $@"Emissão: {pedido.dEmissao.ToString("dd/MM/yyyy HH:mm")}{Environment.NewLine}";
                 if (pedido.stLancamento == 0)
                 {
-                    xCliente += $@"Valido até: {(pedido.dtValidadeOrcamento ?? DateTime.UtcNow).ToLocalTime():dd/MM/yyyy HH:mm}{Environment.NewLine}";
+                    xCliente += $@"Valido até: {(pedido.dtValidadeOrcamento ?? DateTime.UtcNow).ToString("dd/MM/yyyy HH:mm")}{Environment.NewLine}";
                 }
                 xCliente += $@"Prazo: {CondicaoPagamentoRepository.GetDisplay(pedido.idCondicaoPagamento ?? 0)}{Environment.NewLine}";
                 xCliente += $@"Vendedor: {EmpresaAspnetUsersRepository.GetDisplay(pedido.idRepresentantePedido ?? 0)}{Environment.NewLine}";

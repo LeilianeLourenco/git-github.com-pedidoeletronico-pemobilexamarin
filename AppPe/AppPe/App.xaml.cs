@@ -68,7 +68,7 @@ namespace Xamarin.HLP.Mobile.AppPE
 
         public static CurrentUserLoginModel EnvironmentPE { get; set; }
 
-        public static Ambiente AmbienteApp = Ambiente.HomologacaoProducao;
+        public static Ambiente AmbienteApp = Ambiente.Producao;
 
         public static bool LoginHlp { get; set; } = false;
 

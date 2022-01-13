@@ -297,7 +297,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     return true;
                  
 
-                var xQuery =  $"Select idJornada from {TableMobile.TB_EMPRESA_ASPNETUSERS} where idEmpresa = {idEmpresa} and idEmpresa_aspnetUsers = {idRepresentante}";
+                var xQuery =  $"Select * from {TableMobile.TB_EMPRESA_ASPNETUSERS} where idEmpresa_aspnetUsers = {idRepresentante}";
 
                 var _representante = App.Data.Connection.Query<EmpresaAspnetUsersModel>(xQuery).FirstOrDefault(); 
 

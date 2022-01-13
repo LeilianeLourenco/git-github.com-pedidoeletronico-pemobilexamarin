@@ -671,19 +671,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                     AtualizaTotalizadoresPedido();
 
-                    //tratando o horário do pedido caso for um novo
+                    //tratando o horário do pedido caso for um novo, porque se não ficar subtraindo quando edita
                     if (currentModel.dEmissao.Kind != DateTimeKind.Local && currentModel.idPedidoVendaOffLine.GetValueOrDefault() == 0)
                     {
                        currentModel.dEmissao = currentModel.dEmissao.ToLocalTime();
                     }
                     if (currentModel.dtPrevisto != null)
-                        if ((currentModel.dtPrevisto ?? DateTime.Now).Kind != DateTimeKind.Local)
+                        if ((currentModel.dtPrevisto ?? DateTime.Now).Kind != DateTimeKind.Local && currentModel.idPedidoVendaOffLine.GetValueOrDefault() == 0)
                         {
                             currentModel.dtPrevisto = (currentModel.dtPrevisto ?? DateTime.Now).ToLocalTime();
                         }
 
                     if (currentModel.dtValidadeOrcamento != null)
-                        if ((currentModel.dtValidadeOrcamento ?? DateTime.Now).Kind != DateTimeKind.Local)
+                        if ((currentModel.dtValidadeOrcamento ?? DateTime.Now).Kind != DateTimeKind.Local && currentModel.idPedidoVendaOffLine.GetValueOrDefault() == 0)
                         {
                             currentModel.dtValidadeOrcamento =
                                 (currentModel.dtValidadeOrcamento ?? DateTime.Now).ToLocalTime();
