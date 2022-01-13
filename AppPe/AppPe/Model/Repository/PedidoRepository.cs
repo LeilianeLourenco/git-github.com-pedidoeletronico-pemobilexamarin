@@ -287,7 +287,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return item;
         }
 
-
+        #region Jornada de trabalho
         public static bool bPermiteJornada(int idEmpresa, int idRepresentante)
         {
             try
@@ -295,11 +295,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 if (idRepresentante == 0)
                     return true;
-                 
 
-                var xQuery =  $"Select * from {TableMobile.TB_EMPRESA_ASPNETUSERS} where idEmpresa_aspnetUsers = {idRepresentante}";
 
-                var _representante = App.Data.Connection.Query<EmpresaAspnetUsersModel>(xQuery).FirstOrDefault(); 
+                var xQuery = $"Select * from {TableMobile.TB_EMPRESA_ASPNETUSERS} where idEmpresa_aspnetUsers = {idRepresentante}";
+
+                var _representante = App.Data.Connection.Query<EmpresaAspnetUsersModel>(xQuery).FirstOrDefault();
 
                 if (_representante.idJornada.GetValueOrDefault() == 0)
                     return true;
@@ -321,8 +321,26 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 //Insights.Report(ex, Insights.Severity.Error);
             }
-           
+
         }
+
+        public static void RemoveHorariosJornadaNova(int idJornada)
+        {
+            try
+            {
+                var xQuery =
+                    $"DELETE FROM TB_JORNADA_TRABALHO_HORARIOS WHERE idJornada = {idJornada}";
+
+                App.Data.Connection.Execute(xQuery);
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("RemoveHorariosJornadaNova");
+            }
+        }
+
+        #endregion
+
 
 
         public static PedidoVendaModel GetPedidoVendaModel(int idPedidoVendaOffLine)

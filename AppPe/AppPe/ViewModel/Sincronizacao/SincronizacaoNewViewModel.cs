@@ -430,8 +430,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPaginado<JornadaModel>(); 
                  
-                if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPaginado<JornadaHorariosModel>();
+                //if (!ocorreuErro && !bFalhaConexao)
+                //    await SincronizacaoDownloadPaginado<JornadaHorariosModel>();
 
                 if (bFalhaConexao)
                     AnaliseFinalSincronizacao("Ocorreu um erro de conexão com a internet durante a sincronização, tente novamente.");
@@ -880,6 +880,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         empresaLocal.vMetaCorrente = representante.vMetaCorrente;
                         empresaLocal.imUsuario = representante.imUsuario;
                         empresaLocal.idJornada = representante.idJornada;
+                        
+                        //atualizando a jornada do rep;
+                        if(empresaLocal.idJornada.GetValueOrDefault() > 0)
+                        {
+                            App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idJornada = empresaLocal.idJornada;
+                        }
+
                         App.Data.Connection.Update(empresaLocal);
 
                         if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa == empresaLocal.idEmpresa &&
@@ -1779,6 +1786,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         }
                     }
 
+                    if (registro.GetType() == typeof(JornadaModel))
+                    {
+                        var jornada = registro as JornadaModel;
+                        //removendo os horários pra inserir novamente
+                        PedidoRepository.RemoveHorariosJornadaNova(jornada.idJornada);
+
+                        foreach (var item in jornada.lHorarios)
+                        {
+                            App.Data.Connection.Insert(item);
+                        }
+
+                    }
+
                     #endregion
 
 
@@ -2015,7 +2035,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             } 
                         }
                     }
+                    else if (registro.GetType() == typeof(JornadaModel))
+                    {
+                        var jornada = registro as JornadaModel;
+                        //removendo os horários pra inserir novamente
+                        PedidoRepository.RemoveHorariosJornadaNova(jornada.idJornada);
 
+                        foreach (var item in jornada.lHorarios)
+                        {  
+                            App.Data.Connection.Insert(item);
+                        }
+
+                    }
                     #endregion
 
                     App.Data.Connection.Update(registro);
@@ -2100,7 +2131,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         LoginRepository.RefreshTipoUsuario();
                         AcaoAfterSyncCommand?.Execute(null);
                         EstoqueRepository.RemoveAllEstoquePedido();
-
                         if (currentModel.LAlertaSincronizacao.Count(c => c.bErro == false) > 0)
                         {
                             FecharPopup(true);
@@ -2263,8 +2293,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             if (extensaoModel != null)
                                 extensaoModel.idEmpresa =
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
-                        }
-
+                        } 
                         if (registro.GetType() == typeof(EmpresaAspnetUsersModel))
                         {
                             var usuario = registro as EmpresaAspnetUsersModel;
@@ -2312,6 +2341,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 }
                             }
                         }
+                        
+                         
                         await SaveSincronizacao(registro, xPrimaryKeyName, xTableName);
                     }
                 }

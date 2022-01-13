@@ -1,5 +1,6 @@
 ﻿using SQLite;
 using System;
+using System.Collections.Generic;
 using Xamarin.HLP.Mobile.AppPE.Common;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model
@@ -12,6 +13,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public int idEmpresa { get; set; }
         public bool bDeletado { get; set; }
         public string xNomeJornada { get; set; }
+
+
+
+        /// <summary>
+        /// apenas recebe os horários
+        /// </summary>
+        [Ignore]
+        public List<JornadaHorariosModel> lHorarios { get; set; }
     }
 
     [Table(TableMobile.TB_JORNADA_TRABALHO_HORARIOS)]
