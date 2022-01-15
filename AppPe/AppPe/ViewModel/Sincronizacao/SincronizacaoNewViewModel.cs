@@ -331,7 +331,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
 
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownload<ConfiguracaoGeralModel>();
+                    await SincronizacaoDownloadPaginado<ConfiguracaoGeralModel>();
 
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPaginado<ConfiguracaoEspecificaModel>();
@@ -497,7 +497,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                             break;
                         }
-                        else if (xTableName == TableMobile.GetTableNameByModel<ConfiguracaoEspecificaModel>())
+                        else if (xTableName == TableMobile.GetTableNameByModel<ConfiguracaoEspecificaModel>() || xTableName == TableMobile.GetTableNameByModel<ConfiguracaoGeralModel>())
                         {
                             lsync = await
                                 UtilHttp.GetListRegistroPaginadoSync<T>(

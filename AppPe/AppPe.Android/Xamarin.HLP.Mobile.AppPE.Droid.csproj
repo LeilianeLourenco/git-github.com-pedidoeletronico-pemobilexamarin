@@ -116,6 +116,9 @@
     <PackageReference Include="sqlite-net">
       <Version>1.6.292</Version>
     </PackageReference>
+    <PackageReference Include="TEditor2">
+      <Version>1.4.4</Version>
+    </PackageReference>
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle">
       <Version>3.0.0.5</Version>
     </PackageReference>

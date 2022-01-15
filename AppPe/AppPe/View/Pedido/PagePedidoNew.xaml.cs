@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
+using TEditor;
+using TEditor.Abstractions;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
@@ -154,6 +157,28 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
         }
 
 
-        
+        #region Editor
+
+        async void Editor_OnClicked(object sender, EventArgs e)
+        {
+            await ShowTEditor();
+        }
+        async Task ShowTEditor()
+        {
+            TEditorResponse response = await CrossTEditor.Current.ShowTEditor(ViewModel.currentModel.xInformacaoContrato);
+            if (response.IsSave)
+            {
+                if (response.HTML != null)
+                {
+                    _displayWebView.Source = new HtmlWebViewSource() { Html = response.HTML };
+                }
+            }
+        }
+
+        #endregion
+
+
+
+
     }
 }

@@ -25,6 +25,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 "bBloquearVisualizacaoEstoqueVendedor,  " +
                 "stCalculoLimiteVendasEmpresa, " +
                 "dValorLimiteMinimo, " +
+                "xInformacaoContrato, " +
                 "bMostraFaixaTabelaEscalonada";
 
             if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
@@ -50,6 +51,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 _configsGerais.stCalculoLimiteVendasEmpresa = result.stCalculoLimiteVendasEmpresa;
                 _configsGerais.bBloquearVisualizacaoEstoqueVendedor = result.bBloquearVisualizacaoEstoqueVendedor;
                 _configsGerais.bMostraFaixaTabelaEscalonada = result.bMostraFaixaTabelaEscalonada;
+                _configsGerais.xInformacaoContrato = result.xInformacaoContrato;
             }
              
 

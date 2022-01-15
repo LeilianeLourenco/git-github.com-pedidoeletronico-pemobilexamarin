@@ -105,7 +105,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 XdtFaturamento = value.GetValueOrDefault().ToString("dd/MM/yyyy");
             }
         }
-        
+
 
         private DateTime? _dtUltimaAlteracao;
 
@@ -268,7 +268,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         public int? nCodigoContaCorrente { get; set; }
 
 
-        public double vTotalProduto { get; set; } 
+        public double vTotalProduto { get; set; }
 
         private DateTime? _dtPrevisto;
         public DateTime? dtPrevisto
@@ -341,7 +341,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _stCadastroMinimoVenda; }
             set { _stCadastroMinimoVenda = value; NotifyPropertyChanged(); }
         }
-       
+
         private bool _bForcarMinimoVendas = false;
 
         public bool bForcarMinimoVendas
@@ -397,9 +397,26 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
         public string xMinimoVendas
         {
-            get { return _xMinimoVendas;  }
-            set { _xMinimoVendas = value; NotifyPropertyChanged();  }
-        }        
+            get { return _xMinimoVendas; }
+            set { _xMinimoVendas = value; NotifyPropertyChanged(); }
+        }
+
+
+        #region Contrato
+        
+        
+        private string _xInformacaoContrato;
+
+        public string xInformacaoContrato
+        {
+            get { return _xInformacaoContrato; }
+            set { _xInformacaoContrato = value; NotifyPropertyChanged(); }
+        }
+
+
+
+        #endregion
+
 
         public int? idContato { get; set; }
         public string xNomeContato { get; set; }
@@ -419,7 +436,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         {
             get { return _bValidadoMinimoVendas; }
             set { _bValidadoMinimoVendas = value; NotifyPropertyChanged(); }
-        }        
+        }
 
         #region Propriedades que não fazem parte da base de dados
 

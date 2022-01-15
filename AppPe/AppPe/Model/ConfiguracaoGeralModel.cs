@@ -27,8 +27,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public DateTime? dtUltimaAlteracao { get; set; }
         public bool bMostraFaixaTabelaEscalonada { get; set; } 
         public int? idStatusVendaDefault { get; set; }
-        public int? idStatusOrcamentoDefault { get; set; }
-
+        public int? idStatusOrcamentoDefault { get; set; } 
+        public string xInformacaoContrato { get; set; } 
         public bool? bMostraProdutosVariacoesNaVenda { get; set; }
     }
 
