@@ -879,13 +879,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         empresaLocal.xMeuID = representante.xMeuID;
                         empresaLocal.vMetaCorrente = representante.vMetaCorrente;
                         empresaLocal.imUsuario = representante.imUsuario;
-                        empresaLocal.idJornada = representante.idJornada;
-                        
-                        //atualizando a jornada do rep;
-                        if(empresaLocal.idJornada.GetValueOrDefault() > 0)
-                        {
-                            App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idJornada = empresaLocal.idJornada;
-                        }
+                        empresaLocal.idJornada = representante.idJornada; 
 
                         App.Data.Connection.Update(empresaLocal);
 
@@ -893,6 +887,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail.ToUpper().Equals(empresaLocal.xEmail.ToUpper()))
                         {
                             App.EnvironmentPE.vMetaCorrente = empresaLocal.vMetaCorrente;
+
+                            //atualizando a jornada do usuário local logado
+                            App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idJornada = empresaLocal.idJornada;
+
                             LoginRepository.UpdateUser();
                         }
 
