@@ -249,12 +249,10 @@
                             <StackLayout Orientation="Vertical"  Margin="10,10,10,10">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/> 
+                                        <ColumnDefinition Width="*"/> 
                                     </Grid.ColumnDefinitions>
                                     <Button Grid.Column="0" Clicked="Editor_OnClicked" Style="{StaticResource Info}"  Text="Contrato" HorizontalOptions="FillAndExpand" />
-                                </Grid>
-                                
-                                <WebView x:Name="_displayWebView"/>
+                                </Grid> 
                             </StackLayout> 
                         </ViewCell>
                     </TableSection>

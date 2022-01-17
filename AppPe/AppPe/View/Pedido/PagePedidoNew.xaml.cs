@@ -170,7 +170,8 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             {
                 if (response.HTML != null)
                 {
-                    _displayWebView.Source = new HtmlWebViewSource() { Html = response.HTML };
+                    //_displayWebView.Source = new HtmlWebViewSource() { Html = response.HTML };
+                    ViewModel.currentModel.xInformacaoContrato = response.HTML.ToString();
                 }
             }
         }
