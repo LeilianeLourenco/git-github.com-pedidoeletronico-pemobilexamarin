@@ -245,8 +245,8 @@
                             </StackLayout>
                         </ViewCell>
 
-                        <ViewCell> 
-                            <StackLayout Orientation="Vertical"  Margin="10,10,10,10">
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical"  Margin="10,10,10,10" IsVisible="{Binding ShowBotaoContrato}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/> 

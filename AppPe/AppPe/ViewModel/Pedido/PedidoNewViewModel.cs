@@ -23,7 +23,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public ICommand VendedorVisibilityCommand { get; set; }
 
         public ICommand SaveCommand { get; set; }
-        
+
         public ICommand GoToProdutosCommand { get; set; }
         public ICommand GoToFinanceiroCommand { get; set; }
         public ICommand GoToStatusCommand { get; set; }
@@ -100,6 +100,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             set
             {
                 _isShowRepresentantes = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _ShowBotaoContrato;
+
+        public bool ShowBotaoContrato
+        {
+            get { return _ShowBotaoContrato; }
+            set
+            {
+                _ShowBotaoContrato = value;
                 NotifyPropertyChanged();
             }
         }
@@ -674,7 +686,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     //tratando o horário do pedido caso for um novo, porque se não ficar subtraindo quando edita
                     if (currentModel.dEmissao.Kind != DateTimeKind.Local && currentModel.idPedidoVendaOffLine.GetValueOrDefault() == 0)
                     {
-                       currentModel.dEmissao = currentModel.dEmissao.ToLocalTime();
+                        currentModel.dEmissao = currentModel.dEmissao.ToLocalTime();
                     }
                     if (currentModel.dtPrevisto != null)
                         if ((currentModel.dtPrevisto ?? DateTime.Now).Kind != DateTimeKind.Local && currentModel.idPedidoVendaOffLine.GetValueOrDefault() == 0)
@@ -837,11 +849,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
         public void SetConfiguracoes(int idRepresentante, int idTransportadora, int idCondicaoPgto,
             int? idClienteOffLine = null, int? idRedespacho = null)
-        { 
+        {
             currentModel.idRepresentantePedido = idRepresentante;
             if (idClienteOffLine != null && idClienteOffLine > 0)
             {
-                ItemCliente = ClienteRepository.GetRegistro(idClienteOffLine ?? 0); 
+                ItemCliente = ClienteRepository.GetRegistro(idClienteOffLine ?? 0);
             }
 
             if (idRepresentante == 0)
@@ -874,7 +886,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         vDescCondicao = condicaoPag.vDescCondicao;
                         idTabelaPrecoCondicao = condicaoPag.idTabelaPreco;
                     }
-                } 
+                }
             }
         }
 
@@ -1153,8 +1165,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     currentModel.stCadastroMinimoVenda = _configuracoesGerais.stCadastroLimiteVendasEmpresa;
                     currentModel.stCalculoMinimoVenda = _configuracoesGerais.stCalculoLimiteVendasEmpresa;
                     currentModel.bForcarMinimoVendas = _configuracoesGerais.bForcarMinimoVendas;
-                    currentModel.xInformacaoContrato = _configuracoesGerais.xInformacaoContrato;
                 }
+
+
+
+                currentModel.xInformacaoContrato = _configuracoesGerais.xInformacaoContrato;
+                if (!string.IsNullOrEmpty(currentModel.xInformacaoContrato))
+                    ShowBotaoContrato = true;
 
 
                 currentModel.bBloquearVisualizacaoEstoqueVendedor = _configuracoesGerais.bBloquearVisualizacaoEstoqueVendedor;
