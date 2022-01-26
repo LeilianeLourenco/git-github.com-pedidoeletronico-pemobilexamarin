@@ -1,5 +1,6 @@
 ﻿using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
+using Plugin.BLE.Abstractions.EventArgs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -117,15 +118,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             xTextoPrint = "IMPRIMIR VIA BLUETOOTH";
             PrintCommand = new Command(() =>
             {
-                //SendToPrintIos();
-                if (Device.RuntimePlatform == Device.iOS)
-                {
-                    //SendToPrintIos();
-                }
-                else
-                {
-                    SendToPrint();
-                }
+               //PrintAndroid();
             });
 
             CloseCommand = new Command(() =>
@@ -159,11 +152,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 xEnderecoEmpresa =
                     ($@"CNPJ: {empresa.xCnpj}, End: {empresa.xEndereco}, Numero: {empresa.cNumero}, Bairro: {empresa.xBairro}, Fones: {empresa
                         .xTelefones} - Email: {(empresa.xEmails ?? "").Replace(',', ' ')}{Environment.NewLine}").ToUpper();
-                
+
                 if (!string.IsNullOrEmpty(pedido.xDisplayIntegracao) || App.tipouser == App.TipoUser.OMIE || App.tipouser == App.TipoUser.BLING)
                 {
                     xNumPedido = pedido.xDisplayIntegracao != null ? pedido.xDisplayIntegracao.ToString().PadLeft(6, '0') : "------";
-                } 
+                }
                 else
                 {
                     xNumPedido = pedido.idPedidoDisplay != null ? pedido.idPedidoDisplay.ToString().PadLeft(6, '0') : "------";
@@ -237,7 +230,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             xItem += $"\n C/ desc: {item.xQtde} {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                         }
                         else
-                        { 
+                        {
                             xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                         }
 
@@ -250,7 +243,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         foreach (var tam in gradeTamanho)
                         {
                             if (tam.idGradeTamanho == item.idGradeTamanho)
-                            { 
+                            {
                                 if (item.vDesconto > 0)
                                 {
                                     xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { tam.xNome}{Environment.NewLine} S/ Desc: {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
@@ -272,7 +265,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         foreach (var cor in gradeCor)
                         {
                             if (cor.idGradeCor == item.idGradeCor)
-                            {  
+                            {
                                 if (item.vDesconto > 0)
                                 {
                                     xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { cor.xNome}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
@@ -312,7 +305,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                 nomeTam = tam.xNome;
                             }
                         }
-                         
+
 
                         if (item.vDesconto > 0)
                         {
@@ -408,48 +401,47 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public int iColunas { get; set; } = 48;
         public int iColunasPrinterMenor { get; set; } = 32;
 
-
-
-
-
-
         public async void SendToPrintIos()
         {
             try
             {
+                //busca no banco se existe algum dispositivo já atrelado
+
                 xTextoPrint = $"AGUARDE ENQUANTO CONECTAMOS...";
                 bool bOutraImpressora = false;
-                var separador = "=".PadLeft(32, '=');
+                var separador = string.Empty.PadLeft(33, '=');
 
                 IAdapter adapter;
                 IBluetoothLE bluetoothBLE;
 
                 bluetoothBLE = CrossBluetoothLE.Current;
                 adapter = CrossBluetoothLE.Current.Adapter;
-
                 if (bluetoothBLE.State == BluetoothState.Off || bluetoothBLE.State == BluetoothState.Unknown)
                 {
                     await App.Messages.ShowAsync("Bluetooth desabilitado");
                 }
                 else
                 {
-                    adapter.ScanTimeout = 10000;
-                    adapter.ScanMode = ScanMode.Balanced;
+                    adapter.ScanTimeout = 2000;
+                    adapter.ScanMode = ScanMode.LowLatency;
                     ObservableCollection<IDevice> lDevices = new ObservableCollection<IDevice>();
 
-
-
+                    lDevices.Clear();
                     adapter.DeviceDiscovered += (obj, a) =>
                     {
                         if (!lDevices.Contains(a.Device))
                             lDevices.Add(a.Device);
                     };
 
+                    adapter.DeviceConnected += delegate (object obj, DeviceEventArgs args)
+                    {
+
+                    };
+
                     if (!adapter.IsScanning)
                     {
                         await adapter.StartScanningForDevicesAsync();
                     }
-
 
                     if (lDevices?.Count() > 0)
                     {
@@ -497,11 +489,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             await _caracteristicas.WriteAsync(WriteBytes(separador + Environment.NewLine));
                         }
 
-
                         await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
                         await _caracteristicas.WriteAsync(WriteBytes(xCliente.RemoverAcentos()));
-
-
 
                         if (bOutraImpressora)
                         {
@@ -545,7 +534,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         await _caracteristicas.WriteAsync(WriteBytesPosition("left"));
                         await _caracteristicas.WriteAsync(WriteBytes((totais + Environment.NewLine).RemoverAcentos()));
 
-
                         await _caracteristicas.WriteAsync(WriteBytesPosition("right"));
                         await _caracteristicas.WriteAsync(WriteBytes((agradecimento.RemoverAcentos() + Environment.NewLine + Environment.NewLine)));
                         UtilNavidate.PopPopupNew();
@@ -558,11 +546,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
             catch (Exception ex)
             {
-                 
-            }
-        
-        }
 
+            }
+
+        }
 
         public byte[] WriteBytes(string xValor)
         {
