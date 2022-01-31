@@ -32,6 +32,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public ICommand GoToTransportadoraCommand { get; set; }
         public ICommand GoToRedespachoCommand { get; set; }
         public ICommand GoToConficaoPgtoCommand { get; set; }
+        public ICommand GoToFormaPgtoCommand { get; set; }
 
         public ICommand GoToComplementosCommand { get; set; }
         public ICommand GoToDescontoCommand { get; set; }
@@ -149,6 +150,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             set
             {
                 _ItemCondicaoPgto = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
+        private ListItemModel _ItemFormaPgto = new ListItemModel { Display = "clique aqui para pesquisar" };
+
+        public ListItemModel ItemFormaPgto
+        {
+            get { return _ItemFormaPgto; }
+            set
+            {
+                _ItemFormaPgto = value;
                 NotifyPropertyChanged();
             }
         }
@@ -540,6 +554,34 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
             });
 
+            GoToFormaPgtoCommand = new Command(async () =>
+            {
+                if (ItemCliente.Id == 0)
+                {
+                    await App.Messages.ShowAsync("Antes disso, selecione um cliente");
+                    return;
+                }
+
+                if (!ExecuttingAnyCommand)
+                {
+                    ExecuttingAnyCommand = true;
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        if (ItemFormaPgto == null)
+                            ItemFormaPgto = new ListItemModel();
+                        var pesquisa = new PagePesquisaPadrao(ItemFormaPgto,
+                            PesquisaPadraoViewModel.Tabela.TB_FORMA_PAGAMENTO, null, ItemCondicaoPgto.Id)
+                        {
+                            Title = "Forma de Pagamento",
+                        };
+                        UtilNavidate.PushAsync(pesquisa);
+                    }); 
+                }
+
+            });
+
+            
+
             GoToTransportadoraCommand = new Command(async () =>
             {
                 if (ItemCliente.Id == 0)
@@ -664,7 +706,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         idUltimaCondicaoPgto = currentModel.idCondicaoPagamento.GetValueOrDefault();
                         idUltimoCliente = currentModel.idClientesOffLine;
                         SetConfiguracoes(currentModel.idRepresentantePedido ?? 0, currentModel.idTransportadora ?? 0,
-                            currentModel.idCondicaoPagamento ?? 0, currentModel.idClientesOffLine, currentModel.idRedespacho.GetValueOrDefault());
+                            currentModel.idCondicaoPagamento ?? 0, currentModel.idClientesOffLine, currentModel.idRedespacho.GetValueOrDefault(), currentModel.xFormaPagamento);
                         VerificaStatusCancelado();
                         //AtualizaTotalizadoresPedido();
                         RotinaValidacaoEstoque();
@@ -842,13 +884,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     vFinanceiroVencido = _retornoFin.Value;
                 }
 
-                SetConfiguracoes(idRepresentante, idTransportadora, idUltimaCondicaoPgto, null, idRedespacho);
+                SetConfiguracoes(idRepresentante, idTransportadora, idUltimaCondicaoPgto, null, idRedespacho, currentModel.xFormaPagamento);
 
             });
         }
 
         public void SetConfiguracoes(int idRepresentante, int idTransportadora, int idCondicaoPgto,
-            int? idClienteOffLine = null, int? idRedespacho = null)
+            int? idClienteOffLine = null, int? idRedespacho = null, string xFormaPagamento = null)
         {
             currentModel.idRepresentantePedido = idRepresentante;
             if (idClienteOffLine != null && idClienteOffLine > 0)
@@ -887,6 +929,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         idTabelaPrecoCondicao = condicaoPag.idTabelaPreco;
                     }
                 }
+            }
+
+            if (string.IsNullOrEmpty(xFormaPagamento) && ItemFormaPgto != null && (string.IsNullOrEmpty(ItemFormaPgto.Display) || xFormaPagamento != ItemFormaPgto.Display))
+            {
+                ItemFormaPgto = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao(string.Empty, idCondicaoPgto).OrderBy(t => t.Display).FirstOrDefault();
+                //OS 35323 - Jessica Barbieri
+                xFormaPagamento = ItemFormaPgto.Display;
             }
         }
 
@@ -1097,6 +1146,23 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 ex.TrakException("PedidoViewModel.AtualizaTotalizadoresPedido");
             }
         }
+
+
+
+        public void BuscaFormasPagamentoTelaVendas()
+        {
+            try
+            {
+                ItemFormaPgto = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao(string.Empty, ItemCondicaoPgto.Id).OrderBy(t => t.Display).FirstOrDefault(); 
+                currentModel.xFormaPagamento = ItemFormaPgto.Display;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("PedidoViewModel.BuscaFormasPagamentos");
+            }
+        }
+
+
 
 
         public void RateiaDescontoTotalPedido()

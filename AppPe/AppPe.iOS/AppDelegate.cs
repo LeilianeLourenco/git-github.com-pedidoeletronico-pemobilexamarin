@@ -1,6 +1,7 @@
 ﻿using FFImageLoading.Forms.Platform;
 using Foundation;
-using ImageCircle.Forms.Plugin.iOS; 
+using ImageCircle.Forms.Plugin.iOS;
+using TEditor.iOS;
 using UIKit;
 using Xamarin.HLP.Mobile.AppPE.iOS.Services;
 
@@ -27,7 +28,8 @@ namespace Xamarin.HLP.Mobile.AppPE.iOS
             Rg.Plugins.Popup.Popup.Init();
             GAService.GetGASInstance().Initialize_NativeGAS();
             global::ZXing.Net.Mobile.Forms.iOS.Platform.Init();
-            global::Xamarin.Forms.Forms.Init(); 
+            global::Xamarin.Forms.Forms.Init();
+            TEditoriOS.Initialize();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

@@ -354,6 +354,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<CondicaoPagamentoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadPaginado<FormaPagamentoModel>();
+                if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<GradeCorModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<GradeTamanhoModel>();
@@ -497,7 +499,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                             break;
                         }
-                        else if (xTableName == TableMobile.GetTableNameByModel<ConfiguracaoEspecificaModel>() || xTableName == TableMobile.GetTableNameByModel<ConfiguracaoGeralModel>())
+                        else if (xTableName == TableMobile.GetTableNameByModel<ConfiguracaoEspecificaModel>() 
+                            || xTableName == TableMobile.GetTableNameByModel<ConfiguracaoGeralModel>()
+                            || xTableName == TableMobile.GetTableNameByModel<FormaPagamentoModel>())
                         {
                             lsync = await
                                 UtilHttp.GetListRegistroPaginadoSync<T>(

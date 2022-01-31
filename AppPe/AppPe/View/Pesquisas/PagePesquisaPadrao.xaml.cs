@@ -9,13 +9,14 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pesquisas
 {
     public partial class PagePesquisaPadrao : ContentPage
     {
-        public PagePesquisaPadrao(ListItemModel item, PesquisaPadraoViewModel.Tabela Table, int? idClienteOffLine = null)
+        public PagePesquisaPadrao(ListItemModel item, PesquisaPadraoViewModel.Tabela Table, int? idClienteOffLine = null, int? idCondicaoPagamento = null)
         {
             InitializeComponent();
             ViewModel.controlSearchPE = SearchBarPesquisa;
             ViewModel.itemCadastro = item;
             ViewModel.tabela = Table;
             ViewModel.idClienteOffline = idClienteOffLine;
+            ViewModel.idCondicaoPagamento = idCondicaoPagamento;
         }
 
         public PesquisaPadraoViewModel ViewModel => BindingContext as PesquisaPadraoViewModel;
@@ -37,6 +38,11 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pesquisas
                 {
                     PageListarPedidos.ViewModelStatic.canExecuteInicial = true;
                 }
+                else if (ViewModel.tabela == PesquisaPadraoViewModel.Tabela.TB_CONDICAO_PAGAMENTO)
+                {
+                    PagePedidoNew.CurrentViewModel.BuscaFormasPagamentoTelaVendas();
+                }
+
                 UtilNavidate.PopAsync();
                 
 

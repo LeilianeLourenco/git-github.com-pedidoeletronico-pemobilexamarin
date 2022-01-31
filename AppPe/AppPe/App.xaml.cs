@@ -68,7 +68,7 @@ namespace Xamarin.HLP.Mobile.AppPE
 
         public static CurrentUserLoginModel EnvironmentPE { get; set; }
 
-        public static Ambiente AmbienteApp = Ambiente.HomologacaoProducao;
+        public static Ambiente AmbienteApp = Ambiente.Homologacao;
 
         public static bool LoginHlp { get; set; } = false;
 
@@ -88,7 +88,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                 switch (AmbienteApp)
                 {
                     case Ambiente.Homologacao:
-                        return "http://hlpsistemas.sytes.net:8089/";
+                        return "http://homologacaope.azurewebsites.net/";
                     case Ambiente.Producao:
                         return "https://pedidoeletronico.com/";
                     case Ambiente.Local:
@@ -111,7 +111,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                 switch (AmbienteApp)
                 {
                     case Ambiente.Homologacao:
-                        return "http://hlpsistemas.sytes.net:8085/";
+                        return "http://homologacaoapimobile.azurewebsites.net/";
                     case Ambiente.Producao:
                         return "http://apimobile.pedidoeletronico.com/";
                     case Ambiente.HomologacaoProducao:

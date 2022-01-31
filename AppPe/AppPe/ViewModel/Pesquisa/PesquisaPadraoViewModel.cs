@@ -27,7 +27,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
             TB_REPRESENTANTE_MAIS_TODOS,
             RAMO_ATIVIDADE,
             STATUS_PEDIDO,
-            STATUS_PEDIDO_APRESENTACAO
+            STATUS_PEDIDO_APRESENTACAO,
+            TB_FORMA_PAGAMENTO
         }
 
         public Tabela tabela { get; set; }
@@ -40,6 +41,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
         public bool IsUsingSearch { get; set; } = false;
 
         public int? idClienteOffline { get; set; }
+        public int? idCondicaoPagamento { get; set; }
 
 
         private async void LoadItens()
@@ -70,6 +72,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
                 if (tabela == Tabela.TB_CONDICAO_PAGAMENTO)
                 {
                     litens = CondicaoPagamentoRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), idClienteOffline);
+                }
+                else if (tabela == Tabela.TB_FORMA_PAGAMENTO)
+                {
+                    litens = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao((IsUsingSearch ? xFiltro : ""), idCondicaoPagamento);
                 }
                 else if (tabela == Tabela.TB_TRANSPORTADORA)
                 {
@@ -111,6 +117,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             if (LItens.Any(c => c.XId == item.XId) == false)
+                                LItens.Add(item);
+                        });
+                    }
+                    else if (tabela == Tabela.TB_FORMA_PAGAMENTO)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            if (!LItens.Any(c => c.Display == item.Display))
                                 LItens.Add(item);
                         });
                     }

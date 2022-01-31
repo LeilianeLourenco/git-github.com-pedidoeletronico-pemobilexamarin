@@ -27,6 +27,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_CONFIGURACOES_ESPECIFICAS = "TB_CONFIGURACOES_ESPECIFICAS";
         public const string TB_JORNADA_TRABALHO = "TB_JORNADA_TRABALHO";
         public const string TB_JORNADA_TRABALHO_HORARIOS = "TB_JORNADA_TRABALHO_HORARIOS";
+        public const string TB_FORMA_PAGAMENTO = "TB_FORMA_PAGAMENTO";
 
         public const string TB_CATEGORIA = "TB_CATEGORIA";
         public const string TB_UNIDADEMEDIDA = "TB_UNIDADEMEDIDA";
@@ -304,6 +305,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return TB_JORNADA_TRABALHO_HORARIOS;
                 }
+            if (classe == typeof(FormaPagamentoModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idFormaPagamento";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiFormasPagamento";
+                    default:
+                        return TB_FORMA_PAGAMENTO;
+                }
+            
             if (classe == typeof(EstoqueModel))
                 switch (tipoRetornoInfoClass)
                 {

@@ -6,6 +6,7 @@ using TEditor;
 using TEditor.Abstractions;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Controls.xaml;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;
@@ -161,25 +162,61 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
         async void Editor_OnClicked(object sender, EventArgs e)
         {
-            await ShowTEditor();
-        }
-        async Task ShowTEditor()
-        {
-            TEditorResponse response = await CrossTEditor.Current.ShowTEditor(ViewModel.currentModel.xInformacaoContrato);
-            if (response.IsSave)
-            {
-                if (response.HTML != null)
-                {
-                    //_displayWebView.Source = new HtmlWebViewSource() { Html = response.HTML };
-                    ViewModel.currentModel.xInformacaoContrato = response.HTML.ToString();
-                }
-            }
-        }
+            UtilNavidate.PushModalAsync(new NavigationPage(new ContentPage { Content = new TEditorHtmlView(CurrentViewModel.currentModel), BackgroundColor = Color.White }));
+            //await ShowTEditor();
+        } 
 
         #endregion
 
 
 
 
+    }
+
+    /// <summary>
+    /// View do campo de contrato para o usuário
+    /// </summary>
+    public class TEditorHtmlView : StackLayout
+    {
+        //create bindable property, html
+        public string Html { get; set; } 
+        WebView _displayWebView;
+        public TEditorHtmlView(PedidoVendaModel currentModel)
+        {
+            this.Orientation = StackOrientation.Vertical;
+            this.Children.Add(new Button
+            {
+                Text = "Atualizar Contrato",
+                HeightRequest = 100,
+                Command = new Command(async (obj) =>
+                {
+                    await ShowTEditor(currentModel);
+                })
+            });
+            _displayWebView = new WebView() { HeightRequest = 500 }; 
+            _displayWebView.Source = new HtmlWebViewSource() { Html = currentModel.xInformacaoContrato };
+            this.Children.Add(_displayWebView);
+        }
+
+        async Task ShowTEditor(PedidoVendaModel currentModel)
+        {
+            try
+            {
+                TEditorResponse response = await CrossTEditor.Current.ShowTEditor(currentModel.xInformacaoContrato);
+                if (response.IsSave)
+                {
+                    if (response.HTML != null)
+                    {
+                        currentModel.xInformacaoContrato = response.HTML.ToString();
+                        _displayWebView.Source = new HtmlWebViewSource() { Html = response.HTML };
+                    }
+                }
+            }
+            catch (Exception ex)
+            { 
+                throw ex;
+            }
+          
+        }
     }
 }

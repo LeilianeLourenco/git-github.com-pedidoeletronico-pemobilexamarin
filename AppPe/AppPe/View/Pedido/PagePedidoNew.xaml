@@ -173,6 +173,9 @@
 
                         <TextCell Command="{Binding GoToConficaoPgtoCommand}" Detail="{Binding ItemCondicaoPgto.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Condição de Pagamento *"/>
 
+                        <TextCell Command="{Binding GoToFormaPgtoCommand}" Detail="{Binding ItemFormaPgto.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Forma de Pagamento"/>
+
+
 
                         <ViewCell>
                             <Grid BackgroundColor="{StaticResource CinzaClarissimo}">

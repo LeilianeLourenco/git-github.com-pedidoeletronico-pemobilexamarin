@@ -192,6 +192,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
+         
+        private string _xFormaPagamento = String.Empty;
+        public string xFormaPagamento
+        {
+            get { return _xFormaPagamento ?? "BOLETO"; }
+            set
+            {
+                _xFormaPagamento = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
         private string _xInfAdicional = String.Empty;
         public string xInfAdicional
         {
@@ -258,6 +271,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _dtValidadeOrcamento; }
             set { _dtValidadeOrcamento = value; NotifyPropertyChanged(); }
         }
+
 
         public double VTotal { get; set; }
 

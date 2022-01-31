@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using Xamarin.HLP.Mobile.AppPE.Droid.Services;
 using ImageCircle.Forms.Plugin.Droid;
 using FFImageLoading.Forms.Platform;
-using Android; 
+using Android;
+using TEditor.Droid;
 
 namespace Xamarin.HLP.Mobile.AppPE.Droid
 {
@@ -35,6 +36,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             GAService.GetGASInstance().Initialize_NativeGAS(this);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            TEditorDroid.Initialize();
             DisplayCrashReport(); 
             //CheckPermissions();
             LoadApplication(new App());

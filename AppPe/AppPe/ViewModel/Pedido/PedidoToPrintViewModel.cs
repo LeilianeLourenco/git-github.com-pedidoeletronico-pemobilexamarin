@@ -612,7 +612,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 separador = "=".PadLeft(iColunasPrinterMenor, '=');
             }
-            else if (App.BluetoothLe.GetNameDevice().ToUpper().Equals("MPT-III"))
+            else if (App.BluetoothLe.GetNameDevice().ToUpper().Equals("MPT-III") || App.BluetoothLe.GetNameDevice().ToUpper().Equals("DPP-350"))
             {
                 separador = "=".PadLeft(iColunas, '=');
             }

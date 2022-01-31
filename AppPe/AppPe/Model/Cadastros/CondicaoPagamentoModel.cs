@@ -33,6 +33,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         public string xDisplaySemCaracter { get; set; }
 
         public string xFormula { get; set; }
+         
+        public string xFormaPagamentoPermitidas { get; set; }
 
         private int? _nParcelas = 0;
         public int? nParcelas
@@ -89,5 +91,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
 
         [Ignore]
         public string xAbreviacao => this.xCondicaoPagamento[0].ToString().ToUpper() + this.xCondicaoPagamento[1].ToString().ToUpper();
+    }
+
+
+    [Table(TableMobile.TB_FORMA_PAGAMENTO)]
+    public class FormaPagamentoModel : ModelComum
+    { 
+        [PrimaryKey()]
+        public int idFormaPagamento { get; set; } 
+        public string xFormaPagamento { get; set; } 
     }
 }

@@ -99,6 +99,12 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
+    <Reference Include="TEditor">
+      <HintPath>..\AppPe\dllExtern\TEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="TEditor.Droid">
+      <HintPath>dll\TEditor.Droid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CarouselView.FormsPlugin">
@@ -115,9 +121,6 @@
     </PackageReference>
     <PackageReference Include="sqlite-net">
       <Version>1.6.292</Version>
-    </PackageReference>
-    <PackageReference Include="TEditor2">
-      <Version>1.4.4</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle">
       <Version>3.0.0.5</Version>
@@ -525,6 +528,7 @@
   <ItemGroup>
     <Content Include="dll\NGraphics.Android.Custom.dll" />
     <Content Include="dll\NGraphics.Custom.dll" />
+    <Content Include="dll\TEditor.Droid.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppPe\Xamarin.HLP.Mobile.AppPE.csproj">

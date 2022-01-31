@@ -41,10 +41,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                     var _idsTabelas = _tabelasPermitidas.Select(t => (int?)t.idTabelaPreco).ToList();
 
-                    dados = dados.Where(c => c.idEmpresa == idEmpresa && (c.idTabelaPreco == null || _idsTabelas.Contains(c.idTabelaPreco))).ToList(); 
+                    dados = dados.Where(c => c.idEmpresa == idEmpresa && (c.idTabelaPreco == null || _idsTabelas.Contains(c.idTabelaPreco))).ToList();
                 }
 
-                if(dados?.Count() == 0)
+                if (dados?.Count() == 0)
                 {
                     xQuery = $"select {xFields} from {TableMobile.TB_CONDICAOPAGAMENTO} where idEmpresa = {idEmpresa} limit 1";
 
@@ -104,7 +104,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
-        public static ListItemModel GetItem(int idCondicaoPagamento, int? idClienteOffLine = null )
+        public static ListItemModel GetItem(int idCondicaoPagamento, int? idClienteOffLine = null)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 var xQuery = "";
                 const string xFields = @"idCondicaoPagamento , xCondicaoPagamento, xFormula, nParcelas, vDescCondicao, idEmpresa, idTabelaPreco";
                 xQuery = $"select {xFields} from {TableMobile.TB_CONDICAOPAGAMENTO} where idEmpresa = {idEmpresa} and idCondicaoPagamento = {idCondicaoPagamento} ";
-                 
+
 
                 var dados = App.Data.Connection.Query<CondicaoPagamentoModel>(xQuery);
 
@@ -121,7 +121,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 {
                     var _cliente = ClienteRepository.GetClienteModel(idClienteOffLine.GetValueOrDefault(), false);
                     var _tabelasPermitidas = TabelaPrecoRepository.GetTabelaPrecoSimplificadas(0, 1, idEmpresa, null, null, null, _cliente.idClientes);
-                     
+
                     var _idsTabelas = _tabelasPermitidas.Select(t => (int?)t.idTabelaPreco).ToList();
 
                     var _condicoesExistentes = dados.Where(c => c.idEmpresa == idEmpresa && (c.idTabelaPreco == null || _idsTabelas.Contains(c.idTabelaPreco))).ToList();
@@ -131,7 +131,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     if (_condicaoClienteExiste != null)
                     {
                         dados = dados.Where(c => c.idCondicaoPagamento == _condicaoClienteExiste.idCondicaoPagamento).ToList();
-                    } 
+                    }
                 }
 
                 if (dados?.Count() == 0)
@@ -196,6 +196,29 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         }
 
+
+        public static List<ListItemModel> BuscaFormasPagamentoPorCondicao(string xFiltro, int? idCondicaoPagamento)
+        {
+            string _formasPermitidas = string.Empty;
+            if (idCondicaoPagamento.GetValueOrDefault() > 0)
+                _formasPermitidas = App.Data.Connection.Table<CondicaoPagamentoModel>().Where(t => t.idCondicaoPagamento == idCondicaoPagamento).Select(t => t.xFormaPagamentoPermitidas).FirstOrDefault();
+
+            if (!string.IsNullOrEmpty(_formasPermitidas))
+            {
+                return _formasPermitidas.ToUpper().Split(';').Select(t => new ListItemModel
+                {
+                    Display = t,
+                    Id = 0,
+                }).OrderBy(t => t.Display).ToList();
+            }
+
+
+            return App.Data.Connection.Table<FormaPagamentoModel>().Select(t => new ListItemModel
+            {
+                Display = t.xFormaPagamento,
+                Id = t.idFormaPagamento, 
+            }).OrderBy(t => t.Display).ToList();
+        }
 
         public static string GetDisplay(int idCondicaoPagamento)
         {

@@ -146,7 +146,6 @@
     <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
     <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.9" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
-    <PackageReference Include="TEditor2" Version="1.4.4" />
     <PackageReference Include="Xam.Plugin.Connectivity" Version="3.2.0" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
@@ -159,6 +158,9 @@
   <ItemGroup>
     <Reference Include="Hlp.PedidoEletronico.Domain.Business">
       <HintPath>dllextern\Hlp.PedidoEletronico.Domain.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="TEditor">
+      <HintPath>dllExtern\TEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
 

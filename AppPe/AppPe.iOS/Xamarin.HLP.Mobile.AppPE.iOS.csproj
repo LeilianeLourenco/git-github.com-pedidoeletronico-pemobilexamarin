@@ -167,6 +167,14 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
+    <Reference Include="TEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AppPe\dllExtern\TEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="TEditor.iOS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ext_bin\TEditor.iOS.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.iOS" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
@@ -186,9 +194,6 @@
     </PackageReference>
     <PackageReference Include="sqlite-net">
       <Version>1.6.292</Version>
-    </PackageReference>
-    <PackageReference Include="TEditor2">
-      <Version>1.4.4</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle">
       <Version>3.0.0.5</Version>
@@ -644,6 +649,7 @@
   <ItemGroup>
     <Content Include="ext_bin\NGraphics.Custom.dll" />
     <Content Include="ext_bin\NGraphics.iOS.Custom.dll" />
+    <Content Include="ext_bin\TEditor.iOS.dll" />
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
