@@ -125,6 +125,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _displayPrazo = value; NotifyPropertyChanged(); }
         }
 
+        private string _DisplayForma;
+        public string DisplayForma
+        {
+            get { return (_DisplayForma ?? "").ToUpper(); }
+            set { _DisplayForma = value; NotifyPropertyChanged(); }
+        }
+        
         private string _displayEmail;
         public string DisplayEmail
         {

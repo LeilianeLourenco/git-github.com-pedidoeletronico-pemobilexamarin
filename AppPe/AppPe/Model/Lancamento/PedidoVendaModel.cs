@@ -196,7 +196,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         private string _xFormaPagamento = String.Empty;
         public string xFormaPagamento
         {
-            get { return _xFormaPagamento ?? "BOLETO"; }
+            get { return _xFormaPagamento ?? ""; }
             set
             {
                 _xFormaPagamento = value;

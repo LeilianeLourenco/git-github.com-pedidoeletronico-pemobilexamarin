@@ -185,6 +185,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         stLancamento = 0,
                         DisplayCliente = "caregando..",
                         DisplayPrazo = "prazos..",
+                        DisplayForma = "forma..",
                         idStatus = 0,
                         DisplayEmail = "...",
                         VTotal = 0,

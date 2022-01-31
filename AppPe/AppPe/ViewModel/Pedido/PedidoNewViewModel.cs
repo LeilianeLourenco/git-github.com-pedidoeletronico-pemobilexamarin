@@ -937,6 +937,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 //OS 35323 - Jessica Barbieri
                 xFormaPagamento = ItemFormaPgto.Display;
             }
+            else ItemFormaPgto = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao(string.Empty, idCondicaoPgto).Where(t => t.Display == xFormaPagamento).FirstOrDefault();
         }
 
         public void VerificaStatusCancelado()
@@ -1449,6 +1450,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     }
                     if (ItemRedespacho?.Id > 0)
                         currentModel.idRedespacho = ItemRedespacho.Id;
+
+
+                    currentModel.xFormaPagamento = ItemFormaPgto.Display ?? "";
 
                     currentModel.idRepresentantePedido = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador ? ItemRepresentante.Id : App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers;
 

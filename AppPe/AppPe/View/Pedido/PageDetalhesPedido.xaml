@@ -19,6 +19,7 @@
                 <TextCell Detail="{Binding currentModel.xDisplayPedidoNew}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Numero" />
                 <TextCell Detail="{Binding currentModel.DisplayCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Cliente" />
                 <TextCell Detail="{Binding currentModel.DisplayPrazo}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Condição de pagamento" />
+                <TextCell Detail="{Binding currentModel.DisplayForma}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Forma de pagamento" />
                 <TextCell Detail="{Binding currentModel.DisplayEmail}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Vendedor" />
                 <TextCell Detail="{Binding vDescontoTotal, Converter={StaticResource FormatDecimalConverter}}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Total de desconto" />
                 <TextCell Detail="{Binding vTotalComissao, Converter={StaticResource FormatDecimalConverter}}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Total de comissão" />

@@ -169,6 +169,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     xCliente += $@"Valido até: {(pedido.dtValidadeOrcamento ?? DateTime.UtcNow).ToString("dd/MM/yyyy HH:mm")}{Environment.NewLine}";
                 }
                 xCliente += $@"Prazo: {CondicaoPagamentoRepository.GetDisplay(pedido.idCondicaoPagamento ?? 0)}{Environment.NewLine}";
+                xCliente += $@"Forma: {pedido.xFormaPagamento}{Environment.NewLine}";
                 xCliente += $@"Vendedor: {EmpresaAspnetUsersRepository.GetDisplay(pedido.idRepresentantePedido ?? 0)}{Environment.NewLine}";
                 xCliente += $@"________________________________{Environment.NewLine}";
                 xCliente += $@"{Environment.NewLine}";
