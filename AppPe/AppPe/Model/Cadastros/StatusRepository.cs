@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 
@@ -8,15 +9,25 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
 {
     public class StatusRepository
     {
+        public static void SalvarStatusProibidos(int idStatus, IEnumerable<StatusRepresentanteProibido> statusProibido)
+        {
+            foreach (var item in statusProibido)
+            {
+                item.idStatus = idStatus;
+                App.Data.Connection.Insert(item);
+            }
+        }
 
-
-        public static StatusModel GetRegistro(int idStstus)
+        public static StatusModel GetRegistro(int idStatus)
         {
             try
             {
-                var xQuery = $@"SELECT * FROM TB_STATUS where idStatus = {idStstus}";
-                var registro = App.Data.Connection.Query<StatusModel>(xQuery);
-                return registro.FirstOrDefault();
+                var xQuery = $@"SELECT * FROM TB_STATUS where idStatus = {idStatus}";
+                var registro = App.Data.Connection.Query<StatusModel>(xQuery).FirstOrDefault();
+
+                xQuery = $@"SELECT * FROM [{TableMobile.TB_STATUS_PROIBIDO}] WHERE [idStatus] = {idStatus}";
+                registro.lRepresentantesProibidos = App.Data.Connection.Query<StatusRepresentanteProibido>(xQuery);
+                return registro;
             }
             catch (Exception ex)
             {
@@ -131,6 +142,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
                                                     where stAtivo = 1 and {where}";
 
                 var retorno = App.Data.Connection.Query<ListItemModel>(xQuery);
+
                 if (take == 0 && (retorno == null || !retorno.Any()))
                 {
                     // 0 - aberto
@@ -170,10 +182,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
                         });
                     }
                 }
+                xQuery = $"SELECT * FROM [{TableMobile.TB_STATUS_PROIBIDO}];";
+                var proibidos = App.Data.Connection.Query<StatusRepresentanteProibido>(xQuery);
 
-
-
-                return retorno;
+                return retorno
+                            .Where(wh => proibidos.FirstOrDefault(fs => fs.idStatus.ToString() == wh.XId) == null)
+                            .ToList();
             }
             catch (Exception ex)
             {
@@ -238,17 +252,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
 
                 var lretorno = App.Data.Connection.Query<ListItemModel>(xQuery);
 
-                if(lretorno?.Count() == 0)
-                { 
-                     xQuery =
-                        $@"select idStatus XId, stVenda Id , UPPER(xNome) Display from TB_STATUS
+                if (lretorno?.Count() == 0)
+                {
+                    xQuery =
+                       $@"select idStatus XId, stVenda Id , UPPER(xNome) Display from TB_STATUS
                                                     where {where}";
 
-                     lretorno = App.Data.Connection.Query<ListItemModel>(xQuery);
+                    lretorno = App.Data.Connection.Query<ListItemModel>(xQuery);
                 }
 
 
-               return lretorno.OrderBy(t => t.Display).FirstOrDefault();
+                return lretorno.OrderBy(t => t.Display).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -258,6 +272,20 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
 
         }
 
+       public static void RemoverProbidos(int idStatus)
+        {
+            try
+            {
+                var xQuery =
+                    $"DELETE FROM [{TableMobile.TB_STATUS_PROIBIDO}] WHERE [idStatus] = {idStatus}";
+
+                App.Data.Connection.Execute(xQuery);
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("RemoveHorariosJornadaNova");
+            }
+        }
     }
 
 

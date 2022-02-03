@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SQLite;
 using Xamarin.HLP.Mobile.AppPE.Common;
 
@@ -65,6 +66,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         public string xSigla { get; set; }
 
         public string xCor { get; set; } = "2B3D8C";
-        
+
+        [Ignore]
+        public List<StatusRepresentanteProibido> lRepresentantesProibidos { get; set; }
+    }
+
+    [Table(TableMobile.TB_STATUS_PROIBIDO)]
+    public class StatusRepresentanteProibido {
+
+        public int idEmpresa_aspnetusers { get; set; }
+        public int idStatusProibido { get; set; }
+
+        [IgnoreDataMember]
+        public int idStatus { get; set; }
     }
 }

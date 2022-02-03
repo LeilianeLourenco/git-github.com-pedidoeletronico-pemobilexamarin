@@ -13,7 +13,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 {
     public class TableMobile
     {
-        
+        public const string TB_STATUS_PROIBIDO = "TB_STATUS_PROIBIDO";
         public const string TB_SINCRONIZACAOESTOQUE = "TB_SINCRONIZACAOESTOQUE";
         public const string TB_ATIVIDADES = "TB_ATIVIDADES"; //agenda
         public const string TB_TIPOATIVIDADESCRM = "TB_TIPOATIVIDADESCRM"; //agenda

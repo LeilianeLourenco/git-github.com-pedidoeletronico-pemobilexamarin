@@ -100,7 +100,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
 
         private DateTime _lastDateServerSyncCliente = DateTime.Today.AddYears(-50);
-        
+
         public DateTime lastDateServerSyncCliente
         {
             get { return _lastDateServerSync; }
@@ -327,7 +327,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (App.planoAtual != Planos.plfree
                     && App.planoAtual != Planos.nenhum
                     && App.planoAtual != Planos.plstarter)
-                       await SincronizacaoDownload<EstoqueModel>(); 
+                    await SincronizacaoDownload<EstoqueModel>();
 
 
                 if (!ocorreuErro && !bFalhaConexao)
@@ -428,10 +428,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadLocalEstoque();
-                 
+
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPaginado<JornadaModel>(); 
-                 
+                    await SincronizacaoDownloadPaginado<JornadaModel>();
+
                 //if (!ocorreuErro && !bFalhaConexao)
                 //    await SincronizacaoDownloadPaginado<JornadaHorariosModel>();
 
@@ -499,7 +499,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                             break;
                         }
-                        else if (xTableName == TableMobile.GetTableNameByModel<ConfiguracaoEspecificaModel>() 
+                        else if (xTableName == TableMobile.GetTableNameByModel<ConfiguracaoEspecificaModel>()
                             || xTableName == TableMobile.GetTableNameByModel<ConfiguracaoGeralModel>()
                             || xTableName == TableMobile.GetTableNameByModel<FormaPagamentoModel>())
                         {
@@ -523,7 +523,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 break;
                             }
                         }
-                        else if(xTableName == TableMobile.GetTableNameByModel<PedidoVendaModel>())
+                        else if (xTableName == TableMobile.GetTableNameByModel<PedidoVendaModel>())
                         {
                             var xPrimaryKeyName = TableMobile.GetPrimaryKeyNameByModel<PedidoVendaModel>();
                             var lRegistros = await UtilHttp.GetPedidosVendas<PedidoVendaModel>(
@@ -598,7 +598,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
         private async Task SincronizacaoDownloadPedido()
         {
-            IntegracaoRepository integ = new IntegracaoRepository(); 
+            IntegracaoRepository integ = new IntegracaoRepository();
             var listaID = new List<PedidosToSyncModel>();
             var xapi = TableMobile.GetApiRegistroByModel<PedidoVendaModel>();
             var xTableName = TableMobile.GetTableNameByModel<PedidoVendaModel>();
@@ -609,7 +609,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
                 _ultimaDataSinc = lastDateServerSync;
-             
+
 
             listaID = await
                 UtilHttp.GetRegistroIDSync(
@@ -651,7 +651,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                 }
             }
-             
+
 
             integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
             ocorreuErro = currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0;
@@ -883,7 +883,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         empresaLocal.xMeuID = representante.xMeuID;
                         empresaLocal.vMetaCorrente = representante.vMetaCorrente;
                         empresaLocal.imUsuario = representante.imUsuario;
-                        empresaLocal.idJornada = representante.idJornada; 
+                        empresaLocal.idJornada = representante.idJornada;
 
                         App.Data.Connection.Update(empresaLocal);
 
@@ -924,7 +924,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
                 _ultimaDataSinc = DateTime.Today.AddYears(-50);
-             
+
 
             try
             {
@@ -946,15 +946,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         var _representantesLinkados = EmpresaAspnetUsersRepository.GetListaRepsLinkados(idEmp);
                         //aqui estou buscando as representadas que os vendedores sincronizados pra essa conta possuem acesso.
                         foreach (var empresaAspnetUsersModel in _representantesLinkados)
-                        {  
+                        {
                             //RepresentadaRepository.DeleteAllByRepresentante(idRepresentanteAspNetUsers);
-                             
-                            var _listRepresentadasParaSalvar = _listRep.Where(r => r.idEmpresa_aspnetUsers == empresaAspnetUsersModel).ToList(); 
+
+                            var _listRepresentadasParaSalvar = _listRep.Where(r => r.idEmpresa_aspnetUsers == empresaAspnetUsersModel).ToList();
                             await SavePrivate(_listRepresentadasParaSalvar, xTableName);
                         }
                     }
                     else if (xTableName == TableMobile.GetTableNameByModel<EstoqueModel>())
-                    { 
+                    {
                         lsync = await
                             UtilHttp.GetListRegistroSync<T>(
                                     param1: idEmp,
@@ -995,7 +995,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         }
                     }
                     else
-                    { 
+                    {
                         lsync = await
                             UtilHttp.GetListRegistroSync<T>(
                                     param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
@@ -1326,7 +1326,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
 
         }
-
 
         private async Task PostUploadAgenda<T>(IEnumerable<T> lista) where T : class
         {
@@ -1800,7 +1799,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         }
 
                     }
-
                     #endregion
 
 
@@ -1937,11 +1935,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         if (estoque.idLocalEstoque > 0)
                         {
                             var xQuery = $@"SELECT xNomeLocal, idLocalEstoqueOffline, idLocalEstoque from {TableMobile.TB_LOCAL_ESTOQUE} where idLocalEstoque = {estoque.idLocalEstoque} and idEmpresa = {App
-                              .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}"; 
+                              .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
 
                             var estoqueInserido = App.Data.Connection.Query<LocalEstoqueModel>(xQuery).FirstOrDefault();
 
-                            if(estoqueInserido != null)
+                            if (estoqueInserido != null)
                             {
 
                                 estoque.idLocalEstoqueOffline = estoqueInserido.idLocalEstoqueOffline;
@@ -2034,7 +2032,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     List<int> idsRamosLocaisRelacionados = App.Data.Connection.Table<LocalEstoqueClienteRamoAtividadesDataModel>().Where(c => c.idLocalEstoque == estoque.idLocalEstoque).Select(t => t.idRamoAtividade).ToList();
                                     App.Data.Connection.InsertAll(estoque.lRamoAtividades.Where(t => !idsRamosLocaisRelacionados.Contains(t.idRamoAtividade)));
                                 }
-                            } 
+                            }
                         }
                     }
                     else if (registro.GetType() == typeof(JornadaModel))
@@ -2044,10 +2042,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         PedidoRepository.RemoveHorariosJornadaNova(jornada.idJornada);
 
                         foreach (var item in jornada.lHorarios)
-                        {  
+                        {
                             App.Data.Connection.Insert(item);
                         }
 
+                    }
+                    else if (registro.GetType() == typeof(StatusModel))
+                    {
+                        var status = registro as StatusModel;
+
+                        StatusRepository.RemoverProbidos(status.idStatus);
+
+                        StatusRepository.SalvarStatusProibidos(status.idStatus, status.lRepresentantesProibidos);
                     }
                     #endregion
 
@@ -2295,7 +2301,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             if (extensaoModel != null)
                                 extensaoModel.idEmpresa =
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
-                        } 
+                        }
                         if (registro.GetType() == typeof(EmpresaAspnetUsersModel))
                         {
                             var usuario = registro as EmpresaAspnetUsersModel;
@@ -2343,8 +2349,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 }
                             }
                         }
-                        
-                         
+
+
                         await SaveSincronizacao(registro, xPrimaryKeyName, xTableName);
                     }
                 }

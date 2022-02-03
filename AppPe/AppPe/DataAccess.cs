@@ -107,6 +107,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                 try { this.Connection.CreateTable<JornadaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_JORNADA_TRABALHO; }
                 try { this.Connection.CreateTable<JornadaHorariosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_JORNADA_TRABALHO_HORARIOS; }
                 try { this.Connection.CreateTable<FormaPagamentoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_FORMA_PAGAMENTO; }
+                try { this.Connection.CreateTable<StatusRepresentanteProibido>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_STATUS_PROIBIDO; }
 
                 try
                 {
