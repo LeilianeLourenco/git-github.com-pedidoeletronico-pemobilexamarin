@@ -103,11 +103,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
                 }
                 else if (tabela == Tabela.STATUS_PEDIDO)
                 {
-                    litens = StatusRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), PagePedidoNew.CurrentViewModel.currentModel.stLancamento);
+                    litens = StatusRepository.Get(LItens.Count, 50, App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0, (IsUsingSearch ? xFiltro : ""), PagePedidoNew.CurrentViewModel.currentModel.stLancamento);
                 }
                 else if (tabela == Tabela.STATUS_PEDIDO_APRESENTACAO)
                 {
-                    litens = StatusRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), PageDetalhesPedido.viewmodelStatic.currentModel.stLancamento);
+                    litens = StatusRepository.Get(LItens.Count, 50, App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0, (IsUsingSearch ? xFiltro : ""), PageDetalhesPedido.viewmodelStatic.currentModel.stLancamento);
                 }
 
                 foreach (var item in litens)

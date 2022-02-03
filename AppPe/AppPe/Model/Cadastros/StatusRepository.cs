@@ -117,7 +117,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         /// </summary>
         /// <param name="stLancamento"></param>
         /// <returns></returns>
-        public static List<ListItemModel> Get(int skip, int take, string xFiltro, byte stLancamento)
+        public static List<ListItemModel> Get(int skip, int take, int idEmpresa_aspnetusers, string xFiltro, byte stLancamento)
         {
             try
             {
@@ -182,7 +182,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
                         });
                     }
                 }
-                xQuery = $"SELECT * FROM [{TableMobile.TB_STATUS_PROIBIDO}];";
+                xQuery = $"SELECT * FROM [{TableMobile.TB_STATUS_PROIBIDO}]" +
+                         $"WHERE [{nameof(StatusRepresentanteProibido.idEmpresa_aspnetusers)}] = {idEmpresa_aspnetusers}";
+
                 var proibidos = App.Data.Connection.Query<StatusRepresentanteProibido>(xQuery);
 
                 return retorno
@@ -272,7 +274,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
 
         }
 
-       public static void RemoverProbidos(int idStatus)
+        public static void RemoverProbidos(int idStatus)
         {
             try
             {
