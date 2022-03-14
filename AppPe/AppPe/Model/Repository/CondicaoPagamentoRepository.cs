@@ -212,12 +212,25 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 }).OrderBy(t => t.Display).ToList();
             }
 
-
-            return App.Data.Connection.Table<FormaPagamentoModel>().Select(t => new ListItemModel
+            var _listRetorno = App.Data.Connection.Table<FormaPagamentoModel>().Select(t => new ListItemModel
             {
                 Display = t.xFormaPagamento,
-                Id = t.idFormaPagamento, 
+                Id = t.idFormaPagamento,
             }).OrderBy(t => t.Display).ToList();
+
+
+            if(_listRetorno?.Count() == 0)
+            {
+                _listRetorno = new List<ListItemModel>();
+
+                _listRetorno.Add(new ListItemModel
+                {
+                    Display = "SEM FORMA DE PAGAMENTO",
+                    Id = 0
+                });
+            }
+
+            return _listRetorno;
         }
 
         public static string GetDisplay(int idCondicaoPagamento)

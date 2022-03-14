@@ -118,7 +118,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             xTextoPrint = "IMPRIMIR VIA BLUETOOTH";
             PrintCommand = new Command(() =>
             {
-               //PrintAndroid();
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    //SendToPrintIos();
+                }
+                else
+                {
+                    SendToPrint();
+                }
             });
 
             CloseCommand = new Command(() =>
