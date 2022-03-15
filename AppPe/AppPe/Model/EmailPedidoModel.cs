@@ -9,7 +9,8 @@
         public int? idPedidoVenda { get; set; }
 
         public bool bEnviaCliente { get; set; }
-
+        public int? idRepresentadaPdf { get; set; }
+        
         public bool bEnviaRepresentacoes { get; set; }
 
         public string idAspnetUsers { get; set; }

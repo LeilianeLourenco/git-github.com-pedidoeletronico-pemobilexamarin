@@ -150,7 +150,7 @@
                         </ViewCell>
                     </TableSection>
 '   
-                    <TableSection> 
+                    <TableSection x:Name="SectionAdicionais"> 
 
                         <!--<TextCell Command="{Binding GoToDescontoCommand}" Detail="{Binding xDisplayDesconto}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Adicionar Desconto"/>-->
 
@@ -258,6 +258,14 @@
                                 </Grid> 
                             </StackLayout> 
                         </ViewCell>
+
+                        <TextCell x:Name="TextCellRepresentacoesPdf"
+                                  Command="{Binding GoToRepresentacoesCommand}" 
+                                  Detail="{Binding representada.Display}" 
+                                  DetailColor="{StaticResource CinzaMaisEscuro}" 
+                                  TextColor="{StaticResource AzulChart}"  
+                                  Text="Representações PDF"/>
+
                     </TableSection>
 
                 </TableRoot>

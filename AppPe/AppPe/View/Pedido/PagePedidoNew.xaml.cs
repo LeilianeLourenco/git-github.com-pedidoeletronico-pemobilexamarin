@@ -46,6 +46,10 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
             ViewModel.DateOrcamentoVisibilityCommand.Execute(null);
 
+            ViewModel.RepresentacaoPdfVisibilityCommand = new Command(RepresentacoesPdfVisibility);
+
+            ViewModel.RepresentacaoPdfVisibilityCommand.Execute(null);
+
             //ViewModel.IsBusy = true;
 
             ButtonMostrarItens.Command = new Command(() =>
@@ -85,6 +89,30 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             }
         }
 
+        /// <summary>
+        /// melhoria especifica onde o usuário escolhe a representação que vai pro pdf
+        /// </summary>
+        public void RepresentacoesPdfVisibility()
+        {
+            try
+            {
+                if (ViewModel.currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf == false)
+                {
+                    if (SectionAdicionais.Contains(TextCellRepresentacoesPdf))
+                        SectionAdicionais.Remove(TextCellRepresentacoesPdf);
+                }
+                else
+                {
+                    if (!SectionAdicionais.Contains(TextCellRepresentacoesPdf))
+                        SectionAdicionais.Insert(7, TextCellRepresentacoesPdf);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+        }
 
         public PedidoNewViewModel ViewModel => BindingContext as PedidoNewViewModel;
 

@@ -95,6 +95,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     .Select(c => c.bAplicaMelhoriaTl).FirstOrDefault();
         }
 
+        public static bool? GetMelhoriaEspecificaRepresentacaoPdf(int idEmpresa)
+        {
+            return App.Data.Connection.Table<ConfiguracaoEspecificaModel>()
+                    .Where(c => c.idEmpresa == idEmpresa)
+                    .Select(c => c.bAplicaMelhoriaEscolherRepresentacaoPdf).FirstOrDefault();
+        }
+
         public static bool? GetMelhoriaEspecificaEmailsTelefoneTl(int idEmpresa)
         {
             return App.Data.Connection.Table<ConfiguracaoEspecificaModel>()

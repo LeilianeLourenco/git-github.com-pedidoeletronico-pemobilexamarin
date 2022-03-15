@@ -285,7 +285,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         //url = url.Replace('+', '*');
 
                         url = url.Replace(oldValue: "+", newValue: "%2B");
-                        
+
+                        if (currentModel.idRepresentadaPdf.GetValueOrDefault() > 0)
+                            url += "&idRepresentacaoEspecifica=" + currentModel.idRepresentadaPdf;
+
                         //Fim os 34140
                         //Device.OpenUri(new Uri(url));
 

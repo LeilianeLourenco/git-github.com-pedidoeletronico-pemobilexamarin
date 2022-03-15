@@ -47,6 +47,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public bool bAplicaMelhoriaUnicaUm { get; set; }
         public bool bAplicaMelhoriaRosaMaria { get; set; }
         public bool bAplicaMelhoriaBloqueiaEnderecoReceita { get; set; }
+        public bool? bAplicaMelhoriaEscolherRepresentacaoPdf { get; set; }
+        
 
         /// <summary>
         /// issues 1786

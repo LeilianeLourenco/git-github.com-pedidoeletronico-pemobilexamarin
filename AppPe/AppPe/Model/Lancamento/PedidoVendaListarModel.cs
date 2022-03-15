@@ -111,6 +111,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _xObsInterna = value; NotifyPropertyChanged(); }
         }
 
+        private int? _idRepresentadaPdf;
+
+        public int? idRepresentadaPdf
+        {
+            get { return _idRepresentadaPdf; }
+            set { _idRepresentadaPdf = value; NotifyPropertyChanged(); }
+        }
+
         /// <summary>
         /// 0 - aberto
         /// 1 - cancelado

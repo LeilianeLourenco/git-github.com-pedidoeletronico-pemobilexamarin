@@ -353,8 +353,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownload<CategoriaProdutoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<CondicaoPagamentoModel>();
-                if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPaginado<FormaPagamentoModel>();
+                //if (!ocorreuErro && !bFalhaConexao)
+                //    await SincronizacaoDownloadPaginado<FormaPagamentoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<GradeCorModel>();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -376,9 +376,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<TabelaEscalonadaRepresentanteModel>();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownload<RecebimentoTitulosModel>();
+                    await SincronizacaoDownloadPaginado<RecebimentoTitulosModel>();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownload<RecebimentoTitulosMovimentacaoModel>();
+                    await SincronizacaoDownloadPaginado<RecebimentoTitulosMovimentacaoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<UnidadeMedidaModel>();
 
@@ -1094,7 +1094,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     {
                                         SentEmail(pedido.idPedidoVendaOffLine ?? 0,
                                             objPedidoSync.objModel.idPedidoVenda ?? 0, objPedidoSync.objModel.idEmpresa,
-                                            pedido.stEnviadoCliente, pedido.stEnviadoRepresentacao);
+                                            pedido.stEnviadoCliente, pedido.stEnviadoRepresentacao, pedido.idRepresentadaPdf);
                                     }
                                     pedido.idPedidoVenda = objPedidoSync.objModel.idPedidoVenda;
                                     pedido.idPedidoDisplay = objPedidoSync.objModel.idPedidoDisplay;
@@ -1669,7 +1669,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         #region Metodos privados
 
         private static void SentEmail(int idPedidoVendaOffLine, int idPedidoVenda, int idEmpresa, bool stEnviadoCliente,
-            bool stEnviadoRepresentacao)
+            bool stEnviadoRepresentacao, int? idRepresentadaPdf)
         {
             var email = new EmailPedidoModel
             {
@@ -1678,6 +1678,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 idEmpresa = idEmpresa,
                 bEnviaCliente = stEnviadoCliente,
                 bEnviaRepresentacoes = stEnviadoRepresentacao,
+                idRepresentadaPdf = idRepresentadaPdf,
                 idAspnetUsers = App.CurrentAspnetUserModel.Id
             };
             UtilHttp.SendEmailPedido(email);

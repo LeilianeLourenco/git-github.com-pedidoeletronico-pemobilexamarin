@@ -39,6 +39,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             tb_pedidovenda.xFormaPagamento as DisplayForma,
                             tb_pedidovenda.vOutrasPed,
                             tb_pedidovenda.vFretePed,
+                            tb_pedidovenda.idRepresentadaPdf,
                             tb_pedidovenda.VTotal as VTotal, 
                             TB_EMPRESA_ASPNETUSERS.xEmail DisplayEmail, 
                             tb_condicaopagamento.xCondicaoPagamento DisplayPrazo, 

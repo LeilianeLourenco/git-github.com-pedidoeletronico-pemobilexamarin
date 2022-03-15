@@ -381,6 +381,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _bMostraFaixaEscalonada = value; NotifyPropertyChanged(); }
         }
 
+        private bool _bAplicaMelhoriaEscolherRepresentacaoPdf = false;
+
+        public bool bAplicaMelhoriaEscolherRepresentacaoPdf
+        {
+            get { return _bAplicaMelhoriaEscolherRepresentacaoPdf; }
+            set { _bAplicaMelhoriaEscolherRepresentacaoPdf = value; NotifyPropertyChanged(); }
+        }
+
+        private int? _idRepresentadaPdf;
+
+        public int? idRepresentadaPdf
+        {
+            get { return _idRepresentadaPdf; }
+            set { _idRepresentadaPdf = value; NotifyPropertyChanged(); }
+        }
 
 
         private double _vLimiteMinimoVenda;

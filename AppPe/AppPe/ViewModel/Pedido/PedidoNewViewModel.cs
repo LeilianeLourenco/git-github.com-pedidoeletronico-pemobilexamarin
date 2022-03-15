@@ -20,6 +20,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
     public class PedidoNewViewModel : SearchCommom
     {
         public ICommand DateOrcamentoVisibilityCommand { get; set; }
+        public ICommand RepresentacaoPdfVisibilityCommand { get; set; }
         public ICommand VendedorVisibilityCommand { get; set; }
 
         public ICommand SaveCommand { get; set; }
@@ -42,6 +43,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
         public Command ChangeTimePrevisaoCommand { get; set; }
         public Command ChangeTimeOrcamentoCommand { get; set; }
+        public Command GoToRepresentacoesCommand { get; set; }
         public Command ChangeTipoLancamentoCommand { get; set; }
 
         public ICommand CancelPedidoCommand { get; set; }
@@ -203,6 +205,25 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 _ItemRepresentante = value;
                 NotifyPropertyChanged();
             }
+        }
+
+
+        private List<ListItemModel> _lRepresentacoes = new List<ListItemModel>();
+
+        public List<ListItemModel> lRepresentacoes
+        {
+            get { return _lRepresentacoes; }
+            set
+            {
+                _lRepresentacoes = value;
+                NotifyPropertyChanged();
+            }
+        }
+        private ListItemModel _representada;
+        public ListItemModel representada
+        {
+            get { return _representada; }
+            set { _representada = value; NotifyPropertyChanged(); }
         }
 
         private bool _bCancelado = false;
@@ -413,8 +434,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         var page = new PageSelectDate(currentModel, SelectDateViewModel.tipolancamento.ORCAMENTO);
                         UtilNavidate.PushModalAsync(page);
                     });
-                }
+                } 
+            });
 
+
+            GoToRepresentacoesCommand = new Command(() =>
+            {
+                if (!ExecuttingAnyCommand)
+                {
+                    ExecuttingAnyCommand = true;
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        var page = new PageBasicList(representada, lRepresentacoes, "Representação PDF");
+                        UtilNavidate.PushModalAsync(page);
+                    });
+                }
             });
 
 
@@ -772,6 +806,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
         }
 
+        public void GetRepresentacao()
+        {
+            try
+            {
+                lRepresentacoes =
+                     new List<ListItemModel>(RepresentadaRepository.GetListItemModel());
+
+                representada = lRepresentacoes.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+
+        }
         private async void NavigateToFinanceiro()
         {
             if (currentModel.idClientesOffLine == 0)
@@ -1243,6 +1292,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                 currentModel.bBloquearVisualizacaoEstoqueVendedor = _configuracoesGerais.bBloquearVisualizacaoEstoqueVendedor;
                 currentModel.bMostraFaixaEscalonada = _configuracoesGerais.bMostraFaixaTabelaEscalonada;
+
+                currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf =  ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa).GetValueOrDefault();
+                if (currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf == true)
+                    GetRepresentacao();
+
+                RepresentacaoPdfVisibilityCommand.Execute(null);
             }
             catch (Exception ex)
             {
@@ -1429,7 +1484,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 //}
 
                 if (email != null)
-                {
+                {  
 
                     var bgerarOrcamento = currentModel.stLancamento == 0 && ItemSatus.Id == 2 && currentModel.stPedidoVenda == 0;
 
@@ -1458,6 +1513,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                     currentModel.stEnviadoCliente = email.bEnviaCliente;
                     currentModel.stEnviadoRepresentacao = email.bEnviaRepresentacoes;
+
+                    if (currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf == true)
+                        currentModel.idRepresentadaPdf = representada.Id;
+
+
                     PedidoRepository.SavePedidoVenda(currentModel);
 
                     //quando vem pelo gerar pedido do cliente, o pagelistarpedidos não foi invocado
