@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="312" android:versionName="15.0.62" package="com.ptbr.pedidoeletronico" android:installLocation="preferExternal">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="313" android:versionName="15.0.63" package="com.ptbr.pedidoeletronico" android:installLocation="preferExternal">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="30" />
 	<application android:label="pedidoeletronico.com" android:theme="@style/MainTheme" android:icon="@drawable/iconPE"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

@@ -376,9 +376,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<TabelaEscalonadaRepresentanteModel>();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPaginado<RecebimentoTitulosModel>();
+                    await SincronizacaoDownload<RecebimentoTitulosModel>();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPaginado<RecebimentoTitulosMovimentacaoModel>();
+                    await SincronizacaoDownload<RecebimentoTitulosMovimentacaoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<UnidadeMedidaModel>();
 
@@ -430,10 +430,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownloadLocalEstoque();
 
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPaginado<JornadaModel>();
-
-                //if (!ocorreuErro && !bFalhaConexao)
-                //    await SincronizacaoDownloadPaginado<JornadaHorariosModel>();
+                    await SincronizacaoDownloadPaginado<JornadaModel>(); 
 
                 if (bFalhaConexao)
                     AnaliseFinalSincronizacao("Ocorreu um erro de conexão com a internet durante a sincronização, tente novamente.");

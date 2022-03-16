@@ -285,7 +285,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             }
             catch (Exception ex)
             {
-                ex.TrakException("RemoveHorariosJornadaNova");
+                ex.TrakException("RemoveStatusProbidos");
             }
         }
     }
