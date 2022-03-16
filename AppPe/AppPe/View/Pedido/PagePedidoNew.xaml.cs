@@ -104,7 +104,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                 else
                 {
                     if (!SectionAdicionais.Contains(TextCellRepresentacoesPdf))
-                        SectionAdicionais.Insert(7, TextCellRepresentacoesPdf);
+                        SectionAdicionais.Insert(10, TextCellRepresentacoesPdf);
                 }
 
             }
