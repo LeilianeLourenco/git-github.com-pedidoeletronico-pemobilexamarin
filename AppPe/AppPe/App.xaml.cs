@@ -131,18 +131,17 @@ namespace Xamarin.HLP.Mobile.AppPE
                 {
                     case Ambiente.Homologacao:
                         //return "https://191.235.81.52:8080/";
-                        return "http://hlpsistemas.sytes.net:8094/";
+                        //return "http://hlpsistemas.sytes.net:8094/";
+                        return "http://pereporthom.pedidoeletronico.com/";
                     case Ambiente.Producao:
                         //return "https://191.235.81.52/"; 
-                        return "http://pe-reports.sytes.net/";
-
-                    //return "https://prod-pereport.sytes.net/";  link interno hlp
+                        return "http://pe-reports.sytes.net/"; 
                     case Ambiente.Local:
                         return "http://hlpsistemas.sytes.net:8094/";
                     case Ambiente.HomologacaoProducao:
                         return "http://pe-reports.sytes.net/";
                     default:
-                        return "http://hlpsistemas.no-ip.org:8087/";
+                        return "http://pe-reports.sytes.net/";
                 }
             }
         }
