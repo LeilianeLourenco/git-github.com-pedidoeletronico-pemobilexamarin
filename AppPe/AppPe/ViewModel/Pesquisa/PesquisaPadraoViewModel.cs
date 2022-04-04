@@ -28,6 +28,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
             RAMO_ATIVIDADE,
             STATUS_PEDIDO,
             STATUS_PEDIDO_APRESENTACAO,
+            TB_REPRESENTADA,
             TB_FORMA_PAGAMENTO
         }
 
@@ -88,6 +89,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
                 else if (tabela == Tabela.TB_REPRESENTANTE)
                 {
                     litens = EmpresaAspnetUsersRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""));
+                }
+                else if (tabela == Tabela.TB_REPRESENTADA)
+                {
+                    litens = RepresentadaRepository.GetListItemModel();
                 }
                 else if (tabela == Tabela.TB_REPRESENTANTE_MAIS_TODOS)
                 {

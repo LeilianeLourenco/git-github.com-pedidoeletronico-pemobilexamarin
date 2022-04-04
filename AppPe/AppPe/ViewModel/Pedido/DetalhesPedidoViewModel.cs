@@ -94,6 +94,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        private bool? _bUtilizaMelhoriaEscolherRepresentadaPdf;
+
+        public bool? bUtilizaMelhoriaEscolherRepresentadaPdf
+        {
+            get { return _bUtilizaMelhoriaEscolherRepresentadaPdf; }
+            set
+            {
+                _bUtilizaMelhoriaEscolherRepresentadaPdf = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
         private ListItemModel _ItemSatus = new ListItemModel { Display = "Selecione um status" };
 
         public ListItemModel ItemSatus
@@ -106,6 +119,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        private ListItemModel _representada;
+        public ListItemModel representada
+        {
+            get { return _representada; }
+            set { _representada = value; NotifyPropertyChanged(); }
+        }
 
         public DetalhesPedidoViewModel()
         {
@@ -114,6 +133,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 UtilNavidate.ShowPopupNew(new PageViewToPrint(currentModel.idPedidoVendaOffLine));
             });
+         
             ShowItensPedidoCommand = new Command(() =>
             {
                 if (!ExecuttingAnyCommand)
@@ -122,6 +142,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     UtilNavidate.ShowPopupNew(new PageShowItensPedido());
                 }
             });
+
             DownloadCommand = new Command(VisualizarPDF);
 
             CompartilharCommand = new Command(CompartilharWhatsApp);
@@ -191,6 +212,64 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (!ExecuttingAnyCommand)
                 {
                     ExecuttingAnyCommand = true;
+
+
+                    if (bUtilizaMelhoriaEscolherRepresentadaPdf.GetValueOrDefault())
+                    { 
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            if (representada == null)
+                                representada = new ListItemModel();
+                            var pesquisa = new PagePesquisaPadrao(representada,
+                                PesquisaPadraoViewModel.Tabela.TB_REPRESENTADA)
+                            {
+                                Title = "Representação para o PDF",
+                            };
+                            UtilNavidate.PushAsync(pesquisa);
+                        });
+                    }
+                    else
+                    {
+
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            var url = UtilMethods.EncodeRoute("PedidoVenda", "Report",
+                                $"idPedidoVenda={currentModel.idPedidoVenda}");
+                            //inicio os 34140
+
+                            // Implementado o ajuste de encrypt da o.s 34045
+
+                            //Havia sido feita correção em Web, com uma implementação do framework, porém a dll utilizada no web,
+
+                            //não está disponível no xamarin, portanto feito ajuste manual abaixo.
+
+                            //url = url.Replace('+', '*');
+
+                            url = url.Replace(oldValue: "+", newValue: "%2B"); 
+
+                            //Fim os 34140
+                            //Device.OpenUri(new Uri(url));
+
+                            Launcher.OpenAsync(new Uri(url));
+                        });
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+        }
+
+
+        public void VisualizarPDFPorRepresentada()
+        {
+            try
+            {
+                if (!ExecuttingAnyCommand)
+                {
+                    ExecuttingAnyCommand = true;
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         var url = UtilMethods.EncodeRoute("PedidoVenda", "Report",
@@ -212,6 +291,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                         Launcher.OpenAsync(new Uri(url));
                     });
+
                 }
             }
             catch (Exception ex)
@@ -415,13 +495,29 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     Display = currentModel.xNomeStatus
                 };
 
+                representada = new ListItemModel
+                {
+                    XId = currentModel.idRepresentadaPdf.ToString(),
+                    Display = "Representada"
+                };
+                
+
                 vDescontoTotal = PedidoRepository.SumDescontoItens(currentModel.idPedidoVendaOffLine);
                 vTotalComissao = PedidoRepository.SumFieldItem(currentModel.idPedidoVendaOffLine, "vComissao");
+                bUtilizaMelhoriaEscolherRepresentadaPdf = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
             }
+
             if (ItemSatus.XId != currentModel.idStatus.ToString())
             {
                 AnaliseDeMudancaDeStatus();
             }
+
+
+            if (bUtilizaMelhoriaEscolherRepresentadaPdf.GetValueOrDefault() && representada.XId != currentModel.idRepresentadaPdf.GetValueOrDefault().ToString())
+            {
+                VisualizarPDFPorRepresentada();
+            }
+
             return canExecuteInicial;
         }
 
