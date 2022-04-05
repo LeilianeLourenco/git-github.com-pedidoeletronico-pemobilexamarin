@@ -515,6 +515,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
             if (bUtilizaMelhoriaEscolherRepresentadaPdf.GetValueOrDefault() && representada.XId != currentModel.idRepresentadaPdf.GetValueOrDefault().ToString())
             {
+                currentModel.idRepresentadaPdf = Convert.ToInt32(representada.XId);
                 VisualizarPDFPorRepresentada();
             }
 
