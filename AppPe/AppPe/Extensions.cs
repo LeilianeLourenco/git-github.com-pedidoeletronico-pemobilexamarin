@@ -202,6 +202,16 @@ namespace Xamarin.HLP.Mobile.AppPE
             return $"{date.ToString("MMMM")}/{date.ToString("yyyy")}";
         }
 
+        public static string ToCNPJSemPontos(this object value)
+        {            
+            var valor = System.Convert.ToString((value ?? "")).RetiraCaracterEspecial();
+            if (valor.Length > 14)
+            {
+                valor = valor.Substring(0, 14);
+            }
+            return valor;
+        }
+
         public static string ToCNPJFormat(this object value)
         {
             //   37.610.411/0001-09
@@ -249,6 +259,12 @@ namespace Xamarin.HLP.Mobile.AppPE
             }
 
             return true;
+        }
+        public static bool ApenasPontosTracos(string str)
+        {
+            if (str.Contains(".") & str.Contains("-") & str.Contains("/"))
+                return true;
+            return false;
         }
 
         public static string ToCpfFormat(this object value)

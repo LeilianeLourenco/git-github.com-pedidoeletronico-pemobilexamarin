@@ -487,6 +487,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         else if (xFiltro.Length == 11)
                         {
                             xFiltro = Extensions.ToCpfFormat(xFiltro);
+                        }                        
+                    }
+                    else if (Extensions.ApenasPontosTracos(xFiltro))
+                    {
+                        if (xFiltro.Length > 15)
+                        {
+                            filtroSemPontos = Extensions.ToCNPJSemPontos(xFiltro);
                         }
                     }
                     xFiltro = xFiltro.RemoverAcentos().ToUpper();
