@@ -486,15 +486,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         }
                         else if (xFiltro.Length == 11)
                         {
+                            filtroSemPontos = xFiltro;
                             xFiltro = Extensions.ToCpfFormat(xFiltro);
                         }                        
                     }
                     else if (Extensions.ApenasPontosTracos(xFiltro))
                     {
-                        if (xFiltro.Length > 15)
-                        {
-                            filtroSemPontos = Extensions.ToCNPJSemPontos(xFiltro);
-                        }
+                        if (xFiltro.Length > 18)                        
+                            xFiltro = xFiltro.Substring(0, 18);                        
+                        filtroSemPontos = Extensions.SemPontos(xFiltro);
                     }
                     xFiltro = xFiltro.RemoverAcentos().ToUpper();
                     xQuery += $@" and (UPPER(xRazaoSocial) like('%{xFiltro}%') 
