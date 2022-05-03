@@ -462,7 +462,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             try
             {
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
-
+                var filtroSemPontos = "";
 
 
                 var xQuery = "";
@@ -479,22 +479,32 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 {
                     if (Extensions.IsDigitsOnly(xFiltro))
                     {
-                        if(xFiltro.Length == 14)
+                        if (xFiltro.Length == 14)
                         {
+                            filtroSemPontos = xFiltro;
                             xFiltro = Extensions.ToCNPJFormat(xFiltro);
                         }
-                        else if(xFiltro.Length == 11)
+                        else if (xFiltro.Length == 11)
                         {
+                            filtroSemPontos = xFiltro;
                             xFiltro = Extensions.ToCpfFormat(xFiltro);
-                        }
+                        }                        
                     }
-
-
+                    else if (Extensions.ApenasPontosTracos(xFiltro))
+                    {
+                        if (xFiltro.Length > 18)                        
+                            xFiltro = xFiltro.Substring(0, 18);                        
+                        filtroSemPontos = Extensions.SemPontos(xFiltro);
+                    }
                     xFiltro = xFiltro.RemoverAcentos().ToUpper();
                     xQuery += $@" and (UPPER(xRazaoSocial) like('%{xFiltro}%') 
                                   or UPPER(coalesce(xDisplaySemCaracter,'')) like('%{xFiltro}%')
                                   or UPPER(coalesce(xFantasia,'')) like('%{xFiltro}%')
-                                  or UPPER(xCpfCnpj) like('%{xFiltro}%'))";
+                                  or UPPER(xCpfCnpj) like('%{xFiltro}%')";
+                    if (!filtroSemPontos.Equals(""))
+                        xQuery += $"or UPPER(xCpfCnpj) like('%{filtroSemPontos}%'))";
+                    else
+                        xQuery += ")";
                 }
 
                 xQuery += $@" order by UPPER(xRazaoSocial)
