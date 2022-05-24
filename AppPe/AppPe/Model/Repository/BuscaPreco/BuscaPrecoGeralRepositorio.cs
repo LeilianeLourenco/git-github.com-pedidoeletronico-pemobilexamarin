@@ -16,7 +16,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
             string _xQry =
                 $@"select idTabelaPreco, xNome, pIndiceTabela, idEmpresa, 
                    stDefault, stTabelaPreco, stValor, dInicial, dFinal, 
-                   stCampanhaRepresentante, stCampanhaCliente,
+                   stCampanhaRepresentante, stCampanhaCliente, pDescontoMaximo,
                    stTabelaPrecoRepresentacao, stCampanhaClienteRamoAtividade, stCampanhaClienteUF from {TableMobile.TB_TABELAPRECO}
             where stAtivo = 1
             and stCampanhaCliente = 0 and stCampanhaRepresentante = 0 and stTabelaPrecoRepresentacao = 0
@@ -45,6 +45,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                 idEmpresa = l.idEmpresa,
                 idTabelaPreco = l.idTabelaPreco,
                 pIndiceTabela = l.pIndiceTabela,
+                pDescontoMaximo = l.pDescontoMaximo,
                 stDefault = l.stDefault,
                 stTabelaPreco = l.stTabelaPreco,
                 stValor = l.stValor,

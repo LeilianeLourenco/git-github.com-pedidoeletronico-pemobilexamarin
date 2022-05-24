@@ -19,7 +19,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda.Implementacoes
         {
             //adicionado para validar se o desconto máximo esta 0.
             bool _descontoValido = false;
-            if(_pDescMaximo > 0)
+            if(_pDescMaximo >= 0)
             {
                 _descontoValido = this._pDescMaximo >= pDesconto;
             }
