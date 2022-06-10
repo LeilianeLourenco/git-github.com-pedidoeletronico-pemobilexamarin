@@ -112,6 +112,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         public static List<ListItemModel> Get(int skip, int take, string xFiltro, bool bTrasCampanha = false)
         {
+            /*
             var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
             const string xFields = @"idTabelaPreco Id , 
@@ -131,9 +132,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
             xQuery += $@" order by UPPER(Display)
                                             LIMIT {take} OFFSET {skip}";
-
+            */
             try
             {
+                var a = GetAllTables().ToList().ConvertAll(t => new ListItemModel
+                {
+                    Detail = "Indice de " + t.pIndice,
+                    Display = t.xTabelaPreco.ToUpper(),
+                    Id = t.idTabelaPreco,
+                    IdOnline = t.idTabelaPreco,
+                    XId = "" + t.idTabelaPreco + "",
+                    idTabelaPreco = null,
+                    vDescCondicao = null
+                });
+                return a;
+                /*
                 var dados = App.Data.Connection.Query<BasicPickerModel>(xQuery);
                 if (dados == null)
                     return new List<ListItemModel>();
@@ -154,6 +167,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     });
                 }
                 return retorno;
+                */
             }
             catch (Exception ex)
             {
