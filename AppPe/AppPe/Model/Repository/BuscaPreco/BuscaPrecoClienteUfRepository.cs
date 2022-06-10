@@ -30,7 +30,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
             string _xQry =
                 $@"select t.idTabelaPreco, t.xNome, t.pIndiceTabela, t.idEmpresa, 
                    t.stDefault, t.stTabelaPreco, t.stValor, t.dInicial, t.dFinal,
-                   t.stCampanhaRepresentante, t.stCampanhaCliente,
+                   t.stCampanhaRepresentante, t.stCampanhaCliente, t.pDescontoMaximo,
                    t.stTabelaPrecoRepresentacao, t.stCampanhaClienteRamoAtividade, t.stCampanhaClienteUF from {TableMobile.TB_TABELAPRECO} t
 join {TableMobile.tb_tabelapreco_uf_cliente} tuf on t.idTabelaPreco = tuf.idTabelaPreco
 and t.stAtivo = 1
@@ -60,6 +60,7 @@ and LOWER(tuf.xUF) = '{_xUf}'";
                 idEmpresa = l.idEmpresa,
                 idTabelaPreco = l.idTabelaPreco,
                 pIndiceTabela = l.pIndiceTabela,
+                pDescontoMaximo = l.pDescontoMaximo,
                 stDefault = l.stDefault,
                 stTabelaPreco = l.stTabelaPreco,
                 stValor = l.stValor,

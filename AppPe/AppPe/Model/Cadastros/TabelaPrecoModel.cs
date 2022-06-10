@@ -239,6 +239,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         public int idTabelaPreco { get; set; }
         public string xNome { get; set; } 
         public double pIndiceTabela { get; set; }
+        public double pDescontoMaximo { get; set; }
         public byte stTabelaPreco { get; set; }
         public byte stValor { get; set; }
         public DateTime? dInicial { get; set; }
