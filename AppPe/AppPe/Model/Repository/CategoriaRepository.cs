@@ -102,6 +102,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         {
             try
             {
+               
                 var lreturn = new List<ListItemModel> { new ListItemModel { Id = 0, Display = "TODOS" } };
 
                 if (idRepresentacao != 0)
@@ -143,11 +144,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     //    c.stAtivo &&
                     //    c.idEmpresa == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa
                     //    ).OrderBy(O => O.xCategoria).ToList();
-
                     var xQuery = $@"SELECT * FROM {TableMobile.TB_CATEGORIA} WHERE
                                         {xWhere}";
 
-                    var dados = App.Data.Connection.Query<CategoriaProdutoModel>(xQuery);
+                    var xQueryDesativadas = $@" SELECT * FROM {TableMobile.TB_REPRESENTADA} WHERE
+                        idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} and stAtivo!=1";
+                    var desativadas = App.Data.Connection.Query<RepresentadaAspnetUsersModel>(xQueryDesativadas);                   
+                    if (desativadas.Count > 0)
+                    {
+                        int qtd = desativadas.Count();
+                        for (int i = 0; i < qtd; i++)                        
+                            xQuery += $"and idRepresentacao!={desativadas[i].idRepresentada} ";                        
+                    }
+                    var dados = App.Data.Connection.Query<CategoriaProdutoModel>(xQuery).OrderBy(O => O.xCategoria);
 
 
 
