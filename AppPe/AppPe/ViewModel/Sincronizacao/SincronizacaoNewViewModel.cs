@@ -1808,6 +1808,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     {
                         var produto = registro as ProdutoModel;
                     }
+                    if (registro.GetType() == typeof(StatusModel))
+                    {
+                        var status = registro as StatusModel;                  
+                        StatusRepository.SalvarStatusProibidos(status.idStatus, status.lRepresentantesProibidos);
+                    }
                 }
                 else
                 //if (!App.ForcarAtualizacao)
