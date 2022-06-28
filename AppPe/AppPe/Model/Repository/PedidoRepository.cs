@@ -199,12 +199,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             int _idRamoAtividade = App.Data.Connection.Table<ClientesModel>().Where(c => c.idClientes == idCliente && c.idEmpresa == idEmpresa).Select(t => t.idRamoAtividade).FirstOrDefault();
             List<int> lIdsLocais = locais.Select(t => t.Key).ToList();
 
-
+            List<int> _listaLocais = App.Data.Connection.Table<LocalEstoqueModel>().Where(c => lIdsLocais.Contains(c.idLocalEstoque)).Select(t => t.idLocalEstoque).Distinct().ToList();
             List<int> _listaLocaisPorCliente = App.Data.Connection.Table<LocalEstoqueClientesModel>().Where(c => c.idClientes == idCliente && lIdsLocais.Contains(c.idLocalEstoque)).Select(t => t.idLocalEstoque).Distinct().ToList();
             List<int> _listaLocaisPorUf = App.Data.Connection.Table<LocalEstoqueUfModel>().Where(c => c.xUf == _xUfCliente && lIdsLocais.Contains(c.idLocalEstoque)).Select(t => t.idLocalEstoque).Distinct().ToList();
             List<int> _listaLocaisPorRamo = App.Data.Connection.Table<LocalEstoqueClienteRamoAtividadesDataModel>().Where(c => c.idRamoAtividade == _idRamoAtividade && lIdsLocais.Contains(c.idLocalEstoque)).Select(t => t.idLocalEstoque).Distinct().ToList();
             List<int> _listaLocaisPorRepresentante = App.Data.Connection.Table<LocalEstoqueRepresentantesModel>().Where(c => c.idEmpresa_aspnetUsers == idRepresentante && lIdsLocais.Contains(c.idLocalEstoque)).Select(t => t.idLocalEstoque).Distinct().ToList();
 
+            int cont = 0;
             if (_listaLocaisPorCliente?.Count() > 0)
             {
                 foreach (var item in _listaLocaisPorCliente)
@@ -212,6 +213,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     if (dicLocais.Where(t => t.Key == item).Count() == 0)
                     {
                         dicLocais.Add(item, locais.Where(t => t.Key == item).Select(t => t.Value).FirstOrDefault());
+                        cont++;
                     }
                 }
             }
@@ -223,6 +225,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     if (dicLocais.Where(t => t.Key == item).Count() == 0)
                     {
                         dicLocais.Add(item, locais.Where(t => t.Key == item).Select(t => t.Value).FirstOrDefault());
+                        cont++;
                     }
                 }
             }
@@ -234,6 +237,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     if (dicLocais.Where(t => t.Key == item).Count() == 0)
                     {
                         dicLocais.Add(item, locais.Where(t => t.Key == item).Select(t => t.Value).FirstOrDefault());
+                        cont++;
                     }
                 }
             }
@@ -245,7 +249,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     if (dicLocais.Where(t => t.Key == item).Count() == 0)
                     {
                         dicLocais.Add(item, locais.Where(t => t.Key == item).Select(t => t.Value).FirstOrDefault());
+                        cont++;
                     }
+                }
+            }
+            if (cont == 0)
+            {
+                foreach (var item in _listaLocais)
+                {
+                    if (dicLocais.Where(t => t.Key == item).Count() == 0)                    
+                        dicLocais.Add(item, locais.Where(t => t.Key == item).Select(t => t.Value).FirstOrDefault());         
+                    
                 }
             }
 
