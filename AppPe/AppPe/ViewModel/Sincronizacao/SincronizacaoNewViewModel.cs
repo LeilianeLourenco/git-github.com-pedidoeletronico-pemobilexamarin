@@ -917,11 +917,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
-            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
-            _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-5);
-
+            // issue 2705 ajustando a data de sincronização IGOR BIANCHINI SPAGNOL
+            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);           
+                           
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
                 _ultimaDataSinc = DateTime.Today.AddYears(-50);
+            else
+                _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-5);
 
 
             try
