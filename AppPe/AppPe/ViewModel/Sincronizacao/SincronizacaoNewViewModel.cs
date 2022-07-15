@@ -917,10 +917,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
-            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
-
+            // issue 2705 ajustando a data de sincronização IGOR BIANCHINI SPAGNOL
+            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);           
+                           
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
                 _ultimaDataSinc = DateTime.Today.AddYears(-50);
+            else
+                _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-5);
 
 
             try
@@ -1807,6 +1810,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     if (registro.GetType() == typeof(ProdutoModel))
                     {
                         var produto = registro as ProdutoModel;
+                    }
+                    if (registro.GetType() == typeof(StatusModel))
+                    {
+                        var status = registro as StatusModel;                  
+                        StatusRepository.SalvarStatusProibidos(status.idStatus, status.lRepresentantesProibidos);
                     }
                 }
                 else
