@@ -606,6 +606,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
                 _ultimaDataSinc = lastDateServerSync;
+            else
+                _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
 
             listaID = await
@@ -667,6 +669,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
                 _ultimaDataSinc = lastDateServerSync;
+            else
+                _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
             listaID = await
                 UtilHttp.GetQuantidadeTotalLocaisEstoque(
@@ -725,6 +729,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
                 _ultimaDataSinc = lastDateServerSync;
+            else
+                _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
             currentModel.Display = xTableName;
             currentModel.iCount = await
@@ -785,6 +791,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
                 _ultimaDataSinc = lastDateServerSync;
+            else
+                _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
 
             currentModel.iCount = await
