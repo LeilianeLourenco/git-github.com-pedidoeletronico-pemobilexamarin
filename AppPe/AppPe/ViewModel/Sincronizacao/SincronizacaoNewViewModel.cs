@@ -264,8 +264,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
                                     {
                                         Table = "REPRESENTANTEINATIVO",
-                                        Display = "Representante inativo.",
-                                        Detail = "Representante inativo para a empresa corrente. Entre em contato com seu administrador!"
+                                        Display = "Vendedor inativo.",
+                                        Detail = "Vendedor inativo para a empresa corrente. Entre em contato com seu administrador!"
                                     });
                                     AnaliseFinalSincronizacao();
                                 }

@@ -178,7 +178,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View
                                         </li>
                                         <li>
                                             <p>
-                                                <strong>v.</strong>	O horário de atendimento da CONTRATADA, na sua sede, representantes, franquias ou pontos de apoio, é das 07:30 HS as 12:00 HS e de 13:12 HS as 17:30 HS, de segundas à quintas-feiras e de sextas-feiras das 07:30 HS as 12:00 HS e de 13:12 HS as 16:30 HS, em todos os dias úteis, considerados pela legislação na cidade da CONTRATADA. Se o LICENCIADO necessitar de atendimento fora destes horários e períodos, deverá ser solicitado e negociado com antecedência os custos e prazos de atendimentos.
+                                                <strong>v.</strong>	O horário de atendimento da CONTRATADA, na sua sede, vendedores, franquias ou pontos de apoio, é das 07:30 HS as 12:00 HS e de 13:12 HS as 17:30 HS, de segundas à quintas-feiras e de sextas-feiras das 07:30 HS as 12:00 HS e de 13:12 HS as 16:30 HS, em todos os dias úteis, considerados pela legislação na cidade da CONTRATADA. Se o LICENCIADO necessitar de atendimento fora destes horários e períodos, deverá ser solicitado e negociado com antecedência os custos e prazos de atendimentos.
                                             </p>
                                         </li>
                                         <li>

@@ -688,7 +688,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         var pesquisa = new PagePesquisaPadrao(ItemRepresentante,
                             PesquisaPadraoViewModel.Tabela.TB_REPRESENTANTE)
                         {
-                            Title = "Representante",
+                            Title = "Vendedor",
                         };
                         UtilNavidate.PushAsync(pesquisa);
                     });
@@ -1454,7 +1454,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     {
                         if (!await
                             App.Messages.ShowConfirmAsync(
-                                "REPRESENTANTE SELECIONADO NO LANÇAMENTO NÃO É O REPRESENTATE LOGADO, DESEJA CONTINUAR?",
+                                "VENDEDOR SELECIONADO NO LANÇAMENTO NÃO É O REPRESENTATE LOGADO, DESEJA CONTINUAR?",
                                 "OK, ESTOU CIENTE",
                                 "NÃO, IREI CORRIGIR!"))
                         {

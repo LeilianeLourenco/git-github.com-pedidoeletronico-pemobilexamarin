@@ -83,7 +83,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Pesquisar" Icon="{Binding ImageIconSearch}" Command="{Binding HabiliteToSearchCommand}"/>
-        <ToolbarItem x:Name="RepresentantesToolbarItem"  Text="Representantes" Command="{Binding GoToRepresentantesCommand}" Icon="{Binding ImageIconListarRepresentantes}">
+        <ToolbarItem x:Name="RepresentantesToolbarItem"  Text="Vendedores" Command="{Binding GoToRepresentantesCommand}" Icon="{Binding ImageIconListarRepresentantes}">
             <ToolbarItem.Order>
                 <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
             </ToolbarItem.Order>

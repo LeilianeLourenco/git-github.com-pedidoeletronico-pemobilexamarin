@@ -27,7 +27,7 @@
 
             <Label Grid.Row="1" HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaClaro}" FontSize="Medium" LineBreakMode="WordWrap" Text="Você está utilizando o aplicativo do pedidoeletronico.com, este aplicativo possui algumas funcionalidades vitais para que possa desempenhar suas vendas no dia a dia."/>
 
-            <Label Grid.Row="2" HorizontalOptions="Center" HorizontalTextAlignment="Center"  TextColor="{StaticResource CinzaClaro}" FontSize="Medium" LineBreakMode="WordWrap" Text="Para mais opções como definição de metas para seus vendedores, cadastro dos seus representantes, listas de preços, campanhas, tabela escalonada, gerenciamento de sua conta, pagamento e planos, entre outras opções acesse a opção abaixo tenha acesso ao nosso portal utilizando o mesmo login e senha de seu aplicativo."/>
+            <Label Grid.Row="2" HorizontalOptions="Center" HorizontalTextAlignment="Center"  TextColor="{StaticResource CinzaClaro}" FontSize="Medium" LineBreakMode="WordWrap" Text="Para mais opções como definição de metas para seus vendedores, cadastro dos seus vendedores, listas de preços, campanhas, tabela escalonada, gerenciamento de sua conta, pagamento e planos, entre outras opções acesse a opção abaixo tenha acesso ao nosso portal utilizando o mesmo login e senha de seu aplicativo."/>
 
             <Grid Grid.Row="3"  Padding="0,10,0,10">
                 <Button x:Name="GridRedirect" Style="{StaticResource Success}" Text="NOSSO PORTAL »"/>

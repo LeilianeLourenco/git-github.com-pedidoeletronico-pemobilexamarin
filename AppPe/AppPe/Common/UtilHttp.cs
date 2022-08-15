@@ -927,19 +927,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 if (jsonResponse != null)
                     objRegistro = JsonConvert.DeserializeObject<bool>(jsonResponse);
 
-                return new KeyValuePair<bool, string>(key: objRegistro, value: "Representante Inativo");
+                return new KeyValuePair<bool, string>(key: objRegistro, value: "Vendedor Inativo");
             }
             catch (System.Net.WebException)
             {
                 SincronizacaoNewViewModel.bFalhaConexao = true;
-                return new KeyValuePair<bool, string>(key: false, value: "Representante Inativo");
+                return new KeyValuePair<bool, string>(key: false, value: "Vendedor Inativo");
             }
             catch (Exception ex)
             {
                 ex.TrakException("GetRegistroSync", false);
                 if (!await App.IsConected() || ex.Message?.ToUpper() == "THE OPERATION WAS CANCELED")
                     SincronizacaoNewViewModel.bFalhaConexao = true;
-                return new KeyValuePair<bool, string>(key: false, value: "Representante Inativo");
+                return new KeyValuePair<bool, string>(key: false, value: "Vendedor Inativo");
             }
 
         }

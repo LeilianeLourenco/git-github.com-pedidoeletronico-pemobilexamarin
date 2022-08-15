@@ -140,7 +140,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         var pesquisa = new PagePesquisaPadrao(ItemRepresentante,
                             PesquisaPadraoViewModel.Tabela.TB_REPRESENTANTE_MAIS_TODOS)
                         {
-                            Title = "Representante",
+                            Title = "Vendedor",
                         };
                         UtilNavidate.PushAsync(pesquisa);
                     });

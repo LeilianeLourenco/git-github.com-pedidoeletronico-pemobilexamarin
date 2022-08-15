@@ -109,7 +109,7 @@
                         <TextCell x:Name="StatusTextCell" Command="{Binding GoToStatusCommand}" PropertyChanged="StatusTextCell_OnPropertyChanged"  Detail="{Binding ItemSatus.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Status do Lançamento"/>
                         
 
-                        <TextCell x:Name="TxtRepresentanteCell" PropertyChanged="TxtRepresentanteCell_OnPropertyChanged" Command="{Binding GoToRepresentantesCommand}" Detail="{Binding ItemRepresentante.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Representante*"/>
+                        <TextCell x:Name="TxtRepresentanteCell" PropertyChanged="TxtRepresentanteCell_OnPropertyChanged" Command="{Binding GoToRepresentantesCommand}" Detail="{Binding ItemRepresentante.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Vendedor*"/>
                         <ViewCell>
                             <StackLayout Orientation="Vertical" Margin="10,10,10,10">
                                 

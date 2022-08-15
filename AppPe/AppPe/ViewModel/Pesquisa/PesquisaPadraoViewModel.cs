@@ -102,7 +102,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
-                            LItens.Add(new ListItemModel { Detail = "todos os representantes", Display = "Todos", Id = 0 });
+                            LItens.Add(new ListItemModel { Detail = "todos os vendedores", Display = "Todos", Id = 0 });
                         });
                     }
                 }

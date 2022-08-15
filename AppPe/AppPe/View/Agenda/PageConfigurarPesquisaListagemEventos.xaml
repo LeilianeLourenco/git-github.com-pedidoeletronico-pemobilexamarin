@@ -29,7 +29,7 @@
 
                 <SwitchCell On="{Binding currentModel.bTrazerCancelados}"  Text="Buscar atividades canceladas ?"  />
 
-                <SwitchCell On="{Binding currentModel.bTrazerTodosRepresentantes}"  Text="Buscar todos representantes ?"  />
+                <SwitchCell On="{Binding currentModel.bTrazerTodosRepresentantes}"  Text="Buscar todos vendedores ?"  />
  
                 <SwitchCell On="{Binding currentModel.bOrdernarCrescente}"  Text="Ordernar dt.Realização de forma crescente  ?"  />
             </TableSection>
