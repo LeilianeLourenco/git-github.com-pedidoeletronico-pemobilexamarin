@@ -430,6 +430,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                     c => c.idLocalEstoque == item.idLocalEstoque)
                                 : itemCompleto.currentLocalEstoque;
 
+                        if (!itemCompleto.xInfAdicionais.Contains(item.xInfAdicionais))                        
+                            itemCompleto.xInfAdicionais += $"{item.xInfAdicionais} ";                                                
+
                         if (itemCompleto.HasGrade)
                         {
                             if (itemCompleto.ItensGrade.Count(c =>
@@ -614,6 +617,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                         foreach (var itemGrade in item.ItensGrade)
                         {
+                            itemGrade.xInfAdicionais = item.xInfAdicionais;
                             itemGrade.idItemAgrupamento = item.idItemAgrupamento;
                             SaveItemPedido(objPedido, itemGrade);
                         }
