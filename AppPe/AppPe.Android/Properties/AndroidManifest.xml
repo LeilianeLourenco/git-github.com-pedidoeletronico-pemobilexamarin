@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="316" android:versionName="15.0.66" package="com.ptbr.pedidoeletronico" android:installLocation="preferExternal">
-	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="30" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="317" android:versionName="15.0.67" package="com.ptbr.pedidoeletronico" android:installLocation="preferExternal">
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="31" />
 	<application android:label="pedidoeletronico.com" android:theme="@style/MainTheme" android:icon="@drawable/iconPE"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES" />
