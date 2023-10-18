@@ -183,7 +183,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                     if (bUsaClienteEspecifico)
                         idCliente = PageApresentacaoClienteNew.ViewModelStatic.idClientesOffLine;
 
-                    var _dateNow = DateTime.Now.ToLocalTime();
+                    var _dateNow = DateTime.Now;
                     var registros = AgendaRepository.GetInfinit(atividades.Count, 20,(IsUsingSearch ? xFiltro : ""), App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, Config.bTrazerRealizados, null, idCliente, Config.bTrazerCancelados, Config.bTrazerTodosRepresentantes, Config.bOrdernarCrescente);
 
                     foreach (var registro in registros)
@@ -215,12 +215,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
 
                         if (registro.dtInicioEvento != null)
                             if ((registro.dtInicioEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
-                                registro.dtInicioEvento = (registro.dtInicioEvento ?? DateTime.Now).ToLocalTime();
+                                registro.dtInicioEvento = (registro.dtInicioEvento ?? DateTime.Now);
 
 
                         if (registro.dtFimEvento != null)
                             if ((registro.dtFimEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
-                                registro.dtFimEvento = (registro.dtFimEvento ?? DateTime.Now).ToLocalTime();
+                                registro.dtFimEvento = (registro.dtFimEvento ?? DateTime.Now);
 
 
                         if(registro.xVendedorVinculado.Split(';').Count() > 1)
