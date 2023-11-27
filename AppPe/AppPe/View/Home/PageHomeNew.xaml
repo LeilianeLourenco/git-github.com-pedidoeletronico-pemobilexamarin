@@ -118,7 +118,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <custom:GridButton x:Name="GridEmpresa" Grid.Column="0" BackgroundColor="{StaticResource AzulChart}" Padding="0,15,0,15" Margin="1,0,0,0">
+                        <custom:GridButton x:Name="GridEmpresa" Grid.Column="0" BackgroundColor="{StaticResource AzulChart}">
                             <custom:GridButton.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto"/>
@@ -135,7 +135,7 @@
                             </Label>
                         </custom:GridButton>
 
-                        <custom:GridButton x:Name="GridDash" Grid.Column="1" BackgroundColor="{StaticResource LaranjaPrincipal}" Padding="0,15,0,15" Margin="1,0,1,0">
+                        <custom:GridButton x:Name="GridDash" Grid.Column="1" BackgroundColor="{StaticResource LaranjaPrincipal}">
                             <custom:GridButton.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto"/>
@@ -152,7 +152,7 @@
                             </Label>
                         </custom:GridButton>
 
-                        <custom:GridButton x:Name="GridSincronizar" Grid.Column="2" BackgroundColor="{StaticResource VerdeClaro}" Padding="0,15,0,15">
+                        <custom:GridButton x:Name="GridSincronizar" Grid.Column="2" BackgroundColor="{StaticResource VerdeClaro}" >
                             <custom:GridButton.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto"/>
