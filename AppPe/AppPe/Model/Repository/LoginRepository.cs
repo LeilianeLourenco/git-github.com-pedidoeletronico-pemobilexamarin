@@ -246,11 +246,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     user.lEpresaAspnetUsersModel.AddRange(App.Data.Connection.Query<EmpresaAspnetUsersModel>(xQuery));
                 }
 
-
-
-
-                var _idEmpresa = 0;
-
                 EmpresaModel _empresa = null;
                 foreach (var emp in user.lEpresaAspnetUsersModel.OrderBy(c => c.idEmpresa))
                 {
