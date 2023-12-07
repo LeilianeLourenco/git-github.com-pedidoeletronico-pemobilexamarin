@@ -843,16 +843,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             try
             {
+                if (lRepresentantesToAnalise.Count() == 0)                                          
+                    lRepresentantesToAnalise = App.CurrentAspnetUserModel.lEpresaAspnetUsersModel;   
+                
                 currentModel.Display = "Analise de usuarios...";
                 foreach (var representante in lRepresentantesToAnalise)
                 {
-                    var user =
-                        await UtilHttp.GetRegistroSync<AspNetUsersModel>(representante.idEmpresa_aspnetUsers);
+                    var user = await UtilHttp.GetRegistroSync<AspNetUsersModel>(representante.idEmpresa_aspnetUsers);
                     if (user != null)
                     {
-                        var xQuery =
-                            $@"SELECT COUNT(*) FROM {TableMobile.AspNetUsers} WHERE {"Id"} = '{user
-                                .Id}' ";
+                        var xQuery =  $@"SELECT COUNT(*) FROM {TableMobile.AspNetUsers} WHERE {"Id"} = '{user.Id}' ";
                         try
                         {
                             var icount = App.Data.Connection.ExecuteScalar<int>(xQuery);
@@ -867,12 +867,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         }
                     }
 
-                    var empresaLocal =
-                        EmpresaAspnetUsersRepository.GetEmpresaAspnetUsers(representante.idEmpresa_aspnetUsers ?? 0);
+                    var empresaLocal = EmpresaAspnetUsersRepository.GetEmpresaAspnetUsers(representante.idEmpresa_aspnetUsers ?? 0);
 
                     if (empresaLocal != null)
                     {
-
                         //verifico se o usuario era comum e virou adm
                         if (empresaLocal.stAdministrador == false && representante.stAdministrador)
                             empresaLocal.UltimaSyncDateTime = DateTime.MinValue;
@@ -895,10 +893,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa == empresaLocal.idEmpresa &&
                             App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail.ToUpper().Equals(empresaLocal.xEmail.ToUpper()))
                         {
-                            App.EnvironmentPE.vMetaCorrente = empresaLocal.vMetaCorrente;
-
+                            //App.CurrentAspnetUserModel.lEpresaAspnetUsersModel = lRepresentantesToAnalise;           
+                            App.EnvironmentPE.vMetaCorrente = empresaLocal.vMetaCorrente;                                                                              
                             //atualizando a jornada do usuário local logado
                             App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idJornada = empresaLocal.idJornada;
+                            App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAcessoTodosClientes = empresaLocal.stAcessoTodosClientes;
 
                             LoginRepository.UpdateUser();
                         }
@@ -1004,6 +1003,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                     else
                     {
+                        if (xTableName == "TB_CLIENTES")
+                        {
+
+                        }
                         lsync = await
                             UtilHttp.GetListRegistroSync<T>(
                                     param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
