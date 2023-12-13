@@ -9,6 +9,7 @@ using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
+using Xamarin.HLP.Mobile.AppPE.Services;
 using Xamarin.HLP.Mobile.AppPE.View;
 using Xamarin.HLP.Mobile.AppPE.View.Pedido;
 using Xamarin.HLP.Mobile.AppPE.View.Pesquisas;
@@ -32,6 +33,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public ICommand SendEmailCommand { get; set; }
         public ICommand DuplicarPedidoCommand { get; set; }
         public ICommand MudarStatusCommand { get; set; }
+        public ICommand AssinaturaPedido { get; set; }
         #endregion
 
         private PedidoVendaListarModel _currentModel;
@@ -125,15 +127,20 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             get { return _representada; }
             set { _representada = value; NotifyPropertyChanged(); }
         }
-
+        private ImageSource _imgAssinaturaPedido;
+        public ImageSource imgAssinaturaPedido
+        {
+            get { return _imgAssinaturaPedido; }
+            set { _imgAssinaturaPedido = value; NotifyPropertyChanged(); }
+        }
+      
         public DetalhesPedidoViewModel()
         {
             ClosePopupCommand = new Command(() => { UtilNavidate.PopPopupNew(); });
             VisualizarCommand = new Command(() =>
             {
                 UtilNavidate.ShowPopupNew(new PageViewToPrint(currentModel.idPedidoVendaOffLine));
-            });
-         
+            });         
             ShowItensPedidoCommand = new Command(() =>
             {
                 if (!ExecuttingAnyCommand)
@@ -142,11 +149,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     UtilNavidate.ShowPopupNew(new PageShowItensPedido());
                 }
             });
-
             DownloadCommand = new Command(VisualizarPDF);
-
             CompartilharCommand = new Command(CompartilharWhatsApp);
-
             EditarPedidoCommand = new Command(() =>
             {
                 if (currentModel.idPedidoVenda == null)
@@ -157,18 +161,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 else
                     App.Messages.ShowAsync("Pedido já sincronizado, impossível ser editado");
             });
-
             SendEmailCommand = new Command(SendEmail);
-
             DuplicarPedidoCommand = new Command(DuplicarPedido);
-
-
             MudarStatusCommand = new Command(MudarStatus);
-
-
+            AssinaturaPedido = new Command(AssinarPedido);
         }
-
-
+        public void AssinarPedido()
+        {
+            UtilNavidate.PushAsync(new PageSignaturePedidoVenda(currentModel));
+        }
+  
         public async void MudarStatus()
         {
             if (currentModel.stPedidoVenda == 1)
@@ -508,6 +510,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 vDescontoTotal = PedidoRepository.SumDescontoItens(currentModel.idPedidoVendaOffLine);
                 vTotalComissao = PedidoRepository.SumFieldItem(currentModel.idPedidoVendaOffLine, "vComissao");
                 bUtilizaMelhoriaEscolherRepresentadaPdf = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
+                imgAssinaturaPedido = _fileService.GetImage(PedidoRepository.BuscarAssAtualizada(currentModel.idPedidoVendaOffLine)).Result;    
             }
 
             if (ItemSatus.XId != currentModel.idStatus.ToString())
@@ -524,7 +527,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
             return canExecuteInicial;
         }
-
+        public IFileService _fileService => DependencyService.Get<IFileService>();
         public StatusModel _newstatus { get; set; }
         public async void AnaliseDeMudancaDeStatus()
         {

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageSignaturePedidoVenda">
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="10">
+
+
+                <controls:SignaturePadView x:Name="signatureviews" 
+                                           HorizontalOptions="FillAndExpand"
+                                           StrokeColor="Black" 
+                                           VerticalOptions="StartAndExpand" 
+                                           ClearText="Limpar"
+                                           CaptionText="Digite sua assinatura"
+                                           PromptText=""
+                                           HeightRequest="300" 
+                                           MinimumHeightRequest="300" />
+
+                <Button  x:Name="btnSubmit"
+                        Text="Concluir Assinatura" 
+                        HorizontalOptions="FillAndExpand" 
+                        VerticalOptions="Start" 
+                        Visual="Material" 
+                        Clicked="btnSubmit_Clicked"/>
+
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
