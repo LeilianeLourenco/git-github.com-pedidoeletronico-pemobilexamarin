@@ -467,7 +467,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _bValidadoMinimoVendas = value; NotifyPropertyChanged(); }
         }
 
+        public string xAssinatura { get; set; }
+
         #region Propriedades que não fazem parte da base de dados
+
+        [Ignore]
+        public string xAssinaturaBase64 { get; set; }
 
         [IgnoreDataMember]
         public string XdEmissao { get; set; } = "";

@@ -5,12 +5,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Chart.Horizontal;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Home;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
+using Xamarin.HLP.Mobile.AppPE.Services;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 {
@@ -41,6 +43,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             tb_pedidovenda.vFretePed,
                             tb_pedidovenda.idRepresentadaPdf,
                             tb_pedidovenda.VTotal as VTotal, 
+                            tb_pedidovenda.xAssinatura as xAssinatura, 
                             TB_EMPRESA_ASPNETUSERS.xEmail DisplayEmail, 
                             tb_condicaopagamento.xCondicaoPagamento DisplayPrazo, 
                             tb_clientes.xRazaoSocial DisplayCliente,
@@ -162,7 +165,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         {
             var xQuery =
              $"select stDataRelatorios from {TableMobile.TB_EMPRESA} where idEmpresa = {idEmpresa}";
-             
+
 
             return App.Data.Connection.ExecuteScalar<byte?>(xQuery);
         }
@@ -180,7 +183,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         /// <param name="idEmpresa"></param>
         /// <returns></returns>
         public static bool MostrarProdutoVariacoesVenda(int idEmpresa)
-        { 
+        {
             return App.Data.Connection.Table<ConfiguracaoGeralModel>().Where(c => c.idEmpresa == idEmpresa).Select(t => t.bMostraProdutosVariacoesNaVenda).FirstOrDefault() ?? false;
         }
 
@@ -257,9 +260,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             {
                 foreach (var item in _listaLocais)
                 {
-                    if (dicLocais.Where(t => t.Key == item).Count() == 0)                    
-                        dicLocais.Add(item, locais.Where(t => t.Key == item).Select(t => t.Value).FirstOrDefault());         
-                    
+                    if (dicLocais.Where(t => t.Key == item).Count() == 0)
+                        dicLocais.Add(item, locais.Where(t => t.Key == item).Select(t => t.Value).FirstOrDefault());
+
                 }
             }
 
@@ -430,8 +433,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                     c => c.idLocalEstoque == item.idLocalEstoque)
                                 : itemCompleto.currentLocalEstoque;
 
-                        if (!itemCompleto.xInfAdicionais.Contains(item.xInfAdicionais))                        
-                            itemCompleto.xInfAdicionais += $"{item.xInfAdicionais} ";                                                
+                        if (!itemCompleto.xInfAdicionais.Contains(item.xInfAdicionais))
+                            itemCompleto.xInfAdicionais += $"{item.xInfAdicionais} ";
 
                         if (itemCompleto.HasGrade)
                         {
@@ -497,27 +500,30 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         public static PedidoVendaModel GetPedidoVendaModelToSync(int idPedidoVendaOffLine)
         {
-            var objPedidoVendaModel =
-                App.Data.Connection.Table<PedidoVendaModel>()
+            var objPedidoVendaModel = App.Data.Connection.Table<PedidoVendaModel>()
                     .FirstOrDefault(c => c.idPedidoVendaOffLine == idPedidoVendaOffLine);
             try
             {
 
                 if (objPedidoVendaModel.idClientes == null)
                 {
-                    objPedidoVendaModel.idClientes =
-                        App.Data.Connection.Table<ClientesModel>()
-                            .FirstOrDefault(c => c.idClientesOffLine == objPedidoVendaModel.idClientesOffLine)
-                            .idClientes;
+                    objPedidoVendaModel.idClientes = App.Data.Connection.Table<ClientesModel>()
+                            .Where(c => c.idClientesOffLine == objPedidoVendaModel.idClientesOffLine)
+                            .Select(s => s.idClientes).FirstOrDefault();
                 }
 
+                var itens = App.Data.Connection.Table<PedidoVendaItensModel>()
+                        .Where(c => c.idPedidoVendaOffLine == idPedidoVendaOffLine).ToList();
 
-                var itens =
-                    App.Data.Connection.Table<PedidoVendaItensModel>()
-                        .Where(c => c.idPedidoVendaOffLine == idPedidoVendaOffLine)
-                        .ToList();
                 if (itens != null)
                     objPedidoVendaModel.lItens = new ObservableCollection<PedidoVendaItensModel>(itens);
+
+                if (!string.IsNullOrEmpty(objPedidoVendaModel.xAssinatura))
+                {
+                    IFileService _fileService = DependencyService.Get<IFileService>();
+                    objPedidoVendaModel.xAssinaturaBase64 = _fileService.GetImageBase64(objPedidoVendaModel.xAssinatura).Result;
+                }
+
                 return objPedidoVendaModel;
             }
             catch (Exception ex)
@@ -1262,7 +1268,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
 
         public static string GetTotalVendasMesAtual()
-        {  
+        {
             var xMes = DateTime.Today.ToString("MM/yyyy");
             var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
             var idRepresentante = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers;
@@ -1484,8 +1490,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
-
-
         public static ChartHorizontalModel GetChartFaturamentoInLine(bool bTodosUsuarios)
         {
 
@@ -1555,10 +1559,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     });
                 }
             }
-
             return chart;
         }
-
 
         public static ChartHorizontalModel GetChartFaturamentoPorDataFaturamentoInLine(bool bTodosUsuarios)
         {
@@ -1633,8 +1635,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return chart;
         }
 
-
-
         public static void UpdateAfterUpload(int idPedidoVendaOffLine, int idPedidoVenda)
         {
             var xQuery =
@@ -1662,13 +1662,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
-
         public static void VoltarParaStatusAnterior(int idPedidoVendaOffLine, StatusModel statusOld)
         {
             try
             {
-
-
                 if (statusOld == null) return;
 
                 var xQuery = $@"UPDATE {TableMobile.TB_PEDIDOVENDA} SET 
@@ -1683,8 +1680,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 ex.TrakException();
             }
         }
-
-
 
         public static void UpdateStatusParaNaoAlterado(int idPedidoVenda)
         {
@@ -1701,9 +1696,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 ex.TrakException();
             }
         }
-
-
-
 
         /// <summary>
         /// Aplicação de rateio de desconto no pedido  de venda
@@ -1761,8 +1753,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return _itens;
         }
 
-
-
         public decimal BuscaDescontoMaximo(int idEmpresa, int idTabelaPreco, int idProduto)
         {
             var _tbl = App.Data.Connection.Table<TabelaPrecoModel>()
@@ -1796,6 +1786,27 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static bool SalvarCaminhoImagemAssinaturaPedidoVenda(string xCaminhoImgAssinatura, int idPedidoVendaOffLine)
+        {
+            //App.Data.Connection.Query<PedidoVendaListarModel>(xQuery);
+            var _pedidovenda = App.Data.Connection.Table<PedidoVendaModel>()
+              .Where(c => c.idPedidoVendaOffLine == idPedidoVendaOffLine &&
+                          c.idEmpresa == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa).FirstOrDefault();
+
+            _pedidovenda.xAssinatura = xCaminhoImgAssinatura;
+            _pedidovenda.dtUltimaAlteracao = DateTime.Now;
+
+            if (_pedidovenda.idPedidoVendaOffLine > 0)
+                App.Data.Connection.Update(_pedidovenda);
+            return true;
+        }
+        public static string BuscarAssAtualizada(int idPedidoVendaOffLine)
+        {
+            var xQuery = $"select xAssinatura from {TableMobile.TB_PEDIDOVENDA} where idPedidoVendaOffLine = {idPedidoVendaOffLine} and idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
+            var retorno = App.Data.Connection.ExecuteScalar<string>(xQuery);
+            return retorno;
+
+        }
 
     }
 }

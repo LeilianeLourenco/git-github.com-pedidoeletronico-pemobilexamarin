@@ -109,6 +109,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         {
             get { return (_xObsInterna ?? "").ToUpper(); }
             set { _xObsInterna = value; NotifyPropertyChanged(); }
+        }  
+        private string _xAssinatura;
+        public string xAssinatura
+        {
+            get { return (_xAssinatura ?? ""); }
+            set { _xAssinatura = value; NotifyPropertyChanged(); }
         }
 
         private int? _idRepresentadaPdf;
