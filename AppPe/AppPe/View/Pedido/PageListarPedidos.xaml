@@ -94,5 +94,10 @@
                 <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" WinPhone="Secondary" />
             </ToolbarItem.Order>
         </ToolbarItem>
+        <ToolbarItem Text="Sincronizar Assinaturas" Priority="2" Command="{Binding SincronizarCommandAssinatura}" Icon="{Binding ImageIconSync}" >
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" WinPhone="Secondary" />
+            </ToolbarItem.Order>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 </ContentPage>

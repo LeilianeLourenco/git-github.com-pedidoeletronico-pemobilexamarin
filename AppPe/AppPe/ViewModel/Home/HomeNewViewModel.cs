@@ -243,7 +243,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
             if (!ExecuttingAnyCommand)
             {
                 ExecuttingAnyCommand = true;
-                var pageSync = new PageSyncNew();
+                var pageSync = new PageSyncNew("Total");
                 //pageSync.ViewModel.bForcarSyncInit = App.ForcarAtualizacao;
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(CarregarInformacoesHome);
                 UtilNavidate.Sincronizar(pageSync);

@@ -21,14 +21,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 {
     public class ListarPedidoViewModelNew : SearchCommom
     {
-
-
         public ICommand HabiliteToSearchCommand { get; set; }
         public ICommand NovoCommand { get; set; }
-        public ICommand SincronizarCommand { get; set; }
-
+        public ICommand SincronizarCommand { get; set; }  
+        public ICommand SincronizarCommandAssinatura { get; set; }  
         public ICommand GoToRepresentantesCommand { get; set; }
-
 
         public bool bUsaClienteEspecifico { get; set; }
         public SearchPE controlSearchPE { get; set; }
@@ -91,11 +88,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             SincronizarCommand = new Command(() =>
             {
-                var pageSync = new PageSyncNew();
+                var pageSync = new PageSyncNew("Total");
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(PesquisaInicial);
                 UtilNavidate.Sincronizar(pageSync);
             });
 
+            SincronizarCommandAssinatura = new Command(() =>
+            {
+                var pageSync = new PageSyncNew("Assinatura");
+                pageSync.ViewModel.AcaoAfterSyncCommand = new Command(PesquisaInicial);
+                UtilNavidate.Sincronizar(pageSync);
+            });
+            
             ItemRepresentante = new ListItemModel
             {
                 Id = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0,

@@ -6,8 +6,10 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
 {
     public partial class PageSyncNew : PopupPage
     {
-        public PageSyncNew()
+        private string _typeSync;
+        public PageSyncNew(string typeSync)
         {
+            _typeSync = typeSync;
             InitializeComponent();
             CloseWhenBackgroundIsClicked = false;
             App.ParamBackButtonPressed?.SetParameter(false);
@@ -20,7 +22,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
         {
             base.OnAppearing();
             if (!ViewModel.IsBusy)
-                ViewModel.InitSyncComplete();
+            {
+                if (_typeSync == "Assinatura")
+                    ViewModel.SyncAssnaturaPedido();
+                else
+                    ViewModel.InitSyncComplete();
+            }
 
         }
 
