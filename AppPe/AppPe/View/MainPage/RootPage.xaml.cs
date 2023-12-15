@@ -71,7 +71,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.MainPage
                 {
                     if (menu.TargetType == typeof(PageSyncNew))
                     {
-                        UtilNavidate.Sincronizar(new PageSyncNew());
+                        UtilNavidate.Sincronizar(new PageSyncNew("Total"));
                     }
                     UtilNavidate.PushAsync(displayPage);
                 }

@@ -125,20 +125,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         {
             try
             {
-
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
-
-                //return
-                //    App.Data.Connection.Table<PedidoVendaModel>()
-                //        .Where(
-                //            c =>
-                //                    //c.idPedidoVenda == null &&
-                //                    c.idEmpresa == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa &&
-                //                    c.idAspnetUsers == App.CurrentAspnetUserModel.Id &&
-                //                    c.dtUltimaAlteracao >= dtUltimaSync || c.idPedidoVenda == null
-                //        )
-                //        .OrderBy(c => c.stLancamento).Select(c => c.idPedidoVendaOffLine)
-                //        .ToList();
 
                 var xQuery = $@"Select idPedidoVendaOffLine Id from {TableMobile.TB_PEDIDOVENDA} 
                                     where idEmpresa = {idEmpresa} AND idAspnetUsers = '{App.CurrentAspnetUserModel.Id}' 
@@ -146,9 +133,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                     order by idPedidoVendaOffLine";
 
                 var dados = App.Data.Connection.Query<BasicPickerModel>(xQuery);
-
                 List<int> ids = dados.Select(c => c.Id).ToList();
-
                 return ids;
 
             }
@@ -160,6 +145,34 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static List<PedidoVendaModel> GetAllPedidosToSync()
+        {
+            try 
+            {
+                var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+                var xQuery = $@"Select xAssinatura, idPedidoVenda, idPedidoVendaOffLine, idEmpresa from {TableMobile.TB_PEDIDOVENDA} 
+                                    where idEmpresa = {idEmpresa} AND idAspnetUsers = '{App.CurrentAspnetUserModel.Id}'                                    
+                                    order by idPedidoVendaOffLine";
+
+                var _lPedidos = App.Data.Connection.Query<PedidoVendaModel>(xQuery);
+                List<PedidoVendaModel> _return = new List<PedidoVendaModel>();
+                foreach (var obj in _lPedidos)
+                {
+                    if (!string.IsNullOrEmpty(obj.xAssinatura))
+                    {
+                        IFileService _fileService = DependencyService.Get<IFileService>();
+                        obj.xAssinaturaBase64 = _fileService.GetImageBase64(obj.xAssinatura).Result;
+                        _return.Add(obj);
+                    }
+                }
+                return _return;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+                return null;
+            }
+        }
 
         public static byte? GetDataRelatorio(int idEmpresa)
         {

@@ -105,7 +105,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Produto
 
             SincronizarCommand = new Command(() =>
             {
-                var pageSync = new PageSyncNew();
+                var pageSync = new PageSyncNew("Total");
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(Search);
                 UtilNavidate.Sincronizar(pageSync);
             });

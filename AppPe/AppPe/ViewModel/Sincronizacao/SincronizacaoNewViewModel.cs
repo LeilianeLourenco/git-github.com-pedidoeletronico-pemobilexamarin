@@ -134,7 +134,34 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
         #region METHODS
 
-
+        public async void SyncAssnaturaPedido()
+        {
+            if (!IsBusy)
+            {
+                if (await App.IsConected())
+                {
+                    IsBusy = true;
+                    ocorreuErro = bFalhaConexao = false;
+                    currentModel.Display = "iniciando...";
+                    currentModel.LAlertaSincronizacao = new List<AlertaSincronizacao>();                 
+                    currentModel.Display = "UPLOAD PEDIDOS";
+                    var lPedidos = PedidoRepository.GetAllPedidosToSync();
+                    currentModel.iCount = lPedidos.Count;
+                    foreach (var pedido in lPedidos)
+                    {
+                        currentModel.iCount--;
+                        if (pedido == null) continue;
+                        var objPedidoSync = UtilHttp.PostRegistroToCloud(pedido, "AssPedido").Result;
+                        if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.Excecao)
+                        {
+                            AnaliseFinalSincronizacao("Erro ao sincronizar");
+                            return;
+                        }
+                    }
+                    AnaliseFinalSincronizacao();
+                }
+            }
+        }
 
         public async void InitSyncComplete()
         {
@@ -154,12 +181,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
                                 App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.idAspnetUser);
 
-
-
                         if (acesso == null)
                         {
-                            AnaliseFinalSincronizacao(
-                                "Houve uma falha de conexão na validação do seu plano atual, verifique sua conexão e tente novamente!");
+                            AnaliseFinalSincronizacao("Houve uma falha de conexão na validação do seu plano atual, verifique sua conexão e tente novamente!");
                             return;
                         }
 
@@ -194,7 +218,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                         currentPlano = new PlanosBo((Planos)acesso.idProdutoPlanoAtual);
 
-
                         if (acesso.stAcessoPermitido == TipoAcessoPermitido.ok || App.ForcarAtualizacao)
                         {
                             if (acesso.idProdutoPlanoAtual == 5 && App.ForcarAtualizacao == false)
@@ -206,56 +229,36 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     Detail = "Plano grátis, faça upgrade"
                                 });
                                 AnaliseFinalSincronizacao();
-
                             }
                             else
                             {
-
                                 //Inicio o.s 34140 - Linha adicionada temporariamente pois o produção não tinha a url da api que o permitesincronizacao usa.
-
                                 //KeyValuePair<bool, string> _bPermiteSincronizacao = new KeyValuePair<bool, string>(true, "Representante Ativo");
-
                                 //Fim o.s 34140
 
-                                var _bPermiteSincronizacao = await UtilHttp.PermiteSincronizacao(
-                                    idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
-                                    idRepresentante: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0
-                                    );
-
-
+                                var _bPermiteSincronizacao = await UtilHttp.PermiteSincronizacao(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
+                                    idRepresentante: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0);
 
                                 if (_bPermiteSincronizacao.Key == true)
-                                {
-
-                                    //Fim ajuste;
-
+                                {   //Fim ajuste;
                                     if (bForcarSyncInit)
-                                    {
                                         lastDateServerSync = DateTime.Today.AddYears(-50);
-                                    }
 
                                     if (lastDateServerSync.Year > 2000)
                                     {
                                         // EXCLUSÕES UPLOAD
                                         await InitSyncExclusaoUpload();
-
-
                                         // EXCLUSÕES DOWNLOAD
                                         await InitExclusoesDownload(lastDateServerSync);
-
                                         // UPLOAD CADASTROS
                                         await UploadAll();
                                     }
-
-
-
                                     if (bForcarSyncInit)
                                     {
                                         // EXCLUSÕES DOWNLOAD
                                         await InitExclusoesDownload(lastDateServerSync);
                                         //var _retornoExclusoes = EnvironmentRepository.ExcluirTodosRegistros();
                                     }
-
                                     // DOWNLOAD TABELAS
                                     await InitSincronizacaoDownload();
                                 }
@@ -269,7 +272,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     });
                                     AnaliseFinalSincronizacao();
                                 }
-
                             }
                         }
                         else
@@ -285,9 +287,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         }
                     }
                     else
-                    {
                         AnaliseFinalSincronizacao("A internet parece estar indisponível !");
-                    }
             }
             catch (System.Net.Http.HttpRequestException ex)
             {
@@ -299,11 +299,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 ocorreuErro = true;
                 AnaliseFinalSincronizacao(ex.Message);
             }
-        }
-
-        private void VerificaOcorreuErro()
-        {
-
         }
 
         #region DOWNLOAD        
@@ -430,7 +425,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownloadLocalEstoque();
 
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPaginado<JornadaModel>(); 
+                    await SincronizacaoDownloadPaginado<JornadaModel>();
 
                 if (bFalhaConexao)
                     AnaliseFinalSincronizacao("Ocorreu um erro de conexão com a internet durante a sincronização, tente novamente.");
@@ -843,16 +838,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             try
             {
-                if (lRepresentantesToAnalise.Count() == 0)                                          
-                    lRepresentantesToAnalise = App.CurrentAspnetUserModel.lEpresaAspnetUsersModel;   
-                
+                if (lRepresentantesToAnalise.Count() == 0)
+                    lRepresentantesToAnalise = App.CurrentAspnetUserModel.lEpresaAspnetUsersModel;
+
                 currentModel.Display = "Analise de usuarios...";
                 foreach (var representante in lRepresentantesToAnalise)
                 {
                     var user = await UtilHttp.GetRegistroSync<AspNetUsersModel>(representante.idEmpresa_aspnetUsers);
                     if (user != null)
                     {
-                        var xQuery =  $@"SELECT COUNT(*) FROM {TableMobile.AspNetUsers} WHERE {"Id"} = '{user.Id}' ";
+                        var xQuery = $@"SELECT COUNT(*) FROM {TableMobile.AspNetUsers} WHERE {"Id"} = '{user.Id}' ";
                         try
                         {
                             var icount = App.Data.Connection.ExecuteScalar<int>(xQuery);
@@ -894,7 +889,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail.ToUpper().Equals(empresaLocal.xEmail.ToUpper()))
                         {
                             //App.CurrentAspnetUserModel.lEpresaAspnetUsersModel = lRepresentantesToAnalise;           
-                            App.EnvironmentPE.vMetaCorrente = empresaLocal.vMetaCorrente;                                                                              
+                            App.EnvironmentPE.vMetaCorrente = empresaLocal.vMetaCorrente;
                             //atualizando a jornada do usuário local logado
                             App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idJornada = empresaLocal.idJornada;
                             App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAcessoTodosClientes = empresaLocal.stAcessoTodosClientes;
@@ -925,8 +920,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
             // issue 2705 ajustando a data de sincronização IGOR BIANCHINI SPAGNOL
-            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);           
-                           
+            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
+
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
                 _ultimaDataSinc = DateTime.Today.AddYears(-50);
             else
@@ -1039,25 +1034,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
         public async Task UploadAll()
         {
-
-
             if (lastDateSync.Year > 2000)
             {
-                var dadosClientes = ClienteRepository.GetClientesModelsToSync();
-                await PostUpload(dadosClientes);
+                await PostUpload(ClienteRepository.GetClientesModelsToSync());
 
-                var dadosContatos = ContatoRepository.GetAllContatoModelsToSync();
-                await PostUpload(dadosContatos);
+                await PostUpload(ContatoRepository.GetAllContatoModelsToSync());
 
-                var dadosEndereco = EnderecoRepository.GetAllEnderecoModelsToSync();
-                await PostUpload(dadosEndereco);
+                await PostUpload(EnderecoRepository.GetAllEnderecoModelsToSync());
 
                 await PostUploadAgenda(AgendaRepository.GetAtividadeAgendaParaUploadModel());
 
                 await PostUpload(ProdutoRepository.GetAllToSync());
-
-
-
 
                 await PostUploadPedido();
             }
@@ -1077,67 +1064,63 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     currentModel.Display = "UPLOAD PEDIDOS/ORÇAMENTOS";
                     currentModel.iCount = lidPedidos.Count;
 
-                    foreach (
-                        var idPedidoOffLine in
-                        lidPedidos.Where(idPedidoOffLine => idPedidoOffLine.ToString().IsNumber()))
+                    foreach (var idPedidoOffLine in lidPedidos.Where(idPedidoOffLine => idPedidoOffLine.ToString().IsNumber()))
                     {
                         currentModel.iCount--;
                         var pedido = PedidoRepository.GetPedidoVendaModelToSync(Convert.ToInt32(idPedidoOffLine));
 
-
                         if (pedido == null) continue;
-                        if (pedido.idPedidoVenda == null)
+
+                        if (pedido.idClientes == 0)
+                            pedido.idClientes = ClienteRepository.GetIdClienteNuvem(pedido.idClientesOffLine);
+                        pedido.dEmissao = pedido.dEmissao;
+                        pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
+                        pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
+
+                        var objPedidoSync = UtilHttp.PostRegistroToCloud(pedido).Result;
+
+                        if (objPedidoSync != null)
                         {
-                            if (pedido.idClientes == 0)
-                                pedido.idClientes = ClienteRepository.GetIdClienteNuvem(pedido.idClientesOffLine);
-                            pedido.dEmissao = pedido.dEmissao;
-                            pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
-                            pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
-
-                            var objPedidoSync = UtilHttp.PostRegistroToCloud(pedido).Result;
-
-                            if (objPedidoSync != null)
+                            if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.Sucesso)
                             {
-                                if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.Sucesso)
+                                if ((objPedidoSync.objModel.stEnviadoCliente ||
+                                        objPedidoSync.objModel.stEnviadoRepresentacao))
                                 {
-                                    if ((objPedidoSync.objModel.stEnviadoCliente ||
-                                            objPedidoSync.objModel.stEnviadoRepresentacao))
-                                    {
-                                        SentEmail(pedido.idPedidoVendaOffLine ?? 0,
-                                            objPedidoSync.objModel.idPedidoVenda ?? 0, objPedidoSync.objModel.idEmpresa,
-                                            pedido.stEnviadoCliente, pedido.stEnviadoRepresentacao, pedido.idRepresentadaPdf);
-                                    }
-                                    pedido.idPedidoVenda = objPedidoSync.objModel.idPedidoVenda;
-                                    pedido.idPedidoDisplay = objPedidoSync.objModel.idPedidoDisplay;
-                                    pedido.dtUltimaAlteracao =
-                                        (objPedidoSync.objModel.dtUltimaAlteracao ?? DateTime.Now).ToDateTimeSync();
-                                    App.Data.Connection.Update(pedido);
-
-                                    EstoqueRepository.RemoveEstoquePedido(idPedidoOffLine);
-
-                                    if (pedido.stLancamento == 0)
-                                        PedidoRepository.UpdateAfterUpload(idPedidoOffLine, pedido.idPedidoVenda ?? 0);
+                                    SentEmail(pedido.idPedidoVendaOffLine ?? 0,
+                                        objPedidoSync.objModel.idPedidoVenda ?? 0, objPedidoSync.objModel.idEmpresa,
+                                        pedido.stEnviadoCliente, pedido.stEnviadoRepresentacao, pedido.idRepresentadaPdf);
                                 }
-                                else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.EstoqueInsuficiente)
+                                pedido.idPedidoVenda = objPedidoSync.objModel.idPedidoVenda;
+                                pedido.idPedidoDisplay = objPedidoSync.objModel.idPedidoDisplay;
+                                pedido.dtUltimaAlteracao =
+                                    (objPedidoSync.objModel.dtUltimaAlteracao ?? DateTime.Now).ToDateTimeSync();
+                                App.Data.Connection.Update(pedido);
+
+                                EstoqueRepository.RemoveEstoquePedido(idPedidoOffLine);
+
+                                if (pedido.stLancamento == 0)
+                                    PedidoRepository.UpdateAfterUpload(idPedidoOffLine, pedido.idPedidoVenda ?? 0);
+                            }
+                            else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.EstoqueInsuficiente)
+                            {
+                                var dadosEstoque =
+                                    JsonConvert.DeserializeObject<List<EstoqueInsuficienteModel>>(
+                                        objPedidoSync.resulStruct.retorno.ToString());
+
+                                var _estoqueValidado = EstoqueRepository.SaveEstoqueInsuficiente(dadosEstoque,
+                                    pedido.idPedidoVendaOffLine ?? 0);
+
+                                currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
                                 {
-                                    var dadosEstoque =
-                                        JsonConvert.DeserializeObject<List<EstoqueInsuficienteModel>>(
-                                            objPedidoSync.resulStruct.retorno.ToString());
-
-                                    var _estoqueValidado = EstoqueRepository.SaveEstoqueInsuficiente(dadosEstoque,
-                                        pedido.idPedidoVendaOffLine ?? 0);
-
-                                    currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
-                                    {
-                                        idOffLine = pedido.idPedidoVendaOffLine,
-                                        Table = TableMobile.TB_PEDIDOVENDA,
-                                        Display = "Problemas com estoque",
-                                        Detail = $"Cliente: {ClienteRepository.GetDisplayByIdOffLine(pedido.idClientesOffLine)}",
-                                        DetailEstoque = _estoqueValidado
-                                    });
-                                }
+                                    idOffLine = pedido.idPedidoVendaOffLine,
+                                    Table = TableMobile.TB_PEDIDOVENDA,
+                                    Display = "Problemas com estoque",
+                                    Detail = $"Cliente: {ClienteRepository.GetDisplayByIdOffLine(pedido.idClientesOffLine)}",
+                                    DetailEstoque = _estoqueValidado
+                                });
                             }
                         }
+
 
                     }
 
@@ -1175,9 +1158,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 });
 
                 if (bMudouStatusPedido)
-                {
                     await InitExclusoesDownload(dtServerToChangeStatus ?? DateTime.Now.AddMinutes(-2).ToUniversalTime());
-                }
             }
 
             catch (Exception ex)
@@ -1824,7 +1805,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                     if (registro.GetType() == typeof(StatusModel))
                     {
-                        var status = registro as StatusModel;                  
+                        var status = registro as StatusModel;
                         StatusRepository.SalvarStatusProibidos(status.idStatus, status.lRepresentantesProibidos);
                     }
                 }

@@ -23,7 +23,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel
             currentModel = new SobreModel { versao = App.Versao.GetVersion(), imagePe = "Logo".ToImagemPNG() };
             ForcarSyncInitCommand = new Command(() =>
             {
-                var pageSync = new PageSyncNew();
+                var pageSync = new PageSyncNew("Total");
                 pageSync.ViewModel.bForcarSyncInit = true;
                 UtilNavidate.Sincronizar(pageSync);
             });

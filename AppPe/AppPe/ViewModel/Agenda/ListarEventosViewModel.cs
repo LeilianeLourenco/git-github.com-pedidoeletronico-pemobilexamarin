@@ -141,7 +141,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
 
             SincronizarCommand = new Command(() =>
             {
-                var pageSync = new PageSyncNew();
+                var pageSync = new PageSyncNew("Total");
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(PesquisaInicial);
                 UtilNavidate.Sincronizar(pageSync);
             });
