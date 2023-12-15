@@ -10,7 +10,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Services
     public interface IFileService
     {
         Task<ImageSource> GetImage(string fileName);
-        Task<string> GetImageBase64(string fileName);
+        string GetImageBase64(string fileName);
         Task<string> SavePicture(string name, Stream data, string location = "temp");
     }
 }

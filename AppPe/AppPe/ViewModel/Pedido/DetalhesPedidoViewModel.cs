@@ -168,7 +168,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         }
         public void AssinarPedido()
         {
-            UtilNavidate.PushAsync(new PageSignaturePedidoVenda(currentModel));
+            UtilNavidate.PushAsync(new PageSignaturePedidoVenda(currentModel));            
         }
   
         public async void MudarStatus()
@@ -509,15 +509,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                 vDescontoTotal = PedidoRepository.SumDescontoItens(currentModel.idPedidoVendaOffLine);
                 vTotalComissao = PedidoRepository.SumFieldItem(currentModel.idPedidoVendaOffLine, "vComissao");
-                bUtilizaMelhoriaEscolherRepresentadaPdf = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
-                imgAssinaturaPedido = _fileService.GetImage(PedidoRepository.BuscarAssAtualizada(currentModel.idPedidoVendaOffLine)).Result;    
+                bUtilizaMelhoriaEscolherRepresentadaPdf = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);                
             }
+            imgAssinaturaPedido = _fileService.GetImage(PedidoRepository.BuscarAssAtualizada(currentModel.idPedidoVendaOffLine)).Result;
 
-            if (ItemSatus.XId != currentModel.idStatus.ToString())
-            {
-                AnaliseDeMudancaDeStatus();
-            }
-
+            if (ItemSatus.XId != currentModel.idStatus.ToString())            
+                AnaliseDeMudancaDeStatus();            
 
             if (bUtilizaMelhoriaEscolherRepresentadaPdf.GetValueOrDefault() && representada.XId != currentModel.idRepresentadaPdf.GetValueOrDefault().ToString())
             {

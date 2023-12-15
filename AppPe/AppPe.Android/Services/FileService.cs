@@ -63,16 +63,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
             return await Task.FromResult(img);
         }
 
-        public async Task<string> GetImageBase64(string fileName)
+        public string GetImageBase64(string fileName)
         {
             string xBase64 = string.Empty;
             var _internalPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             var documentsPath = $"{_internalPath}{fileName}";
 
             if (File.Exists(documentsPath))            
-                xBase64 = Convert.ToBase64String(await File.ReadAllBytesAsync(documentsPath));
+                xBase64 = Convert.ToBase64String(File.ReadAllBytesAsync(documentsPath).Result);
             
-            return await Task.FromResult(xBase64);
+            return xBase64;
         }
     }
 }

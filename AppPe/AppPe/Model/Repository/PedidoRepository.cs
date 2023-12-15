@@ -161,7 +161,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     if (!string.IsNullOrEmpty(obj.xAssinatura))
                     {
                         IFileService _fileService = DependencyService.Get<IFileService>();
-                        obj.xAssinaturaBase64 = _fileService.GetImageBase64(obj.xAssinatura).Result;
+                        obj.xAssinaturaBase64 = _fileService.GetImageBase64(obj.xAssinatura);
                         _return.Add(obj);
                     }
                 }
@@ -534,7 +534,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 if (!string.IsNullOrEmpty(objPedidoVendaModel.xAssinatura))
                 {
                     IFileService _fileService = DependencyService.Get<IFileService>();
-                    objPedidoVendaModel.xAssinaturaBase64 = _fileService.GetImageBase64(objPedidoVendaModel.xAssinatura).Result;
+                    objPedidoVendaModel.xAssinaturaBase64 = _fileService.GetImageBase64(objPedidoVendaModel.xAssinatura);
                 }
 
                 return objPedidoVendaModel;
