@@ -30,8 +30,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             //byte[] data = mStream.ToArray();
             //string base64Val = Convert.ToBase64String(data);          
             viewmodelStatic.SalvarAssinatura(image);
-
-            UtilNavidate.PushAsync(new PageDetalhesPedido(_currentModel));
+            UtilNavidate.PopAsync();
         }
     }
 }
