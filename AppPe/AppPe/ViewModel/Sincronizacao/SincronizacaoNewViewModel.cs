@@ -151,7 +151,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     {
                         currentModel.iCount--;
                         if (pedido == null) continue;
-                        var objPedidoSync = UtilHttp.PostRegistroToCloud(pedido, "AssPedido").Result;
+                        var objPedidoSync = await UtilHttp.PostRegistroToCloud(pedido, "AssPedido");
                         if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.Excecao)
                         {
                             AnaliseFinalSincronizacao("Erro ao sincronizar");
