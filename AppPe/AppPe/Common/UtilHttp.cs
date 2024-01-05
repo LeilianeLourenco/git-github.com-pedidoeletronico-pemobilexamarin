@@ -79,7 +79,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var xController = TableMobile.GetApiRegistroByModel<T>();
                 if (xController == "") return null;
                 var xJson = JsonConvert.SerializeObject(classe);
-                var requestUri = App.UrlWebApi + $"/api/{xController}/{xNamePost}";
+                var requestUri = App.UrlWebApi + $"api/{xController}/{xNamePost}";
                 var wcfResponse =
                     await
                         CurrentHttpClient.PostAsync(requestUri,
@@ -1026,10 +1026,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         {
             get
             {
-                if (_currentHttpClient != null)
-                {
+                if (_currentHttpClient != null)                
                     return _currentHttpClient;
-                }
+
+                var _clientHandler = new System.Net.Http.HttpClientHandler();
+                _clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
                 _currentHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlWebApi) };
                 _currentHttpClient.DefaultRequestHeaders.Accept.Clear();
                 _currentHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
