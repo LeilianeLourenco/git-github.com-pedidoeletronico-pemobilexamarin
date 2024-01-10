@@ -313,18 +313,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             try
             {
                 List<int?> lIds = App.Data.Connection.Table<PedidoVendaModel>()
-                  .Where(c => c.idClientesOffLine == idClienteOffLine && c.idPedidoVenda > 0) 
-                  .Select(p => p.idPedidoVenda) 
+                  .Where(c => c.idClientesOffLine == idClienteOffLine && c.idPedidoVenda > 0)
+                  .Select(p => p.idPedidoVenda)
                   .ToList();
-                
+
                 List<RecebimentoTitulosModel> _recebimentos =
                 App.Data.Connection.Table<RecebimentoTitulosModel>()
-                  .Where(c => lIds.Contains(c.idPedidoVenda) && c.vTitulo > c.vRecebido) 
+                  .Where(c => lIds.Contains(c.idPedidoVenda) && c.vTitulo > c.vRecebido)
                   .OrderBy(x => x.dtVencimento)
                   .Skip((page - 1) * 50)
                   .Take(50)
                   .ToList();
- 
+
 
                 return _recebimentos;
             }
@@ -380,6 +380,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return dValorRetorno;
         }
 
+
+        public static void RemoverTodosRecebimentosPedido(int idPedidoVenda)
+        {
+            App.Data.Connection.Execute($"DELETE FROM {TableMobile.TB_RECEBIMENTOTITULOS} WHERE idPedidoVenda = '{idPedidoVenda}'");
+        }
 
         public static async Task RemoverTodosRecebimentos<T>() where T : class
         {
