@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Plugin.Connectivity;
 using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Agenda;
@@ -143,7 +144,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     IsBusy = true;
                     ocorreuErro = bFalhaConexao = false;
                     currentModel.Display = "iniciando...";
-                    currentModel.LAlertaSincronizacao = new List<AlertaSincronizacao>();                 
+                    currentModel.LAlertaSincronizacao = new List<AlertaSincronizacao>();
                     currentModel.Display = "UPLOAD PEDIDOS";
                     var lPedidos = PedidoRepository.GetAllPedidosToSync();
                     currentModel.iCount = lPedidos.Count;
@@ -998,12 +999,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                     else
                     {
-                        if (xTableName == "TB_CLIENTES")
-                        {
-
-                        }
-                        lsync = await
-                            UtilHttp.GetListRegistroSync<T>(
+                        lsync = await UtilHttp.GetListRegistroSync<T>(
                                     param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
                                     param2: _ultimaDataSinc,
                                     param3:
@@ -1702,7 +1698,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                     var insertgeneric = true;
 
-                    // CONTATO E ENDEREÇO
                     if (registro.GetType() == typeof(ContatoModel) ||
                         registro.GetType() == typeof(EnderecoModel))
                     {
@@ -1715,7 +1710,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 registro.SetPropValue("idClientesOffLine", idOffLine);
                         }
                     }
-
 
                     if (registro.GetType() == typeof(TabelaPrecoModel))
                     {
@@ -1757,26 +1751,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         if (estoque.idLocalEstoque > 0)
                         {
                             App.Data.Connection.Insert(registro);
-
                             if (estoque.lClientesAtrelados?.Count() > 0)
-                            {
                                 App.Data.Connection.InsertAll(estoque.lClientesAtrelados);
-                            }
-
                             if (estoque.lRepresentantesAtrelados?.Count() > 0)
-                            {
                                 App.Data.Connection.InsertAll(estoque.lRepresentantesAtrelados);
-                            }
-
                             if (estoque.lUfAtrelados?.Count() > 0)
-                            {
                                 App.Data.Connection.InsertAll(estoque.lUfAtrelados);
-                            }
-
                             if (estoque.lRamoAtividades?.Count() > 0)
-                            {
                                 App.Data.Connection.InsertAll(estoque.lRamoAtividades);
-                            }
                         }
                     }
 
@@ -1792,17 +1774,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         }
 
                     }
-                    #endregion
 
+                    #endregion
 
                     //se for registro genérico ele insere
                     if (insertgeneric)
                         App.Data.Connection.Insert(registro);
 
-                    if (registro.GetType() == typeof(ProdutoModel))
-                    {
-                        var produto = registro as ProdutoModel;
-                    }
                     if (registro.GetType() == typeof(StatusModel))
                     {
                         var status = registro as StatusModel;
@@ -1816,8 +1794,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                     if (registro.GetType() == typeof(ClientesModel))
                     {
-                        var xQuery =
-                            $@"SELECT idClientes, idClientesOffLine from {xTableName} where idClientes = {idPk} and idEmpresa = {App
+                        var xQuery = $@"SELECT idClientes, idClientesOffLine from {xTableName} where idClientes = {idPk} and idEmpresa = {App
                                 .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
 
                         var registroLocal = App.Data.Connection.Query<ClientesModel>(xQuery).FirstOrDefault();
@@ -1833,8 +1810,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                     else if (registro.GetType() == typeof(ContatoModel))
                     {
-                        var xQuery =
-                            $@"SELECT idContatos, idContatoOffLine, idClientesOffLine from {TableMobile.TB_CONTATOS} where idContatos = {idPk} and idEmpresa = {App
+                        var xQuery = $@"SELECT idContatos, idContatoOffLine, idClientesOffLine from {TableMobile.TB_CONTATOS} where idContatos = {idPk} and idEmpresa = {App
                                 .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
 
                         var registroLocal = App.Data.Connection.Query<ContatoModel>(xQuery).FirstOrDefault();
@@ -1855,18 +1831,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         if (item.idCliente == null)
                             item.idCliente = 0;
 
-                        var xQuery =
-                      $@"SELECT idClientesOffLine from tb_clientes where idClientes = {item.idCliente} and idEmpresa = {App
-                          .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
+                        var xQuery = $@"SELECT idClientesOffLine from tb_clientes where idClientes = {item.idCliente} and idEmpresa = {App
+                            .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
 
 
                         var idClienteOffline = App.Data.Connection.ExecuteScalar<int?>(xQuery);
                         item.idClienteOffline = idClienteOffline;
 
-                        xQuery =
-            $@"SELECT idAtividadeOffline from {TableMobile.TB_ATIVIDADES} where idAtividade = {item.idAtividade} and idEmpresa = {App
-                .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
-
+                        xQuery = $@"SELECT idAtividadeOffline from {TableMobile.TB_ATIVIDADES} where idAtividade = {item.idAtividade} and idEmpresa = {App
+                            .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
 
                         var idAtividadeOffline = App.Data.Connection.ExecuteScalar<int>(xQuery);
                         item.idAtividadeOffline = idAtividadeOffline;
@@ -2211,6 +2184,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 var xPrimaryKeyName = TableMobile.GetPrimaryKeyNameByModel<T>();
                 if (lsync.Count > 0)
                 {
+                    if (lsync[0].GetType() == typeof(RecebimentoTitulosModel))
+                        //Deve ser executado apenas a primeira vez no mesmo pedido venda para limpar todos os recebimentos titulos anteriores                
+                        (lsync as List<RecebimentoTitulosModel>).GroupBy(x => x.idPedidoVenda).ForEach(l => FinanceiroRepository.RemoverTodosRecebimentosPedido(l.FirstOrDefault().idPedidoVenda));
+
                     currentModel.iCount = lsync.Count;
                     foreach (var registro in lsync)
                     {
