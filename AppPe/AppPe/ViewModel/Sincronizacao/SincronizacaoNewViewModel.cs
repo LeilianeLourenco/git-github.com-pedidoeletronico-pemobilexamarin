@@ -2184,9 +2184,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 var xPrimaryKeyName = TableMobile.GetPrimaryKeyNameByModel<T>();
                 if (lsync.Count > 0)
                 {
-                    if (lsync[0].GetType() == typeof(RecebimentoTitulosModel))
-                        //Deve ser executado apenas a primeira vez no mesmo pedido venda para limpar todos os recebimentos titulos anteriores                
+                    //Metodos executados apenas uma unica vez para limpar seus respectivos registros
+                    if (lsync[0].GetType() == typeof(RecebimentoTitulosModel))                       
                         (lsync as List<RecebimentoTitulosModel>).GroupBy(x => x.idPedidoVenda).ForEach(l => FinanceiroRepository.RemoverTodosRecebimentosPedido(l.FirstOrDefault().idPedidoVenda));
+                    if (lsync[0].GetType() == typeof(RepresentadaAspnetUsersModel))                    
+                        (lsync as List<RepresentadaAspnetUsersModel>).GroupBy(x => x.idEmpresa_aspnetUsers).ForEach(l => RepresentadaRepository.RemoverTodosRepresentantes(l.FirstOrDefault().idEmpresa_aspnetUsers));                                            
 
                     currentModel.iCount = lsync.Count;
                     foreach (var registro in lsync)
@@ -2198,19 +2200,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 extensaoModel.idEmpresa =
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
                         }
-
+                        
                         if (registro.GetType() == typeof(EmpresaAspnetUsersModel))
                         {
                             var usuario = registro as EmpresaAspnetUsersModel;
                             if (usuario != null)
                             {
-                                if (usuario.idEmpresa_aspnetUsers ==
-                                    App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers)
+                                if (usuario.idEmpresa_aspnetUsers == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers)
                                 {
-                                    App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.imUsuario =
-                                        usuario.imUsuario;
+                                    App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.imUsuario = usuario.imUsuario;
                                     PageHomeNew.ViewModelStatic.AtualizaImagemApp();
-
                                 }
                             }
                         }
@@ -2231,10 +2230,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 //        await SaveSincronizacao(img, "idImagem", "TB_IMAGEM");
                                 //    }
                                 //}
-                                var _lImagens = await UtilHttp.GetRegistroSyncImagem(
-                                  prod.idEmpresa,
-                                  prod.idProduto,
-                                  lastDateServerSync);
+                                var _lImagens = await UtilHttp.GetRegistroSyncImagem(prod.idEmpresa, prod.idProduto, lastDateServerSync);
                                 if (_lImagens?.Count() > 0)
                                 {
                                     foreach (var img in _lImagens)
