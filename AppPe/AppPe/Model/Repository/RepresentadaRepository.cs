@@ -70,6 +70,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return retorno;
         }
 
+        public static void RemoverTodosRepresentantes(int idEmpresa_aspnetUsers)
+        {           
+            App.Data.Connection.Execute($"DELETE FROM {TableMobile.TB_REPRESENTADA_ASPNETUSERS} WHERE idEmpresa_aspnetUsers = '{idEmpresa_aspnetUsers}'");            
+        }
 
         public static List<ListItemModel> GetListItemModel(int idCategoria = 0)
         {
