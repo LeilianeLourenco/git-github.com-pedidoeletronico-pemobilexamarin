@@ -76,7 +76,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         }
 
         public byte stAcessoTodosClientes { get; set; } = 0;
-
+        
         public int idEmpresa { get; set; }
 
         private bool _stAtivo;
@@ -121,6 +121,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
 
         [Ignore]
         public EmpresaModel objEmpresaModel { get; set; }
+
+        [Ignore]
+        public PermissoesRepresentantesModel permissoesRepresentantesModel { get; set; }
 
         public bool bEmpresaCorrente { get; set; }
 
