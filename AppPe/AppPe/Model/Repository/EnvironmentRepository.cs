@@ -230,6 +230,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 App.Data.Connection.Execute(xQuery);
 
+                xQuery =
+                    $@"DELETE FROM TB_PERMISSOES_REPRESENTANTES WHERE idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
+
+                App.Data.Connection.Execute(xQuery);
+
                 return true;
             }
             catch (Exception ex)

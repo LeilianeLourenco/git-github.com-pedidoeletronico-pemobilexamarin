@@ -45,11 +45,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_LOCAL_ESTOQUE = "TB_LOCAL_ESTOQUE";
         public const string TB_LOCAL_ESTOQUE_CLIENTES = "TB_LOCAL_ESTOQUE_CLIENTES";
         public const string TB_LOCAL_ESTOQUE_REPRESENTANTES = "TB_LOCAL_ESTOQUE_REPRESENTANTES";
-        public const string TB_LOCAL_ESTOQUE_UF = "TB_LOCAL_ESTOQUE_UF"; 
-        public const string TB_LOCAL_ESTOQUE_RAMOSATIVIDADES = "TB_LOCAL_ESTOQUE_RAMOSATIVIDADES"; 
+        public const string TB_LOCAL_ESTOQUE_UF = "TB_LOCAL_ESTOQUE_UF";
+        public const string TB_LOCAL_ESTOQUE_RAMOSATIVIDADES = "TB_LOCAL_ESTOQUE_RAMOSATIVIDADES";
         public const string TB_EMPRESA = "TB_EMPRESA";
         public const string TB_EMPRESA_ASPNETUSERS_METAS = "TB_EMPRESA_ASPNETUSERS_METAS";
         public const string TB_EMPRESA_ASPNETUSERS = "TB_EMPRESA_ASPNETUSERS";
+        public const string TB_PERMISSOES_REPRESENTANTES = "TB_PERMISSOES_REPRESENTANTES";
         public const string TB_REPRESENTADA = "TB_REPRESENTADA";
         public const string TB_ENDERECO = "TB_ENDERECO";
         public const string TB_CONTATOS = "TB_CONTATOS";
@@ -59,7 +60,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_TABELAESCALONADA_FAIXACOMISSAO = "TB_TABELAESCALONADA_FAIXACOMISSAO";
         public const string TB_TABELAESCALONADA_REPRESENTANTE = "TB_TABELAESCALONADA_REPRESENTANTE";
         public const string TB_GRADETAMANHO = "TB_GRADETAMANHO";
-        public const string TB_GRADECOR = "TB_GRADECOR"; 
+        public const string TB_GRADECOR = "TB_GRADECOR";
         public const string TB_PRODUTO_GRADES = "TB_PRODUTO_GRADES";
         public const string TB_PRODUTO_GRADES_COMPOSICAO = "TB_PRODUTO_GRADES_COMPOSICAO";
         public const string TB_TABELAPRECO = "TB_TABELAPRECO";
@@ -225,6 +226,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return TB_CONTATOS;
                 }
+            if (classe == typeof(PermissoesRepresentantesModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idPermissaoUsuario";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "APIpermissoesrepresentantes";
+                    default:
+                        return TB_PERMISSOES_REPRESENTANTES;
+                }
             if (classe == typeof(EmpresaAspnetUsersModel))
                 switch (tipoRetornoInfoClass)
                 {
@@ -235,8 +246,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return TB_EMPRESA_ASPNETUSERS;
                 }
-            
-                if (classe == typeof(EmpresaAspnetUsers_Meta))
+
+            if (classe == typeof(EmpresaAspnetUsers_Meta))
                 switch (tipoRetornoInfoClass)
                 {
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
@@ -315,7 +326,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return TB_FORMA_PAGAMENTO;
                 }
-            
+
             if (classe == typeof(EstoqueModel))
                 switch (tipoRetornoInfoClass)
                 {
@@ -659,7 +670,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
                         return "idClienteRamoAtividade";
                     case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
-                        return "ApiClienteRamosAtividade";                    
+                        return "ApiClienteRamosAtividade";
                     default:
                         return tb_clienteramosatividade;
                 }

@@ -60,21 +60,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                  left join TB_ESTOQUE_INSUFICIENTE on tb_pedidovenda.idPedidoVendaOffLine = TB_ESTOQUE_INSUFICIENTE.idPedidoVendaOffLine 
                          Where tb_pedidovenda.idEmpresa = {idEmpresa} ";
 
-                if (idPedidoVendaOffLine > 0)
-                {
-                    xQuery += $" and TB_PEDIDOVENDA.idPedidoVendaOffLine = '{idPedidoVendaOffLine}'";
-                }
+                if (idPedidoVendaOffLine > 0)                
+                    xQuery += $" and TB_PEDIDOVENDA.idPedidoVendaOffLine = '{idPedidoVendaOffLine}'";                
                 else
                 {
-                    if (!string.IsNullOrEmpty(idRepresentantePedido) && idRepresentantePedido != "0")
-                        xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
+                    // comentei a rotina de permissao pelo app, pois o correto é essas permissões virem da api ja mandando apenas os pedidos que o representante pode vizualizar
+                    //var stPermissaoPedidoVenda = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.permissoesRepresentantesModel.stPermissaoPedidoVenda;
+                    //if (!string.IsNullOrEmpty(idRepresentantePedido) && idRepresentantePedido != "0" && stPermissaoPedidoVenda == 1)
+                    //    xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
 
                     if (idClienteOffLine != null)
                         xQuery += $" and TB_PEDIDOVENDA.idClientesOffLine = '{idClienteOffLine}'";
-
                 }
-
-
 
                 if (!string.IsNullOrEmpty(xFiltro))
                 {
@@ -92,7 +89,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 xQuery += $@" ORDER BY COALESCE(tb_pedidovenda.idPedidoDisplay, 99999999999) DESC
                                             LIMIT {take} OFFSET {skip}";
 
-                retorno = App.Data.Connection.Query<PedidoVendaListarModel>(xQuery);
+                retorno = App.Data.Connection.Query<PedidoVendaListarModel>(xQuery);              
 
                 return retorno;
             }

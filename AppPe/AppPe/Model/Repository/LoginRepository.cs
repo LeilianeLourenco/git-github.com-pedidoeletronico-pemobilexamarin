@@ -230,7 +230,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 //var currentUser = App.Data.Connection.Table<CurrentUserLoginModel>().FirstOrDefault(c => c.bLogado);
                 //var user = App.Data.Connection.Table<AspNetUsersModel>().FirstOrDefault(c => c.Email == currentUser.Email);
 
-
+                
                 var xQuery = $@"SELECT * FROM {TableMobile.CurrentUserLogin} where bLogado = 1";
                 var currentUser = App.Data.Connection.Query<CurrentUserLoginModel>(xQuery).FirstOrDefault();
                 xQuery = $@"SELECT * FROM {TableMobile.AspNetUsers} where Email = '{currentUser.Email}'";
@@ -241,9 +241,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 var idsEmpresas = App.Data.Connection.Table<EmpresaAspnetUsersModel>().Where(c => c.xEmail.ToUpper() == currentUser.Email.ToUpper()).Select(c => c.idEmpresa).Distinct().ToList();
 
                 foreach (var idEmpresa in idsEmpresas)
-                {
+                {                    
                     xQuery = $@"SELECT * FROM {TableMobile.TB_EMPRESA_ASPNETUSERS} where idEmpresa = {idEmpresa}";
                     user.lEpresaAspnetUsersModel.AddRange(App.Data.Connection.Query<EmpresaAspnetUsersModel>(xQuery));
+                    xQuery = $@"SELECT * FROM {TableMobile.TB_PERMISSOES_REPRESENTANTES} where idEmpresa = {idEmpresa}";                 
+                    user.lPermissoesRepresentantesModel.AddRange(App.Data.Connection.Query<PermissoesRepresentantesModel>(xQuery));
+                    user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel = user.lPermissoesRepresentantesModel.FirstOrDefault(x => x.idEmpresa_aspnetusers == user.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers);
                 }
 
                 EmpresaModel _empresa = null;
@@ -258,6 +261,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         _empresa = App.Data.Connection.Query<EmpresaModel>(xQuery).FirstOrDefault();
 
                     emp.objEmpresaModel = _empresa;
+                    emp.permissoesRepresentantesModel = user.lPermissoesRepresentantesModel.FirstOrDefault(x => x.idEmpresa_aspnetusers == emp.idEmpresa_aspnetUsers);
                 }
 
                 EmpresaAspnetUsersModel userDefault = null;

@@ -32,6 +32,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public bool hasEmpresa { get; set; }
 
         [Ignore]
+        public EmpresaModel EmpresaModelTeste { get; set; }
+
+        [Ignore]
         public EmpresaAspnetUsersModel objEmpresaAspnetUsersModel
         {
             get
@@ -52,6 +55,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         {
             get { return _lEpresaAspnetUsersModel; }
             set { _lEpresaAspnetUsersModel = value; }
+        }
+        private List<PermissoesRepresentantesModel> _lPermissoesRepresentantesModel = new List<PermissoesRepresentantesModel>();
+        /// <summary>
+        /// Lista de todas permissoes dos representantes.
+        /// </summary>
+        [Ignore]
+        public List<PermissoesRepresentantesModel> lPermissoesRepresentantesModel
+        {
+            get { return _lPermissoesRepresentantesModel; }
+            set { _lPermissoesRepresentantesModel = value; }
         }
     }
 

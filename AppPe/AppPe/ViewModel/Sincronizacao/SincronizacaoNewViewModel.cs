@@ -344,6 +344,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<RepresentadaAspnetUsersModel>();
                 if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownload<PermissoesRepresentantesModel>();
+                if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<RamoAtividadeModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<CategoriaProdutoModel>();
@@ -1579,9 +1581,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 AnaliseExclusao<TabelaPrecoClientesModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELA_PRECO_REPRESENTANTES:
-                                {
-                                    AnaliseExclusao<TabelaPrecoRepresentantesModel>(logs: group);
-                                }
+                                AnaliseExclusao<TabelaPrecoRepresentantesModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELAPRECO_REPRESENTACOES:
                                 AnaliseExclusao<TabelaPrecoRepresentacoesModel>(logs: group);
@@ -1623,6 +1623,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             case TableMobile.TB_EMPRESA_ASPNETUSERS:
                             case TableMobile.TB_PEDIDOVENDAITENS:
                             case TableMobile.TB_REPRESENTADA_ASPNETUSERS:
+                                break;
+                            case TableMobile.TB_PERMISSOES_REPRESENTANTES:
                                 break;
                             default:
                                 lnaotratado.Add(registro);
@@ -2185,10 +2187,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (lsync.Count > 0)
                 {
                     //Metodos executados apenas uma unica vez para limpar seus respectivos registros
-                    if (lsync[0].GetType() == typeof(RecebimentoTitulosModel))                       
+                    if (lsync[0].GetType() == typeof(RecebimentoTitulosModel))
                         (lsync as List<RecebimentoTitulosModel>).GroupBy(x => x.idPedidoVenda).ForEach(l => FinanceiroRepository.RemoverTodosRecebimentosPedido(l.FirstOrDefault().idPedidoVenda));
-                    if (lsync[0].GetType() == typeof(RepresentadaAspnetUsersModel))                    
-                        (lsync as List<RepresentadaAspnetUsersModel>).GroupBy(x => x.idEmpresa_aspnetUsers).ForEach(l => RepresentadaRepository.RemoverTodosRepresentantes(l.FirstOrDefault().idEmpresa_aspnetUsers));                                            
+                    if (lsync[0].GetType() == typeof(RepresentadaAspnetUsersModel))
+                        (lsync as List<RepresentadaAspnetUsersModel>).GroupBy(x => x.idEmpresa_aspnetUsers).ForEach(l => RepresentadaRepository.RemoverTodosRepresentantes(l.FirstOrDefault().idEmpresa_aspnetUsers));
 
                     currentModel.iCount = lsync.Count;
                     foreach (var registro in lsync)
@@ -2200,7 +2202,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 extensaoModel.idEmpresa =
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
                         }
-                        
+
                         if (registro.GetType() == typeof(EmpresaAspnetUsersModel))
                         {
                             var usuario = registro as EmpresaAspnetUsersModel;
