@@ -118,13 +118,13 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <custom:GridButton x:Name="GridEmpresa" Grid.Column="0" BackgroundColor="{StaticResource AzulChart}">
+                        <custom:GridButton x:Name="GridEmpresa" Grid.Column="0" BackgroundColor="{StaticResource AzulChart}" HeightRequest="40">
                             <custom:GridButton.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </custom:GridButton.ColumnDefinitions>
-                            <Label Grid.Column="1" FontAttributes="Bold" FontFamily="Segoe UI" TextColor="White" Text="EMPRESA">
+                            <Label Grid.Column="1" VerticalOptions="Center" FontAttributes="Bold" FontFamily="Segoe UI" TextColor="White" Text="EMPRESA">
                                 <Label.FontSize>
                                     <OnPlatform x:TypeArguments="x:Double">
                                         <OnPlatform.Android>16</OnPlatform.Android>
@@ -135,13 +135,13 @@
                             </Label>
                         </custom:GridButton>
 
-                        <custom:GridButton x:Name="GridDash" Grid.Column="1" BackgroundColor="{StaticResource LaranjaPrincipal}">
+                        <custom:GridButton x:Name="GridDash" Grid.Column="1" BackgroundColor="{StaticResource LaranjaPrincipal}" HeightRequest="40">
                             <custom:GridButton.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </custom:GridButton.ColumnDefinitions>
-                            <Label Grid.Column="1" FontAttributes="Bold" FontFamily="Segoe UI" TextColor="White" Text="DASHBOARD">
+                            <Label Grid.Column="1" VerticalOptions="Center" FontAttributes="Bold" FontFamily="Segoe UI" TextColor="White" Text="DASHBOARD">
                                 <Label.FontSize>
                                     <OnPlatform x:TypeArguments="x:Double">
                                         <OnPlatform.Android>16</OnPlatform.Android>
@@ -152,13 +152,13 @@
                             </Label>
                         </custom:GridButton>
 
-                        <custom:GridButton x:Name="GridSincronizar" Grid.Column="2" BackgroundColor="{StaticResource VerdeClaro}" >
+                        <custom:GridButton x:Name="GridSincronizar" Grid.Column="2" BackgroundColor="{StaticResource VerdeClaro}" HeightRequest="40">
                             <custom:GridButton.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </custom:GridButton.ColumnDefinitions>
-                            <Label Grid.Column="1" FontAttributes="Bold" FontFamily="Segoe UI" TextColor="White" Text="SINCRONIZAR">
+                            <Label Grid.Column="1" VerticalOptions="Center" FontAttributes="Bold" FontFamily="Segoe UI" TextColor="White" Text="SINCRONIZAR">
                                 <Label.FontSize>
                                     <OnPlatform x:TypeArguments="x:Double">
                                         <OnPlatform.Android>16</OnPlatform.Android>
