@@ -11,6 +11,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.PagSeguro;
 using Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Xamarin.HLP.Mobile.AppPE.Common
 {
@@ -310,6 +311,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var jsonResponse = await _apiClient.GetStringAsync(requestUri);
                 lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
 
+                if (TableMobile.GetApiRegistroByModel<T>() == "APIequiperepresentantes")
+                {
+                    string xQuery = $@"DELETE FROM TB_EQUIPE_REPRESENTANTES WHERE idEmpresa = {param1}";
+
+                    App.Data.Connection.Execute(xQuery);
+                }
+
             }
             catch (System.Net.WebException)
             {
@@ -344,7 +352,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 
             }
             catch (System.Net.WebException)
-            { 
+            {
                 SincronizacaoNewViewModel.bFalhaConexao = true;
             }
             catch (Exception ex)
@@ -387,7 +395,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             }
         }
 
-         
+
         public static async Task<List<T>> GetPedidosVendas<T>(int? idEmpresa, int? page, DateTime? dtUltimaAlteracao, string idAspNetUsers) where T : class
         {
             var lregistros = new List<T>();
@@ -1026,7 +1034,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         {
             get
             {
-                if (_currentHttpClient != null)                
+                if (_currentHttpClient != null)
                     return _currentHttpClient;
 
                 var _clientHandler = new System.Net.Http.HttpClientHandler();
@@ -1035,11 +1043,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 _currentHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlWebApi) };
                 _currentHttpClient.DefaultRequestHeaders.Accept.Clear();
                 _currentHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                _currentHttpClient.Timeout = TimeSpan.FromSeconds(100); 
+                _currentHttpClient.Timeout = TimeSpan.FromSeconds(100);
                 return _currentHttpClient;
             }
             set { _currentHttpClient = value; }
-        }
+        }     
 
         private static HttpClient _currentApiMobileHttpClient = null;
         public static HttpClient CurrentApiMobileHttpClient
