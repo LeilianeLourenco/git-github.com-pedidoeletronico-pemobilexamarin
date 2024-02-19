@@ -50,7 +50,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_EMPRESA = "TB_EMPRESA";
         public const string TB_EMPRESA_ASPNETUSERS_METAS = "TB_EMPRESA_ASPNETUSERS_METAS";
         public const string TB_EMPRESA_ASPNETUSERS = "TB_EMPRESA_ASPNETUSERS";
-        public const string TB_PERMISSOES_REPRESENTANTES = "TB_PERMISSOES_REPRESENTANTES";
+        public const string TB_PERMISSOES_REPRESENTANTES = "TB_PERMISSOES_REPRESENTANTES";       
+        public const string TB_EQUIPE_REPRESENTANTES = "TB_EQUIPE_REPRESENTANTES";
         public const string TB_REPRESENTADA = "TB_REPRESENTADA";
         public const string TB_ENDERECO = "TB_ENDERECO";
         public const string TB_CONTATOS = "TB_CONTATOS";
@@ -235,6 +236,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                         return "APIpermissoesrepresentantes";
                     default:
                         return TB_PERMISSOES_REPRESENTANTES;
+                }
+            if (classe == typeof(EquipeRepresentantesModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idEquipeRepresentante";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "APIequiperepresentantes";
+                    default:
+                        return TB_EQUIPE_REPRESENTANTES;
                 }
             if (classe == typeof(EmpresaAspnetUsersModel))
                 switch (tipoRetornoInfoClass)

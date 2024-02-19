@@ -60,14 +60,66 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                  left join TB_ESTOQUE_INSUFICIENTE on tb_pedidovenda.idPedidoVendaOffLine = TB_ESTOQUE_INSUFICIENTE.idPedidoVendaOffLine 
                          Where tb_pedidovenda.idEmpresa = {idEmpresa} ";
 
-                if (idPedidoVendaOffLine > 0)                
-                    xQuery += $" and TB_PEDIDOVENDA.idPedidoVendaOffLine = '{idPedidoVendaOffLine}'";                
+                if (idPedidoVendaOffLine > 0)
+                    xQuery += $" and TB_PEDIDOVENDA.idPedidoVendaOffLine = '{idPedidoVendaOffLine}'";
                 else
                 {
-                    // comentei a rotina de permissao pelo app, pois o correto é essas permissões virem da api ja mandando apenas os pedidos que o representante pode vizualizar
-                    //var stPermissaoPedidoVenda = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.permissoesRepresentantesModel.stPermissaoPedidoVenda;
-                    //if (!string.IsNullOrEmpty(idRepresentantePedido) && idRepresentantePedido != "0" && stPermissaoPedidoVenda == 1)
-                    //    xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
+
+                    var queryUser = $@"SELECT * FROM {TableMobile.CurrentUserLogin} where bLogado = 1";
+                    var currentUser = App.Data.Connection.Query<CurrentUserLoginModel>(queryUser).FirstOrDefault();
+                    queryUser = $@"SELECT * FROM {TableMobile.AspNetUsers} where Email = '{currentUser.Email}'";
+                    var user = App.Data.Connection.Query<AspNetUsersModel>(queryUser).FirstOrDefault();
+
+                    user.lEpresaAspnetUsersModel = new List<EmpresaAspnetUsersModel>();
+
+                    queryUser = $@"SELECT * FROM {TableMobile.TB_EMPRESA_ASPNETUSERS} where idEmpresa = {idEmpresa}";
+                    user.lEpresaAspnetUsersModel.AddRange(App.Data.Connection.Query<EmpresaAspnetUsersModel>(queryUser));
+                    queryUser = $@"SELECT * FROM {TableMobile.TB_PERMISSOES_REPRESENTANTES} where idEmpresa = {idEmpresa}";
+                    user.lPermissoesRepresentantesModel.AddRange(App.Data.Connection.Query<PermissoesRepresentantesModel>(queryUser));
+                    user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel = user.lPermissoesRepresentantesModel.FirstOrDefault(x => x.idEmpresa_aspnetusers == user.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers);
+
+                    var stPermissaoPedidoVenda = user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel.stPermissaoPedidoVenda;
+
+                    if (!string.IsNullOrEmpty(idRepresentantePedido) && idRepresentantePedido != "0")
+                    {
+                        switch (stPermissaoPedidoVenda)
+                        {
+                            case 0:
+                                xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{0}'";
+                                break;
+                            case 1:
+                                xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
+                                break;
+                            case 2:
+                                var xQueryIdEquipe = $@"SELECT * FROM {TableMobile.TB_EQUIPE_REPRESENTANTES} WHERE idEmpresa_aspnetusers = {idRepresentantePedido}";
+                                var listaIdEquipe = App.Data.Connection.Query<EquipeRepresentantesModel>(xQueryIdEquipe).ToList();
+
+                                string xQueryEquipes = "SELECT * FROM " + TableMobile.TB_EQUIPE_REPRESENTANTES + " WHERE ";
+
+                                for (int i = 0; i < listaIdEquipe.Count; i++)
+                                {
+                                    if (i != 0)
+                                        xQueryEquipes += " OR ";
+
+                                    xQueryEquipes += $"idEquipe = {listaIdEquipe[i].idEquipe}";
+
+                                }
+
+                                List<EquipeRepresentantesModel> listaEquipe = new List<EquipeRepresentantesModel>();
+
+                                if (listaIdEquipe.Count > 0)
+                                    listaEquipe = App.Data.Connection.Query<EquipeRepresentantesModel>(xQueryEquipes).ToList();
+
+                                xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
+
+                                foreach (var item in listaEquipe)
+                                {
+                                    if (item.idEmpresa_aspnetusers != Convert.ToInt32(idRepresentantePedido))
+                                        xQuery += $" or TB_PEDIDOVENDA.idRepresentantePedido = '{item.idEmpresa_aspnetusers}'";
+                                }
+                                break;
+                        }
+                    }
 
                     if (idClienteOffLine != null)
                         xQuery += $" and TB_PEDIDOVENDA.idClientesOffLine = '{idClienteOffLine}'";
@@ -89,7 +141,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 xQuery += $@" ORDER BY COALESCE(tb_pedidovenda.idPedidoDisplay, 99999999999) DESC
                                             LIMIT {take} OFFSET {skip}";
 
-                retorno = App.Data.Connection.Query<PedidoVendaListarModel>(xQuery);              
+                retorno = App.Data.Connection.Query<PedidoVendaListarModel>(xQuery);
 
                 return retorno;
             }
@@ -144,7 +196,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         public static List<PedidoVendaModel> GetAllPedidosToSync()
         {
-            try 
+            try
             {
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
                 var xQuery = $@"Select xAssinatura, idPedidoVenda, idPedidoVendaOffLine, idEmpresa from {TableMobile.TB_PEDIDOVENDA} 
