@@ -21,7 +21,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                 {
                     FrameImpressao.BackgroundColor = Color.Black;
                 }
-            }
+            }           
         }
 
 
@@ -34,6 +34,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
             Device.StartTimer(UtilMethods.GetStartTime, ViewModel.Initialize);
 
+        }
+
+        private void BtnCompartilhar_Clicked(object sender, System.EventArgs e)
+        {          
+            var vm = (PedidoToPrintViewModel)BindingContext;
+            vm.CompartilharPdfCommand.Execute(MeuStackLayout);
         }
     }
 }

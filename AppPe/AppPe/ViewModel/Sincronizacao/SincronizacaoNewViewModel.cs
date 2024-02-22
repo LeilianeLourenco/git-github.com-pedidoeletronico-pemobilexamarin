@@ -345,8 +345,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownload<RepresentadaAspnetUsersModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<PermissoesRepresentantesModel>();              
-                if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownload<EquipeRepresentantesModel>();
+                //if (!ocorreuErro && !bFalhaConexao)
+                //    await SincronizacaoDownload<EquipeRepresentantesModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<RamoAtividadeModel>();
                 if (!ocorreuErro && !bFalhaConexao)

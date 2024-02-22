@@ -17,6 +17,15 @@ using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Interfaces.PedidoVenda;
 
+using System.Reflection;
+using Xamarin.Essentials;
+using System.IO;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
+using PdfSharpCore.Fonts;
+//using Syncfusion.Pdf;
+//using Syncfusion.Pdf.Graphics;
+
 namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 {
     public class PedidoToPrintViewModel : NotifyCommon
@@ -107,6 +116,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             get { return _Separador1; }
             set { _Separador1 = value; NotifyPropertyChanged(); }
         }
+
         public ICommand PrintCommand { get; set; }
 
         public ICommand CloseCommand { get; set; }
@@ -132,9 +142,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 UtilNavidate.PopPopupNew();
             });
+
+            InitializeFontResolver();
+
         }
 
-
+        public ICommand CompartilharPdfCommand
+        {
+            get
+            {
+                return new Command<StackLayout>(async (stackLayout) =>
+                {
+                    await CompartilharPdf(stackLayout);
+                });
+            }
+        }
 
         public bool Initialize()
         {
@@ -254,7 +276,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             {
                                 if (item.vDesconto > 0)
                                 {
-                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { tam.xNome}{Environment.NewLine} S/ Desc: {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {tam.xNome}{Environment.NewLine} S/ Desc: {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                                     xItem += $"\n C/ Desc: {item.xQtde}  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                                 }
                                 else
@@ -276,12 +298,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             {
                                 if (item.vDesconto > 0)
                                 {
-                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { cor.xNome}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {cor.xNome}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                                     xItem += $"\n C/ desc: {item.xQtde} {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = R$ {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                                 }
                                 else
                                 {
-                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | { cor.xNome}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {cor.xNome}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                                 }
 
 
@@ -584,6 +606,146 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
 
             return System.Text.Encoding.GetEncoding(Encoding.ASCII.CodePage).GetBytes("");
+        }
+
+        private static bool fontResolverInitialized = false;
+
+        public void InitializeFontResolver()
+        {           
+            if (!fontResolverInitialized)
+            {
+                var assembly = typeof(PedidoToPrintViewModel).GetTypeInfo().Assembly;
+                var fontResourceName = "Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido.Belfast Regular.ttf";
+              
+                if (assembly.GetManifestResourceNames().Contains(fontResourceName))
+                {                   
+                    using (Stream fontStream = assembly.GetManifestResourceStream(fontResourceName))
+                    {
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            fontStream.CopyTo(memoryStream);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+
+                            var fontResolver = new CustomFontResolver(memoryStream.ToArray());
+
+                            GlobalFontSettings.FontResolver = fontResolver;
+
+                        }
+                    }
+                }
+
+                fontResolverInitialized = true;
+            }
+        }
+
+
+        public async Task CompartilharPdf(StackLayout stackLayout)
+        {
+            try
+            {
+                IItensImpressaoPedido _buscaItensImpressao = new ItensImpressaoPedido();
+                var pedido = _buscaItensImpressao.RetornarItensParaImpressao(id: idPedidoVendaOffLine);
+                var cliente = ClienteRepository.GetClienteModel(pedido.idClientesOffLine);
+                var empresa = EmpresaRepository.GetEmpresa();                
+
+                string fileName = $"{pedido.TipoLancamento.ToLower()}_{cliente.xFantasia}-{empresa.xRazaoSocial}.pdf";
+                string filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
+
+                double pdfWidth = stackLayout.Width;
+                double pdfHeight = stackLayout.Height;
+
+                PdfDocument document = new PdfDocument();
+                PdfPage page = document.AddPage();
+                page.Width = XUnit.FromPoint(pdfWidth);
+                page.Height = XUnit.FromPoint(pdfHeight);
+
+                XGraphics gfx = XGraphics.FromPdfPage(page);
+
+                var font1 = new XFont("Belfast Regular", 13);
+
+                foreach (var child in stackLayout.Children)
+                {
+                    if (child is Label label)
+                    {
+                        string text = label.Text;
+
+                        string[] lines = text.Split('\n');
+
+                        (double x, double y) = GetElementPosition(stackLayout, label);
+
+                        foreach (string line in lines)
+                        {
+                            if (line.Length > 47 && !line.Contains("=========="))
+                            {
+                                string txt = line;
+                                txt = txt.Insert(47, "\n");
+                                string[] linesQuebrar = txt.Split('\n');
+
+                                foreach (string lineQuebrar in linesQuebrar)
+                                {
+                                    gfx.DrawString(lineQuebrar, font1, XBrushes.Black, new XPoint(x, y));
+                                    y += gfx.MeasureString(line, font1).Height;
+                                }
+                            }
+
+                            else
+                                gfx.DrawString(line, font1, XBrushes.Black, new XPoint(x, y));
+
+                            y += gfx.MeasureString(line, font1).Height; // Adiciona a altura da linha atual
+                        }
+                    }
+                }
+
+                document.Save(filePath);
+                document.Close();
+
+                await Share.RequestAsync(new ShareFileRequest
+                {
+                    Title = "Download do PDF",
+                    File = new ShareFile(filePath)
+                });
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("erro", ex.ToString(), "ok");
+            }
+        }
+
+        private (double x, double y) GetElementPosition(StackLayout stackLayout, Xamarin.Forms.View element)
+        {
+            double x = 0;
+            double y = 0;
+
+            Xamarin.Forms.VisualElement parent = element.Parent as Xamarin.Forms.VisualElement;
+            while (parent != null && parent != stackLayout)
+            {
+                x += parent.X;
+                y += parent.Y;
+                parent = parent.Parent as Xamarin.Forms.VisualElement;
+            }
+
+            if (parent == stackLayout)
+            {
+                double elementX = element.X + stackLayout.X;
+                double elementY = element.Y + stackLayout.Y;
+
+                if (stackLayout.Padding != null)
+                {
+                    elementX += stackLayout.Padding.Left;
+                    elementY += stackLayout.Padding.Top;
+                }
+
+                if (element.Margin != null)
+                {
+                    elementX += element.Margin.Left;
+                    elementY += element.Margin.Top;
+                }
+
+                x += elementX;
+                y += elementY;
+            }
+
+            return (x, y);
         }
 
         public void SendToPrint()

@@ -78,7 +78,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     user.lPermissoesRepresentantesModel.AddRange(App.Data.Connection.Query<PermissoesRepresentantesModel>(queryUser));
                     user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel = user.lPermissoesRepresentantesModel.FirstOrDefault(x => x.idEmpresa_aspnetusers == user.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers);
 
-                    var stPermissaoPedidoVenda = user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel.stPermissaoPedidoVenda;
+                    int stPermissaoPedidoVenda = 1;
+
+                    if (user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel != null)
+                        stPermissaoPedidoVenda = user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel.stPermissaoPedidoVenda;
 
                     if (!string.IsNullOrEmpty(idRepresentantePedido) && idRepresentantePedido != "0")
                     {

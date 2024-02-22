@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -18,6 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Beach Thin Normal.ttf" />
     <None Remove="Images\ApplicationPhone.svg" />
     <None Remove="Images\ApplicationTabelaPreco.svg" />
     <None Remove="Images\HomeIcon\ApplicationHomeCliente.svg" />
@@ -76,9 +77,11 @@
     <None Remove="Images\PagesIcon\ApplicationPinEnderecoPrincipal.svg" />
     <None Remove="Images\PagesIcon\ApplicationSyncComplete.svg" />
     <None Remove="Images\PagesIcon\ApplicationTriste.svg" />
+    <None Remove="ViewModel\Pedido\Belfast Regular.ttf" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="ViewModel\Pedido\Beach Thin Normal.ttf" />
     <EmbeddedResource Include="Images\ApplicationPhone.svg" />
     <EmbeddedResource Include="Images\ApplicationTabelaPreco.svg" />
     <EmbeddedResource Include="Images\HomeIcon\ApplicationHomeCliente.svg" />
@@ -137,11 +140,13 @@
     <EmbeddedResource Include="Images\PagesIcon\ApplicationPinEnderecoPrincipal.svg" />
     <EmbeddedResource Include="Images\PagesIcon\ApplicationSyncComplete.svg" />
     <EmbeddedResource Include="Images\PagesIcon\ApplicationTriste.svg" />
+    <EmbeddedResource Include="ViewModel\Pedido\Belfast Regular.ttf" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CarouselView.FormsPlugin" Version="5.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="PdfSharpCore" Version="1.3.63" />
     <PackageReference Include="Plugin.BLE" Version="2.1.2" />
     <PackageReference Include="Plugin.BluetoothLE" Version="6.3.0.19" />
     <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
@@ -153,7 +158,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
   </ItemGroup>
 
