@@ -30,6 +30,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <!--Margin=""-->
@@ -41,7 +42,7 @@
             </Grid>
 
             <ScrollView Grid.Row="1">
-                <StackLayout Margin="5,5,5,5" Orientation="Vertical">
+                <StackLayout x:Name="MeuStackLayout" Margin="5,5,5,5" Orientation="Vertical">
                     <Label LineBreakMode="WordWrap" Text="{Binding xTitle}" HorizontalTextAlignment="Center"/>
                     <Label LineBreakMode="WordWrap" Text="{Binding xEmpresa}" HorizontalTextAlignment="Center"/>
                     <Label LineBreakMode="WordWrap" Text="{Binding xEnderecoEmpresa}"/>
@@ -56,7 +57,8 @@
                 </StackLayout>
             </ScrollView>
 
-            <Button IsVisible="{Binding bCanPrint}" Text="IMPRIMIR VIA BLUETOOTH" Style="{StaticResource Success}" Grid.Row="2" Command="{Binding PrintCommand}" Margin="2,2,2,0" />
+            <Button Text="COMPARTILHAR" Grid.Row="2" Clicked="BtnCompartilhar_Clicked" Margin="2,2,2,0" />
+            <Button IsVisible="{Binding bCanPrint}" Text="IMPRIMIR VIA BLUETOOTH" Style="{StaticResource Success}" Grid.Row="3" Command="{Binding PrintCommand}" Margin="2,2,2,0" />
 
             <!--<Button Text="{Binding xTextoPrint}" Style="{StaticResource Success}" Grid.Row="2" Command="{Binding PrintCommand}" Margin="2,2,2,0" />-->
         </Grid>
