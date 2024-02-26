@@ -86,8 +86,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
                             {
                                 if (parcelUuid.Uuid.ToString() == uuid.ToString())
                                 {
-                                    objPrinter = bluetoothDevice;
-                                    break;
+                                    if (bluetoothDevice.Name.ToLower().Contains("printer"))
+                                    {
+                                        objPrinter = bluetoothDevice;
+                                        break;
+                                    }
                                 }
                             }
                         }
