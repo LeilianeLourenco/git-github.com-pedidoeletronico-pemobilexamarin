@@ -1517,6 +1517,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     if (currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf == true)
                         currentModel.idRepresentadaPdf = representada.Id;
 
+                    DateTime dataHoraEUA = DateTime.UtcNow;
+                    TimeZoneInfo fusoHorarioBrasil = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
+                    DateTime dataHoraBrasil = TimeZoneInfo.ConvertTimeFromUtc(dataHoraEUA, fusoHorarioBrasil);
+
+                    currentModel.dEmissao = dataHoraBrasil;                    
 
                     PedidoRepository.SavePedidoVenda(currentModel);
 

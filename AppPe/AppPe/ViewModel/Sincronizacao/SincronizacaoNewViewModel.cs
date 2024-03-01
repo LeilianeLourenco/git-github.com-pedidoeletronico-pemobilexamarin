@@ -1073,9 +1073,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                         if (pedido.idClientes == 0)
                             pedido.idClientes = ClienteRepository.GetIdClienteNuvem(pedido.idClientesOffLine);
-                        pedido.dEmissao = pedido.dEmissao;
+                        //pedido.dEmissao = pedido.dEmissao;
                         pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
                         pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
+
+                        pedido.dEmissao = pedido.dEmissao.AddHours(-3);
 
                         var objPedidoSync = UtilHttp.PostRegistroToCloud(pedido).Result;
 
@@ -2051,7 +2053,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             var objPedido = registro as PedidoVendaModel;
             if (objPedido?.lItens != null && objPedido.lItens.Count > 0)
             {
-                objPedido.dEmissao = objPedido.dEmissao.ToDateTimeSync();
+                //objPedido.dEmissao = objPedido.dEmissao.ToDateTimeSync();
                 objPedido.dtUltimaAlteracao = (objPedido.dtUltimaAlteracao ?? DateTime.Now).ToDateTimeSync();
                 objPedido.dtValidadeOrcamento = (objPedido.dtValidadeOrcamento ?? DateTime.Now).ToDateTimeSync();
                 objPedido.idClientesOffLine = ClienteRepository.GetIdClienteOffLine(objPedido.idClientes);
