@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Newtonsoft.Json;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -86,10 +87,30 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _dEmissao; }
             set
             {
-                _dEmissao = value;
-                NotifyPropertyChanged();
-                idEmissao = value.ToLocalTime().ToInt();
-                XdEmissao = value.ToLocalTime().ToString("dd/MM/yyyy");
+
+                //if (value.Kind == DateTimeKind.Utc || value.Kind == System.DateTimeKind.Local)
+                //{
+                //    TimeZoneInfo fusoHorarioBrasil = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
+                //    DateTime valorConvertidoUtc = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+                //    DateTime valorConvertidoParaBrasil = TimeZoneInfo.ConvertTime(valorConvertidoUtc, fusoHorarioBrasil);
+
+                //    _dEmissao = valorConvertidoParaBrasil;
+
+
+                //    NotifyPropertyChanged();
+                //    idEmissao = _dEmissao.ToInt();
+                //    XdEmissao = _dEmissao.ToString("dd/MM/yyyy");
+
+                //}
+                //else
+                //{
+                    _dEmissao = value;
+
+                    NotifyPropertyChanged();
+                    idEmissao = value.ToInt();
+                    XdEmissao = value.ToString("dd/MM/yyyy");
+                //}
+
             }
         }
 
@@ -192,7 +213,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
-         
+
         private string _xFormaPagamento = String.Empty;
         public string xFormaPagamento
         {
@@ -432,8 +453,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
 
         #region Contrato
-        
-        
+
+
         private string _xInformacaoContrato;
 
         public string xInformacaoContrato
