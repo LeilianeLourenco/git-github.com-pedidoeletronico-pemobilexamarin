@@ -344,7 +344,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<RepresentadaAspnetUsersModel>();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownload<PermissoesRepresentantesModel>();              
+                    await SincronizacaoDownload<PermissoesRepresentantesModel>();
                 //if (!ocorreuErro && !bFalhaConexao)
                 //    await SincronizacaoDownload<EquipeRepresentantesModel>();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -921,6 +921,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             IntegracaoRepository integ = new IntegracaoRepository();
 
             var xTableName = TableMobile.GetTableNameByModel<T>();
+
+            if (xTableName == "TB_PERMISSOES_REPRESENTANTES")
+            {
+            }
 
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 

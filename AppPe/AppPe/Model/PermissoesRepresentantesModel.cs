@@ -14,7 +14,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public int idEmpresa { get; set; }
         public int idEmpresa_aspnetusers { get; set; }
         public byte stPermissaoClientes { get; set; }
-        public byte stPermissaoPedidoVenda { get; set; }
+
+        private byte? _stPermissaoPedidoVenda;
+
+        public byte stPermissaoPedidoVenda
+        {
+            get
+            {                
+                return _stPermissaoPedidoVenda ?? 1;
+            }
+            set
+            {                
+                _stPermissaoPedidoVenda = value;
+            }
+        }
+
         public byte stPermissaoRelatorios { get; set; }
         public byte stPermissaoFinanceiro { get; set; }
         public DateTime? dtUltimaAlteracao { get; set; }
