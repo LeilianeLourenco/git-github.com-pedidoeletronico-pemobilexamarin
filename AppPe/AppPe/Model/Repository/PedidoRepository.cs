@@ -81,7 +81,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     int stPermissaoPedidoVenda = 1;
 
                     if (user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel != null)
-                        stPermissaoPedidoVenda = user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel.stPermissaoPedidoVenda;
+                        stPermissaoPedidoVenda = (byte)user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel.stPermissaoPedidoVenda;
 
                     if (!string.IsNullOrEmpty(idRepresentantePedido) && idRepresentantePedido != "0")
                     {
