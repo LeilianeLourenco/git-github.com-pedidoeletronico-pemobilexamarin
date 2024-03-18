@@ -17,7 +17,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
 
         private byte? _stPermissaoPedidoVenda;
 
-        public byte stPermissaoPedidoVenda
+        public byte? stPermissaoPedidoVenda
         {
             get
             {                
