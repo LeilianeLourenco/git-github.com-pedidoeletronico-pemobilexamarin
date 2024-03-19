@@ -1,24 +1,26 @@
 ﻿using System;
-using Android.App;
-using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.OS;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Xamarin.HLP.Mobile.AppPE.Droid.Services;
-using ImageCircle.Forms.Plugin.Droid;
-using FFImageLoading.Forms.Platform;
 using Android;
+using Android.App;
+using Android.Content.PM;
+using Android.OS;
+using Android.Runtime;
+using Android.Support.V4.App;
+using Android.Views;
+using FFImageLoading.Forms.Platform;
+using ImageCircle.Forms.Plugin.Droid;
 using TEditor.Droid;
+using Xamarin.Forms;
+using Xamarin.HLP.Mobile.AppPE.Droid.Services;
 
 namespace Xamarin.HLP.Mobile.AppPE.Droid
 {
-
     [Activity(Label = "pedidoeletronico.com", Icon = "@drawable/iconPE", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        private const int RequestBluetoothPermissionCode = 1001;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -37,18 +39,43 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             TEditorDroid.Initialize();
-            DisplayCrashReport(); 
-            //CheckPermissions();
+            DisplayCrashReport();
+            CheckAndRequestBluetoothPermission(); // Chamada para verificar e solicitar permissão BLUETOOTH_CONNECT
             LoadApplication(new App());
         }
+
+        private void CheckAndRequestBluetoothPermission()
+        {
+            // Verificar se a permissão BLUETOOTH_CONNECT foi concedida
+            if (CheckSelfPermission(Manifest.Permission.BluetoothConnect) != Permission.Granted)
+            {
+                // Se a permissão não foi concedida, solicitar ao usuário
+                RequestPermissions(new string[] { Manifest.Permission.BluetoothConnect }, RequestBluetoothPermissionCode);
+            }
+        }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults); 
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            if (requestCode == RequestBluetoothPermissionCode)
+            {
+                // Verificar se a permissão foi concedida
+                if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
+                {
+                    // Permissão concedida pelo usuário
+                }
+                else
+                {
+                    // Permissão negada pelo usuário
+                    // Aqui você pode lidar com o caso em que o usuário negou a permissão
+                    // Talvez mostre uma mensagem explicativa ou desative recursos relacionados ao Bluetooth
+                }
+            }
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-         
         public override void OnBackPressed()
         {
             if (!backButtonPressed._canBack)
@@ -67,14 +94,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             LogUnhandledException(newExc);
         }
 
-
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
             var newExc = new Exception("CurrentDomainOnUnhandledException", unhandledExceptionEventArgs.ExceptionObject as Exception);
             LogUnhandledException(newExc);
         }
-
-
 
         internal static void LogUnhandledException(Exception exception)
         {
@@ -85,7 +109,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
                 var errorFilePath = System.IO.Path.Combine(libraryPath, errorFileName);
                 var errorMessage = $"Time: {DateTime.Now}\r\nError: Unhandled Exception\r\n{exception.ToString()}";
                 System.IO.File.WriteAllText(errorFilePath, errorMessage);
-
                 // Log to Android Device Logging.
                 //Android.Util.Log.Error("Crash Report", errorMessage);
             }
@@ -95,10 +118,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             }
         }
 
-
         /// <summary>
-        // If there is an unhandled exception, the exception information is diplayed 
-        // on screen the next time the app is started (only in debug configuration)
+        /// If there is an unhandled exception, the exception information is displayed 
+        /// on screen the next time the app is started (only in debug configuration)
         /// </summary>
         [Conditional("DEBUG")]
         private void DisplayCrashReport()
