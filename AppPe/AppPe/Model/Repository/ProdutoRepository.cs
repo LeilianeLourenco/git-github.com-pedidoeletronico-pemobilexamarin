@@ -860,14 +860,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             {
                                 idMovimentoEstoqueMobile = e.idMovimentoEstoqueMobile ?? 0,
                                 idProduto = e.idProduto,
-                                vEstoque = e.vEstoque
+                                vEstoque = e.vEstoque,
+                                xLocalEstoque = e.xLocalEstoque
                             };
 
 
                             if (e.idGradeCor == null && e.idGradeTamanho == null)
-                                _objModel.xNomeGrade = $"Estoque Atual: {_objModel.vEstoque}";
+                                _objModel.xNomeGrade = $"Estoque Atual: {_objModel.vEstoque} - {_objModel.xLocalEstoque}";
                             else
-                                _objModel.xNomeGrade = $" {e.xGradeCor} {e.xGradeTamanho}: {_objModel.vEstoque} ";
+                                _objModel.xNomeGrade = $" {e.xGradeCor} {e.xGradeTamanho}: {_objModel.vEstoque} - {_objModel.xLocalEstoque}";
 
                             objProduto.lEstoqueProduto.Add(_objModel);
                         }

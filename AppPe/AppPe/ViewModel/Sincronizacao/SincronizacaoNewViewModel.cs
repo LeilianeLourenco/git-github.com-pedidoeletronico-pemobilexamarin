@@ -922,7 +922,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             var xTableName = TableMobile.GetTableNameByModel<T>();
 
-            if (xTableName == "TB_PERMISSOES_REPRESENTANTES")
+            if (xTableName == "TB_MOVIMENTOESTOQUE")
             {
             }
 
