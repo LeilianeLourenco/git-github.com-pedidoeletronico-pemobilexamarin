@@ -33,6 +33,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Estoque
 
         public string xGradeTamanho { get; set; }  
 
-        public int? idLocalEstoque { get; set; } 
+        public int? idLocalEstoque { get; set; }
+        public string xLocalEstoque { get; set; }
+
+
     }
 }

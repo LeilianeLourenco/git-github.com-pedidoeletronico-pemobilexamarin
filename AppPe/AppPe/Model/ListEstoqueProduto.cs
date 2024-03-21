@@ -14,5 +14,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public DateTime dtUltimaAlteracao { get; set; }
 
         public string xNomeGrade { get; set; }
+        public string xLocalEstoque { get; set; }
     }
 }
