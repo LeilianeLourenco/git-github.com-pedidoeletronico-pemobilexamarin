@@ -141,7 +141,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 NotifyPropertyChanged();
             }
         }
-        
+
 
         private bool _bListaItensHabilitada = true;
 
@@ -280,7 +280,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             AplicaFiltroRecorrenciaCommand = new Command(AplicaFiltroRecorrencia);
             AplicaFiltroCampanhaCommand = new Command(AplicaFiltroCampanhas);
             AplicaFiltroDestaquesCommand = new Command(AplicaFiltroDestaques);
-            
+
             HabiliteToSearchCommand = new Command(() =>
             {
                 bFind = !bFind;
@@ -378,7 +378,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                             if (_idProdutos?.Count() == 0)
                                 _idProdutos.Add(0);
-                        } 
+                        }
                         else
                             _idProdutos = _buscaProdutos.BuscarProdutos(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
                          currentPedidoViewModel.ItemCondicaoPgto.Id);
@@ -459,7 +459,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
         public async void Search()
         {
-            
+
             try
             {
                 await Task.Run(() =>
@@ -484,7 +484,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
 
         public async void AplicaFiltroItens()
-        { 
+        {
             try
             {
                 await Task.Run(() =>
@@ -504,7 +504,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                         LoadItens();
                     });
-                }); 
+                });
             }
             catch (Exception ex)
             {
@@ -513,7 +513,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         }
 
         public async void AplicaFiltroCampanhas()
-        { 
+        {
             try
             {
                 await Task.Run(() =>
@@ -570,7 +570,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 ex.TrakException();
             }
-           
+
         }
 
         public async void AplicaFiltroDestaques()
@@ -595,7 +595,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         LoadItens();
                     });
                 });
-             
+
             }
             catch (Exception ex)
             {
@@ -667,7 +667,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
 
 
-        public void SaveItem()
+        public async void SaveItem()
         {
             try
             {
@@ -689,7 +689,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         if (vQtde > 0 && itemSelected.currentTabelaPreco != null)
                         {
                             if (ItensSelecionados.Any(c => c.idProduto == itemSelected.idProduto) == false)
-                                ItensSelecionados.Add(itemSelected);
+                            {
+                                if (itemSelected.vQtdEstoque != 0)
+                                    ItensSelecionados.Add(itemSelected);
+                                else
+                                   await App.Current.MainPage.DisplayAlert("Erro","Não é possível adicionar um item com estoque 0","Ok");
+                            }
                         }
                         else if (ItensSelecionados.Any(c => c.idProduto == itemSelected.idProduto))
                             ItensSelecionados.Remove(itemSelected);
@@ -713,6 +718,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             foreach (var item in ItensSelecionados)
             {
+                //ProdutoRepository.AtualizarEstoqueProduto(idEmpresa: item.idEmpresa,
+                //    idProduto: item.idProduto, idLocalEstoque: item.idLocalEstoque, vQtdItem: item.vQtdItem);
+
                 PagePedidoNew.CurrentViewModel.currentModel.lItens.Add(item);
                 //LoginRepository.UpdateUser();
                 StaticModel.StaticEditarItemViewModel = null;
@@ -720,5 +728,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             PagePedidoNew.CurrentViewModel.AtualizaTotalizadoresPedido();
             UtilNavidate.PopAsync();
         }
+
     }
 }

@@ -771,34 +771,37 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 }
 
 
-                if (item.vQtdEstoque != null && item.vQtdItem > 0)
-                {
-                    EstoqueModel _retornoEstoqueProdutoMobile = new EstoqueModel();
+                ProdutoRepository.AtualizarEstoqueProduto(idEmpresa: item.idEmpresa,
+                    idProduto: item.idProduto, idLocalEstoque: item.idLocalEstoque, vQtdItem: item.vQtdItem);
 
-                    if (item.idGradeCor != null || item.idGradeTamanho != null)
-                    {
-                        _retornoEstoqueProdutoMobile = ProdutoRepository.ObterRegistroEstoqueComGradeProduto(item.idEmpresa, item.idProduto ?? 0, item.idGradeCor, item.idGradeTamanho);
-                    }
-                    else
-                    {
-                        _retornoEstoqueProdutoMobile = ProdutoRepository.ObterRegistroEstoqueProduto(item.idEmpresa, item.idProduto ?? 0);
-                    }
+                //if (item.vQtdEstoque != null && item.vQtdItem > 0)
+                //{
+                //    EstoqueModel _retornoEstoqueProdutoMobile = new EstoqueModel();
 
-                    if (_retornoEstoqueProdutoMobile == null)
-                    {
-                        _retornoEstoqueProdutoMobile = new EstoqueModel
-                        {
-                            idProduto = item.idProduto ?? 0,
-                            idEmpresa = item.idEmpresa,
-                            idGradeCor = item.idGradeCor,
-                            idGradeTamanho = item.idGradeTamanho,
-                            vEstoque = 0
-                        };
-                    }
+                //    if (item.idGradeCor != null || item.idGradeTamanho != null)
+                //    {
+                //        _retornoEstoqueProdutoMobile = ProdutoRepository.ObterRegistroEstoqueComGradeProduto(item.idEmpresa, item.idProduto ?? 0, item.idGradeCor, item.idGradeTamanho);
+                //    }
+                //    else
+                //    {
+                //        _retornoEstoqueProdutoMobile = ProdutoRepository.ObterRegistroEstoqueProduto(item.idEmpresa, item.idProduto ?? 0);
+                //    }
 
-                    _retornoEstoqueProdutoMobile.vEstoque -= item.vQtdItem;
-                    App.Data.Connection.Update(_retornoEstoqueProdutoMobile);
-                }
+                //    if (_retornoEstoqueProdutoMobile == null)
+                //    {
+                //        _retornoEstoqueProdutoMobile = new EstoqueModel
+                //        {
+                //            idProduto = item.idProduto ?? 0,
+                //            idEmpresa = item.idEmpresa,
+                //            idGradeCor = item.idGradeCor,
+                //            idGradeTamanho = item.idGradeTamanho,
+                //            vEstoque = 0
+                //        };
+                //    }
+
+                //    _retornoEstoqueProdutoMobile.vEstoque -= item.vQtdItem;
+                //    App.Data.Connection.Update(_retornoEstoqueProdutoMobile);
+                //}
 
 
             }

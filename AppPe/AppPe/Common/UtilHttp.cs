@@ -303,6 +303,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             var lregistros = new List<T>();
             try
             {
+                param2 = param2.Value.AddHours(-3);
+
                 var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{param1}{(param2 != null ? "/" + ((DateTime)param2).ToString("yyyy-MM-ddTHH:mm:ss") : null)}{(param3 != null ? "/" + param3.ToString() : "")}";
 
