@@ -14,6 +14,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.Repository.Precos.Implementacoes;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using Hlp.PedidoEletronico.Domain.Business.Calculos;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 {
@@ -152,8 +153,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
 
                 //se for mostrar eu não coloco o where
-                if(!bMostraVariacoes.GetValueOrDefault())
-                    xWhere += $@" and tb_produto.idProdutoPai is null "; 
+                if (!bMostraVariacoes.GetValueOrDefault())
+                    xWhere += $@" and tb_produto.idProdutoPai is null ";
 
                 if (config.paramCategoria != null && config.paramCategoria.Id > 0)
                 {
@@ -191,7 +192,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 }
 
                 //fitlro de destques
-                if(bBotaoFiltroDestques.GetValueOrDefault())
+                if (bBotaoFiltroDestques.GetValueOrDefault())
                     xWhere += $" and tb_produto.bDestaqueCatalogo = '1' ";
 
 
@@ -317,7 +318,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 {
                     _dicLocais = PedidoRepository.BuscarLocaisEstoqueParaListas(idClientes, _idRepresentante, idEmpresa);
 
-                    foreach(var local in _dicLocais)
+                    foreach (var local in _dicLocais)
                     {
                         lLocaisSimplificado.Add(new LocalEstoqueSimplificado
                         {
@@ -331,7 +332,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 //Foreach criado para ajustar a brecha do campo QtdeGrade que ficava populado mesmo a grade estando inativa, ocasionando erro na listagem dos produtos
                 foreach (var lproduto in objReturn)
                 {
-                    int? idLocalEstoque = _dicLocais.OrderBy(t => t.Value).Select(t => t.Key).FirstOrDefault(); 
+                    int? idLocalEstoque = _dicLocais.OrderBy(t => t.Value).Select(t => t.Key).FirstOrDefault();
                     lproduto.idLocalEstoque = idLocalEstoque.GetValueOrDefault();
                     lproduto.lLocaisEstoque = lLocaisSimplificado;
                     if (idLocalEstoque == 0)
@@ -399,6 +400,25 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 ex.TrakException();
                 return new List<PedidoVendaItensModel>();
             }
+        }
+
+        public static void AtualizarEstoqueProduto(int idEmpresa, int? idProduto, int? idLocalEstoque, double vQtdItem)
+        {
+            var xWhere = $"tb_movimentoestoque.idEmpresa = {idEmpresa} and tb_movimentoestoque.idProduto = {idProduto}";
+
+            if (idLocalEstoque.GetValueOrDefault() > 0)
+                xWhere += $" and tb_movimentoestoque.idLocalEstoque = {idLocalEstoque}";
+            else
+                xWhere += " and tb_movimentoestoque.idLocalEstoque is null";
+
+            var vEstoque = ObterEstoqueProduto(idEmpresa: idEmpresa,
+                      idProduto: idProduto ?? 0, idLocalEstoque: idLocalEstoque);
+
+            App.Data.Connection.ExecuteScalar<double>(
+                   $@"UPDATE tb_movimentoestoque
+                      SET vEstoque = {vEstoque - vQtdItem} 
+                      WHERE {xWhere}");
+
         }
 
         public static bool GradeAtiva(int idEmpresa, int idProduto)
@@ -475,14 +495,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 xWhere = $@"where tb_movimentoestoque.idEmpresa = {idEmpresa} and tb_movimentoestoque.idProduto = {idProduto} and tb_movimentoestoque.idGradeCor = {idGradeCor} ";
             }
 
-            
-            if(idLocalEstoque.GetValueOrDefault() > 0)
+
+            if (idLocalEstoque.GetValueOrDefault() > 0)
             {
                 xWhere += $@" and tb_movimentoestoque.idLocalEstoque = {idLocalEstoque} ";
             }
             else
             {
-                xWhere += $@" and tb_movimentoestoque.idLocalEstoque is null  "; 
+                xWhere += $@" and tb_movimentoestoque.idLocalEstoque is null  ";
             }
 
             var xQuery = $@"select tb_movimentoestoque.vEstoque from tb_movimentoestoque {xWhere}";
@@ -575,7 +595,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 //nova rotina
                 TabelaPrecoRepository.SetTabelaPrecoByProduto(objReturn, idClientesOffLine, idClientes, _idRepresentante);
                 //nova rotina
-                PedidoRepository.SetLocalEstoque(objReturn,  idClientes, _idRepresentante);
+                PedidoRepository.SetLocalEstoque(objReturn, idClientes, _idRepresentante);
 
                 SetComissao(objReturn);
 

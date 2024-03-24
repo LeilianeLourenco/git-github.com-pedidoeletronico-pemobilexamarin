@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
+using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;
@@ -434,7 +435,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         var page = new PageSelectDate(currentModel, SelectDateViewModel.tipolancamento.ORCAMENTO);
                         UtilNavidate.PushModalAsync(page);
                     });
-                } 
+                }
             });
 
 
@@ -609,12 +610,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             Title = "Forma de Pagamento",
                         };
                         UtilNavidate.PushAsync(pesquisa);
-                    }); 
+                    });
                 }
 
             });
 
-            
+
 
             GoToTransportadoraCommand = new Command(async () =>
             {
@@ -1203,7 +1204,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             try
             {
-                ItemFormaPgto = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao(string.Empty, ItemCondicaoPgto.Id).OrderBy(t => t.Display).FirstOrDefault(); 
+                ItemFormaPgto = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao(string.Empty, ItemCondicaoPgto.Id).OrderBy(t => t.Display).FirstOrDefault();
                 currentModel.xFormaPagamento = ItemFormaPgto.Display;
             }
             catch (Exception ex)
@@ -1293,7 +1294,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 currentModel.bBloquearVisualizacaoEstoqueVendedor = _configuracoesGerais.bBloquearVisualizacaoEstoqueVendedor;
                 currentModel.bMostraFaixaEscalonada = _configuracoesGerais.bMostraFaixaTabelaEscalonada;
 
-                currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf =  ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa).GetValueOrDefault();
+                currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa).GetValueOrDefault();
                 if (currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf == true)
                     GetRepresentacao();
 
@@ -1484,7 +1485,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 //}
 
                 if (email != null)
-                {  
+                {
 
                     var bgerarOrcamento = currentModel.stLancamento == 0 && ItemSatus.Id == 2 && currentModel.stPedidoVenda == 0;
 
@@ -1521,7 +1522,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     TimeZoneInfo fusoHorarioBrasil = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
                     DateTime dataHoraBrasil = TimeZoneInfo.ConvertTimeFromUtc(dataHoraEUA, fusoHorarioBrasil);
 
-                    currentModel.dEmissao = dataHoraBrasil;                    
+                    currentModel.dEmissao = dataHoraBrasil;
 
                     PedidoRepository.SavePedidoVenda(currentModel);
 
@@ -1548,12 +1549,173 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 if (await UtilMessages.QuestionToBackAsync())
                 {
+
+                    //PedidoVendaModel objPedido = currentModel;
+                    //Cancelar(currentModel);
+
+                    // ProdutoRepository.AtualizarEstoqueProduto(idEmpresa: objPedido.,
+                    //idProduto: item.idProduto, idLocalEstoque: item.idLocalEstoque, vQtdItem: item.vQtdItem);
+
                     UtilNavidate.PopAsync();
                 }
             }
             else
             {
                 UtilNavidate.PopAsync();
+            }
+        }
+
+        public static void Cancelar(PedidoVendaModel objPedido)
+        {
+            try
+            {
+
+                if (objPedido.idPedidoDisplay != null && objPedido.idPedidoDisplay <= 0)
+                    objPedido.idPedidoDisplay = null;
+
+                double vTotalPedido = 0;
+                double vDescontoTotal = 0;
+                foreach (var item in objPedido.lItens)
+                {
+                    if (item.ItensGrade != null && item.ItensGrade.Any())
+                    {
+                        var _qtdadeTotal = item.ItensGrade.Where(itemgrade => itemgrade.vQtdItem > 0).Sum(itemgrade => itemgrade.vQtdItem);
+                        var _itemAux = item.ItensGrade.Where(itemgrade => itemgrade.vQtdItem > 0).FirstOrDefault();
+                        double _descontoUnitario = 0;
+
+                        if (_itemAux != null)
+                            _descontoUnitario = _itemAux.vDesconto;
+
+                        vDescontoTotal += _qtdadeTotal * _descontoUnitario;
+                        vTotalPedido += item.ItensGrade.Where(itemgrade => itemgrade.vQtdItem > 0).Sum(itemgrade => itemgrade.vSubTotal);
+                    }
+                    else
+                    {
+                        vDescontoTotal += (item.vDesconto * item.vQtdItem);
+                        vTotalPedido += item.vSubTotal;
+                    }
+                }
+
+                objPedido.stValidaEnvioParaRepresentada = objPedido.stEnviadoRepresentacao;
+
+                objPedido.vTotalProduto = vTotalPedido;
+
+                if (objPedido.idPedidoVenda == null || objPedido.idPedidoVenda == 0)
+                    vTotalPedido = vTotalPedido + objPedido.vFretePed + objPedido.vSeguroPed + objPedido.vOutrasPed;
+
+                objPedido.VTotal = vTotalPedido;
+                objPedido.vDescontoPed = vDescontoTotal;
+                objPedido.idEmpresa = (int)App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+                objPedido.idAspnetUsers = App.CurrentAspnetUserModel.Id;
+
+                if (objPedido.idPedidoVenda == null)
+                    objPedido.dtUltimaAlteracao = DateTime.UtcNow.ToDateTimeSync();
+
+                //if (objPedido.stLancamento == 0)
+                //    objPedido.dtValidadeOrcamento = null;
+
+                if (objPedido.stLancamento == 1)
+                    objPedido.dtValidadeOrcamento = null;
+
+                if (objPedido.idPedidoVendaOffLine == null)
+                {
+                    if (objPedido.idAspnetUsers == null)
+                        objPedido.idAspnetUsers = App.CurrentAspnetUserModel.Id;
+                    App.Data.Connection.Insert(objPedido);
+                }
+                else
+                    App.Data.Connection.Update(objPedido);
+
+                foreach (var itemRemovido in objPedido.ItensRemovidos)
+                {
+                    App.Data.Connection.Delete(itemRemovido);
+                }
+
+
+                foreach (var item in objPedido.lItens)
+                {
+
+                    var anotacao = ProdutoRepository.GetAnotacaoProduto(item.idProdutoOffLine);
+
+                    if (!string.IsNullOrEmpty(anotacao))
+                    {
+                        if (!item.xInfAdicionais.ToUpper().Contains(anotacao.ToUpper()))
+                        {
+                            item.xInfAdicionais += string.IsNullOrEmpty(item.xInfAdicionais)
+                                ? anotacao
+                                : Environment.NewLine + anotacao;
+                        }
+                    }
+
+                    if (item.HasGrade || item.ItensGrade != null)
+                    {
+                        if (item.idItemAgrupamento == null)
+                            item.idItemAgrupamento = objPedido.GetNextValidAgrupamento();
+
+                        foreach (var itemGrade in item.ItensGrade)
+                        {
+                            itemGrade.xInfAdicionais = item.xInfAdicionais;
+                            itemGrade.idItemAgrupamento = item.idItemAgrupamento;
+                            atualizarEstoque(objPedido, itemGrade);
+                        }
+                    }
+                    else
+                    {
+                        if (item.idItemAgrupamento == null)
+                            item.idItemAgrupamento = objPedido.GetNextValidAgrupamento();
+                        atualizarEstoque(objPedido, item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+                //Insights.Report(ex, Insights.Severity.Error);
+            }
+
+        }
+
+        private static void atualizarEstoque(PedidoVendaModel objPedido, PedidoVendaItensModel item)
+        {
+            try
+            {
+                item.idEmpresa = objPedido.idEmpresa;              
+              
+                if (item.vQtdEstoque != null && item.vQtdItem > 0)
+                {
+                    EstoqueModel _retornoEstoqueProdutoMobile = new EstoqueModel();
+
+                    if (item.idGradeCor != null || item.idGradeTamanho != null)
+                    {
+                        _retornoEstoqueProdutoMobile = ProdutoRepository.ObterRegistroEstoqueComGradeProduto(item.idEmpresa, item.idProduto ?? 0, item.idGradeCor, item.idGradeTamanho);
+                    }
+                    else
+                    {
+                        _retornoEstoqueProdutoMobile = ProdutoRepository.ObterRegistroEstoqueProduto(item.idEmpresa, item.idProduto ?? 0);
+                    }
+
+                    if (_retornoEstoqueProdutoMobile == null)
+                    {
+                        _retornoEstoqueProdutoMobile = new EstoqueModel
+                        {
+                            idProduto = item.idProduto ?? 0,
+                            idEmpresa = item.idEmpresa,
+                            idGradeCor = item.idGradeCor,
+                            idGradeTamanho = item.idGradeTamanho,
+                            vEstoque = 0
+                        };
+                    }
+
+                    _retornoEstoqueProdutoMobile.vEstoque += item.vQtdItem;
+                    App.Data.Connection.Update(_retornoEstoqueProdutoMobile);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+                //Insights.Report(ex, Insights.Severity.Error);
             }
         }
 
