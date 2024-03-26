@@ -690,10 +690,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         {
                             if (ItensSelecionados.Any(c => c.idProduto == itemSelected.idProduto) == false)
                             {
-                                if (itemSelected.vQtdEstoque != 0)
+                                if (itemSelected.vQtdEstoque > 0|| itemSelected.stVendaSemEstoque)
                                     ItensSelecionados.Add(itemSelected);
                                 else
-                                   await App.Current.MainPage.DisplayAlert("Erro","Não é possível adicionar um item com estoque 0","Ok");
+                                {
+                                    itemSelected.vQtdItem -= 1;
+                                    await App.Current.MainPage.DisplayAlert("Erro", "Não é possível adicionar um item sem estoque", "Ok");
+                                }
                             }
                         }
                         else if (ItensSelecionados.Any(c => c.idProduto == itemSelected.idProduto))
