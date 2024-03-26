@@ -27,6 +27,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             this.bLocaisCarregados = false;
         }
         public bool bTabelasCarregadas { get; set; }
+        public bool stVendaSemEstoque { get; set; }
 
 
         public bool bLocaisCarregados { get; set; }

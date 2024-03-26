@@ -263,7 +263,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                                                 tb_produto.idProduto,
                                                                 tb_produto.idProdutoOffLine,                                                                
                                                                 tb_produto.idEmpresa, 
-                                                                tb_produto.cAlternativo,                                                                
+                                                                tb_produto.cAlternativo,    
+                                                                tb_produto.stVendaSemEstoque,
                                                                 {xNomeDisplay}         
                                                                 {xFields}
                                                                 coalesce(tb_produto.pIpiVenda,0)pIpiVenda,
