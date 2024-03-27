@@ -111,6 +111,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                         if (!await App.Messages.ShowConfirmAsync(MessageService.QuestionDelete)) return;
                         if (PedidoRepository.Delete(pedido.idPedidoVendaOffLine))
                         {
+                            var _listaItensPedido = App.Data.Connection.Query<PedidoVendaItensModel>(
+                            $@"SELECT * FROM TB_PEDIDOVENDAITENS WHERE idPedidoVendaOffLine = {pedido.idPedidoVendaOffLine}").ToList();
+
+                            _listaItensPedido.ForEach(item => ProdutoRepository.AtualizarEstoqueProduto(idEmpresa: item.idEmpresa,
+                              idProduto: item.idProduto, idLocalEstoque: item.idLocalEstoque, vQtdItem: item.vQtdItem, true));
+
                             viewModel.pedidos.Remove(pedido);
                         }
                         else

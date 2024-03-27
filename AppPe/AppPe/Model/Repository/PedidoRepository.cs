@@ -772,7 +772,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
 
                 ProdutoRepository.AtualizarEstoqueProduto(idEmpresa: item.idEmpresa,
-                    idProduto: item.idProduto, idLocalEstoque: item.idLocalEstoque, vQtdItem: item.vQtdItem);
+                    idProduto: item.idProduto, idLocalEstoque: item.idLocalEstoque, vQtdItem: item.vQtdItem, false);
 
                 //if (item.vQtdEstoque != null && item.vQtdItem > 0)
                 //{
@@ -819,7 +819,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 var xQuery = "Delete from {0} where idPedidoVendaOffLine = {1}";
 
                 var xQueryDeletePedido = string.Format(xQuery, TableMobile.TB_PEDIDOVENDA, idPedidoVendaOffLine);
-                var xQueryDeleteItens = string.Format(xQuery, TableMobile.TB_PEDIDOVENDAITENS, idPedidoVendaOffLine);
+                var xQueryDeleteItens = string.Format(xQuery, TableMobile.TB_PEDIDOVENDAITENS, idPedidoVendaOffLine);              
 
                 App.Data.Connection.Execute(xQueryDeletePedido);
                 App.Data.Connection.Execute(xQueryDeleteItens);

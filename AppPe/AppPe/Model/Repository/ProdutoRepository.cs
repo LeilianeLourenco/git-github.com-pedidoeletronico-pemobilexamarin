@@ -403,7 +403,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
-        public static void AtualizarEstoqueProduto(int idEmpresa, int? idProduto, int? idLocalEstoque, double vQtdItem)
+        public static void AtualizarEstoqueProduto(int idEmpresa, int? idProduto, int? idLocalEstoque, double vQtdItem, bool pedidoRemovido)
         {
             var xWhere = $"tb_movimentoestoque.idEmpresa = {idEmpresa} and tb_movimentoestoque.idProduto = {idProduto}";
 
@@ -415,9 +415,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             var vEstoque = ObterEstoqueProduto(idEmpresa: idEmpresa,
                       idProduto: idProduto ?? 0, idLocalEstoque: idLocalEstoque);
 
+            double resultado = !pedidoRemovido ? vEstoque - vQtdItem : vEstoque + vQtdItem;
+            
             App.Data.Connection.ExecuteScalar<double>(
                    $@"UPDATE tb_movimentoestoque
-                      SET vEstoque = {vEstoque - vQtdItem} 
+                      SET vEstoque = {resultado} 
                       WHERE {xWhere}");
 
         }
