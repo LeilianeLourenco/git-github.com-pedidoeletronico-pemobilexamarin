@@ -37,6 +37,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             NavigationPage.SetHasBackButton(this, false);
 
             SessionLancamento.Remove(TxtRepresentanteCell);
+
+            DateTime dataHoraEUA = DateTime.UtcNow;
+            TimeZoneInfo fusoHorarioBrasil = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
+            DateTime dataHoraBrasil = TimeZoneInfo.ConvertTimeFromUtc(dataHoraEUA, fusoHorarioBrasil);
+
+            currentModel.dEmissao = dataHoraBrasil;
             ViewModel.currentModel = currentModel ?? new PedidoVendaModel();
             ViewModel.bPedidoByCliente = bPedidoByCliente;
 

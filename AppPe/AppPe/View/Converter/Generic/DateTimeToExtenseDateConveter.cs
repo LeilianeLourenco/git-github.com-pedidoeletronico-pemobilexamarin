@@ -34,13 +34,11 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Converter.Generic
         {
             if (value != null)
             {
-                DateTime dataHoraEUA = DateTime.UtcNow;
-                TimeZoneInfo fusoHorarioBrasil = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
-                DateTime dataHoraBrasil = TimeZoneInfo.ConvertTimeFromUtc(dataHoraEUA, fusoHorarioBrasil);
-
-                if (dataHoraBrasil.Year < 2000)
+                DateTime date = (DateTime)value;
+                
+                if (date.Year < 2000)
                     return "-";
-                return dataHoraBrasil.ToString("dd/MM/yyyy     HH:mm");
+                return date.ToString("dd/MM/yyyy     HH:mm");
             }
             else
             {
