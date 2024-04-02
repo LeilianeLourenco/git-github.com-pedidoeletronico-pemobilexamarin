@@ -19,17 +19,17 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             if (tipo == SelectDateViewModel.tipolancamento.PEDIDO)
             {
                 ViewModel.date = pedido.dEmissao;
-                ViewModel.time = pedido.dEmissao.ToLocalTime().TimeOfDay;
+                ViewModel.time = pedido.dEmissao.TimeOfDay;
             }
             else if (tipo == SelectDateViewModel.tipolancamento.ORCAMENTO)
             {
                 ViewModel.date = pedido.dtValidadeOrcamento ?? DateTime.Now;
-                ViewModel.time = (pedido.dtValidadeOrcamento ?? DateTime.Now).ToLocalTime().TimeOfDay;
+                ViewModel.time = (pedido.dtValidadeOrcamento ?? DateTime.Now).TimeOfDay;
             }
             else if (tipo == SelectDateViewModel.tipolancamento.PREVISAO_ENTREGA)
             {
                 ViewModel.date = pedido.dtPrevisto ?? DateTime.Now;
-                ViewModel.time = (pedido.dtPrevisto ?? DateTime.Now).ToLocalTime().TimeOfDay;
+                ViewModel.time = (pedido.dtPrevisto ?? DateTime.Now).TimeOfDay;
             }
 
         }

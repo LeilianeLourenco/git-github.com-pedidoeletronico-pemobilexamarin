@@ -54,7 +54,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
 
         #region Propriedades
-
+     
         private PedidoVendaModel _currentModel;
 
         public PedidoVendaModel currentModel
@@ -763,7 +763,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     //tratando o horário do pedido caso for um novo, porque se não ficar subtraindo quando edita
                     if (currentModel.dEmissao.Kind != DateTimeKind.Local && currentModel.idPedidoVendaOffLine.GetValueOrDefault() == 0)
                     {
-                        currentModel.dEmissao = currentModel.dEmissao.ToLocalTime();
+                        //currentModel.dEmissao = currentModel.dEmissao.ToLocalTime();
                     }
                     if (currentModel.dtPrevisto != null)
                         if ((currentModel.dtPrevisto ?? DateTime.Now).Kind != DateTimeKind.Local && currentModel.idPedidoVendaOffLine.GetValueOrDefault() == 0)
@@ -1517,12 +1517,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                     if (currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf == true)
                         currentModel.idRepresentadaPdf = representada.Id;
-
-                    DateTime dataHoraEUA = DateTime.UtcNow;
-                    TimeZoneInfo fusoHorarioBrasil = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
-                    DateTime dataHoraBrasil = TimeZoneInfo.ConvertTimeFromUtc(dataHoraEUA, fusoHorarioBrasil);
-
-                    currentModel.dEmissao = dataHoraBrasil;
+                    
+                    currentModel.dEmissao = currentModel.dEmissao;
 
                     PedidoRepository.SavePedidoVenda(currentModel);
 
@@ -1679,8 +1675,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             try
             {
-                item.idEmpresa = objPedido.idEmpresa;              
-              
+                item.idEmpresa = objPedido.idEmpresa;
+
                 if (item.vQtdEstoque != null && item.vQtdItem > 0)
                 {
                     EstoqueModel _retornoEstoqueProdutoMobile = new EstoqueModel();
