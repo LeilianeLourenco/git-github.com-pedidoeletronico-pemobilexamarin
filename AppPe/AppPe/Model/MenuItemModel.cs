@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Droid;
 using Xamarin.HLP.Mobile.AppPE.View;
 using Xamarin.HLP.Mobile.AppPE.View.Agenda;
 using Xamarin.HLP.Mobile.AppPE.View.Cliente;
@@ -115,10 +116,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
 
 
             this.Add(new MenuItemModel
-            {
+            {                
                 Display = "Chat On-Line",
                 Image = "ApplicationMenuChat",
-                TargetType = typeof(PageOpenHtml)
+                TargetType = typeof(ChatOnLine)
             });
             this.Add(new MenuItemModel
             {
