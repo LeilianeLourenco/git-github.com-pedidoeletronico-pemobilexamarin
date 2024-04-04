@@ -4,6 +4,7 @@ using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Droid;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.View.Home;
 using Xamarin.HLP.Mobile.AppPE.View.Sincronizacao;
@@ -43,12 +44,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.MainPage
             {
                 Page displayPage = null;
 
-                if (menu.TargetType == typeof(PageOpenHtml))
+                if (menu.TargetType == typeof(ChatOnLine))
                 {
                     if (await App.IsConected())
                     {
-                        Detail = new NavigationPage(new PageOpenHtml("chat", "Chat On-line"));
-                        return;
+                        new ChatOnLine();                                         
+                        return ;
                     }
                     else
                     {
