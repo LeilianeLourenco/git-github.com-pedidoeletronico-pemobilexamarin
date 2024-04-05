@@ -67,8 +67,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
         {
             try
             {
-
-
                 BluetoothDevice objPrinter = null;
 
                 var devices = getAllPairedDevices();
@@ -79,25 +77,26 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
                 {
                     foreach (var bluetoothDevice in devices)
                     {
-
-                        if (objPrinter == null)
+                        foreach (var parcelUuid in bluetoothDevice.GetUuids())
                         {
-                            foreach (var parcelUuid in bluetoothDevice.GetUuids())
+                            if (parcelUuid.Uuid.ToString() == uuid.ToString())
                             {
-                                if (parcelUuid.Uuid.ToString() == uuid.ToString())
+
+                                objPrinter = bluetoothDevice;
+                                try
                                 {
-                                    if (bluetoothDevice.Name.ToLower().Contains("printer"))
-                                    {
-                                        objPrinter = bluetoothDevice;
-                                        break;
-                                    }
+                                    mSocket = currentDevice.CreateRfcommSocketToServiceRecord(uuid);
+                                    mSocket.Connect();
+                                    break;
                                 }
+                                catch
+                                {
+                                    continue;
+                                }
+
                             }
                         }
-                        else
-                        {
-                            break;
-                        }
+
                     }
 
                     if (objPrinter != null)
