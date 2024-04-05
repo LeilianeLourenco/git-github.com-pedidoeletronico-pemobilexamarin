@@ -36,9 +36,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
             try
             {
                 var retorno = bluetoothManager.opneDeviceConnection();
-
                 
-
                 return retorno;
             }
             catch (Exception ex)
