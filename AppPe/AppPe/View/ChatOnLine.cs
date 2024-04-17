@@ -11,9 +11,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
     {
 
         public ChatOnLine()
-        {
-            //AbrirLinkNoNavegador("https://www.pedidoeletronico.com/Controllers/Xamarin/Views/ChatOnLine.cshtml");
-            AbrirLinkNoNavegador("https://isaacbianchini.github.io/Chat/chatMovidesk.html");
+        {          
+            AbrirLinkNoNavegador("https://pedidoeletronico.com/home/chatonline");
         }
 
         public async void AbrirLinkNoNavegador(string url)
