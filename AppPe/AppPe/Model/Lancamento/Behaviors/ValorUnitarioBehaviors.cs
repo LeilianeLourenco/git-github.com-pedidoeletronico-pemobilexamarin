@@ -21,6 +21,39 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors
         protected override void OnAttachedTo(Entry bindable)
         {
             bindable.TextChanged += bindable_TextChanged;
+            bindable.Unfocused += bindable_Unfocused;
+        }
+
+        private async void bindable_Unfocused(object sender, FocusEventArgs e)
+        {
+            var entry = sender as Entry;
+            if (entry != null)
+            {
+                var ViewModel = ValorUnitarioComImpostosBehaviors.GetViewModelEditar(entry);
+
+                if (!IsValid)
+                {
+
+                    if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
+                    {
+                        if (await App.Messages.ShowConfirmAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO! DESEJA CONTINUAR?",
+                                "Não", "Sim"))
+                        {
+                            ViewModel.vUnitarioVendaComImpostos += ViewModel.vDesconto;
+                            ViewModel.vDesconto = 0;
+                            ViewModel.pDesconto = 0;
+                        }
+                    }
+
+                    else
+                    {
+                        ViewModel.vUnitarioVendaComImpostos += ViewModel.vDesconto;
+                        ViewModel.vDesconto = 0;
+                        ViewModel.pDesconto = 0;
+                        await App.Messages.ShowAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO!");
+                    }
+                }
+            }
         }
 
         private async void bindable_TextChanged(object sender, TextChangedEventArgs e)
@@ -71,31 +104,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors
                                 _objDescValido = new DescontoValido(pDescMaximo: ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo);
 
                                 IsValid = _objDescValido.ValidarDesconto(pDesconto: ViewModel.pDesconto); 
-                                ((Entry)sender).TextColor = IsValid ? Color.Default : Color.Red;
-
-                                if (!IsValid)
-                                {
-
-                                    if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
-                                    {
-                                        if (await App.Messages.ShowConfirmAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO! DESEJA CONTINUAR?",
-                                                "Não", "Sim"))
-                                        {
-                                            ViewModel.vUnitarioVendaComImpostos += ViewModel.vDesconto;
-                                            ViewModel.vDesconto = 0;
-                                            ViewModel.pDesconto = 0;
-                                        }
-                                    }
-
-                                    else
-                                    {
-                                        ViewModel.vUnitarioVendaComImpostos += ViewModel.vDesconto;
-                                        ViewModel.vDesconto = 0;
-                                        ViewModel.pDesconto = 0;
-                                        await App.Messages.ShowAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO!");
-                                    }
-                                }
-
+                                ((Entry)sender).TextColor = IsValid ? Color.Default : Color.Red;                            
 
                                 if ((_currentItem.ItensGrade?.Count ?? 0) > 0)
                                 {
@@ -119,9 +128,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors
         {
             bindable.TextChanged -= bindable_TextChanged;
         }
-
-
-
 
         public static EditarItemViewModel GetViewModelEditar(Entry entry)
         {
