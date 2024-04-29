@@ -227,17 +227,9 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Cliente
             if (!string.IsNullOrEmpty(ViewModel.currentModel.xCpfCnpj) && ClienteRepository.CpfCnpjClienteJaExiste(ViewModel.currentModel.xCpfCnpj,
                 ViewModel.currentModel.idClientesOffLine))
             {
-                if (await
-                        App.Messages.ShowConfirmAsync(
-                            $"{(ViewModel.currentModel.stJuridico == 0 ? "CPF" : "CNPJ")} {ViewModel.currentModel.xCpfCnpj}, já existe em sua base de dados. {Environment.NewLine}Deseja continuar?") ==
-                    false)
-                {
-                    CurrentPage = PagePrincipal;
-                    if (ViewModel.currentModel.stJuridico == 0)
-                        EntryCpf.Focus();
-                    else EntryCnpj.Focus();
-                    return;
-                }
+                await App.Current.MainPage.DisplayAlert("AVISO", $"{(ViewModel.currentModel.stJuridico == 0 ? "CPF" : "CNPJ")} {ViewModel.currentModel.xCpfCnpj}, já existe em sua base de dados", "OK");
+                return;
+
             }
 
             if (ClienteRepository.RgIeClienteJaExiste(ViewModel.currentModel.xRgIe,
