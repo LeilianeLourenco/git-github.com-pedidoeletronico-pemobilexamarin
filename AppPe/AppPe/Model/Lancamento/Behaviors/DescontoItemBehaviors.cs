@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda.Implementacoes;
 using Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda.Interfaces;
@@ -49,95 +50,103 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors
                                         ViewModel.vUnitarioVenda = ViewModel.vUnitarioVendaComImpostos;
                                     }
 
+                                    CultureInfo cultureInfoBr = new CultureInfo("pt-BR");
 
-                                    if (TpValidacao == TipoValidacao.PORCENTAGEM)
+                                    double.TryParse(e.OldTextValue, NumberStyles.Float, cultureInfoBr, out double valorConvertido);
+                                    if ((ViewModel.vUnitarioVendaComImpostos + valorConvertido) >= ViewModel.vDesconto)
                                     {
-                                        PedidoVendaCalculos.CalculoDescontoPorPorcent(ViewModel.currentModel,
-                                            ViewModel.pDesconto);
-                                        //ViewModel.vDesconto = ViewModel.currentModel.ItensGrade.Sum(c => (c.vDesconto * c.vQtdItem));
-                                        var _obj = ViewModel.currentModel.ItensGrade.Where(p => p.idProduto == ViewModel.currentModel.idProduto);
-                                        ViewModel.vDesconto = _obj.FirstOrDefault().vDesconto;
-                                    }
-                                    else
-                                    {
-                                        PedidoVendaCalculos.CalculoDescontoPorValor(ViewModel.currentModel,
-                                            ViewModel.vDesconto);
-                                        ViewModel.pDesconto = ViewModel.currentModel.ItensGrade.FirstOrDefault().pDesconto;
-                                        IsValid = PedidoVendaCalculos.DescontoValidoPorcDesc(ViewModel.currentModel);
-                                        ((Entry)sender).TextColor = IsValid ? Color.Default : Color.Red;
-                                    }
 
-                                    // OS 35294 - Jessica Barbieri
-                                    if (ViewModel.vUnitarioVenda == 0)
-                                    {
-                                        ViewModel.vUnitarioVendaComImpostos = ViewModel.vUnitarioVendaComImpostos - ViewModel.vDesconto;
-                                        PedidoVendaCalculos.AtualizaValores(ViewModel.currentModel);
-                                        AtualizaComissao(ViewModel);
-                                        IDescontoValido _objDescValido;
-
-                                        _objDescValido = new DescontoValido(pDescMaximo: ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo);
-
-                                        IsValid = _objDescValido.ValidarDesconto(pDesconto: ViewModel.pDesconto);
-                                        ((Entry)sender).TextColor = IsValid ? Color.Default : Color.Red;
-
-                                        // OS 35351 - Jessica Barbieri
-                                        if (IsValid == false)
+                                        if (TpValidacao == TipoValidacao.PORCENTAGEM)
                                         {
+                                            PedidoVendaCalculos.CalculoDescontoPorPorcent(ViewModel.currentModel,
+                                                ViewModel.pDesconto);
+                                            //ViewModel.vDesconto = ViewModel.currentModel.ItensGrade.Sum(c => (c.vDesconto * c.vQtdItem));
+                                            var _obj = ViewModel.currentModel.ItensGrade.Where(p => p.idProduto == ViewModel.currentModel.idProduto);
+                                            ViewModel.vDesconto = _obj.FirstOrDefault().vDesconto;
+                                        }
+                                        else
+                                        {
+                                            PedidoVendaCalculos.CalculoDescontoPorValor(ViewModel.currentModel,
+                                                ViewModel.vDesconto);
+                                            ViewModel.pDesconto = ViewModel.currentModel.ItensGrade.FirstOrDefault().pDesconto;
+                                            IsValid = PedidoVendaCalculos.DescontoValidoPorcDesc(ViewModel.currentModel);
+                                            ((Entry)sender).TextColor = IsValid ? Color.Default : Color.Red;
+                                        }
 
-                                            if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
+                                        // OS 35294 - Jessica Barbieri
+                                        if (ViewModel.vUnitarioVenda == 0)
+                                        {
+                                            ViewModel.vUnitarioVendaComImpostos = ViewModel.vUnitarioVendaComImpostos - ViewModel.vDesconto;
+                                            PedidoVendaCalculos.AtualizaValores(ViewModel.currentModel);
+                                            AtualizaComissao(ViewModel);
+                                            IDescontoValido _objDescValido;
+
+                                            _objDescValido = new DescontoValido(pDescMaximo: ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo);
+
+                                            IsValid = _objDescValido.ValidarDesconto(pDesconto: ViewModel.pDesconto);
+                                            ((Entry)sender).TextColor = IsValid ? Color.Default : Color.Red;
+
+                                            // OS 35351 - Jessica Barbieri
+                                            if (IsValid == false)
                                             {
-                                                if (await App.Messages.ShowConfirmAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO! DESEJA CONTINUAR?",
-                                                        "Não", "Sim"))
+
+                                                if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
+                                                {
+                                                    if (await App.Messages.ShowConfirmAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO! DESEJA CONTINUAR?",
+                                                            "Não", "Sim"))
+                                                    {
+                                                        ViewModel.vDesconto = 0;
+                                                        ViewModel.pDesconto = 0;
+                                                    }
+                                                }
+
+                                                else
                                                 {
                                                     ViewModel.vDesconto = 0;
                                                     ViewModel.pDesconto = 0;
+                                                    await App.Messages.ShowAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO!");
                                                 }
                                             }
+                                        }
+                                        else
+                                        {
+                                            ViewModel.vUnitarioVendaComImpostos = ViewModel.vUnitarioVenda - ViewModel.vDesconto;
 
-                                            else
+
+                                            PedidoVendaCalculos.AtualizaValores(ViewModel.currentModel);
+                                            AtualizaComissao(ViewModel);
+                                            IDescontoValido _objDescValido;
+
+                                            _objDescValido = new DescontoValido(pDescMaximo: ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo);
+
+                                            IsValid = _objDescValido.ValidarDesconto(pDesconto: ViewModel.pDesconto);
+                                            ((Entry)sender).TextColor = IsValid ? Color.Default : Color.Red;
+
+                                            // OS 35351 - Jessica Barbieri
+                                            if (IsValid == false)
                                             {
-                                                ViewModel.vDesconto = 0;
-                                                ViewModel.pDesconto = 0;
-                                                await App.Messages.ShowAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO!");
+
+                                                if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
+                                                {
+                                                    if (await App.Messages.ShowConfirmAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO! DESEJA CONTINUAR?",
+                                                            "Não", "Sim"))
+                                                    {
+                                                        ViewModel.vDesconto = 0;
+                                                        ViewModel.pDesconto = 0;
+                                                    }
+                                                }
+
+                                                else
+                                                {
+                                                    ViewModel.vDesconto = 0;
+                                                    ViewModel.pDesconto = 0;
+                                                    await App.Messages.ShowAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO!");
+                                                }
                                             }
                                         }
                                     }
                                     else
-                                    {
-                                        ViewModel.vUnitarioVendaComImpostos = ViewModel.vUnitarioVenda - ViewModel.vDesconto;
-
-
-                                        PedidoVendaCalculos.AtualizaValores(ViewModel.currentModel);
-                                        AtualizaComissao(ViewModel);
-                                        IDescontoValido _objDescValido;
-
-                                        _objDescValido = new DescontoValido(pDescMaximo: ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo);
-
-                                        IsValid = _objDescValido.ValidarDesconto(pDesconto: ViewModel.pDesconto);
-                                        ((Entry)sender).TextColor = IsValid ? Color.Default : Color.Red;
-
-                                        // OS 35351 - Jessica Barbieri
-                                        if (IsValid == false)
-                                        {
-
-                                            if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
-                                            {
-                                                if (await App.Messages.ShowConfirmAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO! DESEJA CONTINUAR?",
-                                                        "Não", "Sim"))
-                                                {
-                                                    ViewModel.vDesconto = 0;
-                                                    ViewModel.pDesconto = 0;
-                                                }
-                                            }
-
-                                            else
-                                            {
-                                                ViewModel.vDesconto = 0;
-                                                ViewModel.pDesconto = 0;
-                                                await App.Messages.ShowAsync("DESCONTO MÁX DE " + ViewModel.currentModel.currentTabelaPreco.pDescontoMaximo + "% ULTRAPASSADO!");
-                                            }
-                                        }
-                                    }
+                                        ViewModel.vDesconto = ViewModel.pDesconto;
                                 }
                             }
                         }
