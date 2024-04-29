@@ -228,6 +228,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Cliente
                 ViewModel.currentModel.idClientesOffLine))
             {
                 await App.Current.MainPage.DisplayAlert("AVISO", $"{(ViewModel.currentModel.stJuridico == 0 ? "CPF" : "CNPJ")} {ViewModel.currentModel.xCpfCnpj}, já existe em sua base de dados", "OK");
+
+                CurrentPage = PagePrincipal;
+                if (ViewModel.currentModel.stJuridico == 0)
+                    EntryCpf.Focus();
+                else EntryCnpj.Focus();
+
                 return;
 
             }
