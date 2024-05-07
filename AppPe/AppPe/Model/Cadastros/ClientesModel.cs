@@ -139,7 +139,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             set
             {
 
-                _xCpfCnpj = value.Length == 11 ? value.ToCpfFormat() : value; NotifyPropertyChanged();
+                _xCpfCnpj = value?.Length == 11 ? value.ToCpfFormat() : value; NotifyPropertyChanged();
             }
         }
 
