@@ -653,12 +653,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     //     tb.stCampanhaRepresentante, tb.stTabelaPrecoRepresentacao                         
                     //     select tb).LastOrDefault();
 
-                    var _group = _lTabelas.GroupBy(gr => gr.stPrioridade)
-                        .OrderByDescending(gr => gr.FirstOrDefault().stPrioridade).FirstOrDefault();
+                    var _group = _lTabelas.Where(x => x.stPrioridade == TipoPrioridade.defaultcliente).FirstOrDefault();
 
+                    if (_group == null)
+                        _group = _lTabelas.Where(x => x.stPrioridade == TipoPrioridade.geral).FirstOrDefault();
+
+                    if (_group == null)
+                        _group = _lTabelas.OrderBy(x => x.vUnitario).FirstOrDefault();
 
                     if (_group != null)
-                        item.currentTabelaPreco = _group.OrderBy(gr => gr.vUnitario).FirstOrDefault();
+                        item.currentTabelaPreco = _group;
                 }
                 item.bTabelasCarregadas = true;
             }
