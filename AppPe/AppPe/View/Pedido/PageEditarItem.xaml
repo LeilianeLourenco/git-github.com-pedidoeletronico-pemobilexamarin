@@ -5,7 +5,7 @@
              xmlns:behaviors="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors;assembly=Xamarin.HLP.Mobile.AppPE"
              xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
              xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE" 
-             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageEditarItem" BackgroundColor="{StaticResource CinzaMedio}">
     <ContentPage.Title>
         <OnPlatform x:TypeArguments="x:String" WinPhone="" Android="Edição do item" iOS="Edição do item"/>
@@ -32,19 +32,20 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
- 
+
                         <CarouselView x:Name="ImageCarouselView" 
-                                            Grid.Row="0"  
-                                            HorizontalOptions="FillAndExpand"  
-                                            VerticalOptions="FillAndExpand"
-                                            HeightRequest="250"
-                                            ItemsSource="{Binding ListaImagens}" >
+                          Grid.Row="0"  
+                          HorizontalOptions="FillAndExpand"  
+                          VerticalOptions="FillAndExpand"
+                          HeightRequest="250"
+                          ItemsSource="{Binding ListaImagens}">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
-                                    <Image Aspect="AspectFill"
-                                           HorizontalOptions="FillAndExpand" 
-                                           VerticalOptions="FillAndExpand"
-                                           Source="{Binding .}"/>
+                                    <ffimageloading:CachedImage Aspect="AspectFill"
+                                                    HorizontalOptions="FillAndExpand" 
+                                                    VerticalOptions="FillAndExpand"
+                                                    DownsampleToViewSize="true"
+                                                    Source="{Binding .}" />
                                 </DataTemplate>
                             </CarouselView.ItemTemplate>
                         </CarouselView>
