@@ -177,12 +177,12 @@
 
                                         <!--IPI DE VENDA-->
                                         <Label Margin="5,5,0,0" Text="% Ipi Venda" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
-                                        <custom:ExtendedEntry IsEnabled="{Binding bAdmin}" TextChanged="EntryImpostos_OnTextChanged" MaxLength="6" x:Name="EntryIpiVenda" Placeholder="% ipi"
+                                        <custom:ExtendedEntry IsEnabled="False" TextChanged="EntryImpostos_OnTextChanged" MaxLength="6" x:Name="EntryIpiVenda" Placeholder="% ipi"
                                             Text="{Binding pIpiVenda, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  />
 
                                         <!--ST DE VENDA-->
                                         <Label Margin="5,5,0,0" Text="% St Venda" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
-                                        <custom:ExtendedEntry IsEnabled="{Binding bAdmin}" TextChanged="EntryImpostos_OnTextChanged" MaxLength="6" x:Name="EntryStVenda" Placeholder="% st"
+                                        <custom:ExtendedEntry IsEnabled="False" TextChanged="EntryImpostos_OnTextChanged" MaxLength="6" x:Name="EntryStVenda" Placeholder="% st"
                                             Text="{Binding pStVenda, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  />
 
                                         <Label Margin="5,5,0,0" Text="Total s/impostos" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
@@ -280,7 +280,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <custom:ExtendedEntry  MaxLength="8" IsEnabled="True"
+                                            <custom:ExtendedEntry  MaxLength="8" IsEnabled="False"
                                           x:Name="EntryPComissao" Text="{Binding pComissao, Converter={StaticResource DecimalPlacesToStringConverter}}" Keyboard="Numeric" >
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:ComissaoItemBehaviors x:Name="ComissaoPorcent" TpValidacao="PORCENTAGEM" />
