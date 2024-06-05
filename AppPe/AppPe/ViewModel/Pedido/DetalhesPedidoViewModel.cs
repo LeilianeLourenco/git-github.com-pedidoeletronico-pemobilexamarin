@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -317,73 +319,55 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         var url = UtilMethods.EncodeRoute("PedidoVenda", "Report",
                             $"idPedidoVenda={currentModel.idPedidoVenda}");
 
-                        //inicio os 34045
-
-                        //url = url.Replace('+', '*');
-                        
-                        //Havia sido feita correção em Web, com uma implementação do framework, porém a dll utilizada no web,
-                        
+                        //Havia sido feita correção em Web, com uma implementação do framework, porém a dll utilizada no web,                        
                         //não está disponível no xamarin, portanto feito ajuste manual abaixo.
 
                         url = url.Replace(oldValue: "+", newValue: "%2B");
 
-                        //fim os 34045
-
-                        var saudacao = "";
-                        if (DateTime.Now.Hour < 12)
-                            saudacao = "Bom dia {0},";
-                        else if (DateTime.Now.Hour >= 12 && DateTime.Now.Hour < 18)
-                            saudacao = "Boa tarde {0},";
-                        else
-                            saudacao = "Boa noite {0},";
-                        saudacao = string.Format(saudacao, currentModel.DisplayCliente);
-
-                        var text =
-                            $@"{saudacao} segue abaixo a url de visualização do seu {(currentModel.stLancamento == 0
-                                ? "orçamento"
-                                : "pedido")} {currentModel.idPedidoDisplay}, emitido {currentModel.XdEmissao}.{Environment
-                                .NewLine}";
-
-
-                        if (Device.OS == TargetPlatform.iOS || Device.OS == TargetPlatform.WinPhone)
-                        {
-                            await Share.RequestAsync(new ShareTextRequest
+                        try
+                        {                          
+                            string fileName = "pedido_venda.pdf";
+                            string filePath = await DownloadPdfAsync(url, fileName);
+                           
+                            await Share.RequestAsync(new ShareFileRequest
                             {
-                                Text = text,
                                 Title = "pedidoeletronico.com",
-                                Uri = url
+                                File = new ShareFile(filePath)
                             });
-
-
-                            //await Plugin.Share.CrossShare.Current.Share(url, text, "Pedido Eletrônico");
                         }
-                        else
-                        {
-                            text += url;
-                            await Share.RequestAsync(new ShareTextRequest
-                            {
-                                Text = text,
-                                Title = "pedidoeletronico.com"
-                            });
-
-                            //await Plugin.Share.CrossShare.Current.Share(text, "Pedido Eletrônico");
+                        catch (Exception ex)
+                        {                           
+                            await App.Messages.ShowAsync("Falha ao baixar ou compartilhar o PDF");
                         }
 
                         ExecuttingAnyCommand = false;
                     });
                 }
 
-
-
-
-
             }
             catch (Exception ex)
             {
                 await App.Messages.ShowAsync("App WhatsApp não foi encontrado");
             }
-
-
+        }
+     
+        public async Task<string> DownloadPdfAsync(string url, string filename)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+                    var filePath = Path.Combine(FileSystem.CacheDirectory, filename);
+                    File.WriteAllBytes(filePath, pdfBytes);
+                    return filePath;
+                }
+                else
+                {
+                    throw new Exception("Failed to download PDF");
+                }
+            }
         }
 
         public async void SendEmail()
