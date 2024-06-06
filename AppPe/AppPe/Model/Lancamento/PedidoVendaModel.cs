@@ -257,6 +257,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         public int? idStatusOld { get; set; }
 
         public string xDisplayIntegracao { get; set; }
+        public bool bPedidoComAlteracao { get; set; }
 
         private int? _idPedidoOrigem;
         public int? idPedidoOrigem

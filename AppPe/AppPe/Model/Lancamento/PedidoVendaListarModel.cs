@@ -8,6 +8,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         #region Listar novo
 
         public string xDisplayIntegracao { get; set; }
+        public bool bPedidoComAlteracao { get; set; }
 
         private int? _idPedidoVenda;
         public int? idPedidoVenda
@@ -29,13 +30,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _estoqueInvalido; }
             set { _estoqueInvalido = value; NotifyPropertyChanged(); }
         }
-
+      
         private double _VTotal;
         public double VTotal
         {
             get
             {
-              return _VTotal;
+                return _VTotal;
             }
             set { _VTotal = value; NotifyPropertyChanged(); }
         }
@@ -109,7 +110,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         {
             get { return (_xObsInterna ?? "").ToUpper(); }
             set { _xObsInterna = value; NotifyPropertyChanged(); }
-        }  
+        }
         private string _xAssinatura;
         public string xAssinatura
         {
@@ -145,7 +146,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return (_DisplayForma ?? "").ToUpper(); }
             set { _DisplayForma = value; NotifyPropertyChanged(); }
         }
-        
+
         private string _displayEmail;
         public string DisplayEmail
         {
@@ -178,12 +179,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 if (App.tipouser == App.TipoUser.OMIE && string.IsNullOrEmpty(xDisplayIntegracao) && idPedidoVenda.GetValueOrDefault() > 0)
                 {
                     return "Sincronizado no pedidoeletronico.com";
-                } 
+                }
                 if (EstoqueInvalido)
                 {
                     return "Estoque inválido";
                 }
-                return idPedidoVenda != null ? "Sincronizado com sucesso" : "Não sincronizado";
+
+                if (!bPedidoComAlteracao)
+                    return idPedidoVenda != null ? "Sincronizado com sucesso" : "Não sincronizado";
+                else
+                    return "Sincronizado com sucesso - Alteração pendente";
+
             }
         }
         #endregion
