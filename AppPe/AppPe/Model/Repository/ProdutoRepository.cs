@@ -416,12 +416,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                       idProduto: idProduto ?? 0, idLocalEstoque: idLocalEstoque);
 
             double resultado = !pedidoRemovido ? vEstoque - vQtdItem : vEstoque + vQtdItem;
-
-            resultado = Convert.ToDouble($"{resultado:F2}"); 
+            string resultadoStr = resultado.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
 
             App.Data.Connection.ExecuteScalar<double>(
                    $@"UPDATE tb_movimentoestoque
-                      SET vEstoque = {resultado} 
+                      SET vEstoque = {resultadoStr} 
                       WHERE {xWhere}");
 
         }
