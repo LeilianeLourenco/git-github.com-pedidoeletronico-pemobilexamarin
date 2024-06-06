@@ -35,6 +35,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             tb_pedidovenda.idPedidoDisplay,
                             tb_pedidovenda.xDisplayIntegracao,
 	                        tb_pedidovenda.stLancamento,	   
+	                        tb_pedidovenda.bPedidoComAlteracao,	   
                             tb_pedidovenda.XdEmissao,                                    
                             tb_pedidovenda.vSeguroPed,                              
                             tb_pedidovenda.xObsInterna,                     
@@ -181,7 +182,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 var xQuery = $@"Select idPedidoVendaOffLine Id from {TableMobile.TB_PEDIDOVENDA} 
                                     where idEmpresa = {idEmpresa} AND idAspnetUsers = '{App.CurrentAspnetUserModel.Id}' 
-                                    and idPedidoVenda is null
+                                    and idPedidoVenda is null or bPedidoComAlteracao
                                     order by idPedidoVendaOffLine";
 
                 var dados = App.Data.Connection.Query<BasicPickerModel>(xQuery);
@@ -606,7 +607,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 if (objPedido.idPedidoDisplay != null && objPedido.idPedidoDisplay <= 0)
                     objPedido.idPedidoDisplay = null;
-
+               
                 double vTotalPedido = 0;
                 double vDescontoTotal = 0;
                 foreach (var item in objPedido.lItens)

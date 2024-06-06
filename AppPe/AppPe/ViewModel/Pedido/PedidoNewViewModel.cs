@@ -1569,6 +1569,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     currentModel.dEmissao = currentModel.dEmissao;
                     currentModel.xEndereco = ItemEndereco.Detail;
 
+                    if (currentModel.idPedidoVenda != null)
+                        currentModel.bPedidoComAlteracao = true;
+
                     PedidoRepository.SavePedidoVenda(currentModel);
 
                     //quando vem pelo gerar pedido do cliente, o pagelistarpedidos não foi invocado

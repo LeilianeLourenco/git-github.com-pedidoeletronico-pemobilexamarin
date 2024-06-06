@@ -135,14 +135,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             get { return _imgAssinaturaPedido; }
             set { _imgAssinaturaPedido = value; NotifyPropertyChanged(); }
         }
-      
+
         public DetalhesPedidoViewModel()
         {
             ClosePopupCommand = new Command(() => { UtilNavidate.PopPopupNew(); });
             VisualizarCommand = new Command(() =>
             {
                 UtilNavidate.ShowPopupNew(new PageViewToPrint(currentModel.idPedidoVendaOffLine));
-            });         
+            });
             ShowItensPedidoCommand = new Command(() =>
             {
                 if (!ExecuttingAnyCommand)
@@ -155,13 +155,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             CompartilharCommand = new Command(CompartilharWhatsApp);
             EditarPedidoCommand = new Command(() =>
             {
-                if (currentModel.idPedidoVenda == null)
-                {
-                    bFoiParaPedido = true;
-                    Device.StartTimer(UtilMethods.GetStartTime, EditarPedido);
-                }
-                else
-                    App.Messages.ShowAsync("Pedido já sincronizado, impossível ser editado");
+                bFoiParaPedido = true;
+                Device.StartTimer(UtilMethods.GetStartTime, EditarPedido);
             });
             SendEmailCommand = new Command(SendEmail);
             DuplicarPedidoCommand = new Command(DuplicarPedido);
@@ -170,9 +165,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         }
         public void AssinarPedido()
         {
-            UtilNavidate.PushAsync(new PageSignaturePedidoVenda(currentModel));            
+            UtilNavidate.PushAsync(new PageSignaturePedidoVenda(currentModel));
         }
-  
+
         public async void MudarStatus()
         {
             if (currentModel.stPedidoVenda == 1)
@@ -219,7 +214,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
 
                     if (bUtilizaMelhoriaEscolherRepresentadaPdf.GetValueOrDefault())
-                    { 
+                    {
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             if (representada == null)
@@ -249,7 +244,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                             //url = url.Replace('+', '*');
 
-                            url = url.Replace(oldValue: "+", newValue: "%2B"); 
+                            url = url.Replace(oldValue: "+", newValue: "%2B");
 
                             //Fim os 34140
                             //Device.OpenUri(new Uri(url));
@@ -325,10 +320,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         url = url.Replace(oldValue: "+", newValue: "%2B");
 
                         try
-                        {                          
+                        {
                             string fileName = "pedido_venda.pdf";
                             string filePath = await DownloadPdfAsync(url, fileName);
-                           
+
                             await Share.RequestAsync(new ShareFileRequest
                             {
                                 Title = "pedidoeletronico.com",
@@ -336,7 +331,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             });
                         }
                         catch (Exception ex)
-                        {                           
+                        {
                             await App.Messages.ShowAsync("Falha ao baixar ou compartilhar o PDF");
                         }
 
@@ -350,7 +345,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 await App.Messages.ShowAsync("App WhatsApp não foi encontrado");
             }
         }
-     
+
         public async Task<string> DownloadPdfAsync(string url, string filename)
         {
             using (var client = new HttpClient())
@@ -489,16 +484,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     XId = currentModel.idRepresentadaPdf.ToString(),
                     Display = "Representada"
                 };
-                
+
 
                 vDescontoTotal = PedidoRepository.SumDescontoItens(currentModel.idPedidoVendaOffLine);
                 vTotalComissao = PedidoRepository.SumFieldItem(currentModel.idPedidoVendaOffLine, "vComissao");
-                bUtilizaMelhoriaEscolherRepresentadaPdf = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);                
+                bUtilizaMelhoriaEscolherRepresentadaPdf = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
             }
             imgAssinaturaPedido = _fileService.GetImage(PedidoRepository.BuscarAssAtualizada(currentModel.idPedidoVendaOffLine)).Result;
 
-            if (ItemSatus.XId != currentModel.idStatus.ToString())            
-                AnaliseDeMudancaDeStatus();            
+            if (ItemSatus.XId != currentModel.idStatus.ToString())
+                AnaliseDeMudancaDeStatus();
 
             if (bUtilizaMelhoriaEscolherRepresentadaPdf.GetValueOrDefault() && representada.XId != currentModel.idRepresentadaPdf.GetValueOrDefault().ToString())
             {

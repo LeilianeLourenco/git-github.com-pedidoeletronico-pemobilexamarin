@@ -1075,6 +1075,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         //pedido.dEmissao = pedido.dEmissao;
                         pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
                         pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
+                        pedido.bPedidoComAlteracao = false;
 
                         pedido.dEmissao = pedido.dEmissao.AddHours(-3);
 
