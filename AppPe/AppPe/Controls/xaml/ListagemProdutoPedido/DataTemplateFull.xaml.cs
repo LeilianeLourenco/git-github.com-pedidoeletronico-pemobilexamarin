@@ -44,41 +44,55 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
                 if (item != null)
                 {
                     PedidoVendaItensModel itemPedido = item.BindingContext as PedidoVendaItensModel;
-                    itemPedido.vQtdItem = item.Value;
-                    var listViewModel = PageListarProdutosNew.currentViewModel;
-                    var pedidoViewModel = PagePedidoNew.CurrentViewModel;
 
-                    if (listViewModel != null)
-                        listViewModel.itemSelected = itemPedido;
-
-                    pedidoViewModel.currentModel.CurrentItemModel = itemPedido;
-                    if (itemPedido != null)
+                    bool stVendaSemEstoque = itemPedido?.stVendaSemEstoque ?? false;
+                    if (item?.Value <= itemPedido?.vQtdEstoque || stVendaSemEstoque)
                     {
+                        itemPedido.vQtdItem = item.Value;
+                        var listViewModel = PageListarProdutosNew.currentViewModel;
+                        var pedidoViewModel = PagePedidoNew.CurrentViewModel;
 
-                        var page = UtilNavidate.GetTypeCurrentPage();
-                        if (page == typeof(PageListarProdutosNew) || page == typeof(PageListarProdutosByCliente) || page == typeof(PageEditarItem))
+                        if (listViewModel != null)
+                            listViewModel.itemSelected = itemPedido;
+
+                        pedidoViewModel.currentModel.CurrentItemModel = itemPedido;
+                        if (itemPedido != null)
                         {
-                            if (itemPedido.vUnitarioVendaComImpostos > 0)
+
+                            var page = UtilNavidate.GetTypeCurrentPage();
+                            if (page == typeof(PageListarProdutosNew) || page == typeof(PageListarProdutosByCliente) || page == typeof(PageEditarItem))
                             {
-                                await PedidoVendaCalculos.CalculoByStepper();
-                                if (PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel != null)
+                                if (itemPedido.vUnitarioVendaComImpostos > 0)
                                 {
-                                    PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.NotifyTotalizadores();
-                                    ProdutoRepository.SetComissao(item: PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel);
-                                    PagePedidoNew.CurrentViewModel.AtualizaTotalizadoresPedido();
-                                    listViewModel?.SaveItem();
-                                    itemPedido.SetDetalheItem(); 
+                                    await PedidoVendaCalculos.CalculoByStepper();
+                                    if (PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel != null)
+                                    {
+                                        PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.NotifyTotalizadores();
+                                        ProdutoRepository.SetComissao(item: PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel);
+                                        PagePedidoNew.CurrentViewModel.AtualizaTotalizadoresPedido();
+                                        listViewModel?.SaveItem();
+                                        itemPedido.SetDetalheItem();
+                                    }
+                                }
+                                else
+                                {
+                                    if (page != typeof(PageListarProdutosNew))
+                                        PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.vQtdItem = 0;
                                 }
                             }
                             else
                             {
-                                if (page != typeof(PageListarProdutosNew))
-                                    PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.vQtdItem = 0;
+                                itemPedido.vQtdItem = 0;
                             }
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (itemPedido != null)
                         {
-                            itemPedido.vQtdItem = 0;
+                            if (itemPedido.vQtdItem > 0)
+                                itemPedido.vQtdItem -= 1;
+                            await App.Current.MainPage.DisplayAlert("Erro", "Estoque insuficiente", "Ok");
                         }
                     }
                 }
