@@ -309,6 +309,11 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             ViewModel.SaveItem();
         }
 
+        private void EntryQtde_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.VerificaQtdEstoque(e.OldTextValue);
+        }
+
         private async void MenuItem_OnClicked(object sender, EventArgs e)
         {
             try
@@ -350,7 +355,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                 {
 
                     if (Device.RuntimePlatform != Device.iOS)
-                    { 
+                    {
                         _btn.TextColor = Color.FromHex("#FFFFFF");
                         _btn.BackgroundColor = Color.FromHex("#555555");
                     }

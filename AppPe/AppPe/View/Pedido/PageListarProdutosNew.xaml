@@ -159,7 +159,7 @@
             Grid.Column="0" 
             Placeholder="0" 
             Text="{Binding editarItemViewModel.currentModel.vQtdItem, Converter={StaticResource QtdeItemPedidoConverter}}"
-            PropertyChanged="EntryQtde_OnPropertyChanged"/>
+            PropertyChanged="EntryQtde_OnPropertyChanged"  TextChanged="EntryQtde_OnTextChanged" />
 
                 <Entry Grid.Row="1" 
                Keyboard="Numeric" 

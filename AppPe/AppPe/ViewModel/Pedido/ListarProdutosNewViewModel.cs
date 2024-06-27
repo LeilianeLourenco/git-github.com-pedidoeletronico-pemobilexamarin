@@ -716,6 +716,41 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        private bool _verificouEstoque;
+
+        public bool verificouEstoque
+        {
+            get { return _verificouEstoque; }
+            set
+            {
+                _verificouEstoque = value; NotifyPropertyChanged();
+            }
+        }
+
+        public async void VerificaQtdEstoque(string qtd)
+        {
+            try
+            {              
+                var vQtde = currentPedidoViewModel.currentModel.CurrentItemModel.vQtdItem;
+
+                if (vQtde > itemSelected.vQtdEstoque && !itemSelected.stVendaSemEstoque)
+                {
+                    if (!verificouEstoque)
+                    {
+                        itemSelected.vQtdItem = Convert.ToDouble(qtd.Replace(",","."));
+                        verificouEstoque = true;
+                        await App.Current.MainPage.DisplayAlert("Erro", "Estoque insuficiente", "Ok");                        
+                    }
+                }
+                else
+                    verificouEstoque = false;
+                               
+            }
+            catch (Exception ex)
+            {               
+
+            }
+        }
 
         public void SaveItens()
         {
