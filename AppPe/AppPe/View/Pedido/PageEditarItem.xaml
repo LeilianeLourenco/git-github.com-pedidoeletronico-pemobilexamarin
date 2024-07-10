@@ -6,10 +6,11 @@
              xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
              xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE" 
              xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageEditarItem" BackgroundColor="{StaticResource CinzaMedio}">
-    <ContentPage.Title>
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageEditarItem" BackgroundColor="{StaticResource CinzaMedio}"            
+             Title="Edição do item">
+    <!--<ContentPage.Title>
         <OnPlatform x:TypeArguments="x:String" WinPhone="" Android="Edição do item" iOS="Edição do item"/>
-    </ContentPage.Title>
+    </ContentPage.Title>-->
     <ContentPage.BindingContext>
         <pedido:EditarItemViewModel/>
     </ContentPage.BindingContext>
@@ -18,7 +19,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <AbsoluteLayout BackgroundColor="{StaticResource CinzaMedio}" Grid.Row="0">
+            <AbsoluteLayout BackgroundColor="#ffff" Grid.Row="0">
                 <ScrollView AbsoluteLayout.LayoutFlags="All"
                       AbsoluteLayout.LayoutBounds="0,0,1,1">
                     <Grid Padding="0,0,0,0">
@@ -34,18 +35,20 @@
                         </Grid.RowDefinitions>
 
                         <CarouselView x:Name="ImageCarouselView" 
-                          Grid.Row="0"  
-                          HorizontalOptions="FillAndExpand"  
-                          VerticalOptions="FillAndExpand"
-                          HeightRequest="250"
-                          ItemsSource="{Binding ListaImagens}">
+              Grid.Row="0"  
+              HorizontalOptions="FillAndExpand"  
+              VerticalOptions="FillAndExpand"
+              HeightRequest="250"
+              ItemsSource="{Binding ListaImagens}">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
-                                    <ffimageloading:CachedImage Aspect="AspectFill"
-                                                    HorizontalOptions="FillAndExpand" 
-                                                    VerticalOptions="FillAndExpand"
-                                                    DownsampleToViewSize="true"
-                                                    Source="{Binding .}" />
+                                    <Grid>
+                                        <ffimageloading:CachedImage Aspect="AspectFit"
+                                            HorizontalOptions="FillAndExpand" 
+                                            VerticalOptions="FillAndExpand"
+                                            DownsampleToViewSize="true"
+                                            Source="{Binding .}" />
+                                    </Grid>
                                 </DataTemplate>
                             </CarouselView.ItemTemplate>
                         </CarouselView>
@@ -53,7 +56,7 @@
                         <StackLayout BackgroundColor="{StaticResource Branco}"  Padding="18,8,0,10" Orientation="Vertical" Grid.Row="1">
                             <Label Text="{Binding currentModel.cAlternativo}" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontSize="Medium"/>
                             <Label  Text="{Binding currentModel.xDescricao}"  VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaApresentacaoCliente}" FontSize="Small"/>
-                        </StackLayout> 
+                        </StackLayout>
 
 
                         <Frame Grid.Row="2" HasShadow="True" Padding="0,0,0,0">
@@ -68,7 +71,7 @@
                                 <Grid x:Name="GridQuantidadeGrade" BackgroundColor="{StaticResource VerdePrincipal}" Padding="5,5,5,5">
                                     <Label Text="QUANTIDADE / GRADE" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
                                 </Grid>
- 
+
                                 <!--Local Estoque-->
                                 <Label Margin="5,5,0,0" Grid.Row="1"  Text="Local de Estoque" IsVisible="{Binding bUsaLocaisEstoque}" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
                                 <Grid RowSpacing="0" Grid.Row="2"  IsVisible="{Binding bUsaLocaisEstoque}">
@@ -119,8 +122,8 @@
                                             <Label Grid.Column="1" Text="{Binding vUnitarioVenda, Converter={StaticResource FormatDecimalConverter}}" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" HorizontalTextAlignment="Start" VerticalOptions="Center"/>
 
                                         </Grid>
-                                        
-                                        
+
+
 
                                         <!--Tabela de Preço-->
                                         <Label Margin="5,5,0,0" Text="Tabela de Preço" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
@@ -133,7 +136,7 @@
                                             <Grid Margin="5,0,0,0" Grid.Row="1">
                                                 <Label Text="{Binding xDescontoMaximo}" FontSize="Small" TextColor="{StaticResource AzulPrincipal}"/>
                                             </Grid>
-                                        </Grid> 
+                                        </Grid>
 
 
                                         <!--Valor Unitario Com Impostos-->
@@ -187,7 +190,7 @@
 
                                         <Label Margin="5,5,0,0" Text="Total s/impostos" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
                                         <Label Margin="5,5,0,0"  TextColor="{StaticResource VerdePrincipal}" Text="{Binding vSubTotalSemImpostos,  Converter={StaticResource FormatDecimalConverter}}" />
-                                        
+
 
                                         <!--% DESCONTO-->
 
@@ -207,7 +210,7 @@
                                                     <behaviors:DescontoItemBehaviors x:Name="descontoPorcent" TpValidacao="PORCENTAGEM" />
                                                 </custom:ExtendedEntry.Behaviors>
                                             </custom:ExtendedEntry>
-                                            
+
                                             <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center">
                                                 <abstractions:SvgImage HorizontalOptions="End" SvgPath="{StaticResource ImagemCheck}" IsVisible="{Binding Source={x:Reference descontoPorcent}, Path=IsValid}">
                                                     <abstractions:SvgImage.HeightRequest>
