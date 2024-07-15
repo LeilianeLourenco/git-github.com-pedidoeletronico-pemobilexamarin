@@ -50,7 +50,7 @@
 
                 <StackLayout BackgroundColor="{StaticResource Branco}"  Padding="18,8,0,10" Orientation="Vertical" Grid.Row="1">
                     <Label Text="{Binding currentModel.cAlternativo}" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontSize="Medium"/>
-                    <Label  Text="{Binding currentModel.xDescricao}"  VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaApresentacaoCliente}" FontSize="Small"/>
+                    <Label Text="{Binding currentModel.xDescricao}"  VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaApresentacaoCliente}" FontSize="Small"/>
                 </StackLayout>
 
                 <Frame Grid.Row="2" HasShadow="True" Padding="0,0,0,0">
@@ -356,13 +356,13 @@
 
                         <Grid x:Name="GridContentEstoque" Grid.Row="1" BackgroundColor="White">
                             <!--<Grid.Padding>
-                                <OnPlatform x:TypeArguments="Thickness" Android="5,5,5,5" WinPhone="5,5,5,5" iOS="12,5,12,5"/>
-                            </Grid.Padding>-->
+        <OnPlatform x:TypeArguments="Thickness" Android="5,5,5,5" WinPhone="5,5,5,5" iOS="12,5,12,5"/>
+    </Grid.Padding>-->
 
                             <ListView ItemsSource="{Binding currentModel.lEstoqueProduto}"
-                                      MinimumHeightRequest="5"
-                                      HasUnevenRows="True"
-                                      SeparatorVisibility="None">
+              MinimumHeightRequest="5"
+              HasUnevenRows="True"
+              SeparatorVisibility="None">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
@@ -370,28 +370,36 @@
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
 
                                                 <!--<Image Source="box.png"
-                                                       HeightRequest="33"
-                                                       HorizontalOptions="CenterAndExpand"
-                                                       Aspect="AspectFill"
-                                                       WidthRequest="33"/>-->
+                               HeightRequest="33"
+                               HorizontalOptions="CenterAndExpand"
+                               Aspect="AspectFill"
+                               WidthRequest="33"/>-->
+
+                                                <Label Grid.Column="0"
+                               Text="{Binding xNomeGrade}"
+                               TextColor="Gray"
+                               FontAttributes="Bold"
+                               FontSize="Small"
+                               Opacity="0.8"
+                               HorizontalOptions="Start"/>
 
                                                 <Label Grid.Column="1"
-                                                       Text="{Binding xNomeGrade}"
-                                                       TextColor="Gray"
-                                                       FontAttributes="Bold"
-                                                       FontSize="Small"
-                                                       Opacity="0.8"/>
-                                                
+                               Text="{Binding vEstoque}"                            
+                               FontAttributes="Bold"
+                               FontSize="Small"
+                               Opacity="1"
+                               HorizontalOptions="Start"/>
+                                  
                                             </Grid>
                                         </ViewCell>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
 
                             </ListView>
-
                         </Grid>
                     </Grid>
                 </Frame>
