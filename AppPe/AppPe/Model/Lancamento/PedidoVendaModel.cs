@@ -35,6 +35,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
         private byte _stPedidoVenda = 0;
 
+        public string xMeuID { get; set; }
+
         /// <summary>
         /// 0 - aberto
         /// 1 - cancelado 

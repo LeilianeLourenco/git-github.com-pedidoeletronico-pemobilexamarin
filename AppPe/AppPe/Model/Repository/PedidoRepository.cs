@@ -427,6 +427,30 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         #endregion
 
 
+        public static bool BloqueiaEditarPedido(int idStatus, int idPedidoVenda)
+        {
+            if (StatusBloqueiaPedido(idStatus))
+                return true;
+
+            return PedidoIntegrado(idPedidoVenda);
+
+        }
+
+        public static bool StatusBloqueiaPedido(int idStatus) => App.Data.Connection.Query<StatusModel>($"SELECT bBloquearEdicaoDePedido from {TableMobile.TB_STATUS} WHERE idStatus = {idStatus}").FirstOrDefault().bBloquearEdicaoDePedido;
+      
+        public static bool PedidoIntegrado(int idPedidoVenda)
+        {
+            var Query =
+                $"SELECT xMeuID, xDisplayIntegracao from {TableMobile.TB_PEDIDOVENDA} WHERE idPedidoVenda = {idPedidoVenda}";
+
+            var pedido = App.Data.Connection.Query<PedidoVendaModel>(Query).FirstOrDefault();
+
+            if (pedido.xMeuID != null || pedido.xDisplayIntegracao != null)
+                return true;
+            else
+                return false;
+
+        }
 
         public static PedidoVendaModel GetPedidoVendaModel(int idPedidoVendaOffLine)
         {
