@@ -888,11 +888,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                 xLocalEstoque = e.xLocalEstoque
                             };
 
+                            string xEstoque;
+
+                            if (_objModel.xLocalEstoque != null)
+                                xEstoque = $"{_objModel.xLocalEstoque}";
+
+                            else
+                                xEstoque = "Estoque Atual";
 
                             if (e.idGradeCor == null && e.idGradeTamanho == null)
-                                _objModel.xNomeGrade = $"Estoque Atual: {_objModel.vEstoque} - {_objModel.xLocalEstoque}";
+                                _objModel.xNomeGrade = $"{xEstoque}: ";
                             else
-                                _objModel.xNomeGrade = $" {e.xGradeCor} {e.xGradeTamanho}: {_objModel.vEstoque} - {_objModel.xLocalEstoque}";
+                                _objModel.xNomeGrade = $" {xEstoque} - {e.xGradeCor} {e.xGradeTamanho}: {_objModel.vEstoque}";
 
                             objProduto.lEstoqueProduto.Add(_objModel);
                         }

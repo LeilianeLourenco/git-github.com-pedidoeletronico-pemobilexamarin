@@ -921,11 +921,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             IntegracaoRepository integ = new IntegracaoRepository();
 
             var xTableName = TableMobile.GetTableNameByModel<T>();
-
-            //if (xTableName == "TB_MOVIMENTOESTOQUE")
-            //{
-            //}
-
+           
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
             // issue 2705 ajustando a data de sincronização IGOR BIANCHINI SPAGNOL
@@ -935,7 +931,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 _ultimaDataSinc = DateTime.Today.AddYears(-50);
             else
                 _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-5);
-
 
             try
             {
