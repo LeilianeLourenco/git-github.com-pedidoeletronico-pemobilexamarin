@@ -48,7 +48,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             }
         }
 
-
+        /// <summary>
+        /// Opção que checa se o usuário bloqueia a edição do pedido de venda após esse pedido ser feito.
+        /// </summary>
+        public bool bBloquearEdicaoDePedido { get; set; }
 
         public string xDisplaySemCaracter { get; set; }
         public int idEmpresa { get; set; }
