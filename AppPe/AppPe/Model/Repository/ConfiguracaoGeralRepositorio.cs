@@ -26,6 +26,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 "stCalculoLimiteVendasEmpresa, " +
                 "dValorLimiteMinimo, " +
                 "xInformacaoContrato, " +
+                "bBloqueiaValorProdutoApp," +           
                 "idEmpresa, " +
                 "bMostraFaixaTabelaEscalonada";
 
@@ -54,6 +55,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 _configsGerais.bMostraFaixaTabelaEscalonada = result.bMostraFaixaTabelaEscalonada;
                 _configsGerais.idEmpresa = result.idEmpresa;
                 _configsGerais.xInformacaoContrato = result.xInformacaoContrato;
+                _configsGerais.bBloqueiaValorProdutoApp = result.bBloqueiaValorProdutoApp;
             }
              
 

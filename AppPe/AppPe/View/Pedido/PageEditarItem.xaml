@@ -8,9 +8,6 @@
              xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageEditarItem" BackgroundColor="{StaticResource CinzaMedio}"            
              Title="Edição do item">
-    <!--<ContentPage.Title>
-        <OnPlatform x:TypeArguments="x:String" WinPhone="" Android="Edição do item" iOS="Edição do item"/>
-    </ContentPage.Title>-->
     <ContentPage.BindingContext>
         <pedido:EditarItemViewModel/>
     </ContentPage.BindingContext>
@@ -146,7 +143,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <custom:ExtendedEntry MaxLength="14" IsEnabled="{Binding currentModel.currentTabelaPreco.bEscalonada, Converter={StaticResource InvertBoolConvert} }"
+                                            <custom:ExtendedEntry MaxLength="14" IsEnabled="{Binding currentModel.currentTabelaPreco.BloquearValor, Converter={StaticResource InvertBoolConvert} }"
                           x:Name="EntryValorUnitario"
                                             Text="{Binding vUnitarioVendaComImpostos, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  >
                                                 <custom:ExtendedEntry.Behaviors>
@@ -205,7 +202,7 @@
                                             </Grid.RowDefinitions>
                                             <custom:ExtendedEntry MaxLength="6" x:Name="EntryDesconto" 
                                                                   Text="{Binding pDesconto, Converter={StaticResource DecimalToStringConverter}}"
-                                                                  HorizontalTextAlignment="Start"   Keyboard="Numeric">
+                                                                  HorizontalTextAlignment="Start" IsEnabled="{Binding currentModel.currentTabelaPreco.bBloquearValorProdutoApp, Converter={StaticResource InvertBoolConvert}}"  Keyboard="Numeric">
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:DescontoItemBehaviors x:Name="descontoPorcent" TpValidacao="PORCENTAGEM" />
                                                 </custom:ExtendedEntry.Behaviors>
@@ -242,7 +239,8 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <custom:ExtendedEntry  MaxLength="14" x:Name="EntryValorDesconto" Text="{Binding vDesconto, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  >
+                                            <custom:ExtendedEntry  MaxLength="14" x:Name="EntryValorDesconto" Text="{Binding vDesconto, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric" 
+                                                    IsEnabled="{Binding currentModel.currentTabelaPreco.bBloquearValorProdutoApp, Converter={StaticResource InvertBoolConvert}}">
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:DescontoItemBehaviors x:Name="descontoValor" TpValidacao="VALOR" />
                                                 </custom:ExtendedEntry.Behaviors>

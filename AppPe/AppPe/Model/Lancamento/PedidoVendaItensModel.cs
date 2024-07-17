@@ -762,6 +762,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                     }
                 }
 
+                currentTabelaPreco.bBloquearValorProdutoApp = ConfiguracaoGeralRepositorio.GetConfiguracaoEmpresa().bBloqueiaValorProdutoApp;
                 NotifyPropertyChanged();
             }
         }
@@ -1026,6 +1027,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                                 xInfAdicionais += string.IsNullOrEmpty(xInfAdicionais) ? anotacao : Environment.NewLine + anotacao;
                             }
                         }
+
+                        currentTabelaPreco.bBloquearValorProdutoApp = ConfiguracaoGeralRepositorio.GetConfiguracaoEmpresa().bBloqueiaValorProdutoApp;
 
                         await Task.Yield(); // Delay(300);
                         UtilNavidate.PushAsync(new PageEditarItem());
