@@ -337,7 +337,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
             return dicLocais;
         }
-
+      
         public static PedidoVendaItensModel SetLocalEstoque(PedidoVendaItensModel item, int? idCliente, int _idRepresentante)
         {
             try

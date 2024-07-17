@@ -86,12 +86,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         public DateTime? dInicial { get; set; }
         public DateTime? dFinal { get; set; }
         public double vVenda { get; set; }
-        public double vLimiteMinimoVenda { get; set; }        
+        public double vLimiteMinimoVenda { get; set; }
         public bool stTabelaPrecoRepresentacao { get; set; }
         public string idAspnetUsersInclusao { get; set; }
         public double? pComissao { get; set; }
         public string xTagCliente { get; set; }
-        public string xUFCliente { get; set; } 
+        public string xUFCliente { get; set; }
 
         public bool stCampanhaClienteRamoAtividade { get; set; }
         public bool stCampanhaClienteUF { get; set; }
@@ -165,11 +165,20 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         /// </summary>
         public double vUnitario { get; set; }
         public double vBaseComissao { get; set; }
-
-
         public bool canEditComissao { get; set; } = true;
 
         public bool bEscalonada { get; set; } = false;
+        public bool bBloquearValorProdutoApp { get; set; }
+        public bool BloquearValor
+        {
+            get
+            {
+                if(!bEscalonada && !bBloquearValorProdutoApp)
+                    return false;
+                else
+                    return true;
+            }            
+        }
 
         [IgnoreDataMember]
         public double vVendaSemArredondamento { get; set; }
@@ -237,7 +246,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
     public class TabelaPrecoSimples
     {
         public int idTabelaPreco { get; set; }
-        public string xNome { get; set; } 
+        public string xNome { get; set; }
         public double pIndiceTabela { get; set; }
         public double pDescontoMaximo { get; set; }
         public byte stTabelaPreco { get; set; }
