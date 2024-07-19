@@ -192,16 +192,17 @@
                                 <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="ENTREGA" TextColor="{StaticResource CinzaEscuro}" />
                             </Grid>
                         </ViewCell>
-                        
-                        
-                        <TextCell Command="{Binding GoToTransportadoraCommand}" Detail="{Binding ItemTransportadora.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Transportadora"/>
 
-                        <TextCell Command="{Binding GoToComplementosCommand}" Detail="{Binding xDisplayComplementos}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Adicionar complementos"/>
+                        <TextCell Command="{Binding GoToTransportadoraCommand}" Detail="{Binding ItemTransportadora.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}" Text="Transportadora"/>
 
-                        <TextCell Command="{Binding GoToRedespachoCommand}" Detail="{Binding ItemRedespacho.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Redespacho"/>
+                        <TextCell Command="{Binding GoToComplementosCommand}" Detail="{Binding xDisplayComplementos}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}" Text="Adicionar complementos"/>
+
+                        <TextCell Command="{Binding GoToRedespachoCommand}" Detail="{Binding ItemRedespacho.Display}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}" Text="Redespacho"/>
 
                         <TextCell IsEnabled="{Binding IsBusy}"  Command="{Binding ChangeTimePrevisaoCommand}" Detail="{Binding currentModel.dtPrevisto, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
                        DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}"  Text="Data de Previsão"/>
+
+                        <TextCell Command="{Binding GoToEnderecoCommand}" Detail="{Binding ItemEndereco.Detail}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource AzulChart}" Text="Endereço de entrega"/>
 
                         <ViewCell>
                             <Grid BackgroundColor="{StaticResource CinzaClarissimo}">

@@ -32,6 +32,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public ICommand GoToClientesCommand { get; set; }
         public ICommand GoToRepresentantesCommand { get; set; }
         public ICommand GoToTransportadoraCommand { get; set; }
+        public ICommand GoToEnderecoCommand { get; set; }
         public ICommand GoToRedespachoCommand { get; set; }
         public ICommand GoToConficaoPgtoCommand { get; set; }
         public ICommand GoToFormaPgtoCommand { get; set; }
@@ -141,6 +142,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             set
             {
                 _ItemCliente = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ListItemModel _ItemEndereco = new ListItemModel { Detail = "clique aqui para pesquisar" };
+
+        public ListItemModel ItemEndereco
+        {
+            get { return _ItemEndereco; }
+            set
+            {
+                _ItemEndereco = value;
                 NotifyPropertyChanged();
             }
         }
@@ -382,7 +395,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 NotifyPropertyChanged();
             }
         }
-
+   
         public double? vDescCondicao { get; set; } //alterado
 
         public int? idTabelaPrecoCondicao { get; set; } //alterado
@@ -615,8 +628,32 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
             });
 
+            GoToEnderecoCommand = new Command(async () =>
+            {
+                if (ItemCliente.Id == 0)
+                {
+                    await App.Messages.ShowAsync("Antes disso, selecione um cliente");
+                    return;
+                }
+                if (!ExecuttingAnyCommand)
+                {
+                    ExecuttingAnyCommand = true;
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        if (ItemEndereco == null)
+                            ItemEndereco = new ListItemModel();
 
+                        var pesquisa = new PagePesquisaPadrao(ItemEndereco,
+                           PesquisaPadraoViewModel.Tabela.TB_ENDERECO, currentModel.idClientesOffLine)
+                        {
+                            Title = "Endereços",
+                        };
 
+                        UtilNavidate.PushAsync(pesquisa);
+                    });
+                }
+            });
+        
             GoToTransportadoraCommand = new Command(async () =>
             {
                 if (ItemCliente.Id == 0)
@@ -1174,7 +1211,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         }
                     }
 
-                    //atribui a variavel para armazenar na viewmodel, atualizo tanto o vDescontoCond qto ItemCondicaoPgto.vDescontoCondicao.
+                    //atribui a variavel para armazenar na viewmodel, atualizo tanto o vDescontoCond qto ItemCondicaoPgto.vDescontoCondicao.                    
                     vDescCondicao = condicaoPag.vDescCondicao;
                     ItemCondicaoPgto.vDescCondicao = condicaoPag.vDescCondicao;
                     idTabelaPrecoCondicao = condicaoPag.idTabelaPreco;
@@ -1189,7 +1226,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 vDescontoTotal = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vDesconto * o.vQtdItem) ?? (c.vDesconto * c.vQtdItem));
                 xDisplayDesconto = vDescontoTotal.ToCurrencyStringPtBr();
 
-                vTotalComissao = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vComissao) ?? c.vComissao);
+                vTotalComissao = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vComissao) ?? c.vComissao);                
                 CountItens = currentModel.lItens.Count;
             }
             catch (Exception ex)
@@ -1519,6 +1556,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         currentModel.idRepresentadaPdf = representada.Id;
                     
                     currentModel.dEmissao = currentModel.dEmissao;
+                    currentModel.xEndereco = ItemEndereco.Detail;
 
                     PedidoRepository.SavePedidoVenda(currentModel);
 

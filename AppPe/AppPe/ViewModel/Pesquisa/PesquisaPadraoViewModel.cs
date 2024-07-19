@@ -20,6 +20,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
         {
             TB_TIPOATIVIDADESCRM,
             TB_CLIENTE,
+            TB_ENDERECO,
             TB_TABELA_PRECO,
             TB_TRANSPORTADORA,
             TB_CONDICAO_PAGAMENTO,
@@ -60,14 +61,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
                 {
                     litens = ClienteRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), TipoTela.pedido);
                 }
+                if (tabela == Tabela.TB_ENDERECO)
+                {                    
+                    litens = EnderecoRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), idClienteOffline);
+                }
                 if (tabela == Tabela.RAMO_ATIVIDADE)
                 {
-
                     litens = RamoAtividadeRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""));
                 }
                 if (tabela == Tabela.TB_TABELA_PRECO)
                 {
-
                     litens = TabelaPrecoRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""));
                 }
                 if (tabela == Tabela.TB_CONDICAO_PAGAMENTO)

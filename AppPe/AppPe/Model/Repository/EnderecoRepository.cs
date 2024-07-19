@@ -34,7 +34,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             var xQuery = $@"select * from {TableMobile.TB_ENDERECO} where idClientesOffLine = {idClienteOffLine}";
             var enderecos = App.Data.Connection.Query<EnderecoModel>(xQuery);
 
-            if(enderecos?.Count() > 0)
+            if (enderecos?.Count() > 0)
             {
                 var _melhoriaBloqueiaReceita = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaReceitaBloqueio(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
                 foreach (var item in enderecos)
@@ -53,6 +53,46 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             //        .ToList();
         }
 
+        public static List<ListItemModel> Get(int skip, int take, string xFiltro, int? idClienteOffline)
+        {
+            try
+            {
+                var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+
+                string xQuery = $@"SELECT xEndereco, xBairro, xCidade, xEstado, idEndereco
+                    from TB_ENDERECO where idEmpresa = {idEmpresa} and idClientesOffLine = {idClienteOffline}";
+
+                if (!string.IsNullOrEmpty(xFiltro))
+                {
+                    xFiltro = xFiltro.RemoverAcentos().ToUpper();
+                    xQuery += $@"
+                            AND (
+                            UPPER(xEndereco) LIKE '%{xFiltro}%' 
+                            OR UPPER(xBairro) LIKE '%{xFiltro}%' 
+                            OR UPPER(xCidade) LIKE '%{xFiltro}%' 
+                            OR UPPER(xEstado) LIKE '%{xFiltro}%'
+                            ) ";
+                }
+
+                xQuery += $@" order by UPPER(xEndereco)
+                                            LIMIT {take} OFFSET {skip}";
+
+                var resultado = App.Data.Connection.Query<EnderecoModel>(xQuery);
+
+                var a = resultado.ToList().ConvertAll(t => new ListItemModel
+                {
+                    Display = t.XTipoEndereco.ToUpper(),
+                    Detail = $"{t.xEndereco}, {t.xBairro}. {t.xCidade} - {t.xEstado}",
+                    Id = t.idEndereco ?? 0,
+                });
+                return a;
+            }
+            catch (Exception ex)
+            {
+                App.Messages.ShowAsync(ex.Message);
+                return new List<ListItemModel>();
+            }
+        }
 
         public static List<EnderecoModel> GetAllEnderecoModelsToSync()
         {
