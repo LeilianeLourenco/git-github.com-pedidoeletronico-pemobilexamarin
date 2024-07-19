@@ -87,30 +87,22 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _dEmissao; }
             set
             {
+                _dEmissao = value;
 
-                //if (value.Kind == DateTimeKind.Utc || value.Kind == System.DateTimeKind.Local)
-                //{
-                //    TimeZoneInfo fusoHorarioBrasil = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
-                //    DateTime valorConvertidoUtc = DateTime.SpecifyKind(value, DateTimeKind.Utc);
-                //    DateTime valorConvertidoParaBrasil = TimeZoneInfo.ConvertTime(valorConvertidoUtc, fusoHorarioBrasil);
+                NotifyPropertyChanged();
+                idEmissao = value.ToInt();
+                XdEmissao = value.ToString("dd/MM/yyyy");
+            }
+        }
 
-                //    _dEmissao = valorConvertidoParaBrasil;
+        private string _xEndereco;
 
-
-                //    NotifyPropertyChanged();
-                //    idEmissao = _dEmissao.ToInt();
-                //    XdEmissao = _dEmissao.ToString("dd/MM/yyyy");
-
-                //}
-                //else
-                //{
-                    _dEmissao = value;
-
-                    NotifyPropertyChanged();
-                    idEmissao = value.ToInt();
-                    XdEmissao = value.ToString("dd/MM/yyyy");
-                //}
-
+        public string xEndereco
+        {
+            get { return _xEndereco; }
+            set
+            {
+                _xEndereco = value; NotifyPropertyChanged();               
             }
         }
 
@@ -127,7 +119,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
-
         private DateTime? _dtUltimaAlteracao;
 
         public DateTime? dtUltimaAlteracao
@@ -135,10 +126,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _dtUltimaAlteracao; }
             set { _dtUltimaAlteracao = value; NotificaItens(); }
         }
-
-
-
-
 
         private int? _idCondicaoPagamento;
 

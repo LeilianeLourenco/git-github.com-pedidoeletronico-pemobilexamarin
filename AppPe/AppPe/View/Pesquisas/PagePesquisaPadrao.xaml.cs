@@ -33,7 +33,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pesquisas
         {
             var listItemModel = e.SelectedItem as ListItemModel;
             if (listItemModel != null)
-            {
+            {                
                 if (ViewModel.tabela == PesquisaPadraoViewModel.Tabela.TB_REPRESENTANTE_MAIS_TODOS)
                 {
                     PageListarPedidos.ViewModelStatic.canExecuteInicial = true;
