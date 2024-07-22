@@ -12,7 +12,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         public static List<ListItemModel> Get(int skip, int take, string xFiltro)
         {
             var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.idEmpresa;
-            var where = $@"idEmpresa = {idEmpresa} ";
+            var where = $@"idEmpresa = {idEmpresa} and stAtivo = 1 ";
 
             if (!string.IsNullOrEmpty(xFiltro))
             {
