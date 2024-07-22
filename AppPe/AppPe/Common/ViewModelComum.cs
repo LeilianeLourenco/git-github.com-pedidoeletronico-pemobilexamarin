@@ -173,7 +173,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             }
             else if (param.ToString() == "PageListaPedido")
             {
-                UtilNavidate.PushAsync(new PageListarPedidos());
+                UtilNavidate.PushAsync(new TabbedPagePedidos());
             }
             else if (param.ToString() == "PageLcliente")
             {

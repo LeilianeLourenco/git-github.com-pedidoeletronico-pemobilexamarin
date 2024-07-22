@@ -45,7 +45,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             
         }
         public ICommand SearchCommand { get; set; }
-        public ICommand LoadItensCommand { get; set; }
+        public ICommand LoadItensCommand { get; set; }       
+        public ICommand LoadItensNaoSincCommand { get; set; }
+        public ICommand SearchNaoSincCommand { get; set; }
 
         private bool _bFind = false;
 
