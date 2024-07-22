@@ -23,8 +23,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
     {
         public ICommand HabiliteToSearchCommand { get; set; }
         public ICommand NovoCommand { get; set; }
-        public ICommand SincronizarCommand { get; set; }  
-        public ICommand SincronizarCommandAssinatura { get; set; }  
+        public ICommand SincronizarCommand { get; set; }
+        public ICommand SincronizarCommandAssinatura { get; set; }
         public ICommand GoToRepresentantesCommand { get; set; }
 
         public bool bUsaClienteEspecifico { get; set; }
@@ -83,7 +83,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         }
         public bool IsUsingSearch { get; set; } = false;
 
-
+        private ObservableCollection<PedidoVendaListarModel> _pedidosNaoSinc = null;
+        public ObservableCollection<PedidoVendaListarModel> pedidosNaoSinc
+        {
+            get { return _pedidosNaoSinc; }
+            set { _pedidosNaoSinc = value; NotifyPropertyChanged(); }
+        }
+               
         public ListarPedidoViewModelNew()
         {
             SincronizarCommand = new Command(() =>
@@ -91,6 +97,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 var pageSync = new PageSyncNew("Total");
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(PesquisaInicial);
                 UtilNavidate.Sincronizar(pageSync);
+
+                pedidosNaoSinc.Clear();
             });
 
             SincronizarCommandAssinatura = new Command(() =>
@@ -99,7 +107,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(PesquisaInicial);
                 UtilNavidate.Sincronizar(pageSync);
             });
-            
+
             ItemRepresentante = new ListItemModel
             {
                 Id = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0,
@@ -107,9 +115,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 Detail = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail
             };
 
+
             LoadItensCommand = new Command(LoadItens);
             SearchCommand = new Command(Search);
-
+       
+            LoadItensNaoSincCommand = new Command(LoadItensNaoSinc);
+            SearchNaoSincCommand = new Command(SearchNaoSinc);
 
 
             HabiliteToSearchCommand = new Command(() =>
@@ -154,7 +165,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
             NovoCommand = new Command(() =>
             {
-                if(!PedidoRepository.bPermiteJornada(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers.GetValueOrDefault()))
+                if (!PedidoRepository.bPermiteJornada(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers.GetValueOrDefault()))
                 {
                     App.Messages.ShowAsync("Horário fora do expediente, operação não permitida!");
                     return;
@@ -202,7 +213,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             });
         }
         private void PesquisaInicial()
-        { 
+        {
             if (!IsBusy)
             {
                 Device.BeginInvokeOnMainThread(() =>
@@ -211,7 +222,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     LoadItens();
                 });
             }
-             
+
         }
 
         public bool Initialize()
@@ -229,11 +240,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             if (IsBusy)
                 return;
-             
+
             await Task.Run(() =>
             {
                 Device.BeginInvokeOnMainThread(() =>
-                { 
+                {
                     IsBusy = true;
 
                     xFooter1 = "Pesquisando...";
@@ -245,7 +256,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     else if(bUsaClienteEspecifico)
                         idCliente = PageInfoCliente._dados?.idClientesOffLine;
 
-                    var registros = PedidoRepository.GetInfinit(pedidos.Count, 20, (IsUsingSearch ? xFiltro : ""), ItemRepresentante.Id.ToString(), idCliente);
+                    var registros = PedidoRepository.GetInfinit(pedidos.Count, 20, (IsUsingSearch ? xFiltro : ""), false, ItemRepresentante.Id.ToString(), idCliente);
 
                     foreach (var registro in registros)
                     {
@@ -278,6 +289,78 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             });
         }
 
+        private void PesquisaInicialNaoSinc()
+        {
+            if (!IsBusy)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    pedidosNaoSinc = new ObservableCollection<PedidoVendaListarModel>();
+                    LoadItensNaoSinc();
+                });
+            }
 
+        }
+
+        public bool InitializeNaoSinc()
+        {
+            if (canExecuteInicial && !IsBusy)
+            {
+                canExecuteInicial = false;
+                PesquisaInicialNaoSinc();
+            }
+
+            return canExecuteInicial;
+        }
+        
+        private async void LoadItensNaoSinc()
+        {
+            if (IsBusy)
+                return;
+
+            await Task.Run(() =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    IsBusy = true;
+
+                    xFooter1 = "Pesquisando...";
+
+                    int? idCliente = null;
+                    if (bUsaClienteEspecifico)
+                        idCliente = PageApresentacaoClienteNew.ViewModelStatic.idClientesOffLine;
+
+                    var registros = PedidoRepository.GetInfinit(pedidosNaoSinc.Count, 20, (IsUsingSearch ? xFiltro : ""), true, ItemRepresentante.Id.ToString(), idCliente);
+
+                    foreach (var registro in registros)
+                    {
+                        pedidosNaoSinc.Add(registro);
+                    }
+                    xFooter1 = string.Empty;
+                    xFooter2 = $"Registros ({pedidosNaoSinc.Count})";
+                    dOpacityLista = 1;
+
+                    IsBusy = false;                  
+                });
+            });
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Device.StartTimer(UtilMethods.GetStartTime, CloseIsBusy);
+            });
+        }
+
+        public async void SearchNaoSinc()
+        {
+            await Task.Run(() =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    IsUsingSearch = true;
+                    pedidosNaoSinc.Clear();
+                    LoadItensNaoSinc();
+                });
+            });
+        }
     }
 }

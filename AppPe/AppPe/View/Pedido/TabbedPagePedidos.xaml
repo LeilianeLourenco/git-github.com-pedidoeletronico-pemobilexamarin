@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Pedido"
+            x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.TabbedPagePedidos" Title="Pedidos">
+  
+    <TabbedPage.Children>
+        <local:PageListarPedidos Title="SINCRONIZADOS"/>
+        <local:PageListarPedidosNaoSinc Title="PENDENTES" />
+    </TabbedPage.Children>
+</TabbedPage>
