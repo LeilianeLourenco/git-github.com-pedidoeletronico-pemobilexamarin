@@ -30,6 +30,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
 
                     if (item.BindingContext != null)
                         await StepperOnChanged(item);
+
+                    PageListarProdutosNew.currentViewModel.itemSelected = null;
                 }
             }
             catch (Exception ex)
