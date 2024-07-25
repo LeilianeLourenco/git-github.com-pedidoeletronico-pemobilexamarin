@@ -197,6 +197,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             }
         }
 
-
+        public DateTime dtTempoCheck { get; set; }
+        public string xLocalCheckIn { get; set; }
+        public string xLocalCheckOut { get; set; }
     }
 }

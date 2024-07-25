@@ -20,6 +20,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         private const int RequestBluetoothPermissionCode = 1001;
+        private const int RequestLocationPermissionCode = 1002;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -40,40 +41,23 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             TEditorDroid.Initialize();
             DisplayCrashReport();
-            CheckAndRequestBluetoothPermission(); // Chamada para verificar e solicitar permissão BLUETOOTH_CONNECT
+            CheckAndRequestBluetoothPermission();
+            CheckAndRequestLocationPermission();
             LoadApplication(new App());
         }
 
         private void CheckAndRequestBluetoothPermission()
-        {
-            // Verificar se a permissão BLUETOOTH_CONNECT foi concedida
-            if (CheckSelfPermission(Manifest.Permission.BluetoothConnect) != Permission.Granted)
-            {
-                // Se a permissão não foi concedida, solicitar ao usuário
-                RequestPermissions(new string[] { Manifest.Permission.BluetoothConnect }, RequestBluetoothPermissionCode);
-            }
+        {          
+            if (CheckSelfPermission(Manifest.Permission.BluetoothConnect) != Permission.Granted)                          
+                RequestPermissions(new string[] { Manifest.Permission.BluetoothConnect }, RequestBluetoothPermissionCode);            
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        private void CheckAndRequestLocationPermission()
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            if (requestCode == RequestBluetoothPermissionCode)
+            if (CheckSelfPermission(Manifest.Permission.AccessFineLocation) != Permission.Granted)
             {
-                // Verificar se a permissão foi concedida
-                if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
-                {
-                    // Permissão concedida pelo usuário
-                }
-                else
-                {
-                    // Permissão negada pelo usuário
-                    // Aqui você pode lidar com o caso em que o usuário negou a permissão
-                    // Talvez mostre uma mensagem explicativa ou desative recursos relacionados ao Bluetooth
-                }
+                RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation }, RequestLocationPermissionCode);
             }
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
         public override void OnBackPressed()
