@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 
@@ -88,7 +89,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
         public string DisplaySincronizacao
         {
             get
-            { 
+            {
                 return idAtividade != null && idAtividade > 0 ? "Sincronizado com sucesso" : "Não sincronizado";
             }
         }
@@ -96,7 +97,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
         public Color ColorSincronizacao
         {
             get
-            { 
+            {
                 if (idAtividade != null && idAtividade > 0)
                 {
                     return ColorStaticModel.AzulPrincipal;
@@ -127,9 +128,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
         private bool _bRealizado;
         public bool bRealizado
         {
-            get {  return _bRealizado; }
+            get { return _bRealizado; }
             set { _bRealizado = value; NotifyPropertyChanged(); }
-        } 
+        }
 
         private bool _bVerificaLocalizacao;
         public bool bVerificaLocalizacao
@@ -144,9 +145,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
             get { return _xAtraso; }
             set { _xAtraso = value; NotifyPropertyChanged(); }
         }
-         
 
-          
+
+
         private string _xPeriodoEvento;
         public string xPeriodoEvento
         {
@@ -155,12 +156,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
                 if (string.IsNullOrEmpty(_xPeriodoEvento))
                 {
                     _xPeriodoEvento = $"{dtInicioEvento?.ToString("dd/MM/yyyy HH:mm")} até {dtFimEvento?.ToString("dd/MM/yyyy HH:mm")}";
-                } 
+                }
                 return _xPeriodoEvento;
             }
             set { _xPeriodoEvento = value; NotifyPropertyChanged(); }
         }
-         
+
         public Color ColorAtividade
         {
             get
@@ -237,8 +238,61 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
             get { return _ColorPendencia; }
             set { _ColorPendencia = value; NotifyPropertyChanged(); }
         }
-         
 
+        public DateTime _dtInicioCheck;
+        public DateTime dtInicioCheck
+        {
+            get { return _dtInicioCheck; }
+            set { _dtInicioCheck = value; NotifyPropertyChanged(); }
+        }
+
+        public string _xTempoCheck;
+        public string xTempoCheck
+        {
+            get
+            {
+                _xTempoCheck = _dtTempoCheck.ToString(@"hh\:mm\:ss\.ff");
+                return _xTempoCheck;
+            }
+            set { _xTempoCheck = value; NotifyPropertyChanged(); }
+        }
+
+        public TimeSpan _dtTempoCheck;
+        public TimeSpan dtTempoCheck
+        {
+            get { return _dtTempoCheck; }
+            set
+            {
+                _dtTempoCheck = value;
+                xTempoCheck = value.ToString();
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string _xLocalCheckIn;
+        public string xLocalCheckIn
+        {
+            get { return _xLocalCheckIn; }
+            set { _xLocalCheckIn = value; NotifyPropertyChanged(); }
+        }
+
+        public string _xLocalCheckOut;
+        public string xLocalCheckOut
+        {
+            get { return _xLocalCheckOut; }
+            set { _xLocalCheckOut = value; NotifyPropertyChanged(); }
+        }
+
+        private bool _bCheckConfirmado = false;
+        public bool bCheckConfirmado
+        {
+            get { return _bCheckConfirmado; }
+            set
+            {
+                _bCheckConfirmado = value;
+                NotifyPropertyChanged();
+            }
+        }       
 
         #endregion
     }
