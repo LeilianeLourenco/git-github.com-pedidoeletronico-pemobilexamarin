@@ -59,7 +59,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 if (string.IsNullOrEmpty(objClienteModel.cAlternativo))
                 {
-                    var _countClientes =  App.Data.Connection
+                    var _countClientes = App.Data.Connection
                         .Table<ClientesModel>()
                         .Count(c => c.idEmpresa == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
 
@@ -127,7 +127,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         endereco.dtCadastro = datetime;
                         EnderecoRepository.Save(endereco);
                     }
-                } 
+                }
             }
             catch (Exception ex) // catch all other errors
             {
@@ -220,7 +220,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             {
                 objCliente = resultado.FirstOrDefault();
                 if (bFull)
-                {  
+                {
                     objCliente.lEndereco =
                         new ObservableCollection<EnderecoModel>(EnderecoRepository.GetAll(idClientesOffLine));
                     objCliente.lContato = new ObservableCollection<ContatoModel>(ContatoRepository.GetAll(idClientesOffLine));
@@ -237,10 +237,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 App.Data.Connection.Table<ClientesModel>()
                     .Where(
                         c =>
-                            ((c.dtUltimaAlteracao >  App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.UltimaSyncDateTime && c.dtUltimaAlteracao < DateTime.UtcNow) 
+                            ((c.dtUltimaAlteracao > App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.UltimaSyncDateTime && c.dtUltimaAlteracao < DateTime.UtcNow)
                             || (c.idClientes == null))
                             && c.idEmpresa == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
-             
+
 
             var _list = lUpload.ToList();
 
@@ -388,7 +388,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     .Where(c => c.idClientesOffLine == idClientesOffLine)
                     .Select(c => c.idTabelaPreco ?? 0)
                     .FirstOrDefault();
-        } 
+        }
 
         public static bool CanRemoveCliente(ClientesModel clientesModel)
         {
@@ -488,12 +488,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         {
                             filtroSemPontos = xFiltro;
                             xFiltro = Extensions.ToCpfFormat(xFiltro);
-                        }                        
+                        }
                     }
                     else if (Extensions.ApenasPontosTracos(xFiltro))
                     {
-                        if (xFiltro.Length > 18)                        
-                            xFiltro = xFiltro.Substring(0, 18);                        
+                        if (xFiltro.Length > 18)
+                            xFiltro = xFiltro.Substring(0, 18);
                         filtroSemPontos = Extensions.SemPontos(xFiltro);
                     }
                     xFiltro = xFiltro.RemoverAcentos().ToUpper();
@@ -520,6 +520,66 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static List<ClientesModel> GetClientesNaoCompram(int idEmpresa, int idAspnetUsers, string filtro)
+        {
+            int dias = 0;
+
+            switch (filtro)
+            {
+                case "mes":
+                    dias = 30;
+                    break;
+                case "semana":
+                    dias = 7;
+                    break;
+                case "3meses":
+                    dias = 90;
+                    break;
+                case "6meses":
+                    dias = 180;
+                    break;
+            }
+
+            var queryClientes = $@"
+                SELECT idClientes 
+                    FROM {TableMobile.TB_CLIENTES} 
+                    WHERE idEmpresa = {idEmpresa} AND idEmpresa_aspnetUsers = {idAspnetUsers}";
+
+            List<int> clienteIds = new List<int>();
+            var lClientes = App.Data.Connection.Query<ClientesModel>(queryClientes).ToList();
+
+            lClientes.ForEach(x => clienteIds.Add(x.idClientes ?? 0));
+
+            var idsPlaceholders = string.Join(",", clienteIds);
+
+            var queryPedidos = $@"
+                SELECT DISTINCT idClientes
+                    FROM {TableMobile.TB_PEDIDOVENDA}
+                    WHERE idClientes IN ({idsPlaceholders})
+                        AND idClientes NOT IN (
+                        SELECT DISTINCT idClientes
+                        FROM {TableMobile.TB_PEDIDOVENDA}
+                        WHERE datetime(dEmissao, '+{dias} days') > datetime('now')
+                        AND idEmpresa = {idEmpresa}
+                     )
+                AND idEmpresa = {idEmpresa}";
+
+            List<int> clienteIdsFiltrado = new List<int>();
+
+            var lClientesFiltrado = App.Data.Connection.Query<PedidoVendaModel>(queryPedidos);
+            lClientesFiltrado.ForEach(x => clienteIdsFiltrado.Add(x.idClientes ?? 0));
+
+            var idsFiltradoPlaceholders = string.Join(",", clienteIdsFiltrado);
+
+            var xQueryExibirClientes =
+                $@"SELECT xRazaoSocial, xFantasia FROM {TableMobile.TB_CLIENTES} 
+                    WHERE idEmpresa = {idEmpresa} and idClientes IN ({idsFiltradoPlaceholders})";
+
+            var exibir = App.Data.Connection.Query<ClientesModel>(xQueryExibirClientes);
+
+            return exibir.ToList();
+        }
+
         public static ListItemModel GetRegistro(int idClientesOffLine)
         {
             var xQuery =
@@ -529,7 +589,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             var resultado = App.Data.Connection.Query<ListItemModel>(xQuery);
 
             return resultado.FirstOrDefault();
-        }        
+        }
 
         public static string GetAnotacaoCliente(int idClientesOffLine)
         {
@@ -580,9 +640,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             var result = App.Data.Connection.ExecuteScalar<int?>(xquery);
             return result ?? 0;
         }
-         
+
         public static int? GetIdCondicaoAsync(int idClientesOffLine, int idEmpresa)
-        {   
+        {
             return App.Data.Connection.Table<ClientesModel>().Where(t => t.idClientesOffLine == idClientesOffLine && t.idEmpresa == idEmpresa).Select(t => t.idCondicaoPagamento).FirstOrDefault();
         }
 
