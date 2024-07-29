@@ -1,17 +1,22 @@
-﻿using System;
+﻿using Rg.Plugins.Popup.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
+using Xamarin.HLP.Mobile.AppPE.View;
+using Xamarin.HLP.Mobile.AppPE.View.DashBoard;
+using Xamarin.HLP.Mobile.AppPE.View.Pedido;
 
 namespace Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard
 {
     public class DashBoardViewModel : NotifyCommon
     {
-
         #region Properties
 
         private bool _isAdm;
@@ -86,7 +91,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard
             }
         }
 
-
         private string _labelTotal = "Seus totais";
 
         public string labelTotal
@@ -99,7 +103,48 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard
             }
         }
 
+        private string _filtro = "mes";
+        public string filtro
+        {
+            get { return _filtro; }
+            set
+            {
+                _filtro = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #endregion
+
+        public ICommand AplicaFiltroCommand
+        {
+            get { return new Command((object parameter) => filtro = parameter.ToString()); }
+        }
+
+        public ICommand PesquisarCommand
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    try
+                    {
+                        int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+                        int idAspnetUsers = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0;
+
+                        var lClientes = ClienteRepository.GetClientesNaoCompram(idEmpresa, idAspnetUsers, filtro);
+
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            UtilNavidate.PushAsync(new PageListagemClientes(lClientes));
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                });
+            }
+        }
 
         public async void RefreshDashBoardDados()
         {
@@ -109,30 +154,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard
                 {
                     isAdm = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
 
-                    if(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.stDataRelatorios.GetValueOrDefault() == 0)
-                        VendasHoje = PedidoRepository.GetFaturamento(DateTime.Today, bShowTodos); 
+                    if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.stDataRelatorios.GetValueOrDefault() == 0)
+                        VendasHoje = PedidoRepository.GetFaturamento(DateTime.Today, bShowTodos);
                     else
                         VendasHoje = PedidoRepository.GetFaturamentoPorDataFaturamento(DateTime.Today, bShowTodos);
-
-
 
                     var date = DateTime.Today.AddDays(-1);
                     if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.stDataRelatorios.GetValueOrDefault() == 0)
                         VendasOntem = PedidoRepository.GetFaturamento(date, bShowTodos);
                     else
                         VendasOntem = PedidoRepository.GetFaturamentoPorDataFaturamento(date, bShowTodos);
-                   
-
-
 
                     OrcamentosAbertos = PedidoRepository.GetOrcamentosAbertos(bShowTodos);
                     Clientesprospect = ClienteRepository.GetClientesProspect(bShowTodos);
                 });
             });
         }
-
-
-       
-
     }
 }

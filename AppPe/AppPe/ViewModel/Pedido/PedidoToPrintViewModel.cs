@@ -392,6 +392,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 totais += $"TOTAL DO PEDIDO: {pedido.VTotal.ToCurrencyStringPtBr()}{Environment.NewLine}";
                 totais += $"\n";
 
+                if (pedido.xAssinatura.Length > 0)
+                    totais += $"{pedido.xAssinatura}";
+
+                totais += $"\n";
+
                 if (!string.IsNullOrEmpty(pedido.xInfAdicional))
                     totais += $"INF. ADICIONAL: {pedido.xInfAdicional}{Environment.NewLine}";
 

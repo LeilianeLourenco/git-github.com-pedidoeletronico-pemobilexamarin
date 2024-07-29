@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chartControls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml.ChartControls;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:dashBoard="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.DashBoard.PageListagemClientes"
+             Title="Listagem">
+    <ContentPage.BindingContext>
+        <dashBoard:DashBoardViewModel/>
+    </ContentPage.BindingContext>
+
+    <ScrollView BackgroundColor="{StaticResource CinzaMedio}" Margin="5,0,5,0">
+        <StackLayout Orientation="Vertical" Margin="0" Padding="0,5,0,0">
+            <Frame HasShadow="True" Padding="0,0,0,0">
+                <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Branco}" Spacing="10" Padding="7,7,7,7">
+                    <ListView x:Name="ListaClientes">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell Height="30">
+                                    <StackLayout Orientation="Horizontal" Padding="0,10,0,0">
+                                        <Grid HeightRequest="50">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <Label Text="{Binding xRazaoSocial}" FontSize="13" FontAttributes="Bold" VerticalOptions="Center" Grid.Row="0"/>
+                                            <Label Text="{Binding xFantasia}" FontSize="15" VerticalOptions="Center" Grid.Row="1"/>
+                                        </Grid>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

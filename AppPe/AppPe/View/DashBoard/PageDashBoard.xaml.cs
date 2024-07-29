@@ -64,11 +64,32 @@ namespace Xamarin.HLP.Mobile.AppPE.View.DashBoard
             });
         }
 
+        private void ButtonFiltros_OnClicked(object sender, EventArgs e)
+        {          
+            var _buttonClicked = sender as Button;
+            foreach (var buttons in ScrollButtonsFiltros.Children)
+            {
+                var _btn = buttons as Button;
 
-    }
+                if (_buttonClicked.Text == _btn.Text)
+                {
 
+                    if (Device.RuntimePlatform != Device.iOS)
+                    {
+                        _btn.TextColor = Color.FromHex("#FFFFFF");
+                        _btn.BackgroundColor = Color.FromHex("#555555");
+                    }
+                    else
+                        _btn.TextColor = Color.FromHex("#555555");
+                }
+                else
+                {
+                    _btn.TextColor = Color.FromHex("");
+                    _btn.BackgroundColor = Color.FromHex("");
+                }
+            }
 
+        }
 
-  
-
+    }  
 }

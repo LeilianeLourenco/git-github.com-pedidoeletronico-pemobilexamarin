@@ -9,11 +9,9 @@
     <ContentPage.BindingContext>
         <dashBoard:DashBoardViewModel/>
     </ContentPage.BindingContext>
-    <!--<ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" WinPhone="-18,0,-18,0" Android="0,5,0,7" iOS="0,5,0,7"/>
-    </ContentPage.Padding>-->
+
     <ScrollView BackgroundColor="{StaticResource CinzaMedio}" Margin="5,0,5,0">
-        <StackLayout Orientation="Vertical" Margin="0">
+        <StackLayout Orientation="Vertical" Margin="0" Padding="0,5,0,0">
             <Frame Padding="0,0,0,0" HasShadow="True">
                 <StackLayout Orientation="Vertical" Spacing="5">
                     <Grid>
@@ -32,7 +30,7 @@
                 </StackLayout>
             </Frame>
 
-            <Frame  HasShadow="True" Padding="0,0,0,0" >
+            <Frame HasShadow="True" Padding="0,0,0,0" >
                 <StackLayout Orientation="Vertical" Spacing="0">
                     <Grid BackgroundColor="#7DB043" Padding="7,7,7,7">
                         <Label Text="Informações Adicionais" TextColor="White" HorizontalTextAlignment="Center" Style="{StaticResource Medium}" FontAttributes="Bold"/>
@@ -109,6 +107,63 @@
                     </StackLayout>
                 </StackLayout>
             </Frame>
+
+            <StackLayout Padding="0,10,0,0">
+                <Frame HasShadow="True" Padding="0,0,0,0" >
+                    <StackLayout Orientation="Vertical" Spacing="0">
+                        <Grid BackgroundColor="#cb2714" Padding="7,7,7,7">
+                            <Label Text="Clientes que não compram" TextColor="White" HorizontalTextAlignment="Center" Style="{StaticResource Medium}" FontAttributes="Bold"/>
+                        </Grid>
+                        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Branco}" Spacing="10" Padding="7,7,7,7">
+
+                            <ScrollView Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                <StackLayout Orientation="Horizontal" Margin="10,10,10,10"  x:Name="ScrollButtonsFiltros">
+                                    <Button Text="MÊS+" WidthRequest="90" HeightRequest="40" CornerRadius="50"  
+                                        Command="{Binding AplicaFiltroCommand}" CommandParameter="mes" Clicked="ButtonFiltros_OnClicked">
+                                        <Button.BackgroundColor>
+                                            <OnPlatform x:TypeArguments="Color" Android="{StaticResource CinzaEscuro}"/>
+                                        </Button.BackgroundColor>
+                                        <Button.TextColor>
+                                            <OnPlatform x:TypeArguments="Color" Android="{StaticResource Branco}" iOS="{StaticResource CinzaEscuro}" />
+                                        </Button.TextColor>
+                                    </Button>
+
+                                    <Button Text="SEMANA+"             
+                 Command="{Binding AplicaFiltroCommand}" CommandParameter="semana" Clicked="ButtonFiltros_OnClicked"
+                 CornerRadius="50" WidthRequest="100" HeightRequest="40">
+                                    </Button>
+                                    
+                                    <Button Text="TRIMESTRE+"               
+                 Command="{Binding AplicaFiltroCommand}" CommandParameter="3meses" Clicked="ButtonFiltros_OnClicked"
+                 CornerRadius="50" WidthRequest="120" HeightRequest="40">
+                                    </Button>
+                                    
+                                    <Button Text="SEMESTRE+"              
+                 Command="{Binding AplicaFiltroCommand}" CommandParameter="6meses" Clicked="ButtonFiltros_OnClicked"
+                 CornerRadius="50" WidthRequest="120" HeightRequest="40">
+                                    </Button>
+                                </StackLayout>
+                            </ScrollView>
+
+                            <StackLayout Padding="0,5,0,0">
+                                <Grid HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Button Text="Pesquisar" HeightRequest="40"                                       
+                                        CornerRadius="10" Grid.Row="0"
+                                            BackgroundColor="#cb2714" TextColor="White"
+                                                Command="{Binding PesquisarCommand}">
+                                    </Button>
+                                    
+                                </Grid>
+                            </StackLayout>
+
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
         </StackLayout>
     </ScrollView>
 </ContentPage>
