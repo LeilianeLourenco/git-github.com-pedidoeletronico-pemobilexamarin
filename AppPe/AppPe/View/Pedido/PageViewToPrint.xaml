@@ -53,6 +53,10 @@
                     <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Center" FontSize="Medium" Text="{Binding Separador1 }"/>
                     <Label LineBreakMode="WordWrap" Text="{Binding itens}"/>
                     <Label LineBreakMode="WordWrap" Text="{Binding totais}"/>
+                    <Image x:Name="imgAssinaturaPedido"     
+                        Source="{Binding imgAssinaturaPedido}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand"/>
                     <Label LineBreakMode="WordWrap" Text="{Binding agradecimento}" HorizontalTextAlignment="End"/>
                 </StackLayout>
             </ScrollView>
