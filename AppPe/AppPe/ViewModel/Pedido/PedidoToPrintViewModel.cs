@@ -16,7 +16,6 @@ using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Interfaces.PedidoVenda;
-
 using System.Reflection;
 using Xamarin.Essentials;
 using System.IO;
@@ -99,6 +98,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             get { return _totais; }
             set { _totais = (value ?? "").ToUpper(); NotifyPropertyChanged(); }
+        }
+
+        private ImageSource _imgAssinaturaPedido;
+        public ImageSource imgAssinaturaPedido
+        {
+            get { return _imgAssinaturaPedido; }
+            set { _imgAssinaturaPedido = value; NotifyPropertyChanged(); }
         }
 
         private string _agradecimento;
@@ -385,7 +391,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     totais += $"TOTAL DE OUTROS: {pedido.vOutrasPed.ToCurrencyStringPtBr()}{Environment.NewLine}";
                 totais += $"TOTAL DO PEDIDO: {pedido.VTotal.ToCurrencyStringPtBr()}{Environment.NewLine}";
                 totais += $"\n";
-                //totais += $"TOTAL DE ITENS: ({pedido.lItens.Count}){Environment.NewLine}";
 
                 if (!string.IsNullOrEmpty(pedido.xInfAdicional))
                     totais += $"INF. ADICIONAL: {pedido.xInfAdicional}{Environment.NewLine}";
@@ -393,17 +398,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (!string.IsNullOrEmpty(pedido.xMotivoCancelamento))
                     totais += $"MOTIVO DE CANCELAMENTO: {pedido.xMotivoCancelamento.ToUpper()}{Environment.NewLine}";
 
+                imgAssinaturaPedido = _fileService.GetImage(PedidoRepository.BuscarAssAtualizada(pedido.idPedidoVendaOffLine ?? 0)).Result;
+
+                if (imgAssinaturaPedido?.ToString()?.Length > 0)
+                    totais += $"\n";
+
                 agradecimento += $"Obrigado pela preferência{Environment.NewLine}";
                 //totais += Separador2;
                 agradecimento += $"Gerado por pedidoeletronico.com{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}";
 
                 Separador1 = "=========================================================";
-
-
-
             }
             return canExecuteInicial;
         }
+
+        public Xamarin.HLP.Mobile.AppPE.Services.IFileService _fileService => DependencyService.Get<Xamarin.HLP.Mobile.AppPE.Services.IFileService>();
 
         public void AtualizaTotalizadores(PedidoVendaModel currentModel)
         {
@@ -611,14 +620,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         private static bool fontResolverInitialized = false;
 
         public void InitializeFontResolver()
-        {           
+        {
             if (!fontResolverInitialized)
             {
                 var assembly = typeof(PedidoToPrintViewModel).GetTypeInfo().Assembly;
                 var fontResourceName = "Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido.Belfast Regular.ttf";
-              
+
                 if (assembly.GetManifestResourceNames().Contains(fontResourceName))
-                {                   
+                {
                     using (Stream fontStream = assembly.GetManifestResourceStream(fontResourceName))
                     {
                         using (MemoryStream memoryStream = new MemoryStream())
@@ -646,7 +655,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 IItensImpressaoPedido _buscaItensImpressao = new ItensImpressaoPedido();
                 var pedido = _buscaItensImpressao.RetornarItensParaImpressao(id: idPedidoVendaOffLine);
                 var cliente = ClienteRepository.GetClienteModel(pedido.idClientesOffLine);
-                var empresa = EmpresaRepository.GetEmpresa();                
+                var empresa = EmpresaRepository.GetEmpresa();
 
                 string fileName = $"{pedido.TipoLancamento.ToLower()}_{cliente.xFantasia}-{empresa.xRazaoSocial}.pdf";
                 string filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
