@@ -2,6 +2,7 @@
 using System.Globalization;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
 {
@@ -230,8 +231,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
             }
         }
 
-
-
         private Color _ColorPendencia;
         public Color ColorPendencia
         {
@@ -239,36 +238,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
             set { _ColorPendencia = value; NotifyPropertyChanged(); }
         }
 
-        public DateTime _dtInicioCheck;
-        public DateTime dtInicioCheck
+        public string _xDuracaoCheck;
+        public string xDuracaoCheck
         {
-            get { return _dtInicioCheck; }
-            set { _dtInicioCheck = value; NotifyPropertyChanged(); }
-        }
-
-        public string _xTempoCheck;
-        public string xTempoCheck
-        {
-            get
-            {
-                _xTempoCheck = _dtTempoCheck.ToString(@"hh\:mm\:ss\.ff");
-                return _xTempoCheck;
-            }
-            set { _xTempoCheck = value; NotifyPropertyChanged(); }
-        }
-
-        public TimeSpan _dtTempoCheck;
-        public TimeSpan dtTempoCheck
-        {
-            get { return _dtTempoCheck; }
+            get { return _xDuracaoCheck; }
             set
             {
-                _dtTempoCheck = value;
-                xTempoCheck = value.ToString();
+                _xDuracaoCheck = value;
                 NotifyPropertyChanged();
             }
         }
-
+      
         public string _xLocalCheckIn;
         public string xLocalCheckIn
         {
@@ -283,16 +263,28 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Agenda
             set { _xLocalCheckOut = value; NotifyPropertyChanged(); }
         }
 
-        private bool _bCheckConfirmado = false;
-        public bool bCheckConfirmado
+        private bool _DeuCheckOut = false;
+        public bool DeuCheckOut
         {
-            get { return _bCheckConfirmado; }
+            get { return _DeuCheckOut; }
             set
             {
-                _bCheckConfirmado = value;
+                _DeuCheckOut = value;
                 NotifyPropertyChanged();
             }
-        }       
+        }
+
+        private bool _DeuCheckIn = false;
+        public bool DeuCheckIn
+        {
+            get { return _DeuCheckIn; }
+            set
+            {
+
+                _DeuCheckIn = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         #endregion
     }

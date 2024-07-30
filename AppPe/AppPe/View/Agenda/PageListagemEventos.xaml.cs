@@ -79,6 +79,22 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Agenda
                 {
                     viewModel.ExecuttingAnyCommand = true;
                     viewModel.currentModel = ListViewDados.SelectedItem as AgendaListarModel;
+
+                    var evento = AgendaRepository.GetDadosEvento(viewModel.currentModel.idAtividadeOffline);
+
+                    if (evento.dtTempoInitCheck == DateTime.MinValue || evento.dtTempoInitCheck == null)
+                        viewModel.currentModel.DeuCheckIn = false;
+
+                    else if (evento.tsDuracaoCheck == TimeSpan.MinValue || evento.tsDuracaoCheck == null)
+                        viewModel.currentModel.DeuCheckIn = true;
+
+                    else
+                        viewModel.currentModel.DeuCheckOut = true;
+
+                    viewModel.currentModel.xLocalCheckIn = evento.xLocalCheckIn;
+                    viewModel.currentModel.xLocalCheckOut = evento.xLocalCheckOut;
+                    viewModel.currentModel.xDuracaoCheck = evento.tsDuracaoCheck?.ToString(@"hh\:mm\:ss\.ff");
+
                     UtilNavidate.PushAsync(new PageApresentacaoEvento(viewModel.currentModel));
                 }
                 ListViewDados.SelectedItem = null;

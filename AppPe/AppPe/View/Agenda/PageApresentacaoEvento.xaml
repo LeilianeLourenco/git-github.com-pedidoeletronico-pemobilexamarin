@@ -134,19 +134,21 @@
                
                 <TextCell Detail="{Binding currentModel.xLocalCheckIn}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Local do Check in" />
                 <TextCell Detail="{Binding currentModel.xLocalCheckOut}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Local do Check out" />
-                <TextCell Detail="{Binding currentModel.xTempoCheck}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Tempo na visita" />
+                <TextCell Detail="{Binding currentModel.xDuracaoCheck}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Tempo na visita" />
 
                 <ViewCell>
-                    <StackLayout Orientation="Vertical" HeightRequest="120" IsVisible="{Binding currentModel.bCheckConfirmado, Converter={StaticResource InvertBoolConvert}}">
+                    <StackLayout Orientation="Vertical" HeightRequest="120" IsVisible="{Binding currentModel.DeuCheckOut, Converter={StaticResource InvertBoolConvert}}">
                         <Grid HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Button Text="{Binding xTextoCheck}" BackgroundColor="{Binding xCor}"
-                                    TextColor="#fff" WidthRequest="{Binding widthCheck}" HeightRequest="40" CornerRadius="10" Grid.Column="0"
-                                        VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding CheckCommand}"/>
-                            <Label Text="{Binding xdtCheck}" FontAttributes="Bold" FontSize="20" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center"/>
+                            <Button Text="CHECK IN" BackgroundColor="#0e76c2"
+                                    TextColor="#fff" WidthRequest="90" HeightRequest="40" CornerRadius="10" Grid.Column="0"
+                                         IsVisible="{Binding currentModel.DeuCheckIn, Converter={StaticResource InvertBoolConvert}}" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding CheckInCommand}"/>
+                            <Button Text="CHECK OUT" BackgroundColor="#228b22"
+                                    TextColor="#fff" WidthRequest="120" HeightRequest="40" CornerRadius="10" Grid.Column="0"
+                                         IsVisible="{Binding currentModel.DeuCheckIn}" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding CheckOutCommand}"/>
                         </Grid>
                     </StackLayout>
                 </ViewCell>

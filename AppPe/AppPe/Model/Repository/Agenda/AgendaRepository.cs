@@ -33,9 +33,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
                     xWhere += $@" and idClienteOffline = {idClienteOffline}";
 
 
-                if (!bTrazerTodosRepresentantes) 
+                if (!bTrazerTodosRepresentantes)
                     xWhere += $@" and a.xVendedorVinculado like '%{App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xApelido}%'";
-                
+
 
 
                 if (bTrazerRealizados)
@@ -58,7 +58,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
                 else
                    if (bTrazerRealizados)
                     xWhere += $@" and (a.bEventoCancelado = 0 or a.bRealizado = 1)";
-                   else
+                else
                     xWhere += $@" and a.bEventoCancelado = 0";
 
 
@@ -76,10 +76,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
                 if (bOrdenarFormaCrescente)
                 {
                     xQuery += $@" ORDER BY a.dtInicioEvento
-                                LIMIT {take} OFFSET {skip}"; 
+                                LIMIT {take} OFFSET {skip}";
                 }
                 else
-                { 
+                {
                     xQuery += $@" ORDER BY a.dtInicioEvento DESC
                                 LIMIT {take} OFFSET {skip}";
                 }
@@ -220,6 +220,69 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
             catch (Exception ex)
             {
                 ex.TrakException();
+            }
+        }
+
+        public static AtividadeAgendaModel GetDadosEvento(int idAtividadeOffline)
+        {
+            try
+            {
+                var xQuery =
+                $"SELECT dtTempoInitCheck, dtTempoCheck, xLocalCheckIn, xLocalCheckOut FROM {TableMobile.TB_ATIVIDADES} WHERE idAtividadeOffline = {idAtividadeOffline}";
+
+                return (App.Data.Connection.Query<AtividadeAgendaModel>(xQuery)).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+                return new AtividadeAgendaModel();
+            }
+        }
+
+        public static void SalvarCheckIn(AgendaListarModel agenda)
+        {
+            try
+            {
+                var xQuery =
+                $"SELECT * FROM {TableMobile.TB_ATIVIDADES} WHERE idAtividadeOffline = {agenda.idAtividadeOffline}";
+
+                var obj = (App.Data.Connection.Query<AtividadeAgendaModel>(xQuery)).FirstOrDefault();
+
+                if (obj != null)
+                {
+                    obj.dtTempoInitCheck = DateTime.UtcNow.AddHours(-3);
+                    obj.xLocalCheckIn = agenda.xLocalCheckIn;
+                    App.Data.Connection.Update(obj);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+        }
+
+        public static AtividadeAgendaModel SalvarCheckOut(AgendaListarModel agenda)
+        {
+            try
+            {
+                var xQuery =
+                $"SELECT * FROM {TableMobile.TB_ATIVIDADES} WHERE idAtividadeOffline = {agenda.idAtividadeOffline}";
+
+                var obj = (App.Data.Connection.Query<AtividadeAgendaModel>(xQuery)).FirstOrDefault();
+
+                if (obj != null)
+                {
+                    obj.tsDuracaoCheck = DateTime.UtcNow.AddHours(-3) - obj.dtTempoInitCheck;
+                    obj.xLocalCheckOut = agenda.xLocalCheckOut;
+                    App.Data.Connection.Update(obj);
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+                return new AtividadeAgendaModel();
             }
         }
 
@@ -373,7 +436,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
             }
             catch (Exception ex)
             {
-                ex.TrakException(); 
+                ex.TrakException();
             }
 
         }
