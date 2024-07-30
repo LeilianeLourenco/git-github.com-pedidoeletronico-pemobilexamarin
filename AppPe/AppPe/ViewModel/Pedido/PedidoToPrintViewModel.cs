@@ -672,15 +672,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                 var font1 = new XFont("Belfast Regular", 13);
 
+                double y = 0;
+
                 foreach (var child in stackLayout.Children)
                 {
                     if (child is Label label)
                     {
                         string text = label.Text;
-
                         string[] lines = text.Split('\n');
 
-                        (double x, double y) = GetElementPosition(stackLayout, label);
+                        (double x, double yOffset) = GetElementPosition(stackLayout, label);
+                        y = yOffset;
 
                         foreach (string line in lines)
                         {
@@ -693,14 +695,42 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                 foreach (string lineQuebrar in linesQuebrar)
                                 {
                                     gfx.DrawString(lineQuebrar, font1, XBrushes.Black, new XPoint(x, y));
-                                    y += gfx.MeasureString(line, font1).Height;
+                                    y += gfx.MeasureString(lineQuebrar, font1).Height;
                                 }
                             }
-
                             else
-                                gfx.DrawString(line, font1, XBrushes.Black, new XPoint(x, y));
+                            {
+                                if (line.ToLower().Contains("obrigado pela preferência"))
+                                {                                   
+                                    var imageSource = (stackLayout.Children.FirstOrDefault(c => c is Xamarin.Forms.Image img) as Xamarin.Forms.Image)?.Source as FileImageSource;
+                                    if (imageSource != null)
+                                    {
+                                        var filePathImage = imageSource.File;
+                                        if (File.Exists(filePathImage))
+                                        {                                           
+                                            var tempImagePath = Path.Combine(Path.GetTempPath(), Path.GetFileName(filePathImage));
+                                            File.Copy(filePathImage, tempImagePath, overwrite: true);
 
-                            y += gfx.MeasureString(line, font1).Height; // Adiciona a altura da linha atual
+                                            using (var pdfImage = XImage.FromFile(tempImagePath))
+                                            {
+                                              
+                                                double newImageWidth = 80;
+                                                double newImageHeight = 80;
+
+                                                double imageX = x;
+                                                double imageY = y - 105;
+                                                
+                                                gfx.DrawImage(pdfImage, imageX, imageY, newImageWidth, newImageHeight);
+                                            }
+                                          
+                                            File.Delete(tempImagePath);
+                                        }
+                                    }
+                                }
+
+                                gfx.DrawString(line, font1, XBrushes.Black, new XPoint(x, y));
+                                y += gfx.MeasureString(line, font1).Height;
+                            }
                         }
                     }
                 }
@@ -719,6 +749,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 await App.Current.MainPage.DisplayAlert("erro", ex.ToString(), "ok");
             }
         }
+
 
         private (double x, double y) GetElementPosition(StackLayout stackLayout, Xamarin.Forms.View element)
         {
