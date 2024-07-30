@@ -18,7 +18,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
         public ICommand ReabrirEventoCommand { get; set; }
         public ICommand CancelarEventoCommand { get; set; }
         public ICommand VerEnderecoCommand { get; set; }
-        public ICommand CheckCommand { get; set; }
+        public ICommand CheckInCommand { get; set; }
+        public ICommand CheckOutCommand { get; set; }
         public string ImageIconPedido => Device.OnPlatform("ApplicationBarListarPedidos.png", "ApplicationBarListarPedidos.png", "Assets/ApplicationBarListarPedido.png");
         public string ImageIconAdiar => Device.OnPlatform("ApplicationBarAdiarAgenda.png", "ApplicationBarAdiarAgenda.png", "Assets/ApplicationBarAdiarAgenda.png");
         public ICommand EditarEventoCommand { get; set; }
@@ -45,91 +46,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
             }
         }
 
-        public string _xTextoCheck = "CHECK IN";
-        public string xTextoCheck
-        {
-            get
-            {
-                if (bTiming)
-                    return "CHECK OUT";
-
-                return _xTextoCheck;
-            }
-            set
-            {
-                _xTextoCheck = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public DateTime? _dtCheck;
-        public DateTime? dtCheck
-        {
-            get { return _dtCheck; }
-            set
-            {
-                _dtCheck = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public string _xdtCheck = "00:00:00:00";
-        public string xdtCheck
-        {
-            get { return _xdtCheck; }
-            set
-            {
-                _xdtCheck = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public string _xCor = "#0e76c2";
-        public string xCor
-        {
-            get
-            {
-                if (bTiming)
-                    return "#228b22";
-
-                return _xCor;
-            }
-            set
-            {
-                _xCor = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-
-        public int _widthCheck = 90;
-        public int widthCheck
-        {
-            get
-            {
-                if (bTiming)
-                    return 120;
-
-                return _widthCheck;
-            }
-            set
-            {
-                _widthCheck = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private bool _bTiming;
-        public bool bTiming
-        {
-            get { return _bTiming; }
-            set
-            {
-                _bTiming = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         public bool bFoiParaCadastro { get; set; } = false;
 
         public ApresentacaoEventoAgendaViewModel()
@@ -137,7 +53,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
             EncerrarEventoCommand = new Command(EncerrarEvento);
             ReabrirEventoCommand = new Command(ReabrirEvento);
             VerEnderecoCommand = new Command(VerEndereco);
-            CheckCommand = new Command(Check);
+            CheckInCommand = new Command(CheckIn);
+            CheckOutCommand = new Command(CheckOut);
             CancelarEventoCommand = new Command(CancelarEvento);
             AdiarCommand = new Command(AdiarTarefaCommand);
 
@@ -343,36 +260,22 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
             }
         }
 
-        public async void Check()
+        public async void CheckIn()
         {
             try
             {
-                if (xTextoCheck == "CHECK IN")
-                {
-                    currentModel.dtInicioCheck = DateTime.UtcNow.AddHours(-3);
-                    Device.StartTimer(TimeSpan.FromMilliseconds(1), UpdateTimer);
-                    xCor = "#228b22";
-                    dtCheck = DateTime.Now;
-                    widthCheck = 120;
-                    xTextoCheck = "CHECK OUT";
-                    var location = await Geolocation.GetLastKnownLocationAsync();
-                    currentModel.xLocalCheckIn = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}";
-                }
-                else
-                {
-                    if (dtCheck != null)
-                    {
-                        dtCheck = null;
-                        currentModel.dtTempoCheck = DateTime.UtcNow.AddHours(-3) - currentModel.dtInicioCheck;
+                var location = await Geolocation.GetLastKnownLocationAsync();
 
-                        var location = await Geolocation.GetLastKnownLocationAsync();
-                        currentModel.xLocalCheckOut = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}";
+                AgendaListarModel agenda = new AgendaListarModel
+                {
+                    idAtividadeOffline = currentModel.idAtividadeOffline,
+                    xLocalCheckIn = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}"
+                };
 
-                        xTextoCheck = "CONFIRMADO";
-                        xCor = "#0e76c2";
-                        currentModel.bCheckConfirmado = true;
-                    }
-                }
+                AgendaRepository.SalvarCheckIn(agenda);
+
+                currentModel.xLocalCheckIn = agenda.xLocalCheckIn;
+                currentModel.DeuCheckIn = true;
             }
             catch (Exception ex)
             {
@@ -380,15 +283,28 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
             }
         }
 
-        private bool UpdateTimer()
+        public async void CheckOut()
         {
-            if (dtCheck != null)
+            try
             {
-                TimeSpan elapsed = DateTime.Now - Convert.ToDateTime(dtCheck);
-                xdtCheck = elapsed.ToString(@"hh\:mm\:ss\.ff");
-                return true;
+                var location = await Geolocation.GetLastKnownLocationAsync();
+
+                AgendaListarModel agenda = new AgendaListarModel
+                {
+                    idAtividadeOffline = currentModel.idAtividadeOffline,
+                    xLocalCheckOut = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}"
+                };
+
+                var result = AgendaRepository.SalvarCheckOut(agenda);
+
+                currentModel.xLocalCheckOut = agenda.xLocalCheckOut;
+                currentModel.xDuracaoCheck = result.tsDuracaoCheck?.ToString(@"hh\:mm\:ss\.ff");
+                currentModel.DeuCheckOut = true;
             }
-            return false;
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
         }
 
         public async void ReabrirEvento()
