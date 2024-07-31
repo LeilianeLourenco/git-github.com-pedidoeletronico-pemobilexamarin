@@ -177,6 +177,10 @@
       <SubType>Code</SubType>
       <DependentUpon>PageListagemClientes.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\DashBoard\PageInfoCliente.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>PageInfoCliente.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -187,6 +191,10 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\DashBoard\PageListagemClientes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\DashBoard\PageInfoCliente.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

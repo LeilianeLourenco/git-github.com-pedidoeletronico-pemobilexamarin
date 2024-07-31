@@ -23,7 +23,7 @@
                             <ColumnDefinition Width="50*"/>
                         </Grid.ColumnDefinitions>
                         <Button x:Name="btnTotais" Margin="0" IsVisible="{Binding isAdm}" Text="{Binding labelTotal}" Style="{StaticResource Info}"/>
-                        <Button Grid.Column="1" x:Name="btntualizaChart"  Margin="0" Text="Atualizar" Style="{StaticResource Primary}"  />
+                        <Button Grid.Column="1" x:Name="btntualizaChart" Margin="0" Text="Atualizar" Style="{StaticResource Primary}"  />
                     </Grid>
 
                     <chartControls:GridChartFaturamentoSemestral  x:Name="ChartFaturamento" />

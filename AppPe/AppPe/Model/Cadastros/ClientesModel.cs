@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using SQLite;
+using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
@@ -33,6 +34,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
 
         private byte _stJuridico;
 
+        public string imgCliente => Device.OnPlatform("ApplicationBarListarClientes.png", "ApplicationBarListarClientes.png", "Assets/ApplicationBarListarClientes.png");
 
         /// <summary>
         /// 0- CPF
@@ -293,7 +295,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         private string _xTelefones;
         public string xTelefones
         {
-            get { return _xTelefones; }
+            get
+            {
+                if (_xTelefones != "")
+                    return _xTelefones;
+                else
+                    return "(Sem telefone)";
+            }
             set
             {
                 _xTelefones = value; NotifyPropertyChanged();
@@ -303,7 +311,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
 
         public string xEmails
         {
-            get { return _xemails; }
+            get
+            {
+                if (_xemails != "")
+                    return _xemails;
+                else
+                    return "(Sem e-mail)";              
+            }
             set { _xemails = value; NotifyPropertyChanged(); }
         }
 

@@ -14,18 +14,30 @@
         <StackLayout Orientation="Vertical" Margin="0" Padding="0,5,0,0">
             <Frame HasShadow="True" Padding="0,0,0,0">
                 <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Branco}" Spacing="10" Padding="7,7,7,7">
-                    <ListView x:Name="ListaClientes">
+                    <ListView x:Name="ListaClientes" ItemSelected="ListaClientes_ItemSelected" RowHeight="55">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <ViewCell Height="30">
-                                    <StackLayout Orientation="Horizontal" Padding="0,10,0,0">
-                                        <Grid HeightRequest="50">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"></RowDefinition>
-                                            </Grid.RowDefinitions>
-                                            
-                                            <Label Text="{Binding xRazaoSocial}" FontSize="13" FontAttributes="Bold" VerticalOptions="Center" Grid.Row="0"/>
-                                            <Label Text="{Binding xFantasia}" FontSize="15" VerticalOptions="Center" Grid.Row="1"/>
+                                <ViewCell>
+                                    <StackLayout Orientation="Vertical">
+                                        <Grid HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                         
+                                            <Frame VerticalOptions="Center" Grid.Column="0" HeightRequest="30" WidthRequest="30" Padding="0" Margin="0" HasShadow="False" CornerRadius="15" BackgroundColor="Gray">
+                                                <Image Source="{Binding imgCliente}"/>
+                                            </Frame>
+
+                                            <Grid VerticalOptions="Center" Grid.Column="1" Padding="15,0,0,0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Label Text="{Binding xRazaoSocial}" FontSize="13" FontAttributes="Bold" VerticalOptions="Center" Grid.Row="0"/>
+                                                <Label Text="{Binding xFantasia}" FontSize="15" VerticalOptions="Center" Grid.Row="1"/>
+                                            </Grid>
+
                                         </Grid>
                                     </StackLayout>
                                 </ViewCell>
