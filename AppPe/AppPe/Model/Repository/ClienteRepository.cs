@@ -572,7 +572,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             var idsFiltradoPlaceholders = string.Join(",", clienteIdsFiltrado);
 
             var xQueryExibirClientes =
-                $@"SELECT xRazaoSocial, xFantasia FROM {TableMobile.TB_CLIENTES} 
+                $@"SELECT xRazaoSocial, xFantasia, xEmails, xTelefones, idClientesOffLine, idClientes FROM {TableMobile.TB_CLIENTES} 
                     WHERE idEmpresa = {idEmpresa} and idClientes IN ({idsFiltradoPlaceholders})";
 
             var exibir = App.Data.Connection.Query<ClientesModel>(xQueryExibirClientes);

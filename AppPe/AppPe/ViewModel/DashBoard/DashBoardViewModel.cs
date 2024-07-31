@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
+using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.View;
 using Xamarin.HLP.Mobile.AppPE.View.DashBoard;
@@ -115,7 +117,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard
         }
 
         #endregion
-
+       
         public ICommand AplicaFiltroCommand
         {
             get { return new Command((object parameter) => filtro = parameter.ToString()); }

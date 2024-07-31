@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage
+            xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+            xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+            xmlns:sincronizacao="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao;assembly=Xamarin.HLP.Mobile.AppPE"
+            x:Class="Xamarin.HLP.Mobile.AppPE.View.Sincronizacao.PageInfoCliente" HasSystemPadding="True" Padding="40,40,40,40" >
+
+    <Frame HorizontalOptions="FillAndExpand" BackgroundColor="White" VerticalOptions="Center"  OutlineColor="{StaticResource CinzaPrincipal}">
+        <Frame.HasShadow>
+            <OnPlatform x:TypeArguments="x:Boolean" Android="True" iOS="True" WinPhone="False"/>
+        </Frame.HasShadow>
+        <Grid Margin="5,5,5,5" RowSpacing="1" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" x:Name="lblEmail" FontSize="Medium" LineBreakMode="NoWrap" Text=""
+                   HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaMaisEscuro}"></Label>
+
+            <Label Grid.Row="1" x:Name="lblTelefone" FontSize="Medium" LineBreakMode="NoWrap" Text="" 
+              HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaMaisEscuro}"></Label>
+
+            <StackLayout Grid.Row="2" Padding="0,10,0,0" >
+                <Button VerticalOptions="Center" HorizontalOptions="Center" Clicked="UltimosPedidos_Clicked"                    
+                            Text="Últimos Pedidos" BackgroundColor="#2196F3" TextColor="#fff" 
+                                HeightRequest="40" WidthRequest="180"></Button>
+            </StackLayout>
+
+            <!--<Label FontSize="Medium"  LineBreakMode="NoWrap" Text="{Binding}" 
+              HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaMaisEscuro}"></Label>-->
+
+            <!--<Label FontSize="Medium"  LineBreakMode="NoWrap" Text="Sincronizando" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaMaisEscuro}"/>
+
+            <Label Grid.Row="1" FontSize="Medium" LineBreakMode="NoWrap"  Text="{Binding currentModel.xDetail }" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}"/>
+
+            <ActivityIndicator Margin="0,5,0,5" IsRunning="True" Grid.Row="2" Color="#27B5F3" />
+
+            <Label Grid.Row="3" FontSize="Medium" LineBreakMode="NoWrap"  Text="{Binding currentModel.iCount}" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaClaro}"/>-->
+
+
+        </Grid>
+    </Frame>
+</pages:PopupPage>

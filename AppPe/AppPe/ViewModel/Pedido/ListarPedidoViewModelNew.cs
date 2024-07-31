@@ -239,8 +239,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     xFooter1 = "Pesquisando...";
 
                     int? idCliente = null;
-                    if (bUsaClienteEspecifico)
-                        idCliente = PageApresentacaoClienteNew.ViewModelStatic.idClientesOffLine;
+                    if (bUsaClienteEspecifico && PageApresentacaoClienteNew.ViewModelStatic != null)
+                        idCliente = PageApresentacaoClienteNew.ViewModelStatic?.idClientesOffLine;
+
+                    else if(bUsaClienteEspecifico)
+                        idCliente = PageInfoCliente._dados?.idClientesOffLine;
 
                     var registros = PedidoRepository.GetInfinit(pedidos.Count, 20, (IsUsingSearch ? xFiltro : ""), ItemRepresentante.Id.ToString(), idCliente);
 

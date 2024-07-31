@@ -390,12 +390,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (pedido.vOutrasPed > 0)
                     totais += $"TOTAL DE OUTROS: {pedido.vOutrasPed.ToCurrencyStringPtBr()}{Environment.NewLine}";
                 totais += $"TOTAL DO PEDIDO: {pedido.VTotal.ToCurrencyStringPtBr()}{Environment.NewLine}";
-                totais += $"\n";
-
-                if (pedido.xAssinatura.Length > 0)
-                    totais += $"{pedido.xAssinatura}";
-
-                totais += $"\n";
+                totais += $"\n";               
 
                 if (!string.IsNullOrEmpty(pedido.xInfAdicional))
                     totais += $"INF. ADICIONAL: {pedido.xInfAdicional}{Environment.NewLine}";
@@ -403,7 +398,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (!string.IsNullOrEmpty(pedido.xMotivoCancelamento))
                     totais += $"MOTIVO DE CANCELAMENTO: {pedido.xMotivoCancelamento.ToUpper()}{Environment.NewLine}";
 
-                imgAssinaturaPedido = _fileService.GetImage(PedidoRepository.BuscarAssAtualizada(pedido.idPedidoVendaOffLine ?? 0)).Result;
+                imgAssinaturaPedido = _fileService?.GetImage(PedidoRepository.BuscarAssAtualizada(pedido.idPedidoVendaOffLine ?? 0)).Result;
 
                 if (imgAssinaturaPedido?.ToString()?.Length > 0)
                     totais += $"\n";
