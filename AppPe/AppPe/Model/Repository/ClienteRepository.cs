@@ -545,31 +545,30 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     FROM {TableMobile.TB_CLIENTES} 
                     WHERE idEmpresa = {idEmpresa} AND idEmpresa_aspnetUsers = {idAspnetUsers}";
 
-            List<int> clienteIds = new List<int>();
+            List<int?> clienteIds = new List<int?>();
             var lClientes = App.Data.Connection.Query<ClientesModel>(queryClientes).ToList();
 
-            lClientes.ForEach(x => clienteIds.Add(x.idClientes ?? 0));
+            lClientes.ForEach(x => clienteIds.Add(x.idClientes ?? 0));   
 
-            var idsPlaceholders = string.Join(",", clienteIds);
+            var data = DateTime.UtcNow.AddHours(-3).AddDays(-dias);
 
-            var queryPedidos = $@"
-                SELECT DISTINCT idClientes
-                    FROM {TableMobile.TB_PEDIDOVENDA}
-                    WHERE idClientes IN ({idsPlaceholders})
-                        AND idClientes NOT IN (
-                        SELECT DISTINCT idClientes
-                        FROM {TableMobile.TB_PEDIDOVENDA}
-                        WHERE datetime(dEmissao, '+{dias} days') > datetime('now')
-                        AND idEmpresa = {idEmpresa}
-                     )
-                AND idEmpresa = {idEmpresa}";
+            var ids = App.Data.Connection.Table<PedidoVendaModel>()
+                            .Where(x => x.idEmpresa == idEmpresa && clienteIds.Contains(x.idClientes)
+                                && x.dEmissao > data)
+                                    .Select(x => x.idClientes ?? 0)
+                                        .Distinct()
+                                            .ToList();
 
-            List<int> clienteIdsFiltrado = new List<int>();
+            foreach (var lin in ids)
+            {
+                if (clienteIds.Contains(lin))
+                    clienteIds.Remove(lin);
 
-            var lClientesFiltrado = App.Data.Connection.Query<PedidoVendaModel>(queryPedidos);
-            lClientesFiltrado.ForEach(x => clienteIdsFiltrado.Add(x.idClientes ?? 0));
+                else if (clienteIds.Count == 0)
+                    break;
+            }
 
-            var idsFiltradoPlaceholders = string.Join(",", clienteIdsFiltrado);
+            var idsFiltradoPlaceholders = string.Join(",", clienteIds);
 
             var xQueryExibirClientes =
                 $@"SELECT xRazaoSocial, xFantasia, xEmails, xTelefones, idClientesOffLine, idClientes FROM {TableMobile.TB_CLIENTES} 
