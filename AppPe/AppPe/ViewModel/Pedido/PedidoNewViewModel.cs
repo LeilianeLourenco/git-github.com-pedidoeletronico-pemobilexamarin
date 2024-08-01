@@ -121,6 +121,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        private bool _ShowTxtInfoNF;
+
+        public bool ShowTxtInfoNF
+        {
+            get { return _ShowTxtInfoNF; }
+            set
+            {
+                _ShowTxtInfoNF = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private ListItemModel _ItemSatus = new ListItemModel { Display = "Selecione um status" };
 
         public ListItemModel ItemSatus
@@ -1321,12 +1333,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     currentModel.bForcarMinimoVendas = _configuracoesGerais.bForcarMinimoVendas;
                 }
 
-
-
                 currentModel.xInformacaoContrato = _configuracoesGerais.xInformacaoContrato;
                 if (!string.IsNullOrEmpty(currentModel.xInformacaoContrato))
                     ShowBotaoContrato = true;
 
+                ShowTxtInfoNF = ConfiguracaoGeralRepositorio.GetExibeNF(_configuracoesGerais.idEmpresa);
 
                 currentModel.bBloquearVisualizacaoEstoqueVendedor = _configuracoesGerais.bBloquearVisualizacaoEstoqueVendedor;
                 currentModel.bMostraFaixaEscalonada = _configuracoesGerais.bMostraFaixaTabelaEscalonada;

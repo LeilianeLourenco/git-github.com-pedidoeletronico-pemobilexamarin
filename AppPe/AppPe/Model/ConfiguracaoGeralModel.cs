@@ -30,6 +30,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public int? idStatusOrcamentoDefault { get; set; } 
         public string xInformacaoContrato { get; set; } 
         public bool? bMostraProdutosVariacoesNaVenda { get; set; }
+        public bool bEnviarInfoAdicionaisParaNf { get; set; }
     }
 
 

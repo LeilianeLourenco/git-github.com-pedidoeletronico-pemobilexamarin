@@ -227,9 +227,12 @@
 
 
                                 <!--Pedido de compra-->
-
                                 <Label Text="Pedido de compra" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
                                 <custom:ExtendedEntry MaxLength="50" x:Name="EntryPedidoCompra" Text="{Binding currentModel.xPedidoCompra}" />
+
+                                <!--Info NF-->
+                                <Label Text="Info. Nota Fiscal" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}" IsVisible="{Binding ShowTxtInfoNF}"/>
+                                <custom:ExtendedEntry MaxLength="50" x:Name="EntryInfoNF" Text="{Binding currentModel.xInfoAdicionaisParaNF}" IsVisible="{Binding ShowTxtInfoNF}"/>
 
                                 <!--Observação -->
                                 <Label Text="Observações" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>

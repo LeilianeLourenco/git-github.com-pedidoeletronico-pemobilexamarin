@@ -26,6 +26,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 "stCalculoLimiteVendasEmpresa, " +
                 "dValorLimiteMinimo, " +
                 "xInformacaoContrato, " +
+                "idEmpresa, " +
                 "bMostraFaixaTabelaEscalonada";
 
             if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
@@ -51,6 +52,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 _configsGerais.stCalculoLimiteVendasEmpresa = result.stCalculoLimiteVendasEmpresa;
                 _configsGerais.bBloquearVisualizacaoEstoqueVendedor = result.bBloquearVisualizacaoEstoqueVendedor;
                 _configsGerais.bMostraFaixaTabelaEscalonada = result.bMostraFaixaTabelaEscalonada;
+                _configsGerais.idEmpresa = result.idEmpresa;
                 _configsGerais.xInformacaoContrato = result.xInformacaoContrato;
             }
              
@@ -60,6 +62,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
 
         #region Métodos Auxiliares
+
+        public static bool GetExibeNF(int idEmpresa)
+        {
+            return App.Data.Connection.Table<ConfiguracaoGeralModel>()
+                    .Where(c => c.idEmpresa == idEmpresa)
+                    .Select(c => c.bEnviarInfoAdicionaisParaNf).FirstOrDefault();
+        }
 
         public static double ObterValorLimiteVendasProduto(int? idProduto)
         {
@@ -115,7 +124,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return App.Data.Connection.Table<ConfiguracaoEspecificaModel>()
                     .Where(c => c.idEmpresa == idEmpresa)
                     .Select(c => c.bAplicaMelhoriaBloqueiaEnderecoReceita).FirstOrDefault();
-        }
+        }      
 
         public static double GetValorMinimoVendasTabelaPreco(int? idTabelaPreco)
         {
