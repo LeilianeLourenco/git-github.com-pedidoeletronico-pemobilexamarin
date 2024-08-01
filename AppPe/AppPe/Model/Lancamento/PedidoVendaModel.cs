@@ -288,7 +288,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         public string xCodigoCategoria { get; set; }
 
         public int? nCodigoContaCorrente { get; set; }
-
+        public string xInfoAdicionaisParaNF { get; set; }
 
         public double vTotalProduto { get; set; }
 
