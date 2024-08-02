@@ -61,7 +61,11 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.ptbr.pedidoeletronico</string>
 	<key>CFBundleVersion</key>
+<<<<<<< HEAD
 	<string>19.79</string>
+=======
+	<string>19.72</string>
+>>>>>>> f3b2763 (first commit ios)
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
@@ -69,7 +73,11 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleShortVersionString</key>
+<<<<<<< HEAD
 	<string>19.79</string>
+=======
+	<string>19.72</string>
+>>>>>>> f3b2763 (first commit ios)
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
 </dict>

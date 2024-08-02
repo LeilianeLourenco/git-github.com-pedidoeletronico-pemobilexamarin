@@ -510,7 +510,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 vTotalComissao = PedidoRepository.SumFieldItem(currentModel.idPedidoVendaOffLine, "vComissao");
                 bUtilizaMelhoriaEscolherRepresentadaPdf = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
             }
-            imgAssinaturaPedido = _fileService.GetImage(PedidoRepository.BuscarAssAtualizada(currentModel.idPedidoVendaOffLine)).Result;
+            imgAssinaturaPedido = _fileService?.GetImage(PedidoRepository.BuscarAssAtualizada(currentModel.idPedidoVendaOffLine)).Result;
 
             if (ItemSatus.XId != currentModel.idStatus.ToString())
                 AnaliseDeMudancaDeStatus();
