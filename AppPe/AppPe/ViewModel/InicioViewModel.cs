@@ -52,7 +52,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel
                 //    await Task.Yield();
                 //    await main.Navigation.PushAsync(new PageForgotPassword());
                 //}
-                await Browser.OpenAsync("https://www.pedidoeletronico.com/Account/Register", new BrowserLaunchOptions
+                await Browser.OpenAsync("https://pedidoeletronico.com/Account/ForgotPassword", new BrowserLaunchOptions
                 {
                     LaunchMode = BrowserLaunchMode.SystemPreferred,
                     TitleMode = BrowserTitleMode.Show,
