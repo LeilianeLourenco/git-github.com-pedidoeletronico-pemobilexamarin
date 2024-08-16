@@ -98,7 +98,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(PesquisaInicial);
                 UtilNavidate.Sincronizar(pageSync);
 
-                pedidosNaoSinc.Clear();
+                pedidosNaoSinc?.Clear();
             });
 
             SincronizarCommandAssinatura = new Command(() =>

@@ -31,7 +31,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public string xInformacaoContrato { get; set; } 
         public bool? bMostraProdutosVariacoesNaVenda { get; set; }
         public bool bBloqueiaValorProdutoApp { get; set; }
-        public bool bEnviarInfoAdicionaisParaNf { get; set; }
+        public bool? bEnviarInfoAdicionaisParaNf { get; set; }
     }
 
 
