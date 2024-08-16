@@ -69,7 +69,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         {
             return App.Data.Connection.Table<ConfiguracaoGeralModel>()
                     .Where(c => c.idEmpresa == idEmpresa)
-                    .Select(c => c.bEnviarInfoAdicionaisParaNf).FirstOrDefault();
+                    .Select(c => c.bEnviarInfoAdicionaisParaNf).FirstOrDefault() ?? false;
         }
 
         public static double ObterValorLimiteVendasProduto(int? idProduto)
