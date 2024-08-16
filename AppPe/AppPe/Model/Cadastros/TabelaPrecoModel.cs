@@ -223,9 +223,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             get
             {
 
-                if (this.stCampanhaCliente == false && this.stCampanhaClienteRamoAtividade == false && this.stCampanhaClienteUF == false
-                    && this.stCampanhaRepresentante == false && this.stTabelaPrecoRepresentacao == false
-                    )
+                if (this.stCampanhaCliente == false && this.stCampanhaClienteRamoAtividade == false 
+                    && this.stCampanhaClienteUF == false
+                    && this.stCampanhaRepresentante == false && this.stTabelaPrecoRepresentacao == false)
+
                 {
                     return TipoPrioridade.geral;
                 }

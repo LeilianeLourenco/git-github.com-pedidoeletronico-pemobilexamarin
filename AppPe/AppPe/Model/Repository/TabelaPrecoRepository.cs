@@ -551,7 +551,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     idProduto: item.idProduto ?? 0,
                     idRepresentacao: item.idRepresentada,
                     idRepresentante: _idRepresentante,
-                    stBusca: Interfaces.TipoPrecoBusca.tbl);
+                    stBusca: Interfaces.TipoPrecoBusca.tud);
 
                 List<TabelaPrecoSimplificada> _lTabelas = new List<TabelaPrecoSimplificada>();
                 TabelaPrecoSimplificada _tblAux;
