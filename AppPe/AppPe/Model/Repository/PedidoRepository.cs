@@ -18,15 +18,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 {
     public class PedidoRepository
     {
-        public static List<PedidoVendaListarModel> GetInfinit(int skip, int take, string xFiltro, bool naoSinc,
+        public static List<PedidoVendaListarModel> GetInfinit(int skip, int take, string xFiltro,
             string idRepresentantePedido = null, int? idClienteOffLine = null, int idPedidoVendaOffLine = 0)
         {
             var retorno = new List<PedidoVendaListarModel>();
             try
             {
-                var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
-                string xQuerySinc = string.Empty;
+                var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
                 var xQuery =
                     $@"select distinct
@@ -129,11 +128,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     if (idClienteOffLine != null)
                         xQuery += $" and TB_PEDIDOVENDA.idClientesOffLine = '{idClienteOffLine}'";
                 }
-
-                if (naoSinc)
-                    xQuery += " and TB_PEDIDOVENDA.idPedidoVenda IS NULL";
-                else
-                    xQuery += " and TB_PEDIDOVENDA.idPedidoVenda IS NOT NULL";
 
                 if (!string.IsNullOrEmpty(xFiltro))
                 {
