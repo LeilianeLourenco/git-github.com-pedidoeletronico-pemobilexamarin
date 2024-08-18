@@ -57,7 +57,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
             {
                 Display = "Pedido",
                 Image = "ApplicationMenuLancamento",
-                TargetType = typeof(TabbedPagePedidos)
+                TargetType = typeof(PageListarPedidos)
             });
 
             this.Add(new MenuItemModel

@@ -173,15 +173,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="View\Pedido\PageListarPedidosNaoSinc.xaml.cs">
-      <DependentUpon>PageListarPedidosNaoSinc.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="View\Pedido\TabbedPagePedidos.xaml.cs">
-      <DependentUpon>TabbedPagePedidos.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="View\DashBoard\PageListagemClientes.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>PageListagemClientes.xaml</DependentUpon>

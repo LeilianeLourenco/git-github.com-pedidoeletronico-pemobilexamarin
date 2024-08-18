@@ -144,7 +144,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
                 if (!ExecuttingAnyCommand)
                 {
                     ExecuttingAnyCommand = true;
-                    UtilNavidate.PushAsync(new TabbedPagePedidos());
+                    UtilNavidate.PushAsync(new PageListarPedidos());
                 }
 
             });

@@ -643,7 +643,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public void RecarregaCurrentModel()
         {
             bCanGotoPedido = false;
-            var resultado = PedidoRepository.GetInfinit(0, 1, "", false, "", null, currentModel.idPedidoVendaOffLine);
+            var resultado = PedidoRepository.GetInfinit(0, 1, "", "", null, currentModel.idPedidoVendaOffLine);
 
             if (resultado.Any())
             {
