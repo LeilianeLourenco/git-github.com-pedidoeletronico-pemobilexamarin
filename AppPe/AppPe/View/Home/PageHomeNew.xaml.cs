@@ -23,10 +23,14 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Home
         {
             InitializeComponent();
             ViewModelStatic = ViewModel;
-            ViewModel.page = this;
+            ViewModel.page = this;            
             GridEmpresa.Command = new Command(ViewModel.TrocarEmpresa);
             GridSincronizar.Command = new Command(ViewModel.Sincronizar);
             GridDash.Command = new Command(ViewModel.IrParaDashBoard);
+
+            var vm = (HomeNewViewModel)BindingContext;
+            vm.AlertaAvaliarApp.Execute(null);
+
         }
 
 

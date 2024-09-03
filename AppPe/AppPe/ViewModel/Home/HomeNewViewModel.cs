@@ -4,7 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppPe;
 using Plugin.Connectivity;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
@@ -32,6 +34,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
 
         public PageHomeNew page { get; set; }
 
+        public Command AlertaAvaliarApp { get; set; }
         public Command GoToListaPreCommand { get; set; }
         public Command GoToPedidosCommand { get; set; }
         public Command GoToAgendaCommand { get; set; }
@@ -128,6 +131,60 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
             {
                 RefreshConexao(args.IsConnected);
             };
+
+            AlertaAvaliarApp = new Command(async () =>
+            {
+                if (!ExecuttingAnyCommand)
+                {
+                    int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.idEmpresa.GetValueOrDefault();
+                    var configApp = ConfiguracaoGeralRepositorio.VerificarAvaliacaoApp(idEmpresa);
+
+                    if (configApp?.dtAvaliouApp != null)
+                    {
+                        if (configApp.dtAvaliouApp.Value.AddDays(30) <= DateTime.UtcNow.AddHours(-3) && !configApp.bNaoAvaliarApp)
+                        {
+                            try
+                            {
+                                await Task.Delay(300000);                                
+
+                                if (App.Current.MainPage != null)
+                                {
+                                    var result = await App.Current.MainPage.DisplayActionSheet(
+                                        "Está gostando do nosso aplicativo? Avalie-nos na loja! ★★★★★",
+                                        null,
+                                        null,
+                                        "Não perguntar", "Talvez mais tarde", "Avaliar"
+                                    );
+
+                                    switch (result)
+                                    {
+                                        case "Não perguntar":
+                                            ConfiguracaoGeralRepositorio.NaoAvaliarApp(idEmpresa);
+                                            break;
+                                        case "Talvez mais tarde":
+                                            ConfiguracaoGeralRepositorio.AdiarAvaliacao(idEmpresa, configApp.dtAvaliouApp.Value.AddHours(20));
+                                            break;
+                                        case "Avaliar":
+                                            ConfiguracaoGeralRepositorio.AdiarAvaliacao(idEmpresa, DateTime.UtcNow.AddHours(-3));
+                                            await Launcher.OpenAsync("https://play.google.com/store/apps/details?id=com.ptbr.pedidoeletronico&hl=pt_BR"); ;
+                                            break;
+
+                                    }
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+
+                        }
+                    }
+                    else
+                        ConfiguracaoGeralRepositorio.AdiarAvaliacao(idEmpresa, DateTime.UtcNow.AddDays(7));
+                }
+
+            });
 
             GoToListaPreCommand = new Command(() =>
             {
