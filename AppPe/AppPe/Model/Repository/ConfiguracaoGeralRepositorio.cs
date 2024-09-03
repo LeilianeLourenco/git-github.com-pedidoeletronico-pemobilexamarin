@@ -19,14 +19,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
             var xQuery = string.Empty;
             const string xFields =
-                "idConfiguracaoGeral, " + 
+                "idConfiguracaoGeral, " +
                 "bUtilizaLimiteMinimoVendas, " +
                 "stCadastroLimiteVendasEmpresa,  " +
                 "bBloquearVisualizacaoEstoqueVendedor,  " +
                 "stCalculoLimiteVendasEmpresa, " +
                 "dValorLimiteMinimo, " +
                 "xInformacaoContrato, " +
-                "bBloqueiaValorProdutoApp," +           
+                "bBloqueiaValorProdutoApp," +
                 "idEmpresa, " +
                 "bMostraFaixaTabelaEscalonada";
 
@@ -43,7 +43,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
             var result = App.Data.Connection.Query<ConfiguracaoGeralModel>(xQuery).FirstOrDefault();
 
-            if(result != null)
+            if (result != null)
             {
                 _configsGerais.idConfiguracaoGeral = result.idConfiguracaoGeral;
                 _configsGerais.bForcarMinimoVendas = result.bForcarMinimoVendas;
@@ -57,7 +57,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 _configsGerais.xInformacaoContrato = result.xInformacaoContrato;
                 _configsGerais.bBloqueiaValorProdutoApp = result.bBloqueiaValorProdutoApp;
             }
-             
+
 
             return _configsGerais;
         }
@@ -126,7 +126,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return App.Data.Connection.Table<ConfiguracaoEspecificaModel>()
                     .Where(c => c.idEmpresa == idEmpresa)
                     .Select(c => c.bAplicaMelhoriaBloqueiaEnderecoReceita).FirstOrDefault();
-        }      
+        }
 
         public static double GetValorMinimoVendasTabelaPreco(int? idTabelaPreco)
         {
@@ -160,9 +160,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         public static int ObterIdStatusAberto()
         {
-            var xQuery = $"select idStatus from {TableMobile.TB_STATUS} where idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} and stVenda = 0";            
+            var xQuery = $"select idStatus from {TableMobile.TB_STATUS} where idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} and stVenda = 0";
             var _retorno = App.Data.Connection.Query<StatusModel>(xQuery).FirstOrDefault();
-            
+
 
             var result = _retorno.idStatus;
 
@@ -199,7 +199,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     {
                         var _vLimiteMinimoProdutoAux = ObterValorLimiteVendasProduto(idProduto: item.Select(i => i.idProduto).FirstOrDefault());
 
-                        if(_vLimiteMinimoProdutoAux > 0)
+                        if (_vLimiteMinimoProdutoAux > 0)
                         {
                             var infoProduto = InformacoesBasicasProduto(idProduto: item.Select(p => p.idProduto).FirstOrDefault());
                             if (modelPedido.stCalculoMinimoVenda == 1)
@@ -207,7 +207,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                 double _qtd = 0;
                                 var _itensGrade = item.Select(t => t.ItensGrade);
 
-                                if(_itensGrade?.Where(t => t != null).Count() > 0)
+                                if (_itensGrade?.Where(t => t != null).Count() > 0)
                                 {
                                     foreach (var grades in _itensGrade)
                                     {
@@ -218,10 +218,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                 {
                                     _qtd += item.Sum(t => t.vQtdItem);
                                 }
-                              
+
 
                                 validaConfig = _qtd >= _vLimiteMinimoProdutoAux;
-                                _xmsgRetorno = $"O item {infoProduto} não possui a quantidade mínima de {Extensions.ToCurrencyStringSimplesPtBr(_vLimiteMinimoProdutoAux)} itens"; 
+                                _xmsgRetorno = $"O item {infoProduto} não possui a quantidade mínima de {Extensions.ToCurrencyStringSimplesPtBr(_vLimiteMinimoProdutoAux)} itens";
                             }
                             else
                             {
@@ -238,7 +238,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         }
                     }
                     break;
-                case 3:                                       
+                case 3:
                     if (modelPedido.stCalculoMinimoVenda == 1)
                     {
                         validaConfig = _pedidoItens.Sum(p => p.vQtdItem) >= modelPedido.vLimiteMinimoVendaCliente;
@@ -250,7 +250,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         _xmsgRetorno = $"Este cliente não possui um valor total mínimo de {Extensions.ToCurrencyStringPtBr(modelPedido.vLimiteMinimoVendaCliente)}";
                     }
                     break;
-                case 4:                    
+                case 4:
                     var _itensPorTabelaPreco = _pedidoItens.GroupBy(p => p.idTabelaPreco);
 
 
@@ -268,15 +268,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                 .Where(p => p.ItensGrade?.Count() > 0 && p.HasGrade == true || p.HasGradeCor == true)
                                 .Select(i => i.ItensGrade);
 
-                            if(itensComGrade?.Count() > 0)
+                            if (itensComGrade?.Count() > 0)
                             {
-                                foreach(var gradeItem in itensComGrade)
+                                foreach (var gradeItem in itensComGrade)
                                 {
                                     qtdadeItensComGrade += gradeItem.Sum(p => p.vQtdItem);
                                 }
                             }
-                            
-                            validaConfig =  (item.Sum(p => p.vQtdItem) + qtdadeItensComGrade) >= _valorLimiteTabela;
+
+                            validaConfig = (item.Sum(p => p.vQtdItem) + qtdadeItensComGrade) >= _valorLimiteTabela;
                             _xmsgRetorno = $"A Tabela de preço {_xTabelaNome} utilizada não possui uma quantidade mínima de {Extensions.ToCurrencyStringSimplesPtBr(_valorLimiteTabela)} itens";
                         }
                         else
@@ -315,6 +315,49 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 xMensagemValidacao = _xmsgRetorno
             };
         }
+
+        #region Avaliacao App     
+
+        public static ConfiguracaoGeralModel VerificarAvaliacaoApp(int idEmpresa)
+        {
+            return App.Data.Connection.Table<ConfiguracaoGeralModel>()
+                .Where(c => c.idEmpresa == idEmpresa)
+                .Select(c => new ConfiguracaoGeralModel
+                {
+                    dtAvaliouApp = c.dtAvaliouApp,
+                    bNaoAvaliarApp = c.bNaoAvaliarApp
+                })
+                .FirstOrDefault();
+        }
+
+        public static void AdiarAvaliacao(int idEmpresa, DateTime date)
+        {
+            var config = App.Data.Connection.Table<ConfiguracaoGeralModel>()
+                    .Where(c => c.idEmpresa == idEmpresa).FirstOrDefault();
+
+            if (config != null)
+            {
+                config.dtAvaliouApp = date;
+                App.Data.Connection.Update(config);
+            }
+
+        }
+
+        public static void NaoAvaliarApp(int idEmpresa)
+        {
+            var config = App.Data.Connection.Table<ConfiguracaoGeralModel>()
+                    .Where(c => c.idEmpresa == idEmpresa).FirstOrDefault();
+
+            if (config != null)
+            {
+                config.bNaoAvaliarApp = true;
+                App.Data.Connection.Update(config);
+            }
+
+        }
+
+        #endregion
+
 
     }
 }
