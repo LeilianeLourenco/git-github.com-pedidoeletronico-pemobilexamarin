@@ -155,21 +155,28 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             CompartilharCommand = new Command(CompartilharWhatsApp);
             EditarPedidoCommand = new Command(() =>
             {
+                if (currentModel.idPedidoVenda != null)
+                {
+                    var isAdm = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
 
-                var isAdm = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
+                    bool bloqueia = false;
 
-                bool bloqueia = false;
+                    if (!isAdm)
+                        bloqueia = PedidoRepository.BloqueiaEditarPedido(currentModel.idStatus, currentModel.idPedidoVenda ?? 0);
 
-                if (!isAdm)
-                    bloqueia = PedidoRepository.BloqueiaEditarPedido(currentModel.idStatus, currentModel.idPedidoVenda ?? 0);
-
-                if (!bloqueia)
+                    if (!bloqueia)
+                    {
+                        bFoiParaPedido = true;
+                        Device.StartTimer(UtilMethods.GetStartTime, EditarPedido);
+                    }
+                    else
+                        App.Messages.ShowAsync("Não é possível editar esse pedido");
+                }
+                else
                 {
                     bFoiParaPedido = true;
                     Device.StartTimer(UtilMethods.GetStartTime, EditarPedido);
                 }
-                else
-                    App.Messages.ShowAsync("Não é possível editar esse pedido");
             });
             SendEmailCommand = new Command(SendEmail);
             DuplicarPedidoCommand = new Command(DuplicarPedido);
