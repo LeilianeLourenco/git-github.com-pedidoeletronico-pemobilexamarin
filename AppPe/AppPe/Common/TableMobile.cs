@@ -141,9 +141,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 switch (tipoRetornoInfoClass)
                 {
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
-                        return "idEmpresa";
-                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
-                        return "ApiExtensoes";
+                        return "idExtensaoEmpresa";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:                       
+                        return "APIextensaoEmpresa";
                     default:
                         return TB_EXTENSAO;
                 }

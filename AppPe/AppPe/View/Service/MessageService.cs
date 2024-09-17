@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Model;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 
 namespace Xamarin.HLP.Mobile.AppPE.View.Service
 {
@@ -97,12 +98,14 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Service
 
 
 
-        public async Task<string> TipoLancamentoTask()
+        public async Task<string> TipoLancamentoTask(int idEmpresa)
         {
+            bool permiteOrcamento = ExtensaoEmpresaRepository.GetbGeraOrcamento(idEmpresa);
+
             var action =
                 await
                     Application.Current.MainPage.DisplayActionSheet("TIPO DE LANÇAMENTO",
-                        "Cancelar", null, "PEDIDO", "ORÇAMENTO");
+                        "Cancelar", null, "PEDIDO", permiteOrcamento ? "ORÇAMENTO" : null);
 
 
             if (action == null)
