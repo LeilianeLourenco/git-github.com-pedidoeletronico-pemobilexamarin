@@ -7,7 +7,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
     [Table(TableMobile.TB_EXTENSAO)]
     public class ExtensaoModel
     {
-        [PrimaryKey]
+        [PrimaryKey]   
+        public int idExtensaoEmpresa { get; set; }
         public int idEmpresa { get; set; }
         public bool? bControleEstoque { get; set; }
         public bool? bGeraOrcamento { get; set; }

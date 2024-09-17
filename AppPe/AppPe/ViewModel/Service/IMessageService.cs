@@ -8,7 +8,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Service
 
         Task<int?> TipoListagem();
         Task<int> TipoOrdenacaoTask();
-        Task<string> TipoLancamentoTask();
+        Task<string> TipoLancamentoTask(int idEmpresa);
         Task ShowAsync(string message);
 
         Task<bool> ShowConfirmAsync(string message, string accept = "SIM", string cancel = "NÃO", string title = "CONFIRMAÇÃO");

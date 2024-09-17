@@ -325,20 +325,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     && App.planoAtual != Planos.plstarter)
                     await SincronizacaoDownload<EstoqueModel>();
 
-
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownload<ExtensaoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPaginado<ConfiguracaoGeralModel>();
-
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPaginado<ConfiguracaoEspecificaModel>();
-
-                //await SincronizacaoDownload<ExtensaoModel>();
+                    await SincronizacaoDownloadPaginado<ConfiguracaoEspecificaModel>();              
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<EmpresaAspnetUsersModel>();
-
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<StatusModel>();
-
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<RepresentadaModel>();
                 if (!ocorreuErro && !bFalhaConexao)

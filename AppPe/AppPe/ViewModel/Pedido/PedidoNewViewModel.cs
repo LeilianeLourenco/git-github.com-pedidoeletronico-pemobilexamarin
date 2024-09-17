@@ -55,7 +55,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
 
         #region Propriedades
-     
+
         private PedidoVendaModel _currentModel;
 
         public PedidoVendaModel currentModel
@@ -407,7 +407,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 NotifyPropertyChanged();
             }
         }
-   
+
         public double? vDescCondicao { get; set; } //alterado
 
         public int? idTabelaPrecoCondicao { get; set; } //alterado
@@ -483,7 +483,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (!ExecuttingAnyCommand)
                 {
                     ExecuttingAnyCommand = true;
-                    var resultado = await App.Messages.TipoLancamentoTask();
+
+                    int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+                    var resultado = await App.Messages.TipoLancamentoTask(idEmpresa);
 
                     if (resultado == "Cancelar")
                     {
@@ -665,7 +667,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     });
                 }
             });
-        
+
             GoToTransportadoraCommand = new Command(async () =>
             {
                 if (ItemCliente.Id == 0)
@@ -1238,7 +1240,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 vDescontoTotal = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vDesconto * o.vQtdItem) ?? (c.vDesconto * c.vQtdItem));
                 xDisplayDesconto = vDescontoTotal.ToCurrencyStringPtBr();
 
-                vTotalComissao = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vComissao) ?? c.vComissao);                
+                vTotalComissao = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vComissao) ?? c.vComissao);
                 CountItens = currentModel.lItens.Count;
             }
             catch (Exception ex)
@@ -1565,7 +1567,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                     if (currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf == true)
                         currentModel.idRepresentadaPdf = representada.Id;
-                    
+
                     currentModel.dEmissao = currentModel.dEmissao;
                     currentModel.xEndereco = ItemEndereco.Detail;
 
