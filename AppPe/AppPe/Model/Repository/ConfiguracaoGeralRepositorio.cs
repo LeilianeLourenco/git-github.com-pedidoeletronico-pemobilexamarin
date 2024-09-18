@@ -67,9 +67,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         public static bool GetExibeNF(int idEmpresa)
         {
-            return App.Data.Connection.Table<ConfiguracaoGeralModel>()
+            return App.Data.Connection.Table<OmieConfiguracaoGeralModel>()
                     .Where(c => c.idEmpresa == idEmpresa)
-                    .Select(c => c.bEnviarInfoAdicionaisParaNf).FirstOrDefault() ?? false;
+                    .Select(c => c.bEnviarInfoAdicionaisParaNf).FirstOrDefault();
         }
 
         public static double ObterValorLimiteVendasProduto(int? idProduto)

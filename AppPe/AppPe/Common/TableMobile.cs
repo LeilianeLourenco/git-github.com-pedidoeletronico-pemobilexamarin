@@ -23,6 +23,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_CONDICAOPAGAMENTO = "TB_CONDICAOPAGAMENTO";
         public const string TB_RECEBIMENTOTITULOS = "TB_RECEBIMENTOTITULOS";
         public const string TB_RECEBIMENTOTITULOS_MOVIMENTACOES = "TB_RECEBIMENTOTITULOS_MOVIMENTACOES";
+        public const string TB_OMIE_CONFIGURACOES_GERAIS = "TB_OMIE_CONFIGURACOES_GERAIS";
         public const string TB_CONFIGURACOES_GERAIS = "TB_CONFIGURACOES_GERAIS";
         public const string TB_CONFIGURACOES_ESPECIFICAS = "TB_CONFIGURACOES_ESPECIFICAS";
         public const string TB_JORNADA_TRABALHO = "TB_JORNADA_TRABALHO";
@@ -286,6 +287,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                         return "APIEmpresa";
                     default:
                         return TB_EMPRESA;
+                }
+            if (classe == typeof(OmieConfiguracaoGeralModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idOmieConfigGeral";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "APIomieConfiguracoesGerais";
+                    default:
+                        return TB_OMIE_CONFIGURACOES_GERAIS;
                 }
             if (classe == typeof(ConfiguracaoGeralModel))
                 switch (tipoRetornoInfoClass)
