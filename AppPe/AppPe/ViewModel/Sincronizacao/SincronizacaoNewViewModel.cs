@@ -328,6 +328,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<ExtensaoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownload<OmieConfiguracaoGeralModel>();
+                if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPaginado<ConfiguracaoGeralModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPaginado<ConfiguracaoEspecificaModel>();              

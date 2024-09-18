@@ -60,6 +60,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                 try { this.Connection.CreateTable<EmpresaAspnetUsersModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_EMPRESA_ASPNETUSERS; }
                 try { this.Connection.CreateTable<EmpresaAspnetUsers_Meta>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_EMPRESA_ASPNETUSERS_METAS; }
                 try { this.Connection.CreateTable<EmpresaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_EMPRESA; }
+                try { this.Connection.CreateTable<OmieConfiguracaoGeralModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_OMIE_CONFIGURACOES_GERAIS; }
                 try { this.Connection.CreateTable<ConfiguracaoGeralModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_CONFIGURACOES_GERAIS; }
                 try { this.Connection.CreateTable<TabelaEscalonadaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_TABELAESCALONADA; }
                 try { this.Connection.CreateTable<TabelaEscalonadaFaixaComissaoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_TABELAESCALONADA_FAIXACOMISSAO; }
