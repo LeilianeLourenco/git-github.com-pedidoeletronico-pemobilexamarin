@@ -242,14 +242,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
             var valorUnitario = (EntryValorUnitario.Behaviors[0] as ValorUnitarioComImpostosBehaviors);
             var pdesconto = (EntryDesconto.Behaviors[0] as DescontoItemBehaviors);
-            var vdesconto = (EntryValorDesconto.Behaviors[0] as DescontoItemBehaviors);
-            var pcomissao = (EntryPComissao.Behaviors[0] as ComissaoItemBehaviors);
-            var vcomissao = (EntryValorComissao.Behaviors[0] as ComissaoItemBehaviors);
+            var vdesconto = (EntryValorDesconto.Behaviors[0] as DescontoItemBehaviors);        
             if (ViewModel.editarItemViewModel == null)
             {
                 return false;
             }
-            return await ViewModel.editarItemViewModel.ValidateCamposTask(zerarvalores, valorUnitario, pdesconto, vdesconto, pcomissao, vcomissao);
+            return await ViewModel.editarItemViewModel.ValidateCamposTask(zerarvalores, valorUnitario, pdesconto, vdesconto);
         }
 
         private void CarregarListaPreco()

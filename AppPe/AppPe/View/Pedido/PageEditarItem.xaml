@@ -287,29 +287,6 @@
                                                     <behaviors:ComissaoItemBehaviors x:Name="ComissaoPorcent" TpValidacao="PORCENTAGEM" />
                                                 </custom:ExtendedEntry.Behaviors>
                                             </custom:ExtendedEntry>
-                                            <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center">
-                                                <abstractions:SvgImage HorizontalOptions="End"
-                                            SvgPath="{StaticResource ImagemCheck}"
-                                            IsVisible="{Binding Source={x:Reference ComissaoPorcent}, Path=IsValid}">
-                                                    <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
-                                                    </abstractions:SvgImage.HeightRequest>
-                                                    <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
-                                                    </abstractions:SvgImage.WidthRequest>
-                                                </abstractions:SvgImage>
-                                                <abstractions:SvgImage  HorizontalOptions="End"
-                                                                  SvgPath="{StaticResource ImagemErro}"
-                                                                  IsVisible="{Binding Source={x:Reference ComissaoPorcent}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}">
-                                                    <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
-                                                    </abstractions:SvgImage.HeightRequest>
-                                                    <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
-                                                    </abstractions:SvgImage.WidthRequest>
-
-                                                </abstractions:SvgImage>
-                                            </Grid>
                                         </Grid>
 
                                         <!--VALOR DESCONTO-->
@@ -327,29 +304,6 @@
                                                     <behaviors:ComissaoItemBehaviors x:Name="ComissaoValor" TpValidacao="VALOR" />
                                                 </custom:ExtendedEntry.Behaviors>
                                             </custom:ExtendedEntry>
-                                            <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center">
-                                                <abstractions:SvgImage HorizontalOptions="End"
-                                            SvgPath="{StaticResource ImagemCheck}"
-                                            IsVisible="{Binding Source={x:Reference ComissaoValor}, Path=IsValid}">
-                                                    <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
-                                                    </abstractions:SvgImage.HeightRequest>
-                                                    <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
-                                                    </abstractions:SvgImage.WidthRequest>
-                                                </abstractions:SvgImage>
-                                                <abstractions:SvgImage  HorizontalOptions="End"
-                                                                  SvgPath="{StaticResource ImagemErro}"
-                                                                  IsVisible="{Binding Source={x:Reference ComissaoValor}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}">
-                                                    <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
-                                                    </abstractions:SvgImage.HeightRequest>
-                                                    <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
-                                                    </abstractions:SvgImage.WidthRequest>
-
-                                                </abstractions:SvgImage>
-                                            </Grid>
                                         </Grid>
 
                                         <!--Informações Adicionais-->

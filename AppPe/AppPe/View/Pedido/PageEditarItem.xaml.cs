@@ -129,7 +129,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                         UtilNavidate.PopAsync();
                     }
                     else
-                        await App.Messages.ShowAsync(string.Format("Verifique os campos em vermelho."));
+                        await App.Messages.ShowAsync(string.Format("Verifique os campos com erro."));
                 }
             }
             catch (Exception ex)
@@ -174,12 +174,9 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
             var valorUnitario = (EntryValorUnitario.Behaviors[0] as ValorUnitarioComImpostosBehaviors);
             var pdesconto = (EntryDesconto.Behaviors[0] as DescontoItemBehaviors);
-            var vdesconto = (EntryValorDesconto.Behaviors[0] as DescontoItemBehaviors);
-            var pcomissao = (EntryPComissao.Behaviors[0] as ComissaoItemBehaviors);
-            var vcomissao = (EntryValorComissao.Behaviors[0] as ComissaoItemBehaviors);
+            var vdesconto = (EntryValorDesconto.Behaviors[0] as DescontoItemBehaviors);          
 
-
-            return await ViewModel.ValidateCamposTask(zerarvalores, valorUnitario, pdesconto, vdesconto, pcomissao, vcomissao);
+            return await ViewModel.ValidateCamposTask(zerarvalores, valorUnitario, pdesconto, vdesconto);
         }
 
         protected override async void OnDisappearing()
