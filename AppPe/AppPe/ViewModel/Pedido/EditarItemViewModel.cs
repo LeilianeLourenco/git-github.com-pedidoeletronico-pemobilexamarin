@@ -598,26 +598,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public async Task<bool> ValidateCamposTask(bool zerarvalores,
            ValorUnitarioComImpostosBehaviors valorUnitario,
            DescontoItemBehaviors pdesconto,
-           DescontoItemBehaviors vdesconto,
-           ComissaoItemBehaviors pcomissao,
-           ComissaoItemBehaviors vcomissao)
+           DescontoItemBehaviors vdesconto)
         {
             var bretorno = false;
             await Task.Run(() =>
             {
                 if (valorUnitario != null &&
                     pdesconto != null &&
-                    vdesconto != null &&
-                    pcomissao != null &&
-                    vcomissao != null)
+                    vdesconto != null )
                 {
                     bretorno = (
                         valorUnitario.IsValid
                         && pdesconto.IsValid
-                        && vdesconto.IsValid
-                        && pcomissao.IsValid
-                        && vcomissao.IsValid);
-
+                        && vdesconto.IsValid);
                     if (zerarvalores && !bretorno)
                     {
                         if (!pdesconto.IsValid || !vdesconto.IsValid || !valorUnitario.IsValid)
@@ -642,13 +635,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         //            currentModel.currentTabelaPreco.vUnitario,
                         //            pStVenda ?? 0, pIpiVenda ?? 0);
                         //}
-
-                        if (!pcomissao.IsValid || !vcomissao.IsValid)
-                        {
-                            pComissao = currentModel.currentTabelaPreco.pComissao;
-                            PedidoVendaCalculos.CalculoValorComissao(currentModel);
-                        }
-
+                     
                         PedidoVendaCalculos.AtualizaValores(currentModel);
                     }
                 }

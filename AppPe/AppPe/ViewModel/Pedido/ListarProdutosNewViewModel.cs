@@ -689,8 +689,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         if (vQtde > 0 && itemSelected.currentTabelaPreco != null)
                         {
                             if (ItensSelecionados.Any(c => c.idProduto == itemSelected.idProduto) == false)
-                            {
-                                if (itemSelected.vQtdEstoque > 0|| itemSelected.stVendaSemEstoque)
+                            {                           
+                                if ((itemSelected.vQtdEstoque > 0 || itemSelected.vQtdEstoque == null) || itemSelected.stVendaSemEstoque)
                                     ItensSelecionados.Add(itemSelected);
                                 else
                                 {
