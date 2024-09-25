@@ -25,6 +25,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
                 {
                     var item = sender as Stepper;
                     await StepperOnChanged(item);
+
+                    PageListarProdutosNew.currentViewModel.itemSelected = null;
                 }
             }
             catch (Exception ex)
@@ -32,8 +34,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
                 ex.TrakException("StepperValor_OnValueChanged");
                 //GoogleInsightsReportingConstants.TrakException("Erro no evendo de Stepper do Item do pedido ", ex.Message, true);
             }
-        } 
-        
+        }
+
         public static async Task StepperOnChanged(Stepper item)
         {
             try
@@ -44,6 +46,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
                 if (item != null)
                 {
                     PedidoVendaItensModel itemPedido = item.BindingContext as PedidoVendaItensModel;
+
+                    if (itemPedido.pStVenda == 0)
+                        itemPedido.pStVenda = itemPedido.currentTabelaPreco.pStVenda;
 
                     bool stVendaSemEstoque = itemPedido?.stVendaSemEstoque ?? false;
                     if (item?.Value <= itemPedido?.vQtdEstoque || stVendaSemEstoque)
