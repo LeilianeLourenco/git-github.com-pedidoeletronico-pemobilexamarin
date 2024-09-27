@@ -53,7 +53,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
                     PedidoVendaItensModel itemPedido = item.BindingContext as PedidoVendaItensModel;
 
                     if (itemPedido.pStVenda == 0)
-                        itemPedido.pStVenda = itemPedido.currentTabelaPreco.pStVenda;
+                        itemPedido.pStVenda = itemPedido?.currentTabelaPreco?.pStVenda;
 
                     bool stVendaSemEstoque = itemPedido?.stVendaSemEstoque ?? false;
                     if (item?.Value <= itemPedido?.vQtdEstoque || stVendaSemEstoque)
