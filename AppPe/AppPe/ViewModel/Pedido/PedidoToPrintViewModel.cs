@@ -190,25 +190,22 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                 if (!string.IsNullOrEmpty(pedido.xDisplayIntegracao) || App.tipouser == App.TipoUser.OMIE || App.tipouser == App.TipoUser.BLING)
                 {
-                    xNumPedido = pedido.xDisplayIntegracao != null ? pedido.xDisplayIntegracao.ToString().PadLeft(6, '0') : "------";
+                    xNumPedido = pedido.xDisplayIntegracao != null ? pedido.xDisplayIntegracao.ToString().PadLeft(4, '0') : "-----";
                 }
                 else
                 {
-                    xNumPedido = pedido.idPedidoDisplay != null ? pedido.idPedidoDisplay.ToString().PadLeft(6, '0') : "------";
+                    xNumPedido = pedido.idPedidoDisplay != null ? pedido.idPedidoDisplay.ToString().PadLeft(4, '0') : "-----";
                 }
 
-                xCliente += $@"{Environment.NewLine}{(pedido.stLancamento == 0 ? "Orçamento" : "Pedido")}: {xNumPedido}{Environment.NewLine}";
-                xCliente += $@"Emissão: {(pedido.idPedidoVenda > 0 ? pedido.dEmissao.AddHours(-3).ToString("dd/MM/yyyy HH:mm") : pedido.dEmissao.ToString("dd/MM/yyyy HH:mm"))}{Environment.NewLine}";
+                xCliente += $@"{(pedido.stLancamento == 0 ? "Orçamento" : "Pedido")}: {xNumPedido} - ";
+                xCliente += $@"{(pedido.idPedidoVenda > 0 ? pedido.dEmissao.AddHours(-3).ToString("dd/MM/yyyy HH:mm") : pedido.dEmissao.ToString("dd/MM/yyyy HH:mm"))}{Environment.NewLine}";
                 if (pedido.stLancamento == 0)
                 {
                     xCliente += $@"Valido até: {(pedido.dtValidadeOrcamento ?? DateTime.UtcNow).ToString("dd/MM/yyyy HH:mm")}{Environment.NewLine}";
                 }
-                xCliente += $@"Prazo: {CondicaoPagamentoRepository.GetDisplay(pedido.idCondicaoPagamento ?? 0)}{Environment.NewLine}";
-                xCliente += $@"Forma: {pedido.xFormaPagamento}{Environment.NewLine}";
+                xCliente += $@"Prazo: {CondicaoPagamentoRepository.GetDisplay(pedido.idCondicaoPagamento ?? 0)}{Environment.NewLine}";        
                 xCliente += $@"Vendedor: {EmpresaAspnetUsersRepository.GetDisplay(pedido.idRepresentantePedido ?? 0)}{Environment.NewLine}";
-                xCliente += $@"________________________________{Environment.NewLine}";
-                xCliente += $@"{Environment.NewLine}";
-                //xCliente += $@"=================================={Environment.NewLine}";    
+                xCliente += $@"________________________________{Environment.NewLine}";              
                 var cliente = ClienteRepository.GetClienteModel(pedido.idClientesOffLine);
                 xCliente += $@"Fantasia: {cliente.xFantasia}{Environment.NewLine}";
                 xCliente += $@"Razao: {cliente.xRazaoSocial}{Environment.NewLine}";
@@ -234,11 +231,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 xCliente += $@"IE/RG: {cliente.xRgIe}{Environment.NewLine}";
 
                 // sep1
-                xheader_item += $"{Environment.NewLine}CÓD. | DESCRIÇÃO{Environment.NewLine}";
+                xheader_item += $"CÓD. | DESCRIÇÃO";
                 // sep1
 
+                int contador = 0;
                 foreach (var item in pedido.lItens)
-                {
+                {                    
                     var cAlternativo = item.cAlternativo;
                     if ((item.idProduto ?? 0) > 0)
                     {
@@ -260,17 +258,20 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     item.vSubTotal = unitarioCheio * item.vQtdItem;
                     if ((item.idGradeCor == 0 || item.idGradeCor == null) && (item.idGradeTamanho == 0 || item.idGradeTamanho == null))
                     {
+                        if (contador > 0)
+                            xItem = $"\n{Environment.NewLine}";
+
                         if (item.vDesconto > 0)
-                        {
-                            xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                        {                           
+                            xItem += $"{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                             xItem += $"\n C/ desc: {item.xQtde} {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                         }
                         else
                         {
-                            xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                            xItem += $"{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                         }
 
-                        itens += xItem;
+                        itens += xItem;                       
                     }
 
                     else if ((item.idGradeCor == 0 || item.idGradeCor == null) && (item.idGradeTamanho != 0 || item.idGradeTamanho != null))
@@ -280,14 +281,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         {
                             if (tam.idGradeTamanho == item.idGradeTamanho)
                             {
+                                if (contador > 0)
+                                    xItem = $"\n{Environment.NewLine}";
+
                                 if (item.vDesconto > 0)
                                 {
-                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {tam.xNome}{Environment.NewLine} S/ Desc: {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                    xItem += $"{cAlternativo.ToUpper()} | {item.xDescricao} | {tam.xNome}{Environment.NewLine} S/ Desc: {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                                     xItem += $"\n C/ Desc: {item.xQtde}  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                                 }
                                 else
                                 {
-                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                    xItem += $"{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                                 }
 
                                 itens += xItem;
@@ -302,14 +306,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         {
                             if (cor.idGradeCor == item.idGradeCor)
                             {
+                                if (contador > 0)
+                                    xItem = $"\n{Environment.NewLine}";
+
                                 if (item.vDesconto > 0)
                                 {
-                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {cor.xNome}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                    xItem += $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {cor.xNome}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                                     xItem += $"\n C/ desc: {item.xQtde} {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = R$ {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                                 }
                                 else
                                 {
-                                    xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {cor.xNome}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                                    xItem += $"{cAlternativo.ToUpper()} | {item.xDescricao} | {cor.xNome}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                                 }
 
 
@@ -342,15 +349,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             }
                         }
 
+                        if (contador > 0)
+                            xItem = $"\n{Environment.NewLine}";
 
                         if (item.vDesconto > 0)
                         {
-                            xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {nomeCor} | {nomeTam}{Environment.NewLine} S/ Desc: {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                            xItem += $"{cAlternativo.ToUpper()} | {item.xDescricao} | {nomeCor} | {nomeTam}{Environment.NewLine} S/ Desc: {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                             xItem += $"\n C/ Desc: {item.xQtde} {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = R$ {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                         }
                         else
                         {
-                            xItem = $"\n{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao} | {nomeCor} | {nomeTam}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
+                            xItem += $"{cAlternativo.ToUpper()} | {item.xDescricao} | {nomeCor} | {nomeTam}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                         }
 
 
@@ -358,13 +367,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         itens += xItem;
                     }
 
+                    contador++;
                     //var xItem = $"{Environment.NewLine}{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} Qtde: {item.xQtde}  {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                     //itens += xItem;
                 }
 
                 //totais += Separador3;
 
-                totais = $"{Environment.NewLine}{Environment.NewLine}";
+                totais = $"{Environment.NewLine}";
                 //totais += $@"==================================={Environment.NewLine}";
                 totais += $@"________________________________{Environment.NewLine}";
                 totais += $@"{Environment.NewLine}";
@@ -390,7 +400,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (pedido.vOutrasPed > 0)
                     totais += $"TOTAL DE OUTROS: {pedido.vOutrasPed.ToCurrencyStringPtBr()}{Environment.NewLine}";
                 totais += $"TOTAL DO PEDIDO: {pedido.VTotal.ToCurrencyStringPtBr()}{Environment.NewLine}";
-                totais += $"\n";               
+                totais += $"\n";
 
                 if (!string.IsNullOrEmpty(pedido.xInfAdicional))
                     totais += $"INF. ADICIONAL: {pedido.xInfAdicional}{Environment.NewLine}";
@@ -701,28 +711,28 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             else
                             {
                                 if (line.ToLower().Contains("obrigado pela preferência"))
-                                {                                   
+                                {
                                     var imageSource = (stackLayout.Children.FirstOrDefault(c => c is Xamarin.Forms.Image img) as Xamarin.Forms.Image)?.Source as FileImageSource;
                                     if (imageSource != null)
                                     {
                                         var filePathImage = imageSource.File;
                                         if (File.Exists(filePathImage))
-                                        {                                           
+                                        {
                                             var tempImagePath = Path.Combine(Path.GetTempPath(), Path.GetFileName(filePathImage));
                                             File.Copy(filePathImage, tempImagePath, overwrite: true);
 
                                             using (var pdfImage = XImage.FromFile(tempImagePath))
                                             {
-                                              
+
                                                 double newImageWidth = 80;
                                                 double newImageHeight = 80;
 
                                                 double imageX = x;
                                                 double imageY = y - 105;
-                                                
+
                                                 gfx.DrawImage(pdfImage, imageX, imageY, newImageWidth, newImageHeight);
                                             }
-                                          
+
                                             File.Delete(tempImagePath);
                                         }
                                     }
