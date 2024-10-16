@@ -102,7 +102,7 @@
 
                     <!--Venda sem Estoque-->
                     <Label Text="Venda sem Estoque" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <Switch IsEnabled="False" IsToggled="{Binding currentModel.stVendaSemEstoque}" HorizontalOptions="Start" />
+                    <Switch IsToggled="{Binding currentModel.stVendaSemEstoque}" HorizontalOptions="Start" />
 
                     <!--Registro Ativo-->
                     <Label Text="Registro ativo ?" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
