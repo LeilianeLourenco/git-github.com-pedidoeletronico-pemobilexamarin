@@ -326,7 +326,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownload<EstoqueModel>();
 
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownload<ExtensaoModel>();
+                    await SincronizacaoDownload<ExtensaoEmpresaModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<OmieConfiguracaoGeralModel>();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -2197,9 +2197,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     currentModel.iCount = lsync.Count;
                     foreach (var registro in lsync)
                     {
-                        if (registro.GetType() == typeof(ExtensaoModel))
+                        if (registro.GetType() == typeof(ExtensaoEmpresaModel))
                         {
-                            var extensaoModel = registro as ExtensaoModel;
+                            var extensaoModel = registro as ExtensaoEmpresaModel;
                             if (extensaoModel != null)
                                 extensaoModel.idEmpresa =
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
@@ -2270,9 +2270,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     currentModel.iCount = page;
                     foreach (var registro in lsync)
                     {
-                        if (registro.GetType() == typeof(ExtensaoModel))
+                        if (registro.GetType() == typeof(ExtensaoEmpresaModel))
                         {
-                            var extensaoModel = registro as ExtensaoModel;
+                            var extensaoModel = registro as ExtensaoEmpresaModel;
                             if (extensaoModel != null)
                                 extensaoModel.idEmpresa =
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;

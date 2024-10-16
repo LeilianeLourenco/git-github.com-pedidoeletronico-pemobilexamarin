@@ -16,8 +16,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_STATUS_PROIBIDO = "TB_STATUS_PROIBIDO";
         public const string TB_SINCRONIZACAOESTOQUE = "TB_SINCRONIZACAOESTOQUE";
         public const string TB_ATIVIDADES = "TB_ATIVIDADES"; //agenda
-        public const string TB_TIPOATIVIDADESCRM = "TB_TIPOATIVIDADESCRM"; //agenda
-        public const string TB_EXTENSAO = "TB_EXTENSAO";
+        public const string TB_TIPOATIVIDADESCRM = "TB_TIPOATIVIDADESCRM"; //agenda 
+        public const string TB_EXTENSAO_EMPRESA = "TB_EXTENSAO_EMPRESA";
         public const string TB_FORCEATUALIZACAO = "TB_FORCEATUALIZACAO";
         public const string TB_STATUS = "TB_STATUS";
         public const string TB_CONDICAOPAGAMENTO = "TB_CONDICAOPAGAMENTO";
@@ -138,7 +138,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return TB_INTEGRACAO;
                 }
-            if (classe == typeof(ExtensaoModel))
+            if (classe == typeof(ExtensaoEmpresaModel))
                 switch (tipoRetornoInfoClass)
                 {
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
@@ -146,7 +146,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     case UtilHttp.TipoRetornoInfoClass.ApiRegistro:                       
                         return "APIextensaoEmpresa";
                     default:
-                        return TB_EXTENSAO;
+                        return TB_EXTENSAO_EMPRESA;
                 }
             if (classe == typeof(RecebimentoTitulosModel))
                 switch (tipoRetornoInfoClass)
