@@ -19,7 +19,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
     public class PedidoRepository
     {
         public static List<PedidoVendaListarModel> GetInfinit(int skip, int take, string xFiltro,
-            string idRepresentantePedido = null, int? idClienteOffLine = null, int idPedidoVendaOffLine = 0)
+            string idRepresentantePedido = null, int? idClienteOffLine = null, int idPedidoVendaOffLine = 0, bool bGeraOrcamento = true)
         {
             var retorno = new List<PedidoVendaListarModel>();
             try
@@ -129,6 +129,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         xQuery += $" and TB_PEDIDOVENDA.idClientesOffLine = '{idClienteOffLine}'";
                 }
 
+                if (!bGeraOrcamento)
+                    xQuery += $" and tb_pedidovenda.stLancamento != 0";
+
                 if (!string.IsNullOrEmpty(xFiltro))
                 {
                     xFiltro = xFiltro.RemoverAcentos().ToUpper();
@@ -144,7 +147,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 xQuery += $@" ORDER BY COALESCE(tb_pedidovenda.idPedidoDisplay, 99999999999) DESC
                                             LIMIT {take} OFFSET {skip}";
-
                 retorno = App.Data.Connection.Query<PedidoVendaListarModel>(xQuery);
 
                 return retorno;
@@ -337,7 +339,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
             return dicLocais;
         }
-      
+
         public static PedidoVendaItensModel SetLocalEstoque(PedidoVendaItensModel item, int? idCliente, int _idRepresentante)
         {
             try
@@ -437,7 +439,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         }
 
         public static bool StatusBloqueiaPedido(int idStatus) => App.Data.Connection.Query<StatusModel>($"SELECT bBloquearEdicaoDePedido from {TableMobile.TB_STATUS} WHERE idStatus = {idStatus}").FirstOrDefault().bBloquearEdicaoDePedido;
-      
+
         public static bool PedidoIntegrado(int idPedidoVenda)
         {
             var Query =
@@ -631,7 +633,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 if (objPedido.idPedidoDisplay != null && objPedido.idPedidoDisplay <= 0)
                     objPedido.idPedidoDisplay = null;
-               
+
                 double vTotalPedido = 0;
                 double vDescontoTotal = 0;
                 foreach (var item in objPedido.lItens)
