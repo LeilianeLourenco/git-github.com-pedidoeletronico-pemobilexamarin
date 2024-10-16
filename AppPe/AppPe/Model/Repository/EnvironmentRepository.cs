@@ -221,7 +221,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
 
                 xQuery =
-                    $"DELETE FROM TB_EXTENSAO WHERE idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
+                    $"DELETE FROM TB_EXTENSAO_EMPRESA WHERE idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
 
                 App.Data.Connection.Execute(xQuery);
 

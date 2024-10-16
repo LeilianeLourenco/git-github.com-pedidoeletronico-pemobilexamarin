@@ -9,7 +9,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         public static bool GetbGeraOrcamento(int idEmpresa)
         {
             var xQuery =
-               $@"SELECT bGeraOrcamento FROM {TableMobile.TB_EXTENSAO} WHERE 
+               $@"SELECT bGeraOrcamento FROM {TableMobile.TB_EXTENSAO_EMPRESA} WHERE 
                                     idEmpresa = {idEmpresa}";
             var resultado = App.Data.Connection.ExecuteScalar<bool>(xQuery);
             return resultado;

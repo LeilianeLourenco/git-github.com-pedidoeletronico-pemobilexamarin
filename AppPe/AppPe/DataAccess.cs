@@ -49,7 +49,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                 }
                 try
                 {
-                    this.Connection.CreateTable<ExtensaoModel>();
+                    this.Connection.CreateTable<ExtensaoEmpresaModel>();
                 }
                 catch (Exception ex)
                 {
