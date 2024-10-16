@@ -245,12 +245,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     else if(bUsaClienteEspecifico)
                         idCliente = PageInfoCliente._dados?.idClientesOffLine;
 
-                    var registros = PedidoRepository.GetInfinit(pedidos.Count, 20, (IsUsingSearch ? xFiltro : ""), ItemRepresentante.Id.ToString(), idCliente);
+                    int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+
+                    bool bGeraOrcamento = ExtensaoEmpresaRepository.GetbGeraOrcamento(idEmpresa);
+                    var registros = PedidoRepository.GetInfinit(pedidos.Count, 20, (IsUsingSearch ? xFiltro : ""), ItemRepresentante.Id.ToString(), idCliente, 
+                        bGeraOrcamento: bGeraOrcamento);
 
                     foreach (var registro in registros)
                     {
                         pedidos.Add(registro);
                     }
+
                     xFooter1 = string.Empty;
                     xFooter2 = $"Registros ({pedidos.Count})";
                     dOpacityLista = 1;
