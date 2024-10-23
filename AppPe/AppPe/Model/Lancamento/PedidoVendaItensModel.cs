@@ -26,6 +26,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             this.bTabelasCarregadas = false;
             this.bLocaisCarregados = false;
         }
+
+        public string xNomeVariacao { get; set; }
+        public List<GradesComposicaoModel> lTiposVariacoes { get; set; }
+
         public bool bTabelasCarregadas { get; set; }
         public bool stVendaSemEstoque { get; set; }
 
@@ -587,12 +591,27 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
+        private ObservableCollection<PedidoVendaItensModel> _itensVariacao;
+
+        [Ignore]
+        [IgnoreDataMember]
+        public ObservableCollection<PedidoVendaItensModel> ItensVariacao
+        {
+            get { return _itensVariacao; }
+            set
+            {
+                _itensVariacao = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Propriedade para mostrar se o produto tem algum tipo de grade
         /// </summary>
         [Ignore]
         [IgnoreDataMember]
-        public bool HasGrade => QtdeGrade > 0;
+        public bool HasGrade => QtdeGrade > 0 || bProdutoVariacao;
+        public bool bProdutoVariacao { get; set; }
 
         private bool _bPrecoAtualizado = false;
 
@@ -1057,18 +1076,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
                     if (!editting && !PageListarProdutosNew.currentViewModel.IsBusy)
                     {
-                        if(_modelItem.currentTabelaPreco.lFaixaComissao?.Count() == 0)
+                        if (_modelItem.currentTabelaPreco.lFaixaComissao?.Count() == 0)
                         {
                             await App.Messages.ShowAsync("Não foi encontrado nenhuma faixa de tabela escalonada relacionado a esse item, verifique de modificar a tabela de preço do item para buscar uma tabela escalonada relacionada!");
                         }
                         else
-                        { 
+                        {
                             editting = true;
                             await Task.Yield(); // Delay(300);
                             UtilNavidate.PushAsync(new PageListarTabelaEscalonada(valorVenda, idProduto, faixaComissao, idEmpresa, _modelItem));
                         }
                     }
-                } 
+                }
             }
             catch (Exception ex)
             {

@@ -332,7 +332,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPaginado<ConfiguracaoGeralModel>();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPaginado<ConfiguracaoEspecificaModel>();              
+                    await SincronizacaoDownloadPaginado<ConfiguracaoEspecificaModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<EmpresaAspnetUsersModel>();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -357,6 +357,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownload<GradeCorModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<GradeTamanhoModel>();
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownload<GradesModel>();
+
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadGrades<GradesComposicaoModel>();
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadGrades<GradeVariacaoProdutoModel>();
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadGrades<GradeVariacaoProdutoComposicaoModel>();
+
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<TabelaPrecoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -919,7 +929,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             IntegracaoRepository integ = new IntegracaoRepository();
 
             var xTableName = TableMobile.GetTableNameByModel<T>();
-           
+
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
             // issue 2705 ajustando a data de sincronização IGOR BIANCHINI SPAGNOL
@@ -1007,6 +1017,53 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     xTableName == TableMobile.TB_PEDIDOVENDA ? App.CurrentAspnetUserModel.Id : null);
                         await SavePrivate(lsync, xTableName);
                     }
+
+                    integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (xTableName.ToUpper().Contains("TB_RECEBIMENTO"))
+                {
+                    await FinanceiroRepository.RemoverTodosRecebimentos<T>();
+                    await SincronizacaoDownload<T>(true);
+                }
+                else
+                {
+                    throw new Exception($"{xTableName} - {ex.Message}");
+                }
+            }
+        }
+
+        private async Task SincronizacaoDownloadGrades<T>(bool bForceInicial = false) where T : class
+        {
+            IntegracaoRepository integ = new IntegracaoRepository();
+
+            var xTableName = TableMobile.GetTableNameByModel<T>();
+
+            int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+
+            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
+
+            if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
+                _ultimaDataSinc = DateTime.Today.AddYears(-50);
+            else
+                _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-5);
+
+            try
+            {
+                if (!ocorreuErro && !bFalhaConexao)
+                {
+                    currentModel.Display = xTableName;
+
+                    var lsync = new List<T>();
+
+                    lsync = await UtilHttp.GetListRegistroGradeSync<T>(
+                                param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
+                                param2: _ultimaDataSinc,
+                                param3:
+                                xTableName == TableMobile.TB_PEDIDOVENDA ? App.CurrentAspnetUserModel.Id : null);
+                    await SavePrivate(lsync, xTableName);
 
                     integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
                 }

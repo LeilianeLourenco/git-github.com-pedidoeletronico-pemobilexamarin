@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -319,6 +320,81 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 
                     App.Data.Connection.Execute(xQuery);
                 }
+
+            }
+            catch (System.Net.WebException)
+            {
+                SincronizacaoNewViewModel.bFalhaConexao = true;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("GetListRegistroSync", false);
+                if (!await App.IsConected() || ex.Message?.ToUpper() == "THE OPERATION WAS CANCELED")
+                    SincronizacaoNewViewModel.bFalhaConexao = true;
+                else
+                    SincronizacaoNewViewModel.ocorreuErro = true;
+
+                SincronizacaoNewViewModel.xMensagemErro = ex.Message;
+            }
+            return lregistros;
+        }
+
+        public static async Task<List<T>> GetListRegistroGradeSync<T>(object param1, DateTime? param2 = null,
+           object param3 = null) where T : class
+        {
+            var lregistros = new List<T>();
+            try
+            {
+                param2 = param2.Value.AddHours(-3);
+                IEnumerable<int> lIdsProduto = new List<int>();
+
+                if (TableMobile.GetApiRegistroByModel<T>() == "ApiGradesComposicao")
+                {
+                    string xQuery = $@"SELECT idGrade FROM TB_GRADES WHERE idEmpresa = {param1}";
+                    var lIdsGrade = App.Data.Connection.Query<GradesModel>(xQuery).Select(x => x.idGrade).ToList();
+                    var idsGrade = string.Join(",", lIdsGrade);
+
+                    var requestUri =
+                    $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsGrade}";
+
+                    var _apiClient = CurrentHttpClient2;
+
+                    var jsonResponse = await _apiClient.GetStringAsync(requestUri);
+                    lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+
+                }
+                if (TableMobile.GetApiRegistroByModel<T>() == "ApiProdutosGrade")
+                {
+                    string xQuery = $"SELECT idProduto FROM TB_PRODUTO WHERE idProdutoPai != 0 AND idEmpresa = {param1}";
+                    lIdsProduto = App.Data.Connection.Query<ProdutoModel>(xQuery).ToList().Select(x => x.idProduto ?? 0);
+                    var idsProduto = string.Join(",", lIdsProduto);
+
+                    var requestUri =
+                    $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsProduto}";
+
+                    var _apiClient = CurrentHttpClient2;
+
+                    var jsonResponse = await _apiClient.GetStringAsync(requestUri);
+                    lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                }
+                if (TableMobile.GetApiRegistroByModel<T>() == "ApiProdutosComposicaoGrade")
+                {
+                    string xQuery = $"SELECT idProduto FROM TB_PRODUTO WHERE idProdutoPai != 0 AND idEmpresa = {param1}";
+                    lIdsProduto = App.Data.Connection.Query<ProdutoModel>(xQuery).ToList().Select(x => x.idProduto ?? 0);
+                    var idsProduto = string.Join(",", lIdsProduto);
+
+                    xQuery = $"SELECT idGradeProduto FROM tb_produto_grades WHERE idProduto IN ({idsProduto})";
+                    var lIdsProdutoGrades = App.Data.Connection.Query<GradeVariacaoProdutoModel>(xQuery).Select(x => x.idGradeProduto).ToList();
+                    var idsProdutoGrades = string.Join(",", lIdsProdutoGrades);
+
+                    var requestUri =
+                    $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsProdutoGrades}";
+
+                    var _apiClient = CurrentHttpClient2;
+
+                    var jsonResponse = await _apiClient.GetStringAsync(requestUri);
+                    lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                }            
 
             }
             catch (System.Net.WebException)
@@ -1037,7 +1113,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             get
             {
                 if (_currentHttpClient != null)
-                    return _currentHttpClient;
+                return _currentHttpClient;
 
                 var _clientHandler = new System.Net.Http.HttpClientHandler();
                 _clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
@@ -1049,7 +1125,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 return _currentHttpClient;
             }
             set { _currentHttpClient = value; }
-        }     
+        }
 
         private static HttpClient _currentApiMobileHttpClient = null;
         public static HttpClient CurrentApiMobileHttpClient

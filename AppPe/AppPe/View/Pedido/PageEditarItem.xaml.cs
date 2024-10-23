@@ -60,6 +60,14 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                             }
                         }
 
+                        if (StackLayoutItens.Children.Count == 0 && ViewModel.currentModel.ItensVariacao != null)
+                        {
+                            foreach (var item in ViewModel.currentModel.ItensVariacao)
+                            {
+                                StackLayoutItens.Children.Add(new VariacaoEditItemPedido() { BindingContext = item });
+                            }
+                        }
+
                         if (ViewModel.currentModel.currentTabelaPreco == null)
                         { 
                             App.Messages.ShowAsync($"Item sem Tabela de preço, contate o administrador para checar as configurações!");

@@ -180,7 +180,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         public int idCategoria { get; set; }
         [NotNull]
         public int idEmpresa { get; set; }
-
+        public bool bProdutoVariacao { get; set; }
 
         private bool _stVendaSemEstoque;
         [NotNull]

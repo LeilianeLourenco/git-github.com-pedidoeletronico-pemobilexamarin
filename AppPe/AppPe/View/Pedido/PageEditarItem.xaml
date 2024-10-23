@@ -70,8 +70,8 @@
                                 </Grid>
 
                                 <!--Local Estoque-->
-                                <Label Margin="5,5,0,0" Grid.Row="1"  Text="Local de Estoque" IsVisible="{Binding bUsaLocaisEstoque}" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
-                                <Grid RowSpacing="0" Grid.Row="2"  IsVisible="{Binding bUsaLocaisEstoque}">
+                                <Label Margin="5,5,0,0" Grid.Row="1" Text="Local de Estoque" IsVisible="{Binding bUsaLocaisEstoque}" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
+                                <Grid RowSpacing="0" Grid.Row="2" IsVisible="{Binding bUsaLocaisEstoque}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="Auto"/>
@@ -79,7 +79,7 @@
                                     <custom:BindablePicker x:Name="BindableLocalEstoque" ItemsSource="{Binding ListaLocalEstoque, Mode=TwoWay}" SelectedItem="{Binding CurrentLocalEstoque, Mode=TwoWay}" />
                                 </Grid>
 
-                                <Grid Grid.Row="3" x:Name="GridQuantidadeGradeContent" Padding="5,5,5,5" BackgroundColor="White">
+                                <Grid Grid.Row="3" Padding="5,5,5,5" BackgroundColor="White">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>

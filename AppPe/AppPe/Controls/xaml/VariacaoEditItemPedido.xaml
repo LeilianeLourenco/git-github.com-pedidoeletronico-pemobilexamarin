@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout  xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:lancamento="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.VariacaoEditItemPedido" Padding="5,5,5,5">
+
+
+    <StackLayout Orientation="Vertical" Spacing="10">
+        <Label Text="{Binding xNomeVariacao}" FontAttributes="Bold" FontSize="Medium"/>
+
+        <StackLayout Orientation="Horizontal" Spacing="10"
+                                 BindableLayout.ItemsSource="{Binding lTiposVariacoes}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Button Text="{Binding xNomeGrade}" 
+                                        BorderColor="Gray" 
+                                        BorderWidth="2" 
+                                        CornerRadius="10" 
+                                        WidthRequest="100" 
+                                        HeightRequest="50"/>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+    </StackLayout>
+
+</StackLayout>
