@@ -41,7 +41,7 @@
                 <Frame HasShadow="True" Padding="0,0,0,0" Margin="0,5,0,2">
                     <Button  x:Name="ButtonEntrar"
                Style="{StaticResource Success}" HeightRequest="50"
-               Command="{Binding currentModel.LoginCommand, Mode=TwoWay}"  Text="Entrar" />
+               Command="{Binding currentModel.LoginCommand, Mode=TwoWay}" Text="Entrar" />
                 </Frame>
                 <xaml:ExtendedActivityIndicator IsRunning="True" IsVisible="{Binding currentModel.BProcessando}" Color="{StaticResource AzulPrincipal}"/>
                 <Button Command="{Binding EsqueciSenhaCommand}" BackgroundColor="#FFFFFF" Text="Esqueceu sua senha?" TextColor="#2196f3" >

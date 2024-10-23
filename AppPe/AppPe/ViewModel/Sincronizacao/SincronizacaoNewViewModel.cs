@@ -358,15 +358,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<GradeTamanhoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownload<GradesModel>();
-
-                if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadGrades<GradesComposicaoModel>();
-                if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadGrades<GradeVariacaoProdutoModel>();
-                if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadGrades<GradeVariacaoProdutoComposicaoModel>();
-
+                    await SincronizacaoDownload<GradesModel>();             
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<TabelaPrecoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -439,6 +431,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPaginado<JornadaModel>();
+
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadGrades<GradesComposicaoModel>();
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadGrades<GradeVariacaoProdutoModel>();
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadGrades<GradeVariacaoProdutoComposicaoModel>();
 
                 if (bFalhaConexao)
                     AnaliseFinalSincronizacao("Ocorreu um erro de conexão com a internet durante a sincronização, tente novamente.");

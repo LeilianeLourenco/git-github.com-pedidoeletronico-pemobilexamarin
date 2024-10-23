@@ -761,14 +761,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 xQuery = $"select idGrade, xGrade from tb_grades where idGrade in ({listaIdsGrade})";
                 var grade = App.Data.Connection.Query<GradesModel>(xQuery).ToList();
 
-               
-
                 foreach (var lin in grade)
                 {
                     PedidoVendaItensModel item = new PedidoVendaItensModel();
                     item.xNomeVariacao = lin.xGrade;
-                    item.lTiposVariacoes = gradeComposicao.Where(x => x.idGrade == lin.idGrade).ToList();
-
+                    item.lTiposVariacoes = gradeComposicao.Where(x => x.idGrade == lin.idGrade).Select(x => x.xNomeGrade).ToList();
                     lItens.Add(item);
                 }
 
