@@ -1,8 +1,33 @@
 ﻿using SQLite;
+using System;
 using Xamarin.HLP.Mobile.AppPE.Common;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
 {
+    [Table(TableMobile.TB_GRADES)]
+    public class GradesModel
+    {
+        [PrimaryKey()]
+        public int idGrade { get; set; }
+        public string xGrade { get; set; }
+        public DateTime? dtUltimaAlteracao { get; set; }
+        public string idAspnetUserEdicao { get; set; }
+        public int idEmpresa { get; set; }
+        public bool bExcluido { get; set; }        
+    }
+
+    [Table(TableMobile.TB_GRADES_COMPOSICAO)]
+    public class GradesComposicaoModel
+    {
+        [PrimaryKey()]
+        public int idGradeComposicao { get; set; }
+        public string xNomeGrade { get; set; }
+        public int idGrade { get; set; }
+        public bool bExcluido { get; set; }
+        public DateTime? dtUltimaAlteracao { get; set; }
+        public string xImgPath { get; set; }
+        public string xCor { get; set; }
+    }
 
     [Table(TableMobile.TB_PRODUTO_GRADES)]
     public class GradeVariacaoProdutoModel
@@ -18,9 +43,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
     public class GradeVariacaoProdutoComposicaoModel
     {
         [PrimaryKey()]
-        public long idGradeProdutoComposicao { get; set; } 
-        public string xGradeComposicao { get; set; }  
+        public long idGradeProdutoComposicao { get; set; }  
         public long idGradeProduto { get; set; }
+        public int idGradeComposicao { get; set; } 
+        public string xGradeComposicao { get; set; }  
     }
 
 }

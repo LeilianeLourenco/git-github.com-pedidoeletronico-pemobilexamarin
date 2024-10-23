@@ -63,6 +63,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_TABELAESCALONADA_REPRESENTANTE = "TB_TABELAESCALONADA_REPRESENTANTE";
         public const string TB_GRADETAMANHO = "TB_GRADETAMANHO";
         public const string TB_GRADECOR = "TB_GRADECOR";
+        public const string TB_GRADES = "TB_GRADES";
+        public const string TB_GRADES_COMPOSICAO = "TB_GRADES_COMPOSICAO";
         public const string TB_PRODUTO_GRADES = "TB_PRODUTO_GRADES";
         public const string TB_PRODUTO_GRADES_COMPOSICAO = "TB_PRODUTO_GRADES_COMPOSICAO";
         public const string TB_TABELAPRECO = "TB_TABELAPRECO";
@@ -449,13 +451,33 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return TB_GRADECOR;
                 }
+            if (classe == typeof(GradesModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idGrade";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiGrades";
+                    default:
+                        return TB_GRADES;
+                }
+            if (classe == typeof(GradesComposicaoModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idGradeComposicao";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiGradesComposicao";
+                    default:
+                        return TB_GRADES_COMPOSICAO;
+                }
             if (classe == typeof(GradeVariacaoProdutoModel))
                 switch (tipoRetornoInfoClass)
                 {
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
                         return "idGradeProduto";
                     case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
-                        return "ApiVariacaoGradesMobile";
+                        return "ApiProdutosGrade";
                     default:
                         return TB_PRODUTO_GRADES;
                 }
@@ -465,7 +487,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
                         return "idGradeProdutoComposicao";
                     case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
-                        return "ApiVariacaoGradesComposicaoMobile";
+                        return "ApiProdutosComposicaoGrade";
                     default:
                         return TB_PRODUTO_GRADES_COMPOSICAO;
                 }

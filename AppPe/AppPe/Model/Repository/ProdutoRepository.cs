@@ -15,6 +15,8 @@ using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using Hlp.PedidoEletronico.Domain.Business.Calculos;
+using static Xamarin.HLP.Mobile.AppPE.Model.Lancamento.PedidoVendaItensModel;
+using Xamarin.Forms.Shapes;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 {
@@ -265,6 +267,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                                                 tb_produto.idEmpresa, 
                                                                 tb_produto.cAlternativo,    
                                                                 tb_produto.stVendaSemEstoque,
+                                                                tb_produto.bProdutoVariacao,
                                                                 {xNomeDisplay}         
                                                                 {xFields}
                                                                 coalesce(tb_produto.pIpiVenda,0)pIpiVenda,
@@ -275,7 +278,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                                                 coalesce(tb_unidademedida.nCasasDecimais,0) nCasasDecimais,
                                                                 coalesce(TB_UNIDADEMEDIDA.xSigla,'UN') xSigla,    
                                                                 tb_produto.xFileImagePrincipal ,                                                                                                     
-                                                                (Count(tb_gradetamanho.idGradeTamanho) + Count(tb_gradecor.idGradeCor)) as QtdeGrade
+                                                                (Count(tb_gradetamanho.idGradeTamanho) + Count(tb_gradecor.idGradeCor)) as QtdeGrade                                                               
 		                                                {xFrom}                                                                         
                                                                         left join tb_gradetamanho 
                                                                                         on tb_produto.idProduto = tb_gradetamanho.idProduto
@@ -732,6 +735,50 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             {
                 throw ex;
             }
+        }
+
+        public static List<PedidoVendaItensModel> GetVariacaoItem(PedidoVendaItensModel produto)
+        {
+            var lItens = new List<PedidoVendaItensModel>();
+            try
+            {
+                string xQuery = $"select idProduto from tb_produto where idProdutoPai = {produto.idProduto} and idEmpresa = {produto.idEmpresa}";
+                var idsProduto = App.Data.Connection.Query<ProdutoModel>(xQuery).ToList();
+
+                var listaIdsProduto = string.Join(",", idsProduto.Select(p => p.idProduto));
+                xQuery = $"select idGradeProduto from tb_produto_grades where idProduto in ({listaIdsProduto})";
+                var produtoGrade = App.Data.Connection.Query<GradeVariacaoProdutoModel>(xQuery).ToList();
+
+                var listaIdsGradeProduto = string.Join(",", produtoGrade.Select(p => p.idGradeProduto));
+                xQuery = $"select idGradeComposicao from tb_produto_grades_composicao where idGradeProduto in ({listaIdsGradeProduto})";
+                var produtoGradeComposicao = App.Data.Connection.Query<GradeVariacaoProdutoComposicaoModel>(xQuery).ToList();
+
+                var listaIdsGradeComposicao = string.Join(",", produtoGradeComposicao.Select(p => p.idGradeComposicao));
+                xQuery = $"select idGrade, xNomeGrade from tb_grades_composicao where idGradeComposicao in ({listaIdsGradeComposicao})";
+                var gradeComposicao = App.Data.Connection.Query<GradesComposicaoModel>(xQuery).ToList();
+
+                var listaIdsGrade = string.Join(",", gradeComposicao.Select(p => p.idGrade));
+                xQuery = $"select idGrade, xGrade from tb_grades where idGrade in ({listaIdsGrade})";
+                var grade = App.Data.Connection.Query<GradesModel>(xQuery).ToList();
+
+               
+
+                foreach (var lin in grade)
+                {
+                    PedidoVendaItensModel item = new PedidoVendaItensModel();
+                    item.xNomeVariacao = lin.xGrade;
+                    item.lTiposVariacoes = gradeComposicao.Where(x => x.idGrade == lin.idGrade).ToList();
+
+                    lItens.Add(item);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+                //Insights.Report(ex, Insights.Severity.Error);
+            }
+            return lItens;
         }
 
         /// <summary>

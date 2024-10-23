@@ -503,13 +503,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     {
                         if (currentModel.ItensGrade == null)
                         {
-                            if (currentModel.HasGrade && currentModel.ItensGrade == null)
+                            if (currentModel.HasGrade && !currentModel.bProdutoVariacao && currentModel.ItensGrade == null)
                                 currentModel.ItensGrade =
                                     new ObservableCollection<PedidoVendaItensModel>(
                                         ProdutoRepository.GetGradeItem(currentModel));
-                            else if (!currentModel.HasGrade)
+                            else if (!currentModel.HasGrade && !currentModel.bProdutoVariacao)
                                 currentModel.ItensGrade = new ObservableCollection<PedidoVendaItensModel> { currentModel };
+
+                            else if (currentModel.bProdutoVariacao)
+                                currentModel.ItensVariacao = new ObservableCollection<PedidoVendaItensModel>(
+                                        ProdutoRepository.GetVariacaoItem(currentModel));
+
                             CurrentTabelaPreco = ListaTabelaPreco.FirstOrDefault(c => c.Id == currentModel.idTabelaPreco);
+                                                 
                         }
                         else
                         {

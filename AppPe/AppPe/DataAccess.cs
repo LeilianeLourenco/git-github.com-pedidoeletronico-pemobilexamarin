@@ -83,6 +83,10 @@ namespace Xamarin.HLP.Mobile.AppPE
                 try { this.Connection.CreateTable<RamoAtividadeModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_RAMOATIVIDADE; }
                 try { this.Connection.CreateTable<ImagemModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_IMAGEM; }
                 try { this.Connection.CreateTable<GradeCorModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_GRADECOR; }
+                try { this.Connection.CreateTable<GradesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_GRADES; }
+                try { this.Connection.CreateTable<GradesComposicaoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_GRADES_COMPOSICAO; }
+                try { this.Connection.CreateTable<GradeVariacaoProdutoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_PRODUTO_GRADES; }
+                try { this.Connection.CreateTable<GradeVariacaoProdutoComposicaoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_PRODUTO_GRADES_COMPOSICAO; }
                 try { this.Connection.CreateTable<GradeTamanhoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_GRADETAMANHO; }
                 try { this.Connection.CreateTable<UnidadeMedidaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_UNIDADEMEDIDA; }
                 try { this.Connection.CreateTable<ProdutoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_PRODUTO; }
