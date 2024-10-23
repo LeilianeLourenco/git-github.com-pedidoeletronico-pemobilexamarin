@@ -357,7 +357,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsGrade}";
 
-                    var _apiClient = CurrentHttpClient2;
+                    var _apiClient = CurrentHttpClient;
 
                     var jsonResponse = await _apiClient.GetStringAsync(requestUri);
                     lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
@@ -366,13 +366,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 if (TableMobile.GetApiRegistroByModel<T>() == "ApiProdutosGrade")
                 {
                     string xQuery = $"SELECT idProduto FROM TB_PRODUTO WHERE idProdutoPai != 0 AND idEmpresa = {param1}";
-                    lIdsProduto = App.Data.Connection.Query<ProdutoModel>(xQuery).ToList().Select(x => x.idProduto ?? 0);
+                    lIdsProduto = App.Data.Connection.Query<ProdutoModel>(xQuery).ToList().Select(x => x.idProduto ?? 0);                                  
                     var idsProduto = string.Join(",", lIdsProduto);
+
+                    if (string.IsNullOrEmpty(idsProduto))
+                        idsProduto = "0";
 
                     var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsProduto}";
 
-                    var _apiClient = CurrentHttpClient2;
+                    var _apiClient = CurrentHttpClient;
 
                     var jsonResponse = await _apiClient.GetStringAsync(requestUri);
                     lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
@@ -387,10 +390,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     var lIdsProdutoGrades = App.Data.Connection.Query<GradeVariacaoProdutoModel>(xQuery).Select(x => x.idGradeProduto).ToList();
                     var idsProdutoGrades = string.Join(",", lIdsProdutoGrades);
 
+                    if (string.IsNullOrEmpty(idsProdutoGrades))
+                        idsProdutoGrades = "0";
+
                     var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsProdutoGrades}";
 
-                    var _apiClient = CurrentHttpClient2;
+                    var _apiClient = CurrentHttpClient;
 
                     var jsonResponse = await _apiClient.GetStringAsync(requestUri);
                     lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);

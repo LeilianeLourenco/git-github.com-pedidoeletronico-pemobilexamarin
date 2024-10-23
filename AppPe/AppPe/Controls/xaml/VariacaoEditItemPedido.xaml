@@ -13,7 +13,7 @@
                                  BindableLayout.ItemsSource="{Binding lTiposVariacoes}">
             <BindableLayout.ItemTemplate>
                 <DataTemplate>
-                    <Button Text="{Binding xNomeGrade}" 
+                    <Button Text="{Binding .}" 
                                         BorderColor="Gray" 
                                         BorderWidth="2" 
                                         CornerRadius="10" 

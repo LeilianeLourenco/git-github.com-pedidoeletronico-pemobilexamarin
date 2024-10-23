@@ -27,8 +27,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             this.bLocaisCarregados = false;
         }
 
-        public string xNomeVariacao { get; set; }
-        public List<GradesComposicaoModel> lTiposVariacoes { get; set; }
+        public string xNomeVariacao { get; set; }   
+        public List<string> _lTiposVariacoes;
+
+        [Ignore]
+        [IgnoreDataMember]
+        public List<string> lTiposVariacoes
+        {
+            get { return _lTiposVariacoes; }
+            set { _lTiposVariacoes = value; NotifyPropertyChanged(); }
+        }
+
 
         public bool bTabelasCarregadas { get; set; }
         public bool stVendaSemEstoque { get; set; }
@@ -1135,5 +1144,5 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
-    }
+    }   
 }
