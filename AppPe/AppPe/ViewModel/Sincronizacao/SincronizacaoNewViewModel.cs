@@ -358,7 +358,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<GradeTamanhoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownload<GradesModel>();             
+                    await SincronizacaoDownload<GradesModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<TabelaPrecoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -413,22 +413,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownload<TabelaPrecoClienteRamoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<ClienteRamosAtividade>();
-
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPedido();
-
                 if (!ocorreuErro && !bFalhaConexao)
                     await AnaliseDeRepresentantes();
-
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadTipoAtividadesAgenda();
-
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadAgenda();
-
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadLocalEstoque();
-
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPaginado<JornadaModel>();
 

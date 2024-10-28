@@ -354,6 +354,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     var lIdsGrade = App.Data.Connection.Query<GradesModel>(xQuery).Select(x => x.idGrade).ToList();
                     var idsGrade = string.Join(",", lIdsGrade);
 
+                    if (string.IsNullOrEmpty(idsGrade))
+                        idsGrade = "0";
+
                     var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsGrade}";
 
@@ -374,7 +377,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 
                     var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsProduto}";
-
+              
                     var _apiClient = CurrentHttpClient;
 
                     var jsonResponse = await _apiClient.GetStringAsync(requestUri);
@@ -395,7 +398,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 
                     var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsProdutoGrades}";
-
+                
                     var _apiClient = CurrentHttpClient;
 
                     var jsonResponse = await _apiClient.GetStringAsync(requestUri);
