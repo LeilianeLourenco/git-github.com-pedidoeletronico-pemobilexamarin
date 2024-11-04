@@ -269,7 +269,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                 AgendaListarModel agenda = new AgendaListarModel
                 {
                     idAtividadeOffline = currentModel.idAtividadeOffline,
-                    xLocalCheckIn = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}"
+                    xLocalCheckIn = $"{location.Latitude}, {location.Longitude}"
                 };
 
                 AgendaRepository.SalvarCheckIn(agenda);
@@ -292,7 +292,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                 AgendaListarModel agenda = new AgendaListarModel
                 {
                     idAtividadeOffline = currentModel.idAtividadeOffline,
-                    xLocalCheckOut = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}"
+                    xLocalCheckOut = $"{location.Latitude}, {location.Longitude}"
                 };
 
                 var result = AgendaRepository.SalvarCheckOut(agenda);

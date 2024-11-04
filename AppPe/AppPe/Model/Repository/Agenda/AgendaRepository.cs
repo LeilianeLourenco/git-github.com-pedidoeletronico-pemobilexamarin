@@ -228,7 +228,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
             try
             {
                 var xQuery =
-                $"SELECT dtTempoInitCheck, dtTempoCheck, xLocalCheckIn, xLocalCheckOut FROM {TableMobile.TB_ATIVIDADES} WHERE idAtividadeOffline = {idAtividadeOffline}";
+                $"SELECT dtTempoInitCheck, dtTempoCheck, xLocalCheckIn, xLocalCheckOut, tsDuracaoCheck FROM {TableMobile.TB_ATIVIDADES} WHERE idAtividadeOffline = {idAtividadeOffline}";
 
                 return (App.Data.Connection.Query<AtividadeAgendaModel>(xQuery)).FirstOrDefault();
             }
@@ -252,6 +252,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
                 {
                     obj.dtTempoInitCheck = DateTime.UtcNow.AddHours(-3);
                     obj.xLocalCheckIn = agenda.xLocalCheckIn;
+                    obj.dtUltimaAlteracao = DateTime.UtcNow.AddHours(-3);
                     App.Data.Connection.Update(obj);
                 }
             }
@@ -274,6 +275,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
                 {
                     obj.tsDuracaoCheck = DateTime.UtcNow.AddHours(-3) - obj.dtTempoInitCheck;
                     obj.xLocalCheckOut = agenda.xLocalCheckOut;
+                    obj.dtUltimaAlteracao = DateTime.UtcNow.AddHours(-3);
                     App.Data.Connection.Update(obj);
                 }
 
