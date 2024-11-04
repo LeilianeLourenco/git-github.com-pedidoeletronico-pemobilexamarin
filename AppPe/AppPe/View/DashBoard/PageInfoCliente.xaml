@@ -15,34 +15,48 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" x:Name="lblEmail" FontSize="Medium" LineBreakMode="NoWrap" Text=""
-                   HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaMaisEscuro}"></Label>
+            <StackLayout>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="NavegarCliente"/>
+                </StackLayout.GestureRecognizers>
 
-            <Label Grid.Row="1" x:Name="lblTelefone" FontSize="Medium" LineBreakMode="NoWrap" Text="" 
-              HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaMaisEscuro}"></Label>
+                <Grid HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-            <StackLayout Grid.Row="2" Padding="0,10,0,0" >
+                    <Frame VerticalOptions="Center" Grid.Column="0" HeightRequest="30" WidthRequest="30" Padding="0" Margin="0" HasShadow="False" CornerRadius="15" BackgroundColor="Gray">
+                        <Image x:Name="imgCliente"/>
+                    </Frame>
+
+                    <Grid VerticalOptions="Center" Grid.Column="1" Padding="15,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" x:Name="lblEmail" FontSize="Medium" LineBreakMode="NoWrap" Text=""
+                        HorizontalTextAlignment="Start" TextColor="{StaticResource CinzaMaisEscuro}"></Label>
+
+                        <Label Grid.Row="1" x:Name="lblTelefone" FontSize="Medium" LineBreakMode="NoWrap" Text="" 
+                        HorizontalTextAlignment="Start" TextColor="{StaticResource CinzaMaisEscuro}"></Label>
+                    </Grid>
+
+                </Grid>
+            </StackLayout>
+
+            <StackLayout Grid.Row="2" Padding="5,10,0,0" >
                 <Button VerticalOptions="Center" HorizontalOptions="Center" Clicked="UltimosPedidos_Clicked"                    
                             Text="Últimos Pedidos" BackgroundColor="#2196F3" TextColor="#fff" 
                                 HeightRequest="40" WidthRequest="180"></Button>
+
+                <Button VerticalOptions="Center" HorizontalOptions="Center" Clicked="NovoPedido_Clicked"                    
+                            Text="Novo Pedido" BackgroundColor="#4caf50" TextColor="#fff" 
+                                HeightRequest="40" WidthRequest="180"></Button>
+
             </StackLayout>
-
-            <!--<Label FontSize="Medium"  LineBreakMode="NoWrap" Text="{Binding}" 
-              HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaMaisEscuro}"></Label>-->
-
-            <!--<Label FontSize="Medium"  LineBreakMode="NoWrap" Text="Sincronizando" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaMaisEscuro}"/>
-
-            <Label Grid.Row="1" FontSize="Medium" LineBreakMode="NoWrap"  Text="{Binding currentModel.xDetail }" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}"/>
-
-            <ActivityIndicator Margin="0,5,0,5" IsRunning="True" Grid.Row="2" Color="#27B5F3" />
-
-            <Label Grid.Row="3" FontSize="Medium" LineBreakMode="NoWrap"  Text="{Binding currentModel.iCount}" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaClaro}"/>-->
-
-
         </Grid>
     </Frame>
 </pages:PopupPage>

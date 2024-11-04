@@ -24,9 +24,9 @@
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                         
-                                            <Frame VerticalOptions="Center" Grid.Column="0" HeightRequest="30" WidthRequest="30" Padding="0" Margin="0" HasShadow="False" CornerRadius="15" BackgroundColor="Gray">
-                                                <Image Source="{Binding imgCliente}"/>
+
+                                            <Frame VerticalOptions="Center" Grid.Column="0" HeightRequest="45" WidthRequest="45" Padding="0" Margin="0" HasShadow="False" BackgroundColor="Transparent">
+                                                <Label Text="{Binding xAbreviacao}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" />
                                             </Frame>
 
                                             <Grid VerticalOptions="Center" Grid.Column="1" Padding="15,0,0,0">

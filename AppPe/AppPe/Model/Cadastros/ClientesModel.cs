@@ -33,9 +33,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         private string _idAspnetUsersInclusao;
 
         private byte _stJuridico;
-
-        public string imgCliente => Device.OnPlatform("ApplicationBarListarClientes.png", "ApplicationBarListarClientes.png", "Assets/ApplicationBarListarClientes.png");
-
+        
         /// <summary>
         /// 0- CPF
         /// 1 - CNPJ
@@ -99,6 +97,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             {
                 _cAlternativo = value; NotifyPropertyChanged();
 
+            }
+        }
+
+        private string _xAbreviacao;
+        public string xAbreviacao
+        {
+            get { return _xAbreviacao; }
+            set
+            {
+                _xAbreviacao = value; NotifyPropertyChanged();
             }
         }
 
