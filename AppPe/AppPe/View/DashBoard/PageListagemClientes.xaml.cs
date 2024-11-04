@@ -30,10 +30,14 @@ namespace Xamarin.HLP.Mobile.AppPE.View.DashBoard
         }
 
         private async void ListaClientes_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {                   
+        {
+            if (e.SelectedItem == null)
+                return;
+
             PageInfoCliente page = new PageInfoCliente(e.SelectedItem as ClientesModel);
 
             await App.Navigation.PushPopupAsync(page, animate: true);
+            ((ListView)sender).SelectedItem = null;
         }
     }
 }

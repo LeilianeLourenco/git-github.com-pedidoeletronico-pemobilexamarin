@@ -571,12 +571,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             var idsFiltradoPlaceholders = string.Join(",", clienteIds);
 
             var xQueryExibirClientes =
-                $@"SELECT xRazaoSocial, xFantasia, xEmails, xTelefones, idClientesOffLine, idClientes FROM {TableMobile.TB_CLIENTES} 
-                    WHERE idEmpresa = {idEmpresa} and idClientes IN ({idsFiltradoPlaceholders})";
+                $@"SELECT xRazaoSocial, xFantasia, xEmails, xTelefones, idClientesOffLine, idClientes,
+                    UPPER(SUBSTR(xRazaoSocial, 1, 1)) ||
+                    CASE 
+                    WHEN INSTR(xRazaoSocial, ' ') > 0 THEN UPPER(SUBSTR(xRazaoSocial, INSTR(xRazaoSocial, ' ') + 1, 1))
+                    ELSE ''
+                    END AS xAbreviacao
+                    FROM {TableMobile.TB_CLIENTES}
+                    WHERE idEmpresa = {idEmpresa} AND idClientes IN ({idsFiltradoPlaceholders})";
 
             var exibir = App.Data.Connection.Query<ClientesModel>(xQueryExibirClientes);
 
             return exibir.ToList();
+
         }
 
         public static ListItemModel GetRegistro(int idClientesOffLine)
@@ -608,7 +615,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
             return "";
         }
-
 
         public static int GetIdTransportadoraCliente(int idClientesOffLine)
         {
