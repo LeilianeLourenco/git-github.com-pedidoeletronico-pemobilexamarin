@@ -17,9 +17,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <StackLayout>
+            <StackLayout Margin="0,0,0,10">
                 <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="NavegarCliente"/>
+                    <TapGestureRecognizer Tapped="NavegarCliente_Clicked"/>
                 </StackLayout.GestureRecognizers>
 
                 <Grid HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
@@ -47,7 +47,7 @@
                 </Grid>
             </StackLayout>
 
-            <StackLayout Grid.Row="2" Padding="5,10,0,0" >
+            <StackLayout Grid.Row="2" Padding="0,10,0,0" Margin="0,10,0,0">
                 <Button VerticalOptions="Center" HorizontalOptions="Center" Clicked="UltimosPedidos_Clicked"                    
                             Text="Últimos Pedidos" BackgroundColor="#2196F3" TextColor="#fff" 
                                 HeightRequest="40" WidthRequest="180"></Button>
@@ -56,6 +56,13 @@
                             Text="Novo Pedido" BackgroundColor="#4caf50" TextColor="#fff" 
                                 HeightRequest="40" WidthRequest="180"></Button>
 
+                <Button VerticalOptions="Center" HorizontalOptions="Center" Clicked="NovoPedido_Clicked"                    
+                            Text="Novo Orçamento" BackgroundColor="#ff9800" TextColor="#fff" 
+                                HeightRequest="40" WidthRequest="180"></Button>
+
+                <Button VerticalOptions="Center" HorizontalOptions="Center" Clicked="NovaAtividade_Clicked"                    
+                            Text="Nova Atividade" BackgroundColor="#32c787" TextColor="#fff" 
+                                HeightRequest="40" WidthRequest="180"></Button>
             </StackLayout>
         </Grid>
     </Frame>
