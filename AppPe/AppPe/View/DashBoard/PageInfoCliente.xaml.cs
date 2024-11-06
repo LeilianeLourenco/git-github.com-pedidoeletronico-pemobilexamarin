@@ -8,6 +8,7 @@ using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
+using Xamarin.HLP.Mobile.AppPE.View.Agenda;
 using Xamarin.HLP.Mobile.AppPE.View.Cliente;
 using Xamarin.HLP.Mobile.AppPE.View.Home;
 using Xamarin.HLP.Mobile.AppPE.View.Pedido;
@@ -31,7 +32,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
 
             _dados = dados;
         }
-    
+
+        private void NavegarCliente_Clicked(object sender, EventArgs e)
+        {
+            App.Navigation.RemovePopupPageAsync(page: this, animate: true);
+            UtilNavidate.PushAsync(new PageApresentacaoClienteNew(_dados.idClientesOffLine ?? 0));
+        }
 
         private void UltimosPedidos_Clicked(object sender, EventArgs e)
         {
@@ -52,13 +58,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
             catch (Exception ex)
             {
             }
-        }
-
-        private void NavegarCliente(object sender, EventArgs e)
-        {
-            App.Navigation.RemovePopupPageAsync(page: this, animate: true);
-            UtilNavidate.PushAsync(new PageApresentacaoClienteNew(_dados.idClientesOffLine ?? 0));
-        }
+        }     
 
         private void UltimosPedidos()
         {
@@ -69,6 +69,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
         {
             App.Navigation.RemovePopupPageAsync(page: this, animate: true);
             UtilNavidate.PushAsync(new PagePedidoNew(new PedidoVendaModel()));
+        }
+
+        private void NovaAtividade_Clicked(object sender, EventArgs e)
+        {
+            App.Navigation.RemovePopupPageAsync(page: this, animate: true);
+            UtilNavidate.PushAsync(new PageEventoNew(new AtividadeAgendaModel()));
         }
     }
 }
