@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -269,7 +270,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                 AgendaListarModel agenda = new AgendaListarModel
                 {
                     idAtividadeOffline = currentModel.idAtividadeOffline,
-                    xLocalCheckIn = $"{location.Latitude}, {location.Longitude}"
+                    xLocalCheckIn = $"{location.Latitude.ToString(CultureInfo.InvariantCulture)}, {location.Longitude.ToString(CultureInfo.InvariantCulture)}"
                 };
 
                 AgendaRepository.SalvarCheckIn(agenda);
@@ -287,12 +288,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
         {
             try
             {
-                var location = await Geolocation.GetLastKnownLocationAsync();
+                var location = await Geolocation.GetLastKnownLocationAsync();                
 
                 AgendaListarModel agenda = new AgendaListarModel
                 {
                     idAtividadeOffline = currentModel.idAtividadeOffline,
-                    xLocalCheckOut = $"{location.Latitude}, {location.Longitude}"
+                    xLocalCheckOut = $"{location.Latitude.ToString(CultureInfo.InvariantCulture)}, {location.Longitude.ToString(CultureInfo.InvariantCulture)}"
                 };
 
                 var result = AgendaRepository.SalvarCheckOut(agenda);
