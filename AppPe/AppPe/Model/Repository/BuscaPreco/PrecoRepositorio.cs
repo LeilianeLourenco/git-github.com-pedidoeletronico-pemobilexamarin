@@ -70,7 +70,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                     || rep.GetType() == typeof(BuscaPrecoClienteJoinRamoManualRepositorio)
                     || rep.GetType() == typeof(BuscaPrecoClienteUfJoinRamoRepositorio)
                     || rep.GetType() == typeof(BuscaPrecoClienteUfJoinRamoManualRepositorio))
-                {                    
+                {
                     _id = idCliente;
                 }
                 else if (rep.GetType() == typeof(BuscaPrecoRepresentacaoRepositorio) || rep.GetType() == typeof(BuscaPrecoRepresentacaoManualRepositorio))
@@ -99,15 +99,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
             }
 
             if (_lEscalonadasAtivas?.Count() > 0 && _lRetorno.Count > 0)
-            {   
+            {
                 foreach (var tb in _lRetorno)
                 {
                     _tbEscalonada = _lEscalonadasAtivas.Where(t => t.idTabelaPrecoVinculo == tb.idTabelaPreco).FirstOrDefault();
 
-                    if(_tbEscalonada == null)
+                    if (_tbEscalonada == null)
                         _tbEscalonada = _lEscalonadasAtivas.Where(t => t.idTabelaPrecoVinculo == null).FirstOrDefault();
 
-                    if(_tbEscalonada != null)
+                    if (_tbEscalonada != null)
                     {
                         List<double> _faixas = _tbEscalonada.lFaixaComissao.Select(c => c.pFimFaixa).ToList();
                         double _pDescontoMax = 0;
@@ -117,10 +117,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
 
                         tb.pDescontoMaximo = _pDescontoMax;
                         tb.tbEscalonada = _tbEscalonada;
-                    } 
+                    }
                 }
-            } 
-
+            }
+            
             // OS 35398 - Jessica Barbieri
             if (_lRetorno?.Count() > 0)
             {
@@ -146,8 +146,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                     if (tabela.stTabelaPrecoRepresentacao)
                         filtros++;
 
-                    var _contagemDeTabelas = _lRetorno.Where(t => t.idTabelaPreco == tabela.idTabelaPreco).Count();
-
+                    var _contagemDeTabelas = _lRetorno
+                        .Where(t => t.idTabelaPreco == tabela.idTabelaPreco)
+                        .GroupBy(t => t.idTabelaPreco)
+                        .Count();
+                   
                     if (filtros > 0 && _contagemDeTabelas != filtros)
                     {
                         tabela.bRemoveTabela = true;
@@ -273,7 +276,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                     tb.pDescontoMaximo = _pDescontoMax;
                     tb.tbEscalonada = _tbEscalonada;
                 }
-            }            
+            }
 
             return _lRetorno;
         }
