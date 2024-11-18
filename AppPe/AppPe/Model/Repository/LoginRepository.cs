@@ -9,18 +9,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
     {
         public static void RefreshTipoUsuario()
         {
-            if (!string.IsNullOrEmpty(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.xBlingApiKey))
-            {
+            var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.idEmpresa;
+            var query = $"SELECT * FROM {TableMobile.TB_EMPRESA} WHERE idEmpresa = {idEmpresa}";
+            var empresa = App.Data.Connection.Query<EmpresaModel>(query).FirstOrDefault();
+
+            if (!string.IsNullOrEmpty(empresa?.xBlingApiKey))
                 App.tipouser = App.TipoUser.BLING;
-            }
-            else if (!string.IsNullOrEmpty(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.xOmieAppKey))
-            {
+
+            else if (!string.IsNullOrEmpty(empresa?.xOmieAppKey))
                 App.tipouser = App.TipoUser.OMIE;
-            }
+
+            else if (empresa?.idEcommerceTiny > 0)
+                App.tipouser = App.TipoUser.TINY;
+
             else
-            {
                 App.tipouser = App.TipoUser.NORMAL;
-            }
         }
         public static bool HasLogin()
         {
@@ -108,7 +111,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 ex.TrakException();
             }
-            
+
         }
 
         public static CurrentUserLoginModel GetUserLoginModel()
@@ -230,7 +233,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 //var currentUser = App.Data.Connection.Table<CurrentUserLoginModel>().FirstOrDefault(c => c.bLogado);
                 //var user = App.Data.Connection.Table<AspNetUsersModel>().FirstOrDefault(c => c.Email == currentUser.Email);
 
-                
+
                 var xQuery = $@"SELECT * FROM {TableMobile.CurrentUserLogin} where bLogado = 1";
                 var currentUser = App.Data.Connection.Query<CurrentUserLoginModel>(xQuery).FirstOrDefault();
                 xQuery = $@"SELECT * FROM {TableMobile.AspNetUsers} where Email = '{currentUser.Email}'";
@@ -241,10 +244,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 var idsEmpresas = App.Data.Connection.Table<EmpresaAspnetUsersModel>().Where(c => c.xEmail.ToUpper() == currentUser.Email.ToUpper()).Select(c => c.idEmpresa).Distinct().ToList();
 
                 foreach (var idEmpresa in idsEmpresas)
-                {                    
+                {
                     xQuery = $@"SELECT * FROM {TableMobile.TB_EMPRESA_ASPNETUSERS} where idEmpresa = {idEmpresa}";
                     user.lEpresaAspnetUsersModel.AddRange(App.Data.Connection.Query<EmpresaAspnetUsersModel>(xQuery));
-                    xQuery = $@"SELECT * FROM {TableMobile.TB_PERMISSOES_REPRESENTANTES} where idEmpresa = {idEmpresa}";                 
+                    xQuery = $@"SELECT * FROM {TableMobile.TB_PERMISSOES_REPRESENTANTES} where idEmpresa = {idEmpresa}";
                     user.lPermissoesRepresentantesModel.AddRange(App.Data.Connection.Query<PermissoesRepresentantesModel>(xQuery));
                     user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel = user.lPermissoesRepresentantesModel.FirstOrDefault(x => x.idEmpresa_aspnetusers == user.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers);
                 }
