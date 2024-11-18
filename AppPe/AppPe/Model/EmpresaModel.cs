@@ -56,6 +56,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public string xOmieAppKey { get; set; }
         public string xBlingApiKey { get; set; }
         public string xOmieAppSecret { get; set; }
+        public int? idEcommerceTiny { get; set; }
         public bool bSincronizaAutoPedidos { get; set; }
         public byte? stDataRelatorios { get; set; }
 
