@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Hlp.PedidoEletronico.Domain.Business.Enums;
 using Hlp.PedidoEletronico.Domain.Business.Helpers;
 using Xamarin.Forms;
@@ -16,7 +17,7 @@ using Xamarin.HLP.Mobile.AppPE.View.Pedido;
 namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 {
     public class EditarItemViewModel : ViewModelComum<PedidoVendaItensModel>
-    {
+    {        
         #region Properties
 
         private List<BasicPickerModel> _listaTabelaPreco = new List<BasicPickerModel>();
@@ -47,7 +48,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         if (currentModel.ItensGrade == null) return;
                         foreach (var item in currentModel.ItensGrade)
                         {
-                            if (PagePedidoNew.CurrentViewModel.ItemCondicaoPgto.vDescCondicao.GetValueOrDefault() != 0 
+                            if (PagePedidoNew.CurrentViewModel.ItemCondicaoPgto.vDescCondicao.GetValueOrDefault() != 0
                                 || PagePedidoNew.CurrentViewModel.vDescCondicao.GetValueOrDefault() != 0)
                             {
                                 if (PagePedidoNew.CurrentViewModel.ItemCondicaoPgto.vDescCondicao.GetValueOrDefault() != 0)
@@ -59,7 +60,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             item.currentTabelaPreco = currentTabPreco;
                             item.vUnitarioVendaSemImposto = currentModel.vUnitarioVendaSemImposto;
 
-                            if(currentModel.vDescontoDaCondicao.GetValueOrDefault() > 0)
+                            if (currentModel.vDescontoDaCondicao.GetValueOrDefault() > 0)
                             {
                                 item.vUnitarioVendaComImpostos = item.vUnitarioVenda + (item.vUnitarioVenda * (item.vDescontoDaCondicao.GetValueOrDefault() / 100));
                             }
@@ -103,15 +104,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         {
                             pDesconto = currentModel.pDesconto;
                             vDesconto = currentModel.vDesconto;
-                        } 
-                         
+                        }
+
                         if (vDesconto > 0)
                         {
                             vDesconto = (vUnitarioVenda * (pDesconto / 100)).ArredondarValorDecimal(nCasasDecimais: 2);
                             vUnitarioVendaComImpostos -= vDesconto;
                         }
 
-                        if(currentModel.vDescontoDaCondicao.GetValueOrDefault() > 0)
+                        if (currentModel.vDescontoDaCondicao.GetValueOrDefault() > 0)
                         {
                             vUnitarioVendaComImpostos = vUnitarioVenda + (vUnitarioVenda * (currentModel.vDescontoDaCondicao.GetValueOrDefault() / 100));
                         }
@@ -157,40 +158,38 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 {
                     if (value == null) return;
 
-                    if (_currentLocalEstoque == null || _currentLocalEstoque.Id != value.Id)
-                    {
-                        _currentLocalEstoque = value; 
-                        var currentLocalEstoque = currentModel.lLocaisEstoque.FirstOrDefault(c => c.idLocalEstoque == value.Id);
-                        if (currentLocalEstoque == null) return;
+                    _currentLocalEstoque = value;
+                    var currentLocalEstoque = currentModel.lLocaisEstoque.FirstOrDefault(c => c.idLocalEstoque == value.Id);
+                    if (currentLocalEstoque == null) return;
 
-                        currentModel.currentLocalEstoque = currentLocalEstoque;
-                        
-                        if(currentModel.ItensGrade?.Count() > 0)
+                    currentModel.currentLocalEstoque = currentLocalEstoque;
+
+                    if (currentModel.ItensGrade?.Count() > 0)
+                    {
+                        foreach (var grade in currentModel.ItensGrade)
                         {
-                            foreach (var grade in currentModel.ItensGrade)
+                            if (grade.idGradeCor == null && grade.idGradeTamanho == null)
                             {
-                                if(grade.idGradeCor == null && grade.idGradeTamanho == null)
-                                {
-                                    currentModel.vQtdEstoque = ProdutoRepository.ObterEstoqueProduto(idEmpresa: currentModel.idEmpresa, idProduto: currentModel.idProduto ?? 0, idLocalEstoque: currentLocalEstoque.idLocalEstoque); 
-                                    currentModel.xQtdEstoque = $"Disponível: {currentModel.vQtdEstoque}";
-                                    currentModel.idLocalEstoque = currentLocalEstoque.idLocalEstoque;
-                                }
-                                else
-                                { 
-                                    grade.vQtdEstoque = ProdutoRepository.ObterEstoqueGradeCorTamanhoProduto(currentModel.idEmpresa, currentModel.idProduto ?? 0, grade.idGradeCor, grade.idGradeTamanho, currentLocalEstoque.idLocalEstoque); 
-                                    currentModel.xQtdEstoque = $"Disponível: {currentModel.vQtdEstoque}";
-                                    currentModel.idLocalEstoque = currentLocalEstoque.idLocalEstoque;
-                                }
+                                currentModel.vQtdEstoque = ProdutoRepository.ObterEstoqueProduto(idEmpresa: currentModel.idEmpresa, idProduto: currentModel.idProduto ?? 0, idLocalEstoque: currentLocalEstoque.idLocalEstoque);
+                                currentModel.xQtdEstoque = $"Disponível: {currentModel.vQtdEstoque}";
+                                currentModel.idLocalEstoque = currentLocalEstoque.idLocalEstoque;
+                            }
+                            else
+                            {
+                                grade.vQtdEstoque = ProdutoRepository.ObterEstoqueGradeCorTamanhoProduto(currentModel.idEmpresa, currentModel.idProduto ?? 0, grade.idGradeCor, grade.idGradeTamanho, currentLocalEstoque.idLocalEstoque);
+                                currentModel.xQtdEstoque = $"Disponível: {currentModel.vQtdEstoque}";
+                                currentModel.idLocalEstoque = currentLocalEstoque.idLocalEstoque;
                             }
                         }
-                        else
-                        { 
-                            currentModel.vQtdEstoque = ProdutoRepository.ObterEstoqueProduto(idEmpresa: currentModel.idEmpresa, idProduto: currentModel.idProduto ?? 0, idLocalEstoque: currentLocalEstoque.idLocalEstoque);
-                            currentModel.idLocalEstoque = currentLocalEstoque.idLocalEstoque;
-                        }
-
-                        NotifyPropertyChanged();
                     }
+                    else
+                    {
+                        currentModel.vQtdEstoque = ProdutoRepository.ObterEstoqueProduto(idEmpresa: currentModel.idEmpresa, idProduto: currentModel.idProduto ?? 0, idLocalEstoque: currentLocalEstoque.idLocalEstoque);
+                        currentModel.idLocalEstoque = currentLocalEstoque.idLocalEstoque;
+                    }
+
+                    NotifyPropertyChanged();
+
                 }
                 catch (Exception ex)
                 {
@@ -219,8 +218,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
                 NotifyPropertyChanged();
             }
-        }
-
+        }               
 
         private double _vUnitarioVendaSemImposto;
         /// <summary>
@@ -449,8 +447,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 if (IsBusy)
                     return;
-
-
+            
                 IsBusy = true;
                 if (PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel == null) return;
                 currentModel = PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel;
@@ -479,7 +476,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
 
 
-                InitializeDados(); 
+                InitializeDados();
                 IsBusy = false;
                 //Device.StartTimer(new TimeSpan(0, 0, 0, 0, 250), InitializeDados);
             }
@@ -496,7 +493,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             if (bInitViewModelDados)
             {
-                bInitViewModelDados = false;  
+                bInitViewModelDados = false;
                 try
                 {
                     if (ListaTabelaPreco.Count > 0)
@@ -511,11 +508,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                 currentModel.ItensGrade = new ObservableCollection<PedidoVendaItensModel> { currentModel };
 
                             else if (currentModel.bProdutoVariacao)
+                            {
+                                currentModel.ItensGrade = new ObservableCollection<PedidoVendaItensModel> { currentModel };
                                 currentModel.ItensVariacao = new ObservableCollection<PedidoVendaItensModel>(
                                         ProdutoRepository.GetVariacaoItem(currentModel));
+                               
+                            }
 
                             CurrentTabelaPreco = ListaTabelaPreco.FirstOrDefault(c => c.Id == currentModel.idTabelaPreco);
-                                                 
+
                         }
                         else
                         {
@@ -535,9 +536,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             {
                                 itemBase.vUnitarioVenda = itemBase.vUltimaVenda;
                                 itemBase.vUnitarioVendaComImpostos = itemBase.vUltimaVenda;
-                                itemBase.vUltimaVenda = itemBase.vUltimaVenda; 
+                                itemBase.vUltimaVenda = itemBase.vUltimaVenda;
                                 itemBase.vVenda = itemBase.vUnitarioVendaSemImposto;
-                                itemBase.vSubTotal = itemBase.vUltimaVenda * itemBase.vQtdItem;  
+                                itemBase.vSubTotal = itemBase.vUltimaVenda * itemBase.vQtdItem;
                             }
 
 
@@ -583,22 +584,22 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     if (ListaLocalEstoque.Where(t => t.Id > 0).Count() > 0)
                     {
                         bUsaLocaisEstoque = true;
-                        CurrentLocalEstoque = _currentLocalEstoque = ListaLocalEstoque.FirstOrDefault(c => c.Id == currentModel.idLocalEstoque); 
+                        CurrentLocalEstoque = _currentLocalEstoque = ListaLocalEstoque.FirstOrDefault(c => c.Id == currentModel.idLocalEstoque);
                     }
                     else
-                    { 
+                    {
                         bUsaLocaisEstoque = false;
                     }
                 }
                 catch (Exception ex)
-                { 
+                {
                     ex.TrakException();
                 }
 
             }
 
             return bInitViewModelDados;
-        } 
+        }
 
 
         public async Task<bool> ValidateCamposTask(bool zerarvalores,
@@ -611,7 +612,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 if (valorUnitario != null &&
                     pdesconto != null &&
-                    vdesconto != null )
+                    vdesconto != null)
                 {
                     bretorno = (
                         valorUnitario.IsValid
@@ -641,7 +642,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         //            currentModel.currentTabelaPreco.vUnitario,
                         //            pStVenda ?? 0, pIpiVenda ?? 0);
                         //}
-                     
+
                         PedidoVendaCalculos.AtualizaValores(currentModel);
                     }
                 }

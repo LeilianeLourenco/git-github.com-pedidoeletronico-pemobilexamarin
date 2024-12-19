@@ -52,7 +52,8 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     ViewModel.canExecuteInicial = false;
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        if (StackLayoutItens.Children.Count == 0 && ViewModel.currentModel.ItensGrade != null)
+                        if (StackLayoutItens.Children.Count == 0 && ViewModel.currentModel.ItensGrade != null
+                            && ViewModel.currentModel.ItensVariacao == null)
                         {
                             foreach (var item in ViewModel.currentModel.ItensGrade)
                             {
@@ -61,15 +62,24 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                         }
 
                         if (StackLayoutItens.Children.Count == 0 && ViewModel.currentModel.ItensVariacao != null)
-                        {
+                        {                         
                             foreach (var item in ViewModel.currentModel.ItensVariacao)
                             {
-                                StackLayoutItens.Children.Add(new VariacaoEditItemPedido() { BindingContext = item });
+                                StackLayoutItens.Children.Add(new VariacaoEditItemPedido(StackLayoutItens,
+                                    ViewModel.currentModel.ItensGrade, ViewModel)
+                                { BindingContext = item });
                             }
+                        
+                            StackLayoutItens.Children.Add(new BoxView { HeightRequest = 15, BackgroundColor = Color.Transparent });
+                            StackLayoutItens.Children.Add(new GridEditItemPedido()
+                            {
+                                BindingContext =
+                                ViewModel.currentModel.ItensGrade?.FirstOrDefault()
+                            });
                         }
 
                         if (ViewModel.currentModel.currentTabelaPreco == null)
-                        { 
+                        {
                             App.Messages.ShowAsync($"Item sem Tabela de preço, contate o administrador para checar as configurações!");
                             ViewModel.IsBusy = false;
                             return;
@@ -182,7 +192,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
             var valorUnitario = (EntryValorUnitario.Behaviors[0] as ValorUnitarioComImpostosBehaviors);
             var pdesconto = (EntryDesconto.Behaviors[0] as DescontoItemBehaviors);
-            var vdesconto = (EntryValorDesconto.Behaviors[0] as DescontoItemBehaviors);          
+            var vdesconto = (EntryValorDesconto.Behaviors[0] as DescontoItemBehaviors);
 
             return await ViewModel.ValidateCamposTask(zerarvalores, valorUnitario, pdesconto, vdesconto);
         }

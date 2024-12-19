@@ -7,21 +7,27 @@
 
 
     <StackLayout Orientation="Vertical" Spacing="10">
-        <Label Text="{Binding xNomeVariacao}" FontAttributes="Bold" FontSize="Medium"/>
+        <Label Text="{Binding xNomeVariacao}" TextColor="#000" FontSize="15"/>
 
-        <StackLayout Orientation="Horizontal" Spacing="10"
-                                 BindableLayout.ItemsSource="{Binding lTiposVariacoes}">
+        <StackLayout Orientation="Horizontal" Spacing="10" x:Name="ScrollButtonsVariacoes"
+             BindableLayout.ItemsSource="{Binding lTiposVariacoes}">
             <BindableLayout.ItemTemplate>
                 <DataTemplate>
-                    <Button Text="{Binding .}" 
-                                        BorderColor="Gray" 
-                                        BorderWidth="2" 
-                                        CornerRadius="10" 
-                                        WidthRequest="100" 
-                                        HeightRequest="50"/>
+                    <Button Text="{Binding NomeVariacao}" 
+                            FontSize="13"                                              
+                            BackgroundColor="#fff"
+                            BorderColor="LightGray"
+                            BorderWidth="2" 
+                            CornerRadius="10" 
+                            WidthRequest="100" 
+                            HeightRequest="50"
+                            Clicked="btnFiltroVariacao"
+                            Command="{Binding CurrentLocalEstoque, Mode=TwoWay}"
+                            CommandParameter="{Binding idProdutoLista}" />
                 </DataTemplate>
             </BindableLayout.ItemTemplate>
         </StackLayout>
+
     </StackLayout>
 
 </StackLayout>

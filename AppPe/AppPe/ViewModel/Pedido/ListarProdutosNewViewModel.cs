@@ -689,9 +689,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         if (vQtde > 0 && itemSelected.currentTabelaPreco != null)
                         {
                             if (ItensSelecionados.Any(c => c.idProduto == itemSelected.idProduto) == false)
-                            {                           
-                                if ((itemSelected.vQtdEstoque > 0 || itemSelected.vQtdEstoque == null) || itemSelected.stVendaSemEstoque)
-                                    ItensSelecionados.Add(itemSelected);
+                            {
+                                if ((itemSelected.vQtdEstoque > 0 || itemSelected.vQtdEstoque == null) || itemSelected.stVendaSemEstoque)                                
+                                    ItensSelecionados.Add(itemSelected);                                                                    
                                 else
                                 {
                                     itemSelected.vQtdItem -= 1;
@@ -730,24 +730,24 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public async void VerificaQtdEstoque(string qtd)
         {
             try
-            {              
+            {
                 var vQtde = currentPedidoViewModel.currentModel.CurrentItemModel.vQtdItem;
 
                 if (vQtde > itemSelected.vQtdEstoque && !itemSelected.stVendaSemEstoque)
                 {
                     if (!verificouEstoque)
                     {
-                        itemSelected.vQtdItem = Convert.ToDouble(qtd.Replace(",","."));
+                        itemSelected.vQtdItem = Convert.ToDouble(qtd.Replace(",", "."));
                         verificouEstoque = true;
-                        await App.Current.MainPage.DisplayAlert("Erro", "Estoque insuficiente", "Ok");                        
+                        await App.Current.MainPage.DisplayAlert("Erro", "Estoque insuficiente", "Ok");
                     }
                 }
                 else
                     verificouEstoque = false;
-                               
+
             }
             catch (Exception ex)
-            {               
+            {
 
             }
         }
@@ -756,16 +756,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             foreach (var item in ItensSelecionados)
             {
-                //ProdutoRepository.AtualizarEstoqueProduto(idEmpresa: item.idEmpresa,
-                //    idProduto: item.idProduto, idLocalEstoque: item.idLocalEstoque, vQtdItem: item.vQtdItem);
-
                 PagePedidoNew.CurrentViewModel.currentModel.lItens.Add(item);
-                //LoginRepository.UpdateUser();
                 StaticModel.StaticEditarItemViewModel = null;
             }
             PagePedidoNew.CurrentViewModel.AtualizaTotalizadoresPedido();
             UtilNavidate.PopAsync();
         }
-
+       
     }
 }

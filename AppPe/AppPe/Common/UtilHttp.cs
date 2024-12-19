@@ -77,13 +77,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         {
             var retistroSync = new RetornoSalvar<T>();
             try
-            {
+            {            
                 var xController = TableMobile.GetApiRegistroByModel<T>();
                 if (xController == "") return null;
                 var xJson = JsonConvert.SerializeObject(classe);
                 var requestUri = App.UrlWebApi + $"api/{xController}/{xNamePost}";
                 var wcfResponse =
-                    await
+                    await                    
                         CurrentHttpClient.PostAsync(requestUri,
                             new StringContent(xJson, Encoding.UTF8, "application/json"));
                 if (wcfResponse == null) return null;
@@ -352,35 +352,40 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 {
                     string xQuery = $@"SELECT idGrade FROM TB_GRADES WHERE idEmpresa = {param1}";
                     var lIdsGrade = App.Data.Connection.Query<GradesModel>(xQuery).Select(x => x.idGrade).ToList();
-                    var idsGrade = string.Join(",", lIdsGrade);
 
-                    if (string.IsNullOrEmpty(idsGrade))
-                        idsGrade = "0";
+                    var requestUri = $"api/{TableMobile.GetApiRegistroByModel<T>()}";
 
-                    var requestUri =
-                    $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsGrade}";
-
+                    var jsonContent = new StringContent(
+                        JsonConvert.SerializeObject(lIdsGrade),
+                        Encoding.UTF8,
+                        "application/json"
+                    );
+         
                     var _apiClient = CurrentHttpClient;
+                    var response = await _apiClient.PostAsync(requestUri, jsonContent);
 
-                    var jsonResponse = await _apiClient.GetStringAsync(requestUri);
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
                     lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
 
                 }
                 if (TableMobile.GetApiRegistroByModel<T>() == "ApiProdutosGrade")
                 {
                     string xQuery = $"SELECT idProduto FROM TB_PRODUTO WHERE idProdutoPai != 0 AND idEmpresa = {param1}";
-                    lIdsProduto = App.Data.Connection.Query<ProdutoModel>(xQuery).ToList().Select(x => x.idProduto ?? 0);                                  
-                    var idsProduto = string.Join(",", lIdsProduto);
-
-                    if (string.IsNullOrEmpty(idsProduto))
-                        idsProduto = "0";
+                    lIdsProduto = App.Data.Connection.Query<ProdutoModel>(xQuery).ToList().Select(x => x.idProduto ?? 0);
 
                     var requestUri =
-                    $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsProduto}";
-              
-                    var _apiClient = CurrentHttpClient;
+                    $"api/{TableMobile.GetApiRegistroByModel<T>()}";
+                                    
+                    var jsonContent = new StringContent(
+                        JsonConvert.SerializeObject(lIdsProduto),
+                        Encoding.UTF8,
+                        "application/json"
+                    );
 
-                    var jsonResponse = await _apiClient.GetStringAsync(requestUri);
+                    var _apiClient = CurrentHttpClient;
+                    var response = await _apiClient.PostAsync(requestUri, jsonContent);
+
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
                     lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
                 }
                 if (TableMobile.GetApiRegistroByModel<T>() == "ApiProdutosComposicaoGrade")
@@ -390,20 +395,23 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     var idsProduto = string.Join(",", lIdsProduto);
 
                     xQuery = $"SELECT idGradeProduto FROM tb_produto_grades WHERE idProduto IN ({idsProduto})";
-                    var lIdsProdutoGrades = App.Data.Connection.Query<GradeVariacaoProdutoModel>(xQuery).Select(x => x.idGradeProduto).ToList();
-                    var idsProdutoGrades = string.Join(",", lIdsProdutoGrades);
-
-                    if (string.IsNullOrEmpty(idsProdutoGrades))
-                        idsProdutoGrades = "0";
+                    var lIdsProdutoGrades = App.Data.Connection.Query<GradeVariacaoProdutoModel>(xQuery).Select(x => x.idGradeProduto).ToList();                  
 
                     var requestUri =
-                    $"api/{TableMobile.GetApiRegistroByModel<T>()}/{idsProdutoGrades}";
-                
-                    var _apiClient = CurrentHttpClient;
+                    $"api/{TableMobile.GetApiRegistroByModel<T>()}";
 
-                    var jsonResponse = await _apiClient.GetStringAsync(requestUri);
+                    var jsonContent = new StringContent(
+                        JsonConvert.SerializeObject(lIdsProdutoGrades),
+                        Encoding.UTF8,
+                        "application/json"
+                    );
+
+                    var _apiClient = CurrentHttpClient;
+                    var response = await _apiClient.PostAsync(requestUri, jsonContent);
+
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
                     lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
-                }            
+                }
 
             }
             catch (System.Net.WebException)
@@ -1120,7 +1128,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public static HttpClient CurrentHttpClient
         {
             get
-            {
+            {                
                 if (_currentHttpClient != null)
                 return _currentHttpClient;
 

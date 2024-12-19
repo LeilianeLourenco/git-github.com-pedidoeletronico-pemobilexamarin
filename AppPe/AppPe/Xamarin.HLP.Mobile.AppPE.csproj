@@ -173,6 +173,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\xaml\VariacaoEditItemQtd.xaml.cs">
+      <DependentUpon>VariacaoEditItemQtd.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\xaml\VariacaoEditItemPedido.xaml.cs">
       <DependentUpon>VariacaoEditItemPedido.xaml</DependentUpon>
     </Compile>

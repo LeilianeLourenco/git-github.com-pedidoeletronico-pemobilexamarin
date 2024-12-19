@@ -12,6 +12,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.View.Pedido;
+using Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 {
@@ -27,17 +28,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             this.bLocaisCarregados = false;
         }
 
-        public string xNomeVariacao { get; set; }   
-        public List<string> _lTiposVariacoes;
+        public string xNomeVariacao { get; set; }
+
+        public List<VariacaoModel> _lTiposVariacoes;
 
         [Ignore]
         [IgnoreDataMember]
-        public List<string> lTiposVariacoes
+        public List<VariacaoModel> lTiposVariacoes
         {
             get { return _lTiposVariacoes; }
             set { _lTiposVariacoes = value; NotifyPropertyChanged(); }
         }
 
+        public int lIdsProduto { get; set; }
 
         public bool bTabelasCarregadas { get; set; }
         public bool stVendaSemEstoque { get; set; }
@@ -368,7 +371,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         }
 
         public int? idProduto { get; set; }
-        public DateTime? dtUltimaAlteracao { get; set; }
+        public DateTime? dtUltimaAlteracao { get; set; }      
 
         private double _vQtdItem;
 
@@ -923,8 +926,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 return retorno;
             }
         }
-
-
+        
         private string _xDetalheItem;
 
         [Ignore]
@@ -1018,11 +1020,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
                     if (viewmodel != null && item != null)
                     {
-
                         PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel = this;
                         if (PageListarProdutosNew.currentViewModel != null)
-                            PageListarProdutosNew.currentViewModel.itemSelected = this;
-
+                            PageListarProdutosNew.currentViewModel.itemSelected = this;                       
+                    
                         if (viewmodel.currentModel.CurrentItemModel.bTabelasCarregadas == false)
                         {
                             await Task.Run(() =>
@@ -1144,5 +1145,5 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
-    }   
+    }
 }
