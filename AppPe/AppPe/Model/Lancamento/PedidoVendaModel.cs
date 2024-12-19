@@ -260,6 +260,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
         public string xDisplayIntegracao { get; set; }
         public bool bPedidoComAlteracao { get; set; }
+        public string xLocalRepresentante { get; set; }
 
         private int? _idPedidoOrigem;
         public int? idPedidoOrigem

@@ -41,8 +41,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             TEditorDroid.Initialize();
             DisplayCrashReport();
-            CheckAndRequestBluetoothPermission();
-            CheckAndRequestLocationPermission();
+            CheckAndRequestBluetoothPermission();        
             LoadApplication(new App());
         }
 
