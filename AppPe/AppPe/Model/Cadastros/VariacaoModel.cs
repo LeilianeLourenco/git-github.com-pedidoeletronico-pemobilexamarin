@@ -1,5 +1,6 @@
 ﻿using SQLite;
 using System;
+using System.Collections.Generic;
 using Xamarin.HLP.Mobile.AppPE.Common;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
@@ -47,6 +48,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         public long idGradeProduto { get; set; }
         public int idGradeComposicao { get; set; } 
         public string xGradeComposicao { get; set; }  
+    }
+
+    public class VariacaoModel
+    {       
+        public string NomeVariacao { get; set; }
+        public int idProduto { get; set; }
+        public List<int> idProdutoLista { get; set; }
     }
 
 }

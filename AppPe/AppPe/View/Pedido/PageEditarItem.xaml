@@ -84,10 +84,7 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <StackLayout Orientation="Vertical" x:Name="StackLayoutItens">
-
-                                    </StackLayout>
-
+                                    <StackLayout Orientation="Vertical" x:Name="StackLayoutItens"></StackLayout>
                                 </Grid>
 
                             </Grid>

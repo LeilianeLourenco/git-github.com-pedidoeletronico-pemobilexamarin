@@ -7,6 +7,7 @@ using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.View.MainPage;
 using ZXing.Net.Mobile.Forms;
 using Xamarin.HLP.Mobile.AppPE.Core.Criptografia.Interfaces;
+using Xamarin.Essentials;
 
 namespace Xamarin.HLP.Mobile.AppPE.Common
 {
@@ -154,6 +155,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 
         public static ZXingScannerPage scanPage;
 
+        public static async Task<PermissionStatus> PermissionLoc()
+        {
+            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            if (status != PermissionStatus.Granted)                       
+                status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            
+            return status;
+        }
 
         public static async Task<bool> PermissionCamera()
         {
