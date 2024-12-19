@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
+using Xamarin.HLP.Mobile.AppPE.Model.Agenda;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
@@ -1400,12 +1403,35 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             if (CanSave())
             {
-                IsBusy = true;
-                await ValidateToSave();
-                IsBusy = false;
+                var status = await UtilMethods.PermissionLoc();
+                if (status == PermissionStatus.Granted)
+                {
+                    try
+                    {
+                        var location = await Geolocation.GetLastKnownLocationAsync();
+
+                        if (location != null)
+                            currentModel.xLocalRepresentante = $"{location.Latitude.ToString(CultureInfo.InvariantCulture)}, {location.Longitude.ToString(CultureInfo.InvariantCulture)}";
+
+                        else
+                            await App.Current.MainPage.DisplayAlert("Erro", "Não foi possível obter a localização.", "OK");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Erro", $"Falha ao obter a localização: {ex.Message}", "OK");
+                    }
+
+                    IsBusy = true;
+                    await ValidateToSave();
+                    IsBusy = false;
+                }
+                else
+                    await App.Current.MainPage.DisplayAlert("Permissão Negada", "O acesso à localização é necessário para salvar.", "OK");
+
             }
         }
-
+      
         public bool CanSave()
         {
             return IsBusy == false;
