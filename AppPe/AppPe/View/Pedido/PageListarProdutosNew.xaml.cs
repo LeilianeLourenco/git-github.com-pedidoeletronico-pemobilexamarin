@@ -123,109 +123,122 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
         {
             var item = e.SelectedItem as PedidoVendaItensModel;
 
-
-            if (item != null)
+            try
             {
-                if (ViewModel.editarItemViewModel != null)
-                    await IsValidPage(true);
 
-                item.editting = false;
-
-                if (ListViewDados.ItemTemplate.GetType() == typeof(DataTemplateBasic))
+                if (item != null)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    if (ViewModel.editarItemViewModel != null)
+                        await IsValidPage(true);
+
+                    item.editting = false;
+
+                    if (ListViewDados.ItemTemplate.GetType() == typeof(DataTemplateBasic))
                     {
-                        ViewModel.bListaItensHabilitada = false;
-                    });
-
-                    ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel = item;
-                    ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel?.PublicNotifyPropertyChanged(
-                        "pDesconto");
-                    if (ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel != null)
-                    {
-                        ViewModel.HasGradeSelected =
-                            ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel.HasGrade;
-                        ViewModel.xtitleButtonEditar =
-                            ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel.HasGrade
-                                ? "Grade"
-                                : "Editar";
-
-                        if (ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel.bTabelasCarregadas == false)
-                        {
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                IsBusy = true;
-                            });
-
-                            await Task.Run(() =>
-                            {
-                                TabelaPrecoRepository.SetTabelaPrecoByProduto(ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel,
-                                ViewModel.currentPedidoViewModel.currentModel.idClientesOffLine,
-                                ClienteRepository.GetIdClienteNuvem(ViewModel.currentPedidoViewModel.currentModel.idClientesOffLine),
-                                ViewModel.currentPedidoViewModel.currentModel.idRepresentantePedido ?? 0, ViewModel.currentPedidoViewModel.idTabelaPrecoCondicao);
-                                ProdutoRepository.SetComissao(item: ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel);
-                            });
-
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                IsBusy = false;
-                            });
-
-                        }
-
-
-                        if (item.pComissao == 0)
-                        {
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                IsBusy = true;
-                            });
-
-                            await Task.Run(() =>
-                            {
-                                ProdutoRepository.SetComissao(item: ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel);
-                            });
-
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                IsBusy = false;
-                            });
-                        }
-
-                        if (ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel.bLocaisCarregados == false)
-                        {
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                IsBusy = true;
-                            });
-
-                            await Task.Run(() =>
-                            {
-                                PedidoRepository.SetLocalEstoque(ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel,
-                                        ClienteRepository.GetIdClienteNuvem(ViewModel.currentPedidoViewModel.currentModel.idClientesOffLine),
-                                        ViewModel.currentPedidoViewModel.currentModel.idRepresentantePedido ?? 0);
-
-                            });
-
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                IsBusy = false;
-                            });
-
-                        }
-
-
-
-                        ViewModel.editarItemViewModel = new EditarItemViewModel();
-                        PedidoVendaCalculos.SumTotalizadoresPageEditarItem();
-                        CarregarListaPreco();
-                        CarregarListaLocais();
                         Device.BeginInvokeOnMainThread(() =>
                         {
-                            ViewModel.bListaItensHabilitada = true;
+                            ViewModel.bListaItensHabilitada = false;
                         });
+
+                        ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel = item;
+                        ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel?.PublicNotifyPropertyChanged(
+                            "pDesconto");
+                        if (ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel != null)
+                        {
+                            ViewModel.HasGradeSelected =
+                                ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel.HasGrade;
+                            ViewModel.xtitleButtonEditar =
+                                ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel.HasGrade
+                                    ? "Grade"
+                                    : "Editar";
+
+                            if (ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel.bTabelasCarregadas == false)
+                            {
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    IsBusy = true;
+                                });
+
+                                await Task.Run(() =>
+                                {
+                                    TabelaPrecoRepository.SetTabelaPrecoByProduto(ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel,
+                                    ViewModel.currentPedidoViewModel.currentModel.idClientesOffLine,
+                                    ClienteRepository.GetIdClienteNuvem(ViewModel.currentPedidoViewModel.currentModel.idClientesOffLine),
+                                    ViewModel.currentPedidoViewModel.currentModel.idRepresentantePedido ?? 0, ViewModel.currentPedidoViewModel.idTabelaPrecoCondicao);
+                                    ProdutoRepository.SetComissao(item: ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel);
+                                });
+
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    IsBusy = false;
+                                });
+
+                            }
+
+
+                            if (item.pComissao == 0)
+                            {
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    IsBusy = true;
+                                });
+
+                                await Task.Run(() =>
+                                {
+                                    ProdutoRepository.SetComissao(item: ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel);
+                                });
+
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    IsBusy = false;
+                                });
+                            }
+
+                            if (ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel.bLocaisCarregados == false)
+                            {
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    IsBusy = true;
+                                });
+
+                                try
+                                {
+
+                                    PedidoRepository.SetLocalEstoque(ViewModel.currentPedidoViewModel.currentModel.CurrentItemModel,
+                                            ClienteRepository.GetIdClienteNuvem(ViewModel.currentPedidoViewModel.currentModel.idClientesOffLine),
+                                            ViewModel.currentPedidoViewModel.currentModel.idRepresentantePedido ?? 0);
+
+
+                                }
+                                catch (Exception ex)
+                                {
+
+                                }
+
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    IsBusy = false;
+                                });
+
+                            }
+
+
+
+                            ViewModel.editarItemViewModel = new EditarItemViewModel();
+                            PedidoVendaCalculos.SumTotalizadoresPageEditarItem();
+                            CarregarListaPreco();
+                            CarregarListaLocais();
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                ViewModel.bListaItensHabilitada = true;
+                            });
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
@@ -242,7 +255,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
             var valorUnitario = (EntryValorUnitario.Behaviors[0] as ValorUnitarioComImpostosBehaviors);
             var pdesconto = (EntryDesconto.Behaviors[0] as DescontoItemBehaviors);
-            var vdesconto = (EntryValorDesconto.Behaviors[0] as DescontoItemBehaviors);        
+            var vdesconto = (EntryValorDesconto.Behaviors[0] as DescontoItemBehaviors);
             if (ViewModel.editarItemViewModel == null)
             {
                 return false;
@@ -369,8 +382,6 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
         }
 
-
-
         private void SetTemplateLista()
         {
             try
@@ -423,10 +434,4 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             }
         }
     }
-
-
-
-
 }
-
-

@@ -371,7 +371,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         }
 
         public int? idProduto { get; set; }
-        public DateTime? dtUltimaAlteracao { get; set; }      
+        public DateTime? dtUltimaAlteracao { get; set; }
 
         private double _vQtdItem;
 
@@ -516,7 +516,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         public string xDescricao
         {
             get { return (_xDescricao ?? "").ToUpper(); }
-            set { _xDescricao = value; }
+            set
+            {
+                _xDescricao = value;
+                NotifyPropertyChanged();
+            }
         }
 
         [IgnoreDataMember]
@@ -926,7 +930,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 return retorno;
             }
         }
-        
+
         private string _xDetalheItem;
 
         [Ignore]
@@ -1022,8 +1026,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                     {
                         PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel = this;
                         if (PageListarProdutosNew.currentViewModel != null)
-                            PageListarProdutosNew.currentViewModel.itemSelected = this;                       
-                    
+                            PageListarProdutosNew.currentViewModel.itemSelected = this;
+
                         if (viewmodel.currentModel.CurrentItemModel.bTabelasCarregadas == false)
                         {
                             await Task.Run(() =>

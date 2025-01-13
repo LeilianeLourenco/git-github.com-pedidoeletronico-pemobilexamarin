@@ -543,9 +543,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         {
             if (StaticModel.StaticEditarItemViewModel != null)
             {
-                if (PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel != null)
+                if (PagePedidoNew.CurrentViewModel?.currentModel?.CurrentItemModel != null)
                 {
-                    if (PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade != null)
+                    if (PagePedidoNew.CurrentViewModel?.currentModel?.CurrentItemModel?.ItensGrade != null)
                     {
                         StaticModel.StaticEditarItemViewModel.vSubTotal =
                             PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.Sum(c => c.vSubTotal);

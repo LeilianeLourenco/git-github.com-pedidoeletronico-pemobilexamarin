@@ -14,9 +14,10 @@
             <BindableLayout.ItemTemplate>
                 <DataTemplate>
                     <Button Text="{Binding NomeVariacao}" 
-                            FontSize="13"                                              
-                            BackgroundColor="#fff"
-                            BorderColor="LightGray"
+                            FontSize="13"             
+                            FontAttributes="Bold"
+                            BackgroundColor="LightGray"
+                            BorderColor="LightGray"                           
                             BorderWidth="2" 
                             CornerRadius="10" 
                             WidthRequest="100" 
