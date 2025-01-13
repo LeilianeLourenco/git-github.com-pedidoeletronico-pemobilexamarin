@@ -15,7 +15,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
-        {
+        {         
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 

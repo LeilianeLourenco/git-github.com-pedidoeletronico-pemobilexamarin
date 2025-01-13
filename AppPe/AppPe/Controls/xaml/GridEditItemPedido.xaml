@@ -40,12 +40,21 @@
             <BoxView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{Binding xCor}"/>
         </Grid>
 
-        <Label Grid.Column="1"  
-           Text="{Binding . , Converter={StaticResource DescricaoGradeCorConverter}}"
-           VerticalOptions="Center" 
-           LineBreakMode="TailTruncation"
-           Style="{StaticResource Medium}" 
-           TextColor="{StaticResource CinzaPrincipal}" />
+        <Label Grid.Column="1"
+       VerticalOptions="Center"
+       LineBreakMode="TailTruncation"
+       Style="{StaticResource Medium}"
+       TextColor="{StaticResource CinzaPrincipal}">
+            <Label.Text>
+                <Binding Path="." Converter="{StaticResource DescricaoGradeCorConverter}" />
+            </Label.Text>
+
+            <Label.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding bProdutoVariacao}" Value="true">
+                    <Setter Property="Text" Value="{Binding xDescricao}" />
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
 
         <Label Grid.Row="1"  IsVisible="{Binding bBloquearVisualizacaoEstoqueVendedor, Converter={StaticResource InvertBoolConvert}}"    
                Grid.Column="1"  

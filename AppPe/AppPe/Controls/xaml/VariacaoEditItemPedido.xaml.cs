@@ -60,8 +60,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml
                         {
                             if (Device.RuntimePlatform != Device.iOS)
                             {
-                                _btn.TextColor = Color.FromHex("#000");
-                                _btn.BackgroundColor = Color.LightGray;
+                                _btn.TextColor = Color.FromHex("#fff");
+                                _btn.BackgroundColor = Color.FromHex("#555555");
                             }
                             else
                                 _btn.TextColor = Color.FromHex("#555555");
@@ -69,7 +69,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml
                         else
                         {
                             _btn.TextColor = Color.FromHex("#000");
-                            _btn.BackgroundColor = Color.FromHex("#fff");
+                            _btn.BackgroundColor = Color.LightGray;
                         }
                     }
 
@@ -90,7 +90,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml
                                     {
                                         if (item is Button button)
                                         {
-                                            if (item?.BackgroundColor == Color.LightGray)
+                                            if (item?.BackgroundColor == Color.FromHex("#555555"))
                                             {
                                                 var buttonParameter = button.CommandParameter;
 
@@ -137,30 +137,28 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml
                                                     //        selectedParameters.Add(buttonIdProdutoLista);
                                                     //}
 
-                                                    if (i > 0)
+                                                    bool hasCommonId = false;
+
+                                                    if (selectedParameters.Count > 0)
                                                     {
-                                                        bool hasCommonId = false;
+                                                        bool allContainId = selectedParameters.All(innerList =>
+                                                                    buttonIdProdutoLista.Any(id => innerList.Contains(id)));
 
-                                                        if (selectedParameters.Count > 0)
-                                                        {
-                                                            bool allContainId = selectedParameters.All(innerList =>
-                                                                        buttonIdProdutoLista.Any(id => innerList.Contains(id)));
-
-                                                            hasCommonId = buttonIdProdutoLista.Any(id => clickedIdProdutoLista.Contains(id)
-                                                                && allContainId);
-                                                        }
-                                                        else
-                                                            hasCommonId = buttonIdProdutoLista.Any(id => clickedIdProdutoLista.Contains(id));
-
-                                                        if (!hasCommonId)
-                                                        {
-                                                            button.TextColor = Color.FromHex("#000");
-                                                            button.BackgroundColor = Color.FromHex("#fff");
-                                                            button.BorderColor = Color.LightGray;
-                                                        }                                                      
-
-                                                        button.IsEnabled = hasCommonId;
+                                                        hasCommonId = buttonIdProdutoLista.Any(id => clickedIdProdutoLista.Contains(id)
+                                                            && allContainId);
                                                     }
+                                                    else
+                                                        hasCommonId = buttonIdProdutoLista.Any(id => clickedIdProdutoLista.Contains(id));
+
+                                                    if (!hasCommonId)
+                                                    {
+                                                        button.TextColor = Color.FromHex("#000");
+                                                        button.BackgroundColor = Color.FromHex("#fff");
+                                                        button.BorderColor = Color.LightGray;
+                                                    }
+
+                                                    button.IsEnabled = hasCommonId;
+
                                                 }
                                             }
                                         }
@@ -179,22 +177,26 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml
                                 })
                                 .FirstOrDefault();
 
-                        string xQuery = $"select vVenda, stVendaSemEstoque from tb_produto where idProduto = {idProduto}";
+                        string xQuery = $"select vVenda, stVendaSemEstoque, xNome from tb_produto where idProduto = {idProduto}";
                         var produto = App.Data.Connection.Query<ProdutoModel>(xQuery).FirstOrDefault();
 
                         if (produto != null)
                         {
                             var item = _item.FirstOrDefault();
-                          
+
                             item.idProduto = idProduto;
                             item.stVendaSemEstoque = produto.stVendaSemEstoque;
                             item.vUnitarioVendaComImpostos = produto.vVenda;
                             item.vVenda = produto.vVenda;
-                           
+                            item.xDescricao = produto.xNome;
+
+                            if (item.vQtdEstoque == 0)
+                                item.vQtdItem = 0;
+
                             _page.vUnitarioVendaSemImposto = produto.vVenda;
                             _page.vUnitarioVendaComImpostos = produto.vVenda;
                             _page.vUnitarioVenda = produto.vVenda;
-                      
+
                             var current = _page.CurrentLocalEstoque;
                             _page.CurrentLocalEstoque = null;
                             _page.CurrentLocalEstoque = current;

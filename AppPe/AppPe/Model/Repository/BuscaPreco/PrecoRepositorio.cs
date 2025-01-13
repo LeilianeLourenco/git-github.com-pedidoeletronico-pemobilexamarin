@@ -158,8 +158,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                 }
 
                 _lRetorno.RemoveAll(t => t.bRemoveTabela == true);
-            }
-
+            }           
 
             return _lRetorno;
         }
