@@ -44,6 +44,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
 
         public int? idClienteOffline { get; set; }
         public int? idCondicaoPagamento { get; set; }
+        public object objFiltro { get; set; }
 
 
         private async void LoadItens()
@@ -62,7 +63,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
                     litens = ClienteRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), TipoTela.pedido);
                 }
                 if (tabela == Tabela.TB_ENDERECO)
-                {                    
+                {
                     litens = EnderecoRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), idClienteOffline);
                 }
                 if (tabela == Tabela.RAMO_ATIVIDADE)
@@ -71,7 +72,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
                 }
                 if (tabela == Tabela.TB_TABELA_PRECO)
                 {
-                    litens = TabelaPrecoRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""));
+                    ClientesModel clientesFiltro = objFiltro as ClientesModel;
+                    litens = TabelaPrecoRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""), clientesFiltro: clientesFiltro);
                 }
                 if (tabela == Tabela.TB_CONDICAO_PAGAMENTO)
                 {

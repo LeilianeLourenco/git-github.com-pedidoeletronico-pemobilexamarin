@@ -308,7 +308,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 
                 var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{param1}{(param2 != null ? "/" + ((DateTime)param2).ToString("yyyy-MM-ddTHH:mm:ss") : null)}{(param3 != null ? "/" + param3.ToString() : "")}";
-
+        
                 var _apiClient = CurrentHttpClient;
 
                 var jsonResponse = await _apiClient.GetStringAsync(requestUri);
@@ -320,7 +320,24 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 
                     App.Data.Connection.Execute(xQuery);
                 }
+                if (TableMobile.GetApiRegistroByModel<T>() == "APItabelaPrecoRepresentantes")
+                {
+                    string xQuery = $@"DELETE FROM TB_TABELA_PRECO_REPRESENTANTES WHERE idEmpresa = {param1}";
 
+                    App.Data.Connection.Execute(xQuery);
+                }
+                if (TableMobile.GetApiRegistroByModel<T>() == "APItabelaPrecoUf")
+                {
+                    string xQuery = $@"DELETE FROM tb_tabelapreco_uf_cliente WHERE idEmpresa = {param1}";
+
+                    App.Data.Connection.Execute(xQuery);
+                }
+                if (TableMobile.GetApiRegistroByModel<T>() == "APITabelaprecoClienteRamo")
+                {
+                    string xQuery = $@"DELETE FROM tb_tabelapreco_ramoatividade_cliente WHERE idEmpresa = {param1}";
+
+                    App.Data.Connection.Execute(xQuery);
+                }
             }
             catch (System.Net.WebException)
             {
@@ -1128,7 +1145,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public static HttpClient CurrentHttpClient
         {
             get
-            {                
+            {                              
                 if (_currentHttpClient != null)
                 return _currentHttpClient;
 
@@ -1142,7 +1159,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 return _currentHttpClient;
             }
             set { _currentHttpClient = value; }
-        }
+        }      
 
         private static HttpClient _currentApiMobileHttpClient = null;
         public static HttpClient CurrentApiMobileHttpClient

@@ -228,13 +228,13 @@
                     </Label.Margin>
                 </Label>
 
-                <custom:ExtendedEntry IsEnabled="{Binding editarItemViewModel.currentModel.currentTabelaPreco.canEditComissao}"  Keyboard="Numeric"  x:Name="EntryPComissao" Grid.Row="1" TextColor="{Binding Source={x:Reference ComissaoPorcent}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}"
+                <custom:ExtendedEntry IsEnabled="{Binding bAdmin}"  Keyboard="Numeric"  x:Name="EntryPComissao" Grid.Row="1" TextColor="{Binding Source={x:Reference ComissaoPorcent}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}"
                        Grid.Column="0"  Placeholder="0" Text="{Binding editarItemViewModel.pComissao, Converter={StaticResource DecimalPlacesToStringConverter}}">
                     <custom:ExtendedEntry.Behaviors>
                         <behaviors:ComissaoItemBehaviors x:Name="ComissaoPorcent" TpValidacao="PORCENTAGEM" />
                     </custom:ExtendedEntry.Behaviors>
                 </custom:ExtendedEntry>
-                <custom:ExtendedEntry IsEnabled="{Binding editarItemViewModel.currentModel.currentTabelaPreco.canEditComissao}" Keyboard="Numeric"  x:Name="EntryValorComissao" Grid.Row="1" TextColor="{Binding Source={x:Reference ComissaoValor}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}" Grid.Column="1"  Placeholder="0,00"
+                <custom:ExtendedEntry IsEnabled="{Binding bAdmin}" Keyboard="Numeric"  x:Name="EntryValorComissao" Grid.Row="1" TextColor="{Binding Source={x:Reference ComissaoValor}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}" Grid.Column="1"  Placeholder="0,00"
                        Text="{Binding editarItemViewModel.vComissao, Converter={StaticResource DecimalToStringConverter}}" >
                     <custom:ExtendedEntry.Behaviors>
                         <behaviors:ComissaoItemBehaviors x:Name="ComissaoValor" TpValidacao="VALOR" />

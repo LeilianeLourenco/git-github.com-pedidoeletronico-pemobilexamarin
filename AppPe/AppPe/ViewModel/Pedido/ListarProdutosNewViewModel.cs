@@ -265,7 +265,23 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        public bool bAdmin
+        {
+            get
+            {
+                try
+                {
+                    var teste = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
 
+                    return App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+
+            }
+        }
 
         public ListarProdutosNewViewModel()
         {
