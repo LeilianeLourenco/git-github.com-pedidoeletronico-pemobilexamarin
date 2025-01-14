@@ -51,6 +51,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         {
             get
             {
+                _lTabelasPrecoCampanhas = null;
+
                 return _lTabelasPrecoCampanhas ??
                        (_lTabelasPrecoCampanhas = TabelaPrecoRepository.GetTabelasCampanhas(0, 1,
                            App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa));

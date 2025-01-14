@@ -242,8 +242,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
             });
             SearchTabelaPrecoCommand = new Command(() =>
             {
+                currentModel.idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+                currentModel.idRamoAtividade = ramoAtividade.Id;
+
                 PagePesquisaPadrao pesquisa = new PagePesquisaPadrao(tabelaPreco,
-                    PesquisaPadraoViewModel.Tabela.TB_TABELA_PRECO)
+                    PesquisaPadraoViewModel.Tabela.TB_TABELA_PRECO, Filtro: currentModel)
                 {
                     Title = "Tabela de preço",
                 };
@@ -332,20 +335,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                     if (currentModel.idCondicaoPagamento != null && currentModel.idCondicaoPagamento > 0)
                         CondicaoPgto = CondicaoPagamentoRepository.GetItem(currentModel.idCondicaoPagamento ?? 0);
 
-
                     if (currentModel.idTransportadora != null && currentModel.idTransportadora > 0)
                         Transportadora = TransportadoraRepository.GetItem(currentModel.idTransportadora ?? 0);
 
-
                     if (currentModel.idRedespacho != null && currentModel.idRedespacho > 0)
                         Redespacho = TransportadoraRepository.GetItem(currentModel.idRedespacho ?? 0);
-
 
                 }
                 if (ramoAtividade == null || ramoAtividade.Id == 0)
                     ramoAtividade = RamoAtividadeRepository.GetFirstItem();
                 if (tabelaPreco == null || tabelaPreco.Id == 0)
-                    tabelaPreco = TabelaPrecoRepository.GetFirstItem();
+                    tabelaPreco = new ListItemModel { Display = "clique aqui para visualizar"};
                 if (CondicaoPgto == null || CondicaoPgto.Id == 0)
                     CondicaoPgto = CondicaoPagamentoRepository.GetFirstItem();
                 if (Transportadora == null || Transportadora.Id == 0)
@@ -400,7 +400,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                 currentModel.idTransportadora = Transportadora.Id;
                 currentModel.idRedespacho = Redespacho.Id;
 
-                currentModel.idRamoAtividade = ramoAtividade.Id;
                 if (bUsaLimite == false)
                     currentModel.vLimiteCredito = null;
 
@@ -414,10 +413,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                         await App.Messages.ShowAsync("Precisa ser preenchido ao menos um e-mail!  pelo usuário");
                         return;
                     }
-                     
 
-                    var _quantidadeEmails = currentModel.xEmails.Split(',').Where(t => t != "").Count(); 
-                    if((bBuscouPorCnpj == true && _quantidadeEmails <= bQuantidadeEmailCnpj) || _quantidadeEmails == 0)
+
+                    var _quantidadeEmails = currentModel.xEmails.Split(',').Where(t => t != "").Count();
+                    if ((bBuscouPorCnpj == true && _quantidadeEmails <= bQuantidadeEmailCnpj) || _quantidadeEmails == 0)
                     {
                         await App.Messages.ShowAsync("Precisa ser preenchido ao menos um e-mail pelo usuário!");
                         return;
@@ -431,12 +430,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                     }
 
 
-                    var _quantidadeTelefone = currentModel.xTelefones.Split(',').Where(t => t != "").Count(); 
+                    var _quantidadeTelefone = currentModel.xTelefones.Split(',').Where(t => t != "").Count();
                     if ((bBuscouPorCnpj == true && _quantidadeTelefone <= bQuantidadeTelefoneCnpj) || _quantidadeTelefone == 0)
                     {
                         await App.Messages.ShowAsync("Precisa ser preenchido ao menos um telefone pelo usuário!");
                         return;
-                    } 
+                    }
 
                     var _quantidadeContato = currentModel.lContato?.Count();
                     if ((bBuscouPorCnpj == true && _quantidadeContato <= bQuantidadeContatoCnpj) || _quantidadeContato == 0)
@@ -445,7 +444,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                         return;
                     }
 
-                    
+
                 }
 
                 ClienteRepository.Save(currentModel);

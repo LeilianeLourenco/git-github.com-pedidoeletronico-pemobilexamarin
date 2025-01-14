@@ -110,7 +110,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             };
         }
 
-        public static List<ListItemModel> Get(int skip, int take, string xFiltro, bool bTrasCampanha = false)
+        public static List<ListItemModel> Get(int skip, int take, string xFiltro, bool bTrasCampanha = false, ClientesModel clientesFiltro = null)
         {
             /*
             var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
@@ -143,8 +143,38 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     IdOnline = t.idTabelaPreco,
                     XId = "" + t.idTabelaPreco + "",
                     idTabelaPreco = null,
-                    vDescCondicao = null
+                    vDescCondicao = null,
+                    stCampanhaCliente = t.stCampanhaCliente,
+                    stCampanhaClienteRamoAtividade = t.stCampanhaClienteRamoAtividade,
+                    stCampanhaClienteUF = t.stCampanhaClienteUF,
+                    stCampanhaRepresentante = t.stCampanhaRepresentante,
+                    stTabelaPrecoRepresentacao = t.stTabelaPrecoRepresentacao,
                 });
+
+                var estadosCliente = clientesFiltro.lEndereco.Select(p => p.xEstado).Distinct().ToList();
+
+                var tbModel = App.Data.Connection.Table<TabelaPrecoClienteUfModel>()
+                    .Where(x => x.idEmpresa == clientesFiltro.idEmpresa).ToList();
+
+                foreach (var lin in a.ToList())
+                {
+                    if (lin.stCampanhaClienteUF)
+                        tbModel = tbModel.Where(x => x.idTabelaPreco == lin.Id && estadosCliente.Contains(x.xUF)).ToList();
+
+                    if (lin.stCampanhaClienteRamoAtividade)
+                    {
+                        var filtroTabelaRamoAtividade = App.Data.Connection.Table<TabelaPrecoClienteRamoModel>()
+                                    .Where(x => x.idTabelaPreco == lin.Id && 
+                                            x.idRamoAtividade == clientesFiltro.idRamoAtividade).FirstOrDefault();
+
+                        tbModel = tbModel.Where(x => x.idTabelaPreco == filtroTabelaRamoAtividade.idTabelaPreco).ToList();
+                    }
+
+                    if (tbModel.Count == 0)
+                        a.Remove(lin);
+
+                }
+
                 return a;
                 /*
                 var dados = App.Data.Connection.Query<BasicPickerModel>(xQuery);
@@ -708,6 +738,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                              App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers).
                              ToList();
 
+                //StaticModel.lTabelasPrecoCampanhas = StaticModel.lTabelasPrecoCampanhas.Where(x => x.)
+
                 foreach (var t in StaticModel.lTabelasPrecoCampanhas.Where(i => i.stTabelaPrecoRepresentacao == true && i.stTabelaPreco == 0))
                 {
                     var t1 = t;
@@ -760,7 +792,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     bAtivo = i.stTabelaPreco == 1 ? ((i.dInicial < DateTime.Now.ToUniversalTime() && i.dFinal > DateTime.Now.ToUniversalTime()) || i.stAtivo) : i.stAtivo
                 }).ToList();
 
-                // OS 35398 - Jessica Barbieri
+                //// OS 35398 - Jessica Barbieri
                 //if (lTabelaPreco?.Count() > 0)
                 //{
                 //    foreach (var tabela in lTabelaPreco)
@@ -782,7 +814,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 //        if (tabela.stTabelaPrecoRepresentacao)
                 //            filtros++;
 
-                //        var _contagemDeTabelas = lTabelaPreco.Where(t => t.idTabelaPreco == tabela.idTabelaPreco).Count();
+
+                //        var _contagemDeTabelas = lTabelaPreco
+                //                .Where(t => t.idTabelaPreco == tabela.idTabelaPreco)
+                //                .GroupBy(t => t.idTabelaPreco)
+                //                .Count();
 
                 //        if (filtros > 0 && _contagemDeTabelas != filtros)
                 //        {

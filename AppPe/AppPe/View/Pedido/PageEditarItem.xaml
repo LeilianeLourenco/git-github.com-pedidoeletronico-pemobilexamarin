@@ -278,7 +278,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <custom:ExtendedEntry  MaxLength="8" IsEnabled="False"
+                                            <custom:ExtendedEntry  MaxLength="8" IsEnabled="{Binding bAdmin}"
                                           x:Name="EntryPComissao" Text="{Binding pComissao, Converter={StaticResource DecimalPlacesToStringConverter}}" Keyboard="Numeric" >
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:ComissaoItemBehaviors x:Name="ComissaoPorcent" TpValidacao="PORCENTAGEM" />
