@@ -153,24 +153,28 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 var estadosCliente = clientesFiltro.lEndereco.Select(p => p.xEstado).Distinct().ToList();
 
-                var tbModel = App.Data.Connection.Table<TabelaPrecoClienteUfModel>()
-                    .Where(x => x.idEmpresa == clientesFiltro.idEmpresa).ToList();
-
                 foreach (var lin in a.ToList())
                 {
+                    var tb = a;
+
                     if (lin.stCampanhaClienteUF)
-                        tbModel = tbModel.Where(x => x.idTabelaPreco == lin.Id && estadosCliente.Contains(x.xUF)).ToList();
+                    {
+                        var filtroTabelaPrecoUF = App.Data.Connection.Table<TabelaPrecoClienteUfModel>()
+                            .Where(x => x.idTabelaPreco == lin.Id && estadosCliente.Contains(x.xUF)).FirstOrDefault();
+
+                        tb = tb.Where(x => x.Id == filtroTabelaPrecoUF?.idTabelaPreco).ToList();
+                    }
 
                     if (lin.stCampanhaClienteRamoAtividade)
                     {
                         var filtroTabelaRamoAtividade = App.Data.Connection.Table<TabelaPrecoClienteRamoModel>()
-                                    .Where(x => x.idTabelaPreco == lin.Id && 
+                                    .Where(x => x.idTabelaPreco == lin.Id &&
                                             x.idRamoAtividade == clientesFiltro.idRamoAtividade).FirstOrDefault();
 
-                        tbModel = tbModel.Where(x => x.idTabelaPreco == filtroTabelaRamoAtividade.idTabelaPreco).ToList();
+                        tb = tb.Where(x => x.Id == filtroTabelaRamoAtividade?.idTabelaPreco).ToList();
                     }
 
-                    if (tbModel.Count == 0)
+                    if (tb == null || tb?.Count == 0)
                         a.Remove(lin);
 
                 }

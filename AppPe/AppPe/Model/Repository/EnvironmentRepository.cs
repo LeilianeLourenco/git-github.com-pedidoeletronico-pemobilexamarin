@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.HLP.Mobile.AppPE.Common;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 {
@@ -67,7 +68,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 App.Data.Connection.Execute(xQuery);
 
-           
+
 
                 xQuery =
                     $@"DELETE FROM TB_STATUS WHERE idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
@@ -124,7 +125,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 xQuery =
                       $@"DELETE FROM TB_EMPRESA WHERE idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
 
-                App.Data.Connection.Execute(xQuery);                
+                App.Data.Connection.Execute(xQuery);
 
                 xQuery =
                       $@"DELETE FROM TB_REPRESENTADA WHERE idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
@@ -245,7 +246,33 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             //se chegar aqui é porque algo falhou
             return false;
         }
-        
 
+        public static void ExcluirRegistrosNecessarios(string nomeApi, object idEmpresa)
+        {
+            if (nomeApi == "APIequiperepresentantes")
+            {
+                string xQuery = $@"DELETE FROM TB_EQUIPE_REPRESENTANTES WHERE idEmpresa = {idEmpresa}";
+
+                App.Data.Connection.Execute(xQuery);
+            }
+            if (nomeApi == "APItabelaPrecoRepresentantes")
+            {
+                string xQuery = $@"DELETE FROM TB_TABELA_PRECO_REPRESENTANTES WHERE idEmpresa = {idEmpresa}";
+
+                App.Data.Connection.Execute(xQuery);
+            }
+            if (nomeApi == "APItabelaPrecoUf")
+            {
+                string xQuery = $@"DELETE FROM tb_tabelapreco_uf_cliente WHERE idEmpresa = {idEmpresa}";
+
+                App.Data.Connection.Execute(xQuery);
+            }
+            if (nomeApi == "APITabelaprecoClienteRamo")
+            {
+                string xQuery = $@"DELETE FROM tb_tabelapreco_ramoatividade_cliente WHERE idEmpresa = {idEmpresa}";
+
+                App.Data.Connection.Execute(xQuery);
+            }
+        }
     }
 }
