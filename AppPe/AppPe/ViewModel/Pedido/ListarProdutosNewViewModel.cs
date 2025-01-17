@@ -270,9 +270,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             get
             {
                 try
-                {
-                    var teste = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
-
+                {                    
                     return App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
                 }
                 catch (Exception)
