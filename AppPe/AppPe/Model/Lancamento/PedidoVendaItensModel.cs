@@ -160,7 +160,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
-
         private double _vLimiteMinimoVenda;
 
         public double vLimiteMinimoVenda
@@ -169,13 +168,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _vLimiteMinimoVenda = value; NotifyPropertyChanged(); }
         }
 
-
-
         private double _vUltimaVenda;
 
         /// <summary>
         /// utilizado na tela de ultimos produtos adquiridos do cliente para trazer a info da ultima venda
         /// </summary>
+      
         public double vUltimaVenda
         {
             get { return _vUltimaVenda; }
@@ -183,9 +181,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         }
 
         private double _vQtdUltimaVenda;
+
         /// <summary>
         /// utilizado na tela de ultimos produtos adquiridos do cliente para trazer a info da ultima venda
         /// </summary>
+       
         public double vQtdUltimaVenda
         {
             get { return _vQtdUltimaVenda; }
@@ -199,8 +199,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _vQtdEstoque; }
             set { _vQtdEstoque = value; NotifyPropertyChanged(); }
         }
-
-
 
         private string _xQtdEstoque;
 
@@ -217,7 +215,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _xQtdEstoque = value; NotifyPropertyChanged(); }
         }
 
-
         private string _xUltimaVendaInfo;
 
         public string xUltimaVendaInfo
@@ -231,7 +228,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
             set { _xUltimaVendaInfo = value; NotifyPropertyChanged(); }
         }
-
 
         private string _xQtdEstoqueValor;
 
@@ -247,9 +243,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
             set { _xQtdEstoqueValor = value; NotifyPropertyChanged(); }
         }
-
-
-
 
         private bool _stDescontaStComissao;
 
@@ -307,6 +300,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         /// <summary>
         /// Campo padrão da tabela de preço - não é alteravel ( com impostos )
         /// </summary>
+        
         [NotNull]
         public double vVenda
         {
@@ -318,11 +312,29 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
+        private double _vVendaOriginal;
+
+        /// <summary>
+        /// Valor do cadastro do produto
+        /// </summary>
+        
+        [NotNull]
+        public double vVendaOriginal
+        {
+            get { return _vVendaOriginal; }
+            set
+            {
+                _vVendaOriginal = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private double _vCusto;
+
         /// <summary>
         /// Valor de compra do produto
         /// </summary>
-        private double _vCusto;
-
+       
         public double vCusto
         {
             get { return _vCusto; }
@@ -344,7 +356,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 NotifyPropertyChanged();
             }
         }
-
 
         private int _idLocalEstoque;
 

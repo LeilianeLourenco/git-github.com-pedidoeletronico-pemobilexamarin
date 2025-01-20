@@ -181,17 +181,26 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml
 
                             item.idProduto = idProduto;
                             item.stVendaSemEstoque = produto.stVendaSemEstoque;
-                            item.vUnitarioVendaComImpostos = produto.vVenda;
-                            item.vUnitarioVendaComImpostosOriginal = item.vUnitarioVendaComImpostos;
-                            item.vVenda = produto.vVenda;
+
+                            var tabelaPreco = item.lTabelaPreco.FirstOrDefault();
+
+                            var porcentagem = tabelaPreco?.pIndice ?? 0;
+                            var vVenda = produto?.vVenda ?? 0;
+
+                            var valor = (vVenda * porcentagem) / 100;
+                            valor += vVenda + valor;
+
+                            item.vUnitarioVendaComImpostos = valor;
+                            item.vVenda = valor;
+                            item.vVendaOriginal = produto?.vVenda ?? 0;
                             item.xDescricao = produto.xNome;
 
                             if (item.vQtdEstoque == 0)
                                 item.vQtdItem = 0;
 
-                            _page.vUnitarioVendaSemImposto = produto.vVenda;
-                            _page.vUnitarioVendaComImpostos = produto.vVenda;
-                            _page.vUnitarioVenda = produto.vVenda;
+                            _page.vUnitarioVendaSemImposto = valor;
+                            _page.vUnitarioVendaComImpostos = valor;
+                            _page.vUnitarioVenda = valor;
 
                             var current = _page.CurrentLocalEstoque;
                             _page.CurrentLocalEstoque = null;
