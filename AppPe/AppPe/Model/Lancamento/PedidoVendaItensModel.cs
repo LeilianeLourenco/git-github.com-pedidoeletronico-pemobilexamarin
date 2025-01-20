@@ -317,8 +317,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         /// <summary>
         /// Valor do cadastro do produto
         /// </summary>
-        
-        [NotNull]
+             
         public double vVendaOriginal
         {
             get { return _vVendaOriginal; }
