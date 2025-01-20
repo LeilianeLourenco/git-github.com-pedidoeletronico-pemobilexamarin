@@ -9,6 +9,7 @@ using Hlp.PedidoEletronico.Domain.Business.Helpers;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
+using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
@@ -17,7 +18,7 @@ using Xamarin.HLP.Mobile.AppPE.View.Pedido;
 namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 {
     public class EditarItemViewModel : ViewModelComum<PedidoVendaItensModel>
-    {        
+    {
         #region Properties
 
         private List<BasicPickerModel> _listaTabelaPreco = new List<BasicPickerModel>();
@@ -41,9 +42,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     if (_currentTabelaPreco == null || _currentTabelaPreco.Id != value.Id)
                     {
                         _currentTabelaPreco = value;
-                        var currentTabPreco = currentModel.lTabelaPreco.FirstOrDefault(c => c.idTabelaPreco == value.Id);
+
+                        TabelaPrecoSimplificada currentTabPreco = new TabelaPrecoSimplificada();
+
+                        currentTabPreco = currentModel.lTabelaPreco.FirstOrDefault(c => c.idTabelaPreco == value.Id);
                         if (currentTabPreco == null) return;
 
+                        if (currentModel.bProdutoVariacao)                                                  
+                            currentTabPreco.vVenda = ReturnValorProdutoVariacao(value.Id);
+                        
                         currentModel.currentTabelaPreco = currentTabPreco;
                         if (currentModel.ItensGrade == null) return;
                         foreach (var item in currentModel.ItensGrade)
@@ -74,10 +81,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         }
 
 
-
                         vUnitarioVendaComImpostos = vUnitarioVenda = currentModel.currentTabelaPreco.vVenda;
-                        _vUnitarioVendaSemImposto = currentModel.vUnitarioVendaSemImposto;
-
+                        _vUnitarioVendaSemImposto = currentModel.vUnitarioVendaSemImposto;                       
 
                         // caso a comissão seja por tabela de preço e a a tabela seja aterada.
                         if (HelperPedidoVenda.GetTipoComissao(xComissao: currentModel.stComissao) ==
@@ -99,7 +104,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         pStVenda = currentModel.currentTabelaPreco.pStVenda;
                         pIpiVenda = currentModel.currentTabelaPreco.pIpiVenda;
 
-
                         //tratamento feito para descontos que vierem aplicados na condição de pagamento
                         if (currentModel.vDesconto > 0 && vDesconto == 0)
                         {
@@ -118,16 +122,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             vUnitarioVendaComImpostos = vUnitarioVenda + (vUnitarioVenda * (currentModel.vDescontoDaCondicao.GetValueOrDefault() / 100));
                         }
 
-
-
-
-
                         //recalculo 
                         PedidoVendaCalculos.AtualizaValores(currentModel);
 
                         //tratamento no valor unitário
                         //após trocar de tabela ele preenchia o valor cheio sem desconto e zuava o total sem imposto.
-
 
                         xDescontoMaximo = $"desconto permitido {currentModel.currentTabelaPreco.pDescontoMaximo}%";
 
@@ -141,6 +140,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        public double ReturnValorProdutoVariacao(int idTabelaPreco)
+        {
+            var tabelaPreco = currentModel.lTabelaPreco.FirstOrDefault(c => c.idTabelaPreco == idTabelaPreco);
+            
+            var porcentagem = tabelaPreco?.pIndice ?? 0;
+            var vVenda = currentModel.ItensGrade?.FirstOrDefault().vVendaOriginal ?? 0;
+      
+            var valor = (vVenda * porcentagem) / 100;
+
+            return vVenda + valor;       
+        }
 
         private List<BasicPickerModel> _listaLocalEstoque = new List<BasicPickerModel>();
         public List<BasicPickerModel> ListaLocalEstoque
@@ -219,7 +229,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
                 NotifyPropertyChanged();
             }
-        }               
+        }
 
         private double _vUnitarioVendaSemImposto;
         /// <summary>
@@ -448,7 +458,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 if (IsBusy)
                     return;
-            
+
                 IsBusy = true;
                 if (PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel == null) return;
                 currentModel = PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel;
@@ -513,7 +523,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                 currentModel.ItensGrade = new ObservableCollection<PedidoVendaItensModel> { currentModel };
                                 currentModel.ItensVariacao = new ObservableCollection<PedidoVendaItensModel>(
                                         ProdutoRepository.GetVariacaoItem(currentModel));
-                               
+
                             }
 
                             CurrentTabelaPreco = ListaTabelaPreco.FirstOrDefault(c => c.Id == currentModel.idTabelaPreco);

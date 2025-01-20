@@ -42,6 +42,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return "";
         }
 
+        public static IEnumerable<int> GetIdsProduto(object idEmpresa)
+        {
+            string xQuery = $"SELECT idProduto FROM TB_PRODUTO WHERE idProdutoPai != 0 AND idEmpresa = {idEmpresa}";
+            return App.Data.Connection.Query<ProdutoModel>(xQuery).ToList().Select(x => x.idProduto ?? 0);
+
+        }
+
         public static List<DisplayListaModel> GetAllListasPrecoByProduto(int idProduto, List<BasicPickerModel> listas)
         {
             try
