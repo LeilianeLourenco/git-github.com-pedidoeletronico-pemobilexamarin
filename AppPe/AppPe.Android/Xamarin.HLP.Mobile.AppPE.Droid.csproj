@@ -545,6 +545,8 @@
     <Content Include="dll\NGraphics.Android.Custom.dll" />
     <Content Include="dll\NGraphics.Custom.dll" />
     <Content Include="dll\TEditor.Droid.dll" />
+    <AndroidResource Include="Resources\drawable\ic_ab_back_holo_dark.png" />
+    <AndroidResource Include="Resources\drawable\configuracoes.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppPe\Xamarin.HLP.Mobile.AppPE.csproj">
@@ -832,7 +834,6 @@
     <AndroidResource Include="Resources\drawable\ApplicationLista_2.png" />
     <AndroidResource Include="Resources\drawable\ApplicationMenuSelect.png" />
     <AndroidResource Include="Resources\drawable\box.png" />
-    <AndroidResource Include="Resources\drawable\ic_ab_back_holo_dark.png" />
     <AndroidResource Include="Resources\drawable\iconPE.png" />
     <AndroidResource Include="Resources\drawable\Login_v6.png" />
     <AndroidResource Include="Resources\drawable\new_arrow.xml" />

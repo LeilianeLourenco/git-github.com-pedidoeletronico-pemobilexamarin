@@ -12,6 +12,7 @@ using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Agenda;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
+using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;
@@ -23,12 +24,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 {
     public class PedidoNewViewModel : SearchCommom
     {
+        public string ImageConfig => Device.OnPlatform("configuracoes.png", "configuracoes.png", "Assets/configuracoes.png");
+
         public ICommand DateOrcamentoVisibilityCommand { get; set; }
         public ICommand RepresentacaoPdfVisibilityCommand { get; set; }
         public ICommand VendedorVisibilityCommand { get; set; }
-
         public ICommand SaveCommand { get; set; }
-
         public ICommand GoToProdutosCommand { get; set; }
         public ICommand GoToFinanceiroCommand { get; set; }
         public ICommand GoToStatusCommand { get; set; }
@@ -38,21 +39,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public ICommand GoToEnderecoCommand { get; set; }
         public ICommand GoToRedespachoCommand { get; set; }
         public ICommand GoToConficaoPgtoCommand { get; set; }
+        public ICommand GoToFaturasCommand { get; set; }
         public ICommand GoToFormaPgtoCommand { get; set; }
-
         public ICommand GoToComplementosCommand { get; set; }
         public ICommand GoToDescontoCommand { get; set; }
-
-
         public Command ChangeTimePedidoCommand { get; set; }
-
         public Command ChangeTimePrevisaoCommand { get; set; }
         public Command ChangeTimeOrcamentoCommand { get; set; }
         public Command GoToRepresentacoesCommand { get; set; }
         public Command ChangeTipoLancamentoCommand { get; set; }
-
         public ICommand CancelPedidoCommand { get; set; }
-
         public ICommand GoToEstoqueCommand { get; set; }
 
 
@@ -291,8 +287,65 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        private List<RecebimentoTitulosPostModel> _lRecebimentoTitulosModel = new List<RecebimentoTitulosPostModel>();
 
+        public List<RecebimentoTitulosPostModel> lRecebimentoTitulosModel
+        {
+            get { return _lRecebimentoTitulosModel; }
+            set
+            {
+                _lRecebimentoTitulosModel = value;
+                NotifyPropertyChanged();
+            }
+        }
 
+        //private DateTime? _dtInicial;
+
+        //public DateTime? dtInicial
+        //{
+        //    get { return _dtInicial; }
+        //    set
+        //    {
+        //        _dtInicial = value;
+        //        NotifyPropertyChanged();
+        //    }
+        //}
+
+        //private DateTime? _dtFinal;
+
+        //public DateTime? dtFinal
+        //{
+        //    get { return _dtFinal; }
+        //    set
+        //    {
+        //        _dtFinal = value;
+        //        NotifyPropertyChanged();
+        //    }
+        //}
+
+        //private int _nParcelas;
+
+        //public int nParcelas
+        //{
+        //    get { return _nParcelas; }
+        //    set
+        //    {
+        //        _nParcelas = value;
+        //        NotifyPropertyChanged();
+        //    }
+        //}
+
+        private decimal _dAcrescimoMensal;
+
+        public decimal dAcrescimoMensal
+        {
+            get { return _dAcrescimoMensal; }
+            set
+            {
+                _dAcrescimoMensal = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -396,9 +449,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             set { _bUsaMinimoVendas = value; NotifyPropertyChanged(); }
         }
 
-
-
-
         private IEnumerable<Group<string, PedidoVendaItensModel>> _registrosEstoqueAgrupados;
 
         public IEnumerable<Group<string, PedidoVendaItensModel>> RegistrosEstoqueAgrupados
@@ -415,11 +465,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
         public int? idTabelaPrecoCondicao { get; set; } //alterado
 
-
-
         #endregion
-
-
 
         public PedidoNewViewModel()
         {
@@ -436,6 +482,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         ExecuttingAnyCommand = true;
                         var page = new PageSelectDate(currentModel, SelectDateViewModel.tipolancamento.PEDIDO);
                         UtilNavidate.PushModalAsync(page);
+
+                        currentModel.dtInicial = null;
                     }
                 });
             });
@@ -619,6 +667,31 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
             });
 
+            GoToFaturasCommand = new Command(async () =>
+            {
+                if (ItemCliente.Id == 0)
+                {
+                    await App.Messages.ShowAsync("Antes disso, selecione um cliente");
+                    return;
+                }
+
+                if (!ExecuttingAnyCommand)
+                {
+                    ExecuttingAnyCommand = true;
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        if (ItemCondicaoPgto == null)
+                            ItemCondicaoPgto = new ListItemModel();
+
+                        PageTabelaFaturas page = new PageTabelaFaturas(this);
+                        UtilNavidate.PushAsync(page);
+                    });
+
+                    AtualizaTotalizadoresPedido(); //alterado
+                }
+
+            });
+
             GoToFormaPgtoCommand = new Command(async () =>
             {
                 if (ItemCliente.Id == 0)
@@ -695,7 +768,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     });
                 }
 
-
             });
 
             GoToRedespachoCommand = new Command(async () =>
@@ -721,7 +793,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         UtilNavidate.PushAsync(pesquisa);
                     });
                 }
-
 
             });
 
@@ -1329,7 +1400,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         }
                     }
 
+                    lRecebimentoTitulosModel = lRecebimentoTitulosModel.Count == 0 ? lRecebimentoTitulosModel =
+                        FinanceiroRepository.GetByIdPedidoVenda(currentModel.idPedidoVenda ?? currentModel.idPedidoVendaOffLine ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosModel;
 
+                    dAcrescimoMensal = _configuracoesGerais.dAcrescimoMensal;
                     currentModel.xMinimoVendas = _msgAux;
                     currentModel.bUsaMinimoVendas = true;
                     currentModel.vLimiteMinimoVenda = _vLimiteAux;
@@ -1431,7 +1505,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
             }
         }
-      
+
         public bool CanSave()
         {
             return IsBusy == false;
@@ -1601,6 +1675,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         currentModel.bPedidoComAlteracao = true;
 
                     PedidoRepository.SavePedidoVenda(currentModel);
+
+                    foreach (var item in lRecebimentoTitulosModel)
+                    {
+                        item.idPedidoVenda = currentModel.idPedidoVenda ?? currentModel.idPedidoVendaOffLine ?? 0;
+                        item.idEmpresa = currentModel.idEmpresa;
+                    }
+                   
+                    FinanceiroRepository.SalvarFaturas(lRecebimentoTitulosModel);
 
                     //quando vem pelo gerar pedido do cliente, o pagelistarpedidos não foi invocado
                     if (PageListarPedidos.ViewModelStatic == null)

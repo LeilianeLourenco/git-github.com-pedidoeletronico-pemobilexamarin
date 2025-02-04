@@ -20,6 +20,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             var xQuery = string.Empty;
             const string xFields =
                 "idConfiguracaoGeral, " +
+                "dAcrescimoMensal, " +
                 "bUtilizaLimiteMinimoVendas, " +
                 "stCadastroLimiteVendasEmpresa,  " +
                 "bBloquearVisualizacaoEstoqueVendedor,  " +
@@ -46,6 +47,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             if (result != null)
             {
                 _configsGerais.idConfiguracaoGeral = result.idConfiguracaoGeral;
+                _configsGerais.dAcrescimoMensal = result.dAcrescimoMensal;
                 _configsGerais.bForcarMinimoVendas = result.bForcarMinimoVendas;
                 _configsGerais.bUtilizaLimiteMinimoVendas = result.bUtilizaLimiteMinimoVendas;
                 _configsGerais.dValorLimiteMinimo = result.dValorLimiteMinimo;

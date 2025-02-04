@@ -33,6 +33,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public bool bBloqueiaValorProdutoApp { get; set; }
         public bool bNaoAvaliarApp { get; set; }
         public DateTime? dtAvaliouApp { get; set; }
+        public decimal dAcrescimoMensal { get; set; }
     }
 
 

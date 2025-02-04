@@ -21,6 +21,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_FORCEATUALIZACAO = "TB_FORCEATUALIZACAO";
         public const string TB_STATUS = "TB_STATUS";
         public const string TB_CONDICAOPAGAMENTO = "TB_CONDICAOPAGAMENTO";
+        public const string TB_RECEBIMENTOTITULOS_POST = "TB_RECEBIMENTOTITULOS_POST";
         public const string TB_RECEBIMENTOTITULOS = "TB_RECEBIMENTOTITULOS";
         public const string TB_RECEBIMENTOTITULOS_MOVIMENTACOES = "TB_RECEBIMENTOTITULOS_MOVIMENTACOES";
         public const string TB_OMIE_CONFIGURACOES_GERAIS = "TB_OMIE_CONFIGURACOES_GERAIS";

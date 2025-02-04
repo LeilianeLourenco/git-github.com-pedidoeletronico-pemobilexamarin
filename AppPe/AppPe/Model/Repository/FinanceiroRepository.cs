@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,10 +46,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 if (idClientes > 0)
                 {
                     xQuery =
-                        $@"select sum(coalesce(vTitulo,0) - coalesce(vRecebido,0)) dValor from tb_recebimentotitulos
+                        $@"select sum(coalesce(vTitulo,0) - coalesce(vRecebido,0)) dValor from TB_RECEBIMENTOTITULOS
                                     left join tb_pedidovenda 
-                                    on tb_recebimentotitulos.idPedidoVenda = tb_pedidovenda.idPedidoVenda and
-                                        tb_recebimentotitulos.idEmpresa = tb_pedidovenda.idEmpresa 
+                                    on TB_RECEBIMENTOTITULOS.idPedidoVenda = tb_pedidovenda.idPedidoVenda and
+                                        TB_RECEBIMENTOTITULOS.idEmpresa = tb_pedidovenda.idEmpresa 
                                     where tb_pedidovenda.idClientes = {idClientes} and tb_pedidovenda.stLancamento = 1  and tb_pedidovenda.idEmpresa = {App
                             .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
                     if (xWhereDesconcidere != "")
@@ -144,10 +145,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 if (idClientes > 0)
                 {
                     xQuery =
-                        $@"select sum(coalesce(vTitulo,0) - coalesce(vRecebido,0)) dValor from tb_recebimentotitulos
+                        $@"select sum(coalesce(vTitulo,0) - coalesce(vRecebido,0)) dValor from TB_RECEBIMENTOTITULOS
                                     left join tb_pedidovenda 
-                                    on tb_recebimentotitulos.idPedidoVenda = tb_pedidovenda.idPedidoVenda and
-                                        tb_recebimentotitulos.idEmpresa = tb_pedidovenda.idEmpresa 
+                                    on TB_RECEBIMENTOTITULOS.idPedidoVenda = tb_pedidovenda.idPedidoVenda and
+                                        TB_RECEBIMENTOTITULOS.idEmpresa = tb_pedidovenda.idEmpresa 
                                     where tb_pedidovenda.idClientes = {idClientes} and tb_pedidovenda.stLancamento = 1  and tb_pedidovenda.idEmpresa = {App
                             .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
                     if (xWhereDesconcidere != "")
@@ -226,10 +227,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 if (idClientes > 0)
                 {
                     xQuery =
-                        $@"select sum(coalesce(vTitulo,0) - coalesce(vRecebido,0)) dValor from tb_recebimentotitulos
+                        $@"select sum(coalesce(vTitulo,0) - coalesce(vRecebido,0)) dValor from TB_RECEBIMENTOTITULOS
                                     left join tb_pedidovenda 
-                                    on tb_recebimentotitulos.idPedidoVenda = tb_pedidovenda.idPedidoVenda and
-                                        tb_recebimentotitulos.idEmpresa = tb_pedidovenda.idEmpresa 
+                                    on TB_RECEBIMENTOTITULOS.idPedidoVenda = tb_pedidovenda.idPedidoVenda and
+                                        TB_RECEBIMENTOTITULOS.idEmpresa = tb_pedidovenda.idEmpresa 
                                     where tb_pedidovenda.idClientes = {idClientes} and tb_pedidovenda.stLancamento = 1  and tb_pedidovenda.idEmpresa = {App
                             .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
                     if (xWhereDesconcidere != "")
@@ -446,7 +447,42 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static List<RecebimentoTitulosPostModel> GetByIdPedidoVenda(int idPedidoVenda, int idEmpresa)
+        {
+            try
+            {
+                var xQuery = $@"SELECT * FROM {TableMobile.TB_RECEBIMENTOTITULOS_POST} 
+                        WHERE idPedidoVenda = {idPedidoVenda} AND idEmpresa = {idEmpresa}";
 
+                var retorno = App.Data.Connection.Query<RecebimentoTitulosPostModel>(xQuery);
+
+                return retorno ?? new List<RecebimentoTitulosPostModel>();
+            }
+            catch (Exception ex)
+            {
+                return new List<RecebimentoTitulosPostModel>();
+            }
+        }
+
+        public static void SalvarFaturas(List<RecebimentoTitulosPostModel> recebimentoTitulosModel)
+        {
+            try
+            {
+                if (recebimentoTitulosModel != null && recebimentoTitulosModel.Any())
+                {
+                    foreach (var item in recebimentoTitulosModel)
+                    {
+                        if (item.idRecebimentoTitulo == 0)
+                            App.Data.Connection.Insert(item);
+                        else 
+                            App.Data.Connection.Update(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
 
     }
 }
