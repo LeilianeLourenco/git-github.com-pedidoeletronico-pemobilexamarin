@@ -434,7 +434,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             {
                 var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{Page}/{param1}/{(param2 != null ? "/" + ((DateTime)param2).ToString("yyyy-MM-ddTHH:mm:ss") : null)}/{(param3 != null ? "/" + param3.ToString() : "")}";
-
+                               
                 var _apiClient = CurrentHttpClient;
 
                 var jsonResponse = await CurrentApiMobileHttpClient.GetStringAsync(requestUri);
@@ -1143,11 +1143,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public static HttpClient CurrentApiMobileHttpClient
         {
             get
-            {
+            {               
                 if (_currentApiMobileHttpClient != null)
                 {
-                    return _currentApiMobileHttpClient;
-                }
+                return _currentApiMobileHttpClient;
+            }
                 _currentApiMobileHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlWebApiMobile) };
                 _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Clear();
                 _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1156,7 +1156,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             }
             set { _currentApiMobileHttpClient = value; }
         }
-
 
         #endregion
     }

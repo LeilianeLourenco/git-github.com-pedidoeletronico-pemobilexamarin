@@ -187,6 +187,13 @@
       <SubType>Code</SubType>
       <DependentUpon>PageInfoCliente.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\Pedido\PageTabelaFaturas.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>PageTabelaFaturas.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\Pedido\PageFaturas.xaml.cs">
+      <DependentUpon>PageFaturas.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -201,6 +208,10 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\DashBoard\PageInfoCliente.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\Pedido\PageTabelaFaturas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

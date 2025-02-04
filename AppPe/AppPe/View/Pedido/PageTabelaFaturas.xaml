@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"                      
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageTabelaFaturas"
+             Title="Juros Manual">
+
+    <ScrollView>
+        <StackLayout>
+            <StackLayout HeightRequest="250">
+                <TableView HasUnevenRows="True" BackgroundColor="White" >
+                    <TableSection>
+                        <ViewCell Height="60">
+                            <StackLayout Padding="10">
+                                <Label Text="Data Inicial" FontAttributes="Bold" TextColor="{StaticResource AzulChart}" />
+                                <DatePicker x:Name="dtInicial" Date="{Binding currentModel.dtInicial}" Margin="0,-15,0,0" Format="dd/MM/yyyy" FontSize="16" />
+                            </StackLayout>
+                        </ViewCell>
+
+                        <ViewCell Height="60">
+                            <StackLayout Padding="10">
+                                <Label Text="Data Final" FontAttributes="Bold" TextColor="{StaticResource AzulChart}" />
+                                <DatePicker x:Name="dtFinal" Date="{Binding currentModel.dtFinal}" Margin="0,-15,0,0" Format="dd/MM/yyyy" FontSize="16" />
+                            </StackLayout>
+                        </ViewCell>
+
+                        <ViewCell Height="60">
+                            <StackLayout Padding="10">
+                                <Label Text="Parcelas" FontAttributes="Bold" TextColor="{StaticResource AzulChart}" />
+                                <Entry Margin="0,-15,0,0" x:Name="EntryParcelas" Text="{Binding currentModel.nParcelas}" FontSize="16" Keyboard="Numeric"/>
+                            </StackLayout>
+                        </ViewCell>
+
+                        <TextCell Height="60" Text="Taxa de Juros (%)" Detail="{Binding dAcrescimoMensal}" DetailColor="{StaticResource CinzaMaisEscuro}"
+                             TextColor="{StaticResource AzulChart}" />
+                    </TableSection>
+                </TableView>
+            </StackLayout>
+
+            <ScrollView MinimumHeightRequest="345">
+                <StackLayout Padding="0,20,0,0" HorizontalOptions="FillAndExpand">
+
+                    <Grid ColumnSpacing="1" RowSpacing="0" BackgroundColor="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackLayout Grid.Column="0" BackgroundColor="#03a9f4" HeightRequest="40">
+                            <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand" TextColor="#fff" Text="Parcela"/>
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="1" BackgroundColor="#03a9f4" HeightRequest="40">
+                            <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand" TextColor="#fff" Text="Vencimento"/>
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="2" BackgroundColor="#03a9f4" HeightRequest="40">
+                            <Label HorizontalOptions="EndAndExpand" Padding="0,0,15,0" VerticalOptions="CenterAndExpand" TextColor="#fff" Text="Valor"/>
+                        </StackLayout>
+                    </Grid>
+
+                    <StackLayout Orientation="Vertical" x:Name="StackPageFaturas"/>
+
+                </StackLayout>
+            </ScrollView>
+
+            <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand" Padding="0,15,20,10">
+                <Label FontSize="18" Text="Total"></Label>
+                <StackLayout Orientation="Horizontal">
+                    <Label FontSize="18" FontAttributes="Bold" Text="{Binding vSubTotal , Converter={StaticResource FormatDecimalConverter}}"></Label>
+                </StackLayout>
+            </StackLayout>
+
+            <Button Margin="20,0,20,20" Style="{StaticResource Success}" Clicked="btnGerar" Text="Gerar" HorizontalOptions="FillAndExpand" />
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

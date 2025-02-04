@@ -80,6 +80,15 @@ namespace Xamarin.HLP.Mobile.AppPE
             return dValor.ToString("C", culturaBrasileira);
         }
 
+        public static string ToCurrencyStringPtBrNoSimbolo(this object value)
+        {
+            var culturaBrasileira = new CultureInfo("pt-BR");
+            double dValor;
+            double.TryParse((value ?? "").ToString(), out dValor);
+            string xValor = dValor.ToString("C", culturaBrasileira);
+            return xValor?.Replace("R$","");
+        }
+
         /// <summary>
         /// 1.000,00
         /// </summary>

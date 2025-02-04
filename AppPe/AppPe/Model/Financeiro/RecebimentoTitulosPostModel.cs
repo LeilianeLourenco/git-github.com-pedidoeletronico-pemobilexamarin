@@ -5,12 +5,12 @@ using Xamarin.HLP.Mobile.AppPE.Common;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Financeiro
 {
-    [Table(TableMobile.TB_RECEBIMENTOTITULOS)]
-    public class RecebimentoTitulosModel : ModelComum
+    [Table(TableMobile.TB_RECEBIMENTOTITULOS_POST)]
+    public class RecebimentoTitulosPostModel : ModelComum
     {
 
         public int idRecebimentoTituloOffLine { get; set; }
-        [PrimaryKey]
+        [PrimaryKey, AutoIncrement]
         public int idRecebimentoTitulo { get; set; }
 
 

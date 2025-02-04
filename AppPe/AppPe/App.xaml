@@ -75,6 +75,7 @@
             <pedido:BoolToColorConverterLitaItensPedido x:Key="BoolToColorConverterLitaItensPedido"/>
             <generic:InvertBoolConvert x:Key="InvertBoolConvert"/>
             <generic:FormatDecimalConverter x:Key="FormatDecimalConverter"/>
+            <generic:FormatNoSimboloDecimalConverter x:Key="FormatNoSimboloDecimalConverter"/>
             <generic:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter"/>
             <generic:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
             <generic:DecimalPlacesToStringConverter x:Key="DecimalPlacesToStringConverter"/>

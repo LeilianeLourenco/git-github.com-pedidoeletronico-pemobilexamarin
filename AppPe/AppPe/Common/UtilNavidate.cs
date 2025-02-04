@@ -64,7 +64,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 await main.Navigation.PopModalAsync();
         }
 
-
         public static async void PushAsync(Page page)
         {
             try
@@ -90,10 +89,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 await main.Detail.Navigation.PopAsync();
         }
 
-
         public static async void GoToHome()
         {
-
             Device.BeginInvokeOnMainThread(async () =>
             {
                 await Task.Yield();
@@ -103,8 +100,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     main.Detail = new NavigationPage(StaticModel.PageHome);
             });
         }
-
-
         public static Type GetTypeCurrentPage()
         {
             var main = Application.Current.MainPage as MasterDetailPage;
@@ -115,8 +110,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             }
             return null;
         }
-
-
         public static async void Sincronizar(PageSyncNew page)
         {
             var main = Application.Current.MainPage as RootPage;
@@ -131,18 +124,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             await App.Navigation.PushPopupAsync(page, animate: true);
         }
 
-
         public static async void ShowPopupNew(PopupPage page)
         {
             await App.Navigation.PushPopupAsync(page, animate: true);
         }
-
         public static async void PopPopupNew()
         {
             await App.Navigation.PopPopupAsync();
         }
-
-
 
         public static async void Logoff()
         {
@@ -171,7 +160,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 ex.TrakException();
             }
         }
-
 
     }
 }

@@ -66,6 +66,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                 try { this.Connection.CreateTable<TabelaEscalonadaFaixaComissaoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_TABELAESCALONADA_FAIXACOMISSAO; }
                 try { this.Connection.CreateTable<TabelaEscalonadaRepresentanteModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_TABELAESCALONADA_REPRESENTANTE; }
                 try { this.Connection.CreateTable<StatusModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_STATUS; }
+                try { this.Connection.CreateTable<RecebimentoTitulosPostModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_RECEBIMENTOTITULOS_POST; }
                 try { this.Connection.CreateTable<RecebimentoTitulosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_RECEBIMENTOTITULOS; }
                 try { this.Connection.CreateTable<RecebimentoTitulosMovimentacaoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_RECEBIMENTOTITULOS_MOVIMENTACOES; }
                 try { this.Connection.CreateTable<ForceAtualizacaoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_FORCEATUALIZACAO; }

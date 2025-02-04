@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"                      
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageFaturas">
+
+    <ScrollView>
+        <Grid ColumnSpacing="1" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout Grid.Column="0" BackgroundColor="White" HeightRequest="40">
+                <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Text="{Binding nParcela}"/>
+            </StackLayout>
+
+            <StackLayout Grid.Column="1" BackgroundColor="White" HeightRequest="40">
+                <DatePicker HorizontalOptions="Center" TextColor="Gray" FontSize="15" VerticalOptions="CenterAndExpand" Date="{Binding xDtsVencimento}" Format="dd/MM/yyyy"/>
+            </StackLayout>
+
+            <StackLayout Grid.Column="2" BackgroundColor="White" HeightRequest="40">
+                <Label Padding="0,0,15,0" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" Text="{Binding xTitulo, Converter={StaticResource FormatNoSimboloDecimalConverter}}"/>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</StackLayout>

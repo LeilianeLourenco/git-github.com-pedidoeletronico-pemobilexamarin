@@ -15,8 +15,7 @@ using PropertyChangingEventArgs = Xamarin.Forms.PropertyChangingEventArgs;
 namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 {
     public partial class PagePedidoNew : TabbedPage
-    {
-
+    {        
         private static PedidoNewViewModel _currentViewModel = null;
 
         public static PedidoNewViewModel CurrentViewModel
