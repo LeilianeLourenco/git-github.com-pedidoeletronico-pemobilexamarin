@@ -287,53 +287,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
-        private List<RecebimentoTitulosPostModel> _lRecebimentoTitulosModel = new List<RecebimentoTitulosPostModel>();
+        private List<RecebimentoTitulosPostModel> _lRecebimentoTitulosManualModel = new List<RecebimentoTitulosPostModel>();
 
-        public List<RecebimentoTitulosPostModel> lRecebimentoTitulosModel
+        public List<RecebimentoTitulosPostModel> lRecebimentoTitulosManualModel
         {
-            get { return _lRecebimentoTitulosModel; }
+            get { return _lRecebimentoTitulosManualModel; }
             set
             {
-                _lRecebimentoTitulosModel = value;
+                _lRecebimentoTitulosManualModel = value;
                 NotifyPropertyChanged();
             }
         }
-
-        //private DateTime? _dtInicial;
-
-        //public DateTime? dtInicial
-        //{
-        //    get { return _dtInicial; }
-        //    set
-        //    {
-        //        _dtInicial = value;
-        //        NotifyPropertyChanged();
-        //    }
-        //}
-
-        //private DateTime? _dtFinal;
-
-        //public DateTime? dtFinal
-        //{
-        //    get { return _dtFinal; }
-        //    set
-        //    {
-        //        _dtFinal = value;
-        //        NotifyPropertyChanged();
-        //    }
-        //}
-
-        //private int _nParcelas;
-
-        //public int nParcelas
-        //{
-        //    get { return _nParcelas; }
-        //    set
-        //    {
-        //        _nParcelas = value;
-        //        NotifyPropertyChanged();
-        //    }
-        //}
 
         private decimal _dAcrescimoMensal;
 
@@ -1400,8 +1364,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         }
                     }
 
-                    lRecebimentoTitulosModel = lRecebimentoTitulosModel.Count == 0 ? lRecebimentoTitulosModel =
-                        FinanceiroRepository.GetByIdPedidoVenda(currentModel.idPedidoVenda ?? currentModel.idPedidoVendaOffLine ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosModel;
+                    lRecebimentoTitulosManualModel = lRecebimentoTitulosManualModel.Count == 0 ? lRecebimentoTitulosManualModel =
+                        FinanceiroRepository.GetByIdPedidoVenda(currentModel.idPedidoVenda ?? currentModel.idPedidoVendaOffLine ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosManualModel;
 
                     dAcrescimoMensal = _configuracoesGerais.dAcrescimoMensal;
                     currentModel.xMinimoVendas = _msgAux;
@@ -1521,7 +1485,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     await App.Messages.ShowAsync("Cliente é um campo obrigatório para o lançamento.");
                     return;
                 }
-                if (ItemCondicaoPgto.Id == 0)
+                if (ItemCondicaoPgto.Id == 0 && lRecebimentoTitulosManualModel.Count == 0)
                 {
                     await App.Messages.ShowAsync("Condição de pagamento é um campo obrigatório para o lançamento");
                     return;
@@ -1676,13 +1640,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                     PedidoRepository.SavePedidoVenda(currentModel);
 
-                    foreach (var item in lRecebimentoTitulosModel)
+                    foreach (var item in lRecebimentoTitulosManualModel)
                     {
                         item.idPedidoVenda = currentModel.idPedidoVenda ?? currentModel.idPedidoVendaOffLine ?? 0;
                         item.idEmpresa = currentModel.idEmpresa;
                     }
-                   
-                    FinanceiroRepository.SalvarFaturas(lRecebimentoTitulosModel);
+
+                    if (lRecebimentoTitulosManualModel.Count > 0)
+                        FinanceiroRepository.SalvarFaturas(lRecebimentoTitulosManualModel);
 
                     //quando vem pelo gerar pedido do cliente, o pagelistarpedidos não foi invocado
                     if (PageListarPedidos.ViewModelStatic == null)

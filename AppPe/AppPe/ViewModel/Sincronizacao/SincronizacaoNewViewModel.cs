@@ -1150,6 +1150,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                                 if (pedido.stLancamento == 0)
                                     PedidoRepository.UpdateAfterUpload(idPedidoOffLine, pedido.idPedidoVenda ?? 0);
+
+
+
                             }
                             else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.EstoqueInsuficiente)
                             {
