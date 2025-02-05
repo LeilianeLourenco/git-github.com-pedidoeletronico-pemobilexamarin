@@ -42,7 +42,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     var dias = totalDias / parcelas;
 
                     StackPageFaturas.Children.Clear();
-                    _page.lRecebimentoTitulosModel.Clear();
+                    _page.lRecebimentoTitulosManualModel.Clear();
                     DateTime? dtUltimaParcela = null;
 
                     double juros = 2.2 / 100;
@@ -62,10 +62,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     for (int i = 1; i <= parcelas; i++)
                     {
                         dtUltimaParcela = dtUltimaParcela != null ? dtUltimaParcela.Value.AddDays(dias) : _page.currentModel.dtInicial.Value.AddDays(dias - 1);
-                        var parcelaBase = Convert.ToDecimal(valorParcela);
-
-                        //if (i == parcelas)
-                        //    parcelaBase = total - (parcelaBase * (parcelas - 1));
+                        var parcelaBase = Convert.ToDecimal(valorParcela);                       
 
                         RecebimentoTitulosPostModel recebimento = new RecebimentoTitulosPostModel
                         {
@@ -89,18 +86,20 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                             BindingContext = recebimento
                         });
 
-                        _page.lRecebimentoTitulosModel.Add(recebimento);
+                        _page.lRecebimentoTitulosManualModel.Add(recebimento);
                     }
 
+                    _page.ItemCondicaoPgto.Id = 0;
+                    _page.currentModel.idCondicaoPagamento = 0;
                     _page.vSubTotal = valorPedido;
-                    _page.ItemCondicaoPgto.Display = $"Configurado manualmente - {parcelas}x";
+                    _page.ItemCondicaoPgto.Display = "Configurado manualmente";
                 }
             }
         }
 
         private void FaturasGeradas()
         {
-            foreach (var lin in _page.lRecebimentoTitulosModel)
+            foreach (var lin in _page.lRecebimentoTitulosManualModel)
             {
                 StackPageFaturas.Children.Add(new PageFaturas()
                 {

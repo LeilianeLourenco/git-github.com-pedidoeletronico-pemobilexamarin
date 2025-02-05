@@ -616,6 +616,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     objPedidoVendaModel.xAssinaturaBase64 = _fileService.GetImageBase64(objPedidoVendaModel.xAssinatura);
                 }
 
+                objPedidoVendaModel.lRecebimentoTitulosManual = FinanceiroRepository.GetByIdPedidoVenda(objPedidoVendaModel.idPedidoVendaOffLine ?? 0, objPedidoVendaModel.idEmpresa);
+
                 return objPedidoVendaModel;
             }
             catch (Exception ex)

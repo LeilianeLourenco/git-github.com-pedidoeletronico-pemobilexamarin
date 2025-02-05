@@ -6,6 +6,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
+using System.ComponentModel.Design.Serialization;
+
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 {
@@ -558,6 +561,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _TipoLancamento = value; NotifyPropertyChanged(); }
         }
 
+        private List<RecebimentoTitulosPostModel> _lRecebimentoTitulosManual = new List<RecebimentoTitulosPostModel>();
+
+        [SQLite.Ignore]
+        public List<RecebimentoTitulosPostModel> lRecebimentoTitulosManual
+        {
+            get
+            {
+                return _lRecebimentoTitulosManual;
+            }
+            set
+            {
+                _lRecebimentoTitulosManual = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         public DateTime? _dtInicial;
         public DateTime? dtInicial
