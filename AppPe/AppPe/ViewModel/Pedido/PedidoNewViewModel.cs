@@ -1632,8 +1632,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     if (currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf == true)
                         currentModel.idRepresentadaPdf = representada.Id;
 
-                    currentModel.dEmissao = currentModel.dEmissao;
-                    currentModel.xEndereco = ItemEndereco.Detail;
+                    currentModel.dEmissao = currentModel.dEmissao;                  
 
                     if (currentModel.idPedidoVenda != null)
                         currentModel.bPedidoComAlteracao = true;
