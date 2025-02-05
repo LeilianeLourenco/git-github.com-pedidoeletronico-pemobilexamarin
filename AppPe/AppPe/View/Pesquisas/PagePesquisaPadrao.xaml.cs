@@ -36,17 +36,16 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pesquisas
             var listItemModel = e.SelectedItem as ListItemModel;
             if (listItemModel != null)
             {
-                if (ViewModel.tabela == PesquisaPadraoViewModel.Tabela.TB_REPRESENTANTE_MAIS_TODOS)
-                {
+                if (ViewModel.tabela == PesquisaPadraoViewModel.Tabela.TB_REPRESENTANTE_MAIS_TODOS)                
                     PageListarPedidos.ViewModelStatic.canExecuteInicial = true;
-                }
-                else if (ViewModel.tabela == PesquisaPadraoViewModel.Tabela.TB_CONDICAO_PAGAMENTO)
-                {
+                
+                else if (ViewModel.tabela == PesquisaPadraoViewModel.Tabela.TB_CONDICAO_PAGAMENTO)               
                     PagePedidoNew.CurrentViewModel.BuscaFormasPagamentoTelaVendas();
-                }
+                
+                else if (ViewModel.tabela == PesquisaPadraoViewModel.Tabela.TB_ENDERECO)
+                    PagePedidoNew.CurrentViewModel.currentModel.xEndereco = PagePedidoNew.CurrentViewModel.ItemEndereco.Detail;
 
                 UtilNavidate.PopAsync();
-
 
                 //os 35400
                 PagePedidoNew.CurrentViewModel.AtualizaTotalizadoresPedido();
