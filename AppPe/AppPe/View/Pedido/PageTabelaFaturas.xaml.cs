@@ -43,26 +43,20 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
                     StackPageFaturas.Children.Clear();
                     _page.lRecebimentoTitulosManualModel.Clear();
-                    DateTime? dtUltimaParcela = null;
+                    DateTime? dtVencimento = null;
 
-                    double juros = 2.2 / 100;
+                    double juros = Convert.ToDouble(_page.dAcrescimoMensal) / 100;
                     juros = juros / 30;
-                    juros = Math.Truncate(juros * 100000000) / 100000000;
 
-                    double valorPedido = _page.vSubTotal;
-                    valorPedido = Math.Floor(valorPedido * 100000) / 100000;
-
+                    double valorPedido = _page.vSubTotalOriginal;
                     valorPedido = valorPedido * Math.Pow((1 + juros), totalDias);
-                    valorPedido = Math.Floor(valorPedido * 100000) / 100000;
 
                     double valorParcela = valorPedido / parcelas;
-                    valorParcela = Math.Floor(valorParcela * 100000) / 100000;
-                    valorParcela = Math.Round(valorParcela, 2);
 
                     for (int i = 1; i <= parcelas; i++)
                     {
-                        dtUltimaParcela = dtUltimaParcela != null ? dtUltimaParcela.Value.AddDays(dias) : _page.currentModel.dtInicial.Value.AddDays(dias - 1);
-                        var parcelaBase = Convert.ToDecimal(valorParcela);                       
+                        dtVencimento = dtVencimento != null ? dtVencimento.Value.AddDays(dias) : _page.currentModel.dtInicial.Value.AddDays(dias - 1);
+                        var parcelaBase = Convert.ToDecimal(valorParcela);
 
                         RecebimentoTitulosPostModel recebimento = new RecebimentoTitulosPostModel
                         {
@@ -74,11 +68,11 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                             vTitulo = parcelaBase,
                             xTitulo = parcelaBase.ToString("F2"),
                             vBaseComissao = Convert.ToDecimal(_page.vTotalComissao / parcelas),
-                            pComissao = 0,                            
-                            dtBaseComissao = dtUltimaParcela ?? DateTime.UtcNow.AddHours(-3),
+                            pComissao = 0,
+                            dtBaseComissao = dtVencimento ?? DateTime.UtcNow.AddHours(-3),
                             dtEmissao = DateTime.UtcNow.AddHours(-3),
-                            dtVencimento = dtUltimaParcela ?? DateTime.UtcNow.AddHours(-3),
-                            xDtsVencimento = dtUltimaParcela.Value.ToString("dd/MM/yyyy"),
+                            dtVencimento = dtVencimento ?? DateTime.UtcNow.AddHours(-3),
+                            xDtsVencimento = dtVencimento.ToString(),
                         };
 
                         StackPageFaturas.Children.Add(new PageFaturas()
@@ -91,9 +85,21 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
                     _page.ItemCondicaoPgto.Id = 0;
                     _page.currentModel.idCondicaoPagamento = 0;
-                    _page.vSubTotal = valorPedido;
+                    _page.vSubTotal = Math.Round(valorPedido, 2, MidpointRounding.AwayFromZero);
+                    _page.vJuros = _page.vSubTotal - _page.vSubTotalOriginal;
                     _page.ItemCondicaoPgto.Display = "Configurado manualmente";
                 }
+
+                RateioItens();
+            }
+        }
+
+        public void RateioItens()
+        {
+            foreach (var item in _page.currentModel.lItens)
+            {
+                var representa = item.vUnitarioVendaComImpostos / _page.vSubTotalOriginal;
+                item.vUnitarioVendaComImpostos = representa * _page.vSubTotal;
             }
         }
 

@@ -329,6 +329,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        private double _vSubTotalOriginal;
+
+        public double vSubTotalOriginal
+        {
+            get { return _vSubTotalOriginal; }
+            set
+            {
+                _vSubTotalOriginal = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private double _vSubTotal;
 
@@ -338,6 +349,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             set
             {
                 _vSubTotal = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private double _vJuros;
+
+        public double vJuros
+        {
+            get { return _vJuros; }
+            set
+            {
+                _vJuros = value;
                 NotifyPropertyChanged();
             }
         }
@@ -1272,7 +1295,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 vSubTotal = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vSubTotal) ?? c.vSubTotal);
 
                 var dComplementos = currentModel.vFretePed + currentModel.vSeguroPed + currentModel.vOutrasPed;
-                vSubTotal = vSubTotal + dComplementos;
+                vSubTotal = vSubTotal + dComplementos + vJuros;            
+                vSubTotalOriginal = vSubTotal - vJuros;
                 xDisplayComplementos = dComplementos.ToCurrencyStringPtBr();
 
                 vDescontoTotal = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vDesconto * o.vQtdItem) ?? (c.vDesconto * c.vQtdItem));
@@ -1632,7 +1656,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     if (currentModel.bAplicaMelhoriaEscolherRepresentacaoPdf == true)
                         currentModel.idRepresentadaPdf = representada.Id;
 
-                    currentModel.dEmissao = currentModel.dEmissao;                  
+                    currentModel.dEmissao = currentModel.dEmissao;
 
                     if (currentModel.idPedidoVenda != null)
                         currentModel.bPedidoComAlteracao = true;

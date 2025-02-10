@@ -58,13 +58,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml
 
                         if (_buttonClicked.Text == _btn.Text)
                         {
-                            if (Device.RuntimePlatform != Device.iOS)
-                            {
-                                _btn.TextColor = Color.FromHex("#fff");
-                                _btn.BackgroundColor = Color.FromHex("#555555");
-                            }
-                            else
-                                _btn.TextColor = Color.FromHex("#555555");
+                            _btn.TextColor = Color.FromHex("#fff");
+                            _btn.BackgroundColor = Color.FromHex("#555555");
                         }
                         else
                         {
