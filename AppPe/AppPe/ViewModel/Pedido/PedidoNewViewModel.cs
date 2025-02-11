@@ -351,19 +351,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 _vSubTotal = value;
                 NotifyPropertyChanged();
             }
-        }
-
-        private double _vJuros;
-
-        public double vJuros
-        {
-            get { return _vJuros; }
-            set
-            {
-                _vJuros = value;
-                NotifyPropertyChanged();
-            }
-        }
+        }       
 
         private double _vTotalComissao;
 
@@ -1126,6 +1114,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                     foreach (var itens in currentModel.lItens)
                     {
+                        itens.vUnitarioVendaComImpostosOriginal = itens.vUnitarioVendaComImpostos - itens.vJuros;
+
                         if (idTabelaPrecoCondicao.GetValueOrDefault() > 0)
                         {
                             if (itens.idTabelaPreco != idTabelaPrecoCondicao)
@@ -1295,8 +1285,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 vSubTotal = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vSubTotal) ?? c.vSubTotal);
 
                 var dComplementos = currentModel.vFretePed + currentModel.vSeguroPed + currentModel.vOutrasPed;
-                vSubTotal = vSubTotal + dComplementos + vJuros;            
-                vSubTotalOriginal = vSubTotal - vJuros;
+                vSubTotal = vSubTotal + dComplementos;
+
+                var juros = currentModel.lItens.Sum(x => x.vVenda);
+                juros = vSubTotal - juros;
+
+                vSubTotalOriginal = vSubTotal - juros;
+
                 xDisplayComplementos = dComplementos.ToCurrencyStringPtBr();
 
                 vDescontoTotal = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vDesconto * o.vQtdItem) ?? (c.vDesconto * c.vQtdItem));
@@ -1388,8 +1383,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         }
                     }
 
-                    lRecebimentoTitulosManualModel = lRecebimentoTitulosManualModel.Count == 0 ? lRecebimentoTitulosManualModel =
-                        FinanceiroRepository.GetByIdPedidoVenda(currentModel.idPedidoVenda ?? currentModel.idPedidoVendaOffLine ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosManualModel;
+                    if (currentModel.idPedidoVenda > 0)
+                        lRecebimentoTitulosManualModel = lRecebimentoTitulosManualModel.Count == 0 ? lRecebimentoTitulosManualModel =
+                            FinanceiroRepository.GetFaturas(currentModel.idPedidoVenda ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosManualModel;
+                    else
+                        lRecebimentoTitulosManualModel = lRecebimentoTitulosManualModel.Count == 0 ? lRecebimentoTitulosManualModel =
+                            FinanceiroRepository.GetFaturasManual(currentModel.idPedidoVendaOffLine ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosManualModel;
 
                     dAcrescimoMensal = _configuracoesGerais.dAcrescimoMensal;
                     currentModel.xMinimoVendas = _msgAux;
@@ -1669,7 +1668,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                     foreach (var item in lRecebimentoTitulosManualModel)
                     {
-                        item.idPedidoVenda = currentModel.idPedidoVenda ?? currentModel.idPedidoVendaOffLine ?? 0;
+                        item.idPedidoVenda = currentModel.idPedidoVendaOffLine ?? 0;
                         item.idEmpresa = currentModel.idEmpresa;
                     }
 

@@ -27,7 +27,7 @@ namespace Xamarin.HLP.Mobile.AppPE
             {                
                 App.xErrorDataBase = "";
                 config = DependencyService.Get<IConfig>();
-                Connection = new SQLiteConnection(Path.Combine(config.DirectoryDB, "DB_PEDIDOELETRONICO.db3"), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true);
+                Connection = new SQLiteConnection(Path.Combine(config.DirectoryDB, "DB_PEDIDOELETRONICO.db3"), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true);               
             }
             catch (Exception ex)
             {

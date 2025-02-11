@@ -1123,7 +1123,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         //pedido.dEmissao = pedido.dEmissao;
                         pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
                         pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
-                        pedido.bPedidoComAlteracao = false;
+                        pedido.bPedidoComAlteracao = false;                        
 
                         pedido.dEmissao = pedido.dEmissao.AddHours(-3);
 
@@ -1142,6 +1142,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 }
                                 pedido.idPedidoVenda = objPedidoSync.objModel.idPedidoVenda;
                                 pedido.idPedidoDisplay = objPedidoSync.objModel.idPedidoDisplay;
+                                pedido.idCondicaoPagamento = objPedidoSync.objModel.idCondicaoPagamento;
                                 pedido.dtUltimaAlteracao =
                                     (objPedidoSync.objModel.dtUltimaAlteracao ?? DateTime.Now).ToDateTimeSync();
                                 App.Data.Connection.Update(pedido);

@@ -109,7 +109,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         if (vDesconto > 0)
                         {
                             vDesconto = (vUnitarioVenda * (pDesconto / 100)).ArredondarValorDecimal(nCasasDecimais: 2);
-                            vUnitarioVendaComImpostos -= vDesconto;
+                            vUnitarioVendaComImpostos -= vDesconto;                         
                         }
 
                         if (currentModel.vDescontoDaCondicao.GetValueOrDefault() > 0)

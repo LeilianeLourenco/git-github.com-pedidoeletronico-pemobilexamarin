@@ -62,6 +62,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda.Implementacoes
                     idProdutoOffLine = gr.idProdutoOffLine,
                     vQtdItem = gr.vQtdItem,
                     vUnitarioVendaComImpostos = gr.vUnitarioVendaComImpostos,
+                    vUnitarioVendaComImpostosOriginal = gr.vUnitarioVendaComImpostos,
                     vSubTotal = gr.vSubTotal,
                     xDescricao = _infoProd.xNome,
                     idGradeCor = gr.idGradeCor,

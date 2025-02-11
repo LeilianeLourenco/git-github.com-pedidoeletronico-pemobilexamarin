@@ -456,6 +456,45 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 var retorno = App.Data.Connection.Query<RecebimentoTitulosPostModel>(xQuery);
 
+                var xQuery2 = $@"SELECT * FROM {TableMobile.TB_RECEBIMENTOTITULOS} 
+                        WHERE idPedidoVenda = {idPedidoVenda} AND idEmpresa = {idEmpresa}";
+
+                var retorno2 = App.Data.Connection.Query<RecebimentoTitulosModel>(xQuery2);
+
+                return retorno ?? new List<RecebimentoTitulosPostModel>();
+            }
+            catch (Exception ex)
+            {
+                return new List<RecebimentoTitulosPostModel>();
+            }
+        }
+
+        public static List<RecebimentoTitulosPostModel> GetFaturasManual(int idPedidoVenda, int idEmpresa)
+        {
+            try
+            {
+                var xQuery = $@"SELECT * FROM {TableMobile.TB_RECEBIMENTOTITULOS_POST} 
+                        WHERE idPedidoVenda = {idPedidoVenda} AND idEmpresa = {idEmpresa}";
+
+                var retorno = App.Data.Connection.Query<RecebimentoTitulosPostModel>(xQuery);
+              
+                return retorno ?? new List<RecebimentoTitulosPostModel>();
+            }
+            catch (Exception ex)
+            {
+                return new List<RecebimentoTitulosPostModel>();
+            }
+        }
+
+        public static List<RecebimentoTitulosPostModel> GetFaturas(int idPedidoVenda, int idEmpresa)
+        {
+            try
+            {              
+                var xQuery = $@"SELECT * FROM {TableMobile.TB_RECEBIMENTOTITULOS} 
+                        WHERE idPedidoVenda = {idPedidoVenda} AND idEmpresa = {idEmpresa}";
+
+                var retorno = App.Data.Connection.Query<RecebimentoTitulosPostModel>(xQuery);
+
                 return retorno ?? new List<RecebimentoTitulosPostModel>();
             }
             catch (Exception ex)
