@@ -182,6 +182,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml
                             item.idProduto = idProduto;
                             item.stVendaSemEstoque = produto.stVendaSemEstoque;
                             item.vUnitarioVendaComImpostos = produto.vVenda;
+                            item.vUnitarioVendaComImpostosOriginal = item.vUnitarioVendaComImpostos;
                             item.vVenda = produto.vVenda;
                             item.xDescricao = produto.xNome;
 

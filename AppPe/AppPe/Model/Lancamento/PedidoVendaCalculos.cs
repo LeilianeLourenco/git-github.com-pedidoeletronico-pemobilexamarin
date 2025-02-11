@@ -416,6 +416,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                         {
                             item.vUnitarioVenda = _itemComQtdade.vUnitarioVenda;
                             item.vUnitarioVendaComImpostos = _itemComQtdade.vUnitarioVendaComImpostos;
+                            item.vUnitarioVendaComImpostosOriginal = _itemComQtdade.vUnitarioVendaComImpostos;
                             item.vUnitarioVendaSemImposto = _itemComQtdade.vUnitarioVendaSemImposto;
                             item.vDesconto = _itemComQtdade.vDesconto;
                             item.pDesconto = _itemComQtdade.pDesconto;

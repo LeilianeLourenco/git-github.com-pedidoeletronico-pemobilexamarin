@@ -442,6 +442,32 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
+        private double _vJuros;
+
+        public double vJuros
+        {
+            get { return _vJuros; }
+            set
+            {
+                _vJuros = value;
+                NotifyTotalizadores();
+                NotifyPropertyChanged();
+            }
+        }
+
+        private double _vUnitarioVendaComImpostosOriginal;
+
+        public double vUnitarioVendaComImpostosOriginal
+        {
+            get { return _vUnitarioVendaComImpostosOriginal; }
+            set
+            {
+                _vUnitarioVendaComImpostosOriginal = value;
+                NotifyTotalizadores();
+                NotifyPropertyChanged();
+            }
+        }
+
         private double _vUnitarioVendaComImpostos;
 
         public double vUnitarioVendaComImpostos
@@ -794,6 +820,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                     {
                         vDesconto = (vUnitarioVendaComImpostos * (pDesconto / 100)).ArredondarValorDecimal(nCasasDecimais: 2);
                         vUnitarioVendaComImpostos -= vDesconto;
+                        vUnitarioVendaComImpostosOriginal = vUnitarioVendaComImpostos;
                     }
                 }
 
@@ -997,6 +1024,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             if (_vTabela != this.vUnitarioVendaComImpostos)
             {
                 this.vUnitarioVendaComImpostos = _vTabela;
+                this.vUnitarioVendaComImpostosOriginal = _vTabela;
             }
             this.vUnitarioVendaComImpostos = _vTabela - (double)_vDesconto;
             this.vSubTotal = (double)Math.Round(d: (((decimal)this.vUnitarioVendaComImpostos * (decimal)this.vQtdItem) + (decimal)vResto), decimals: 2, mode: MidpointRounding.AwayFromZero);

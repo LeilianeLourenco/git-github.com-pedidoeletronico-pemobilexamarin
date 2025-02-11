@@ -86,7 +86,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     _page.ItemCondicaoPgto.Id = 0;
                     _page.currentModel.idCondicaoPagamento = 0;
                     _page.vSubTotal = Math.Round(valorPedido, 2, MidpointRounding.AwayFromZero);
-                    _page.vJuros = _page.vSubTotal - _page.vSubTotalOriginal;
+                    _page.currentModel.vJuros = _page.vSubTotal - _page.vSubTotalOriginal;
                     _page.ItemCondicaoPgto.Display = "Configurado manualmente";
                 }
 
@@ -98,15 +98,25 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
         {
             foreach (var item in _page.currentModel.lItens)
             {
-                var representa = item.vUnitarioVendaComImpostos / _page.vSubTotalOriginal;
+                var representa = item.vUnitarioVenda / _page.vSubTotalOriginal;
                 item.vUnitarioVendaComImpostos = representa * _page.vSubTotal;
+                item.vSubTotal = item.vUnitarioVendaComImpostos * item.vQtdItem;
+
+                item.vJuros = item.vUnitarioVendaComImpostos - item.vUnitarioVendaComImpostosOriginal;
             }
         }
 
         private void FaturasGeradas()
         {
+            if (_page.currentModel.idPedidoVenda > 0)
+                _page.currentModel.nParcelas = _page.lRecebimentoTitulosManualModel.Count;
+
             foreach (var lin in _page.lRecebimentoTitulosManualModel)
             {
+                lin.xTitulo = lin.vTitulo.ToString("F2");
+                lin.xDtsVencimento = lin.dtVencimento.ToString();
+                lin.nParcela = lin.nSequencia;
+
                 StackPageFaturas.Children.Add(new PageFaturas()
                 {
                     BindingContext = lin

@@ -616,7 +616,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     objPedidoVendaModel.xAssinaturaBase64 = _fileService.GetImageBase64(objPedidoVendaModel.xAssinatura);
                 }
 
-                objPedidoVendaModel.lRecebimentoTitulosManual = FinanceiroRepository.GetByIdPedidoVenda(objPedidoVendaModel.idPedidoVendaOffLine ?? 0, objPedidoVendaModel.idEmpresa);
+                objPedidoVendaModel.lRecebimentoTitulosManual = FinanceiroRepository.GetFaturasManual(objPedidoVendaModel.idPedidoVendaOffLine ?? 0, objPedidoVendaModel.idEmpresa);
 
                 return objPedidoVendaModel;
             }
@@ -779,6 +779,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 {
                     item.vUnitarioVenda = item.vUnitarioVendaComImpostos;
                     item.vVenda = item.vUnitarioVendaComImpostos;
+                    item.vUnitarioVendaComImpostosOriginal = item.vUnitarioVendaComImpostos;
                 }
 
 

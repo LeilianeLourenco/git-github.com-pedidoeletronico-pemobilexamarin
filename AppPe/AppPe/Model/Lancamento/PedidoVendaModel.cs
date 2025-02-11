@@ -164,6 +164,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
+        private double _vJuros;
+
+        public double vJuros
+        {
+            get { return _vJuros; }
+            set
+            {
+                _vJuros = value; 
+                NotifyPropertyChanged();    
+            }
+        }
 
         private string _xPedidoCompra;
         public string xPedidoCompra
