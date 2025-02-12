@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PdfSharpCore.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Agenda;
@@ -351,7 +353,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 _vSubTotal = value;
                 NotifyPropertyChanged();
             }
-        }       
+        }
 
         private double _vTotalComissao;
 
@@ -1113,9 +1115,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     var stValorTabelaPreco = TabelaPrecoRepository.GetTabelaPrecoParaPedidoVenda(idTabelaPrecoCondicao.GetValueOrDefault());
 
                     foreach (var itens in currentModel.lItens)
-                    {
-                        itens.vUnitarioVendaComImpostosOriginal = itens.vUnitarioVendaComImpostos - itens.vJuros;
-
+                    {                       
                         if (idTabelaPrecoCondicao.GetValueOrDefault() > 0)
                         {
                             if (itens.idTabelaPreco != idTabelaPrecoCondicao)
@@ -1281,16 +1281,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     ItemCondicaoPgto.vDescCondicao = condicaoPag.vDescCondicao;
                     idTabelaPrecoCondicao = condicaoPag.idTabelaPreco;
                 }
-
+         
                 vSubTotal = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vSubTotal) ?? c.vSubTotal);
 
                 var dComplementos = currentModel.vFretePed + currentModel.vSeguroPed + currentModel.vOutrasPed;
                 vSubTotal = vSubTotal + dComplementos;
 
-                var juros = currentModel.lItens.Sum(x => x.vVenda);
-                juros = vSubTotal - juros;
+                //var juros = currentModel.lItens.Sum(x => x.vVenda * x.vQtdItem);
+                //juros = vSubTotal - juros;
 
-                vSubTotalOriginal = vSubTotal - juros;
+                vSubTotalOriginal = vSubTotal - currentModel.vJuros;
 
                 xDisplayComplementos = dComplementos.ToCurrencyStringPtBr();
 
@@ -1299,6 +1299,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                 vTotalComissao = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vComissao) ?? c.vComissao);
                 CountItens = currentModel.lItens.Count;
+
+                currentModel.lItens.ForEach(x => x.vUnitarioVendaComImpostosOriginal = x.vUnitarioVendaComImpostos - x.vJuros);
             }
             catch (Exception ex)
             {

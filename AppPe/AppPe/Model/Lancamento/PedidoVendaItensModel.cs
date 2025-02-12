@@ -802,6 +802,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
                     vDesconto = (vUnitarioVenda * (pDesconto / 100)).ArredondarValorDecimal(nCasasDecimais: 2);
                     vUnitarioVendaComImpostos = vUnitarioVenda - vDesconto;
+                    vUnitarioVendaComImpostosOriginal = vUnitarioVenda - vDesconto;
                     vSubTotal = vUnitarioVendaComImpostos * vQtdItem;
                     if (pDesconto < 0 || vDesconto < 0)
                     {
@@ -1027,6 +1028,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 this.vUnitarioVendaComImpostosOriginal = _vTabela;
             }
             this.vUnitarioVendaComImpostos = _vTabela - (double)_vDesconto;
+            this.vUnitarioVendaComImpostosOriginal = _vTabela - (double)_vDesconto;
             this.vSubTotal = (double)Math.Round(d: (((decimal)this.vUnitarioVendaComImpostos * (decimal)this.vQtdItem) + (decimal)vResto), decimals: 2, mode: MidpointRounding.AwayFromZero);
 
             return (decimal)this.vSubTotal;

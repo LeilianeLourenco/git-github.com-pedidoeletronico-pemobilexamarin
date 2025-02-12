@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Controls.xaml;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;
 
 namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
@@ -83,11 +85,13 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                         _page.lRecebimentoTitulosManualModel.Add(recebimento);
                     }
 
-                    _page.ItemCondicaoPgto.Id = 0;
-                    _page.currentModel.idCondicaoPagamento = 0;
                     _page.vSubTotal = Math.Round(valorPedido, 2, MidpointRounding.AwayFromZero);
                     _page.currentModel.vJuros = _page.vSubTotal - _page.vSubTotalOriginal;
                     _page.ItemCondicaoPgto.Display = "Configurado manualmente";
+
+                    var idCondicaoPagamento = CondicaoPagamentoRepository.CreateCondicaoManual();
+                    _page.ItemCondicaoPgto.Id = idCondicaoPagamento;
+                    _page.currentModel.idCondicaoPagamento = idCondicaoPagamento;
                 }
 
                 RateioItens();
@@ -98,11 +102,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
         {
             foreach (var item in _page.currentModel.lItens)
             {
-                var representa = item.vUnitarioVenda / _page.vSubTotalOriginal;
+                var representa = item.vUnitarioVendaComImpostosOriginal / _page.vSubTotalOriginal;
                 item.vUnitarioVendaComImpostos = representa * _page.vSubTotal;
                 item.vSubTotal = item.vUnitarioVendaComImpostos * item.vQtdItem;
 
                 item.vJuros = item.vUnitarioVendaComImpostos - item.vUnitarioVendaComImpostosOriginal;
+                item.xDetalheItem = $"{item.vQtdItem}x - {item.vUnitarioVendaComImpostos.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}";
             }
         }
 

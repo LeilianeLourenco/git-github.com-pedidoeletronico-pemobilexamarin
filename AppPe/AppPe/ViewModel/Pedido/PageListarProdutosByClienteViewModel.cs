@@ -131,6 +131,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 {
                     item.vUnitarioVenda = item.vUltimaVenda;
                     item.vUnitarioVendaComImpostos = item.vUltimaVenda;
+                    item.vUnitarioVendaComImpostosOriginal = item.vUltimaVenda;
                     item.vUltimaVenda = item.vUltimaVenda;
                     item.vQtdUltimaVenda = item.vQtdUltimaVenda;
                     item.vVenda = item.vUnitarioVendaSemImposto;
@@ -289,6 +290,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                         item.vSubTotalSemImpostos = item.currentTabelaPreco.vUnitario * item.vQtdItem;
                                         item.vUnitarioVenda = item.currentTabelaPreco.vVenda;
                                         item.vUnitarioVendaComImpostos = item.currentTabelaPreco.vVenda;
+                                        item.vUnitarioVendaComImpostosOriginal = item.currentTabelaPreco.vVenda;
                                         item.vUltimaVenda = 0;
                                         item.pDesconto = 0;
                                         item.vDesconto = 0;
@@ -306,6 +308,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                 item.vSubTotal = item.currentTabelaPreco.vVenda * item.vQtdItem;
                                 item.vUnitarioVenda = item.currentTabelaPreco.vVenda;
                                 item.vUnitarioVendaComImpostos = item.currentTabelaPreco.vVenda; 
+                                item.vUnitarioVendaComImpostosOriginal = item.currentTabelaPreco.vVenda; 
                                 item.vUltimaVenda = 0;
                                 item.pDesconto = 0;
                                 item.vDesconto = 0;
