@@ -219,7 +219,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }).OrderBy(t => t.Display).ToList();
 
 
-            if(_listRetorno?.Count() == 0)
+            if (_listRetorno?.Count() == 0)
             {
                 _listRetorno = new List<ListItemModel>();
 
@@ -265,6 +265,38 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             {
                 GoogleInsightsReportingConstants.TrakException("CondicaoPagamentoRepository.GetIdTabelaPrecoCondicao", ex.Message, true);
                 return 0;
+            }
+
+        }
+
+        public static int CreateCondicaoManual()
+        {
+            try
+            {
+                int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+
+                var xquery = $@"select * from {TableMobile.TB_CONDICAOPAGAMENTO}
+                        where xCondicaoPagamento = 'Configurado Manualmente' and idEmpresa = {idEmpresa}";
+
+                var condicao = App.Data.Connection.Query<CondicaoPagamentoModel>(xquery).FirstOrDefault();
+
+                if (condicao != null)
+                    return condicao.idCondicaoPagamento ?? 0;
+
+                CondicaoPagamentoModel condicaoPagamento = new CondicaoPagamentoModel
+                {
+                    idEmpresa = idEmpresa,
+                    xCondicaoPagamento = "Configurado Manualmente",
+                    stAtivo = true,
+                };
+
+                App.Data.Connection.Insert(condicaoPagamento);
+
+                return condicaoPagamento.idCondicaoPagamento ?? 0;
+            }
+            catch (Exception ex)
+            {
+                return 0;   
             }
 
         }

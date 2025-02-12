@@ -63,6 +63,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             if (currentModel.vDescontoDaCondicao.GetValueOrDefault() > 0)
                             {
                                 item.vUnitarioVendaComImpostos = item.vUnitarioVenda + (item.vUnitarioVenda * (item.vDescontoDaCondicao.GetValueOrDefault() / 100));
+                                item.vUnitarioVendaComImpostosOriginal = item.vUnitarioVendaComImpostos;
                             }
 
                         }
@@ -536,6 +537,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             {
                                 itemBase.vUnitarioVenda = itemBase.vUltimaVenda;
                                 itemBase.vUnitarioVendaComImpostos = itemBase.vUltimaVenda;
+                                itemBase.vUnitarioVendaComImpostosOriginal = itemBase.vUltimaVenda;
                                 itemBase.vUltimaVenda = itemBase.vUltimaVenda;
                                 itemBase.vVenda = itemBase.vUnitarioVendaSemImposto;
                                 itemBase.vSubTotal = itemBase.vUltimaVenda * itemBase.vQtdItem;
@@ -544,7 +546,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
 
                             _vUnitarioVenda = itemBase.vUnitarioVenda;
-                            _vUnitarioVendaComImpostos = itemBase.vUnitarioVendaComImpostos;
+                            _vUnitarioVendaComImpostos = itemBase.vUnitarioVendaComImpostos;                     
 
                             _vUnitarioVendaSemImposto = itemBase.vUnitarioVendaSemImposto;
 
@@ -628,6 +630,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             {
                                 item.vDesconto = item.pDesconto = 0;
                                 item.vUnitarioVendaComImpostos = vUnitarioVenda;
+                                item.vUnitarioVendaComImpostosOriginal = vUnitarioVenda;
                                 //var vqtde = item.vQtdItem;
                                 //item.vQtdItem = 0;
                                 //item.vQtdItem = vqtde;
