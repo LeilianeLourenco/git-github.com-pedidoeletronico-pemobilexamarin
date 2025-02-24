@@ -1391,8 +1391,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     else
                         lRecebimentoTitulosManualModel = lRecebimentoTitulosManualModel.Count == 0 ? lRecebimentoTitulosManualModel =
                             FinanceiroRepository.GetFaturasManual(currentModel.idPedidoVendaOffLine ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosManualModel;
-
-                    dAcrescimoMensal = _configuracoesGerais.dAcrescimoMensal;
+   
                     currentModel.xMinimoVendas = _msgAux;
                     currentModel.bUsaMinimoVendas = true;
                     currentModel.vLimiteMinimoVenda = _vLimiteAux;
@@ -1401,6 +1400,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     currentModel.bForcarMinimoVendas = _configuracoesGerais.bForcarMinimoVendas;
                 }
 
+                dAcrescimoMensal = _configuracoesGerais.dAcrescimoMensal;
                 currentModel.xInformacaoContrato = _configuracoesGerais.xInformacaoContrato;
                 if (!string.IsNullOrEmpty(currentModel.xInformacaoContrato))
                     ShowBotaoContrato = true;
