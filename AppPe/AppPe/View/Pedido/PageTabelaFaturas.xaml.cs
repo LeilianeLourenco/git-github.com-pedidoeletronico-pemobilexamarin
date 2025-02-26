@@ -37,7 +37,8 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             int parcelas;
             if (int.TryParse(EntryParcelas.Text, out parcelas))
             {
-                int totalDias = (_page.currentModel.dtFinal.Value.Date - _page.currentModel.dtInicial.Value.Date).Days;
+                double totalDias = (_page.currentModel.dtFinal.Value.Date - _page.currentModel.dtInicial.Value.Date).TotalDays;
+                totalDias = totalDias / 30.0;
 
                 if (parcelas < 50 && _page.vSubTotal > 0 && totalDias > 0)
                 {
@@ -48,7 +49,6 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     DateTime? dtVencimento = null;
 
                     double juros = Convert.ToDouble(_page.dAcrescimoMensal) / 100;
-                    juros = juros / 30;
 
                     double valorPedido = _page.vSubTotalOriginal;
                     valorPedido = valorPedido * Math.Pow((1 + juros), totalDias);
@@ -100,14 +100,24 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
         public void RateioItens()
         {
-            foreach (var item in _page.currentModel.lItens)
+            foreach (var itens in _page.currentModel.lItens)
             {
-                var representa = item.vUnitarioVendaComImpostosOriginal / _page.vSubTotalOriginal;
-                item.vUnitarioVendaComImpostos = representa * _page.vSubTotal;
-                item.vSubTotal = item.vUnitarioVendaComImpostos * item.vQtdItem;
+                var representa = itens.vUnitarioVendaComImpostosOriginal / _page.vSubTotalOriginal;
+                itens.vUnitarioVendaComImpostos = representa * _page.vSubTotal;
+                itens.vSubTotal = itens.vUnitarioVendaComImpostos * itens.vQtdItem;
 
-                item.vJuros = item.vUnitarioVendaComImpostos - item.vUnitarioVendaComImpostosOriginal;
-                item.xDetalheItem = $"{item.vQtdItem}x - {item.vUnitarioVendaComImpostos.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}";
+                itens.vJuros = itens.vUnitarioVendaComImpostos - itens.vUnitarioVendaComImpostosOriginal;
+                itens.xDetalheItem = $"{itens.vQtdItem}x - {itens.vUnitarioVendaComImpostos.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}";
+            
+                foreach (var item in itens.ItensGrade)
+                {
+                    item.vUnitarioVenda = itens.vUnitarioVenda;
+                    item.vVenda = item.vUnitarioVendaComImpostos = itens.vUnitarioVendaComImpostos;
+                    item.vSubTotal = item.vVenda * item.vQtdItem;
+                    item.vDesconto = itens.vDesconto;
+                    item.pDesconto = itens.pDesconto;
+                }
+
             }
         }
 
