@@ -1173,9 +1173,35 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     DetailEstoque = _estoqueValidado
                                 });
                             }
+                            else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.EstoqueInsuficiente)
+                            {
+                                var dadosEstoque =
+                                    JsonConvert.DeserializeObject<List<EstoqueInsuficienteModel>>(
+                                        objPedidoSync.resulStruct.retorno.ToString());
+
+                                var _estoqueValidado = EstoqueRepository.SaveEstoqueInsuficiente(dadosEstoque,
+                                    pedido.idPedidoVendaOffLine ?? 0);
+
+                                currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
+                                {
+                                    idOffLine = pedido.idPedidoVendaOffLine,
+                                    Table = TableMobile.TB_PEDIDOVENDA,
+                                    Display = "Problemas com estoque",
+                                    Detail = $"Cliente: {ClienteRepository.GetDisplayByIdOffLine(pedido.idClientesOffLine)}",
+                                    DetailEstoque = _estoqueValidado
+                                });
+                            }
+                            else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.Excecao)
+                            {
+                                currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
+                                {
+                                    idOffLine = pedido.idPedidoVendaOffLine,
+                                    Table = TableMobile.TB_PEDIDOVENDA,
+                                    Display = "Erro ao subir Pedido",
+                                    Detail = $"{objPedidoSync.resulStruct.retorno}"                                  
+                                });
+                            }
                         }
-
-
                     }
 
                     var pedidosComStatusAlterados = PedidoRepository.GetPedidosAlteradosStatus();

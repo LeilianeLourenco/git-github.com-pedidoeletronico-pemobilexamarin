@@ -698,6 +698,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 foreach (var item in objPedido.lItens)
                 {
 
+                    item.cAlternativo = App.Data.Connection.Table<ProdutoModel>()
+                            .FirstOrDefault(c => c.idProduto == item.idProduto)?.cAlternativo;
+
                     var anotacao = ProdutoRepository.GetAnotacaoProduto(item.idProdutoOffLine);
 
                     if (!string.IsNullOrEmpty(anotacao))
