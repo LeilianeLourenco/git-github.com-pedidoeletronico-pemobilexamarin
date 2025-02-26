@@ -576,8 +576,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
 
         private string _cAlternativo;
-
-        [IgnoreDataMember]
+      
         public string cAlternativo
         {
             get { return (_cAlternativo ?? "").ToUpper(); }

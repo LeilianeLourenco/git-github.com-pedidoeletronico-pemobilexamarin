@@ -140,8 +140,8 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <custom:ExtendedEntry MaxLength="14" IsEnabled="{Binding currentModel.currentTabelaPreco.BloquearValor, Converter={StaticResource InvertBoolConvert} }"
-                          x:Name="EntryValorUnitario"
+                                            <custom:ExtendedEntry MaxLength="14"
+                                                x:Name="EntryValorUnitario"
                                             Text="{Binding vUnitarioVendaComImpostos, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  >
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:ValorUnitarioComImpostosBehaviors x:Name="ValorUnitarioComImpostos" />
