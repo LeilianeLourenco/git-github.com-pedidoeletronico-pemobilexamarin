@@ -1115,7 +1115,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     var stValorTabelaPreco = TabelaPrecoRepository.GetTabelaPrecoParaPedidoVenda(idTabelaPrecoCondicao.GetValueOrDefault());
 
                     foreach (var itens in currentModel.lItens)
-                    {                       
+                    {
                         if (idTabelaPrecoCondicao.GetValueOrDefault() > 0)
                         {
                             if (itens.idTabelaPreco != idTabelaPrecoCondicao)
@@ -1190,17 +1190,20 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             }
                         }
 
-
-                        itens.vUnitarioVenda = _valorOrigem = (_valorOrigem + ((itens.pIpiVenda.GetValueOrDefault() / 100) * _valorOrigem) + ((itens.pStVenda.GetValueOrDefault() / 100) * _valorOrigem)).ArredondarValorDecimal(nCasasDecimais: 2);
                         //adiciono o vdesc antigo para somar no pDesconto e calcular qual o valor que deveria ficar;
                         if (vDescCondicao < 0)
                             itens.pDesconto += vDescCondicao.GetValueOrDefault();
 
                         //somando o desconto no já existente.
                         itens.pDesconto -= condicaoPag.vDescCondicao.GetValueOrDefault();
-
                         itens.vDesconto = (_valorOrigem * (itens.pDesconto / 100)).ArredondarValorDecimal(nCasasDecimais: 2);
-                        itens.vVenda = itens.vUnitarioVendaComImpostos = _valorOrigem - itens.vDesconto;
+
+                        if (!(currentModel.vJuros > 0))                                                                              
+                            itens.vVenda = itens.vUnitarioVendaComImpostos = _valorOrigem - itens.vDesconto;                        
+                        else                                                                                                                                       
+                            itens.vVenda = itens.vUnitarioVendaComImpostos = vSubTotal;
+                        
+                        itens.vUnitarioVenda = _valorOrigem = (_valorOrigem + ((itens.pIpiVenda.GetValueOrDefault() / 100) * _valorOrigem) + ((itens.pStVenda.GetValueOrDefault() / 100) * _valorOrigem)).ArredondarValorDecimal(nCasasDecimais: 2);
 
                         //ocorre quando existe acréscimo na condição
                         if (itens.pDesconto < 0 || itens.vDesconto < 0)
@@ -1281,14 +1284,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     ItemCondicaoPgto.vDescCondicao = condicaoPag.vDescCondicao;
                     idTabelaPrecoCondicao = condicaoPag.idTabelaPreco;
                 }
-         
+
                 vSubTotal = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vSubTotal) ?? c.vSubTotal);
 
                 var dComplementos = currentModel.vFretePed + currentModel.vSeguroPed + currentModel.vOutrasPed;
-                vSubTotal = vSubTotal + dComplementos;
-
-                //var juros = currentModel.lItens.Sum(x => x.vVenda * x.vQtdItem);
-                //juros = vSubTotal - juros;
+                vSubTotal = vSubTotal + dComplementos;                
 
                 vSubTotalOriginal = vSubTotal - currentModel.vJuros;
 
@@ -1385,13 +1385,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         }
                     }
 
-                    if (currentModel.idPedidoVenda > 0)
-                        lRecebimentoTitulosManualModel = lRecebimentoTitulosManualModel.Count == 0 ? lRecebimentoTitulosManualModel =
-                            FinanceiroRepository.GetFaturas(currentModel.idPedidoVenda ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosManualModel;
-                    else
-                        lRecebimentoTitulosManualModel = lRecebimentoTitulosManualModel.Count == 0 ? lRecebimentoTitulosManualModel =
-                            FinanceiroRepository.GetFaturasManual(currentModel.idPedidoVendaOffLine ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosManualModel;
-   
                     currentModel.xMinimoVendas = _msgAux;
                     currentModel.bUsaMinimoVendas = true;
                     currentModel.vLimiteMinimoVenda = _vLimiteAux;
@@ -1399,6 +1392,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     currentModel.stCalculoMinimoVenda = _configuracoesGerais.stCalculoLimiteVendasEmpresa;
                     currentModel.bForcarMinimoVendas = _configuracoesGerais.bForcarMinimoVendas;
                 }
+
+                if (currentModel.idPedidoVenda > 0)
+                    lRecebimentoTitulosManualModel = lRecebimentoTitulosManualModel.Count == 0 ? lRecebimentoTitulosManualModel =
+                        FinanceiroRepository.GetFaturas(currentModel.idPedidoVenda ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosManualModel;
+                else
+                    lRecebimentoTitulosManualModel = lRecebimentoTitulosManualModel.Count == 0 ? lRecebimentoTitulosManualModel =
+                        FinanceiroRepository.GetFaturasManual(currentModel.idPedidoVendaOffLine ?? 0, currentModel.idEmpresa) : lRecebimentoTitulosManualModel;
 
                 dAcrescimoMensal = _configuracoesGerais.dAcrescimoMensal;
                 currentModel.xInformacaoContrato = _configuracoesGerais.xInformacaoContrato;
