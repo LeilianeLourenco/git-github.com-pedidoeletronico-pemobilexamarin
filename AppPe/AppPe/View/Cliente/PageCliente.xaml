@@ -145,7 +145,7 @@
 
                 <Label IsVisible="{Binding bUsaLimite}" Text="Limite de Crédito" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
                 <custom:ExtendedEntry IsEnabled="{Binding bAdmin}" IsVisible="{Binding bUsaLimite}" x:Name="EntryLimiteCredito" MaxLength="13" Keyboard="Numeric" Placeholder="Limite de crédito"
-                          Text="{Binding currentModel.vLimiteCredito, Converter={StaticResource DecimalToStringConverter}} " />
+                          Text="{Binding currentModel.vLimiteCredito, Converter={StaticResource FormatPermiteNullSimboloDecimalConverter}} " />
 
 
                 <!--Situação da Prospecção-->

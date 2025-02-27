@@ -118,6 +118,21 @@ namespace Xamarin.HLP.Mobile.AppPE
             return dValor.ToString("N4", culturaBrasileira);
         }
 
+        public static string ToCurrencyPermiteNullSimplesPlacesPtBr(this object value, CultureInfo cultrure = null)
+        {
+            if (value == null)
+                return null;
+
+            var culturaBrasileira = new CultureInfo("pt-BR");
+            if (cultrure != null)
+            {
+                culturaBrasileira = cultrure;
+            }
+            double dValor;
+            double.TryParse((value ?? "").ToString(), out dValor);
+            return dValor.ToString("N2", culturaBrasileira);
+        }
+
         /// <summary>
         /// 1000,00
         /// </summary>

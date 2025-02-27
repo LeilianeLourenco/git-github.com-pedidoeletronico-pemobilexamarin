@@ -329,7 +329,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             set { _xemails = value; NotifyPropertyChanged(); }
         }
 
-        private double? _vLimiteCredito = 0;
+        private double? _vLimiteCredito;
         public double? vLimiteCredito
         {
             get { return _vLimiteCredito; }
