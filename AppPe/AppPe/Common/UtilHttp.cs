@@ -334,6 +334,42 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             return lregistros;
         }
 
+        public static async Task<List<T>> GetListEstoqueRegistroSync<T>(object param1, DateTime? param2 = null,
+            object param3 = null) where T : class
+        {
+            var lregistros = new List<T>();
+            try
+            {
+                param2 = param2.Value.AddHours(-3);
+
+                var requestUri =
+                    $"api/{TableMobile.GetApiRegistroByModel<T>()}/{param1}{(param2 != null ? "/" + ((DateTime)param2).ToString("yyyy-MM-ddTHH:mm:ss") : null)}{(param3 != null ? "/" + param3.ToString() : "")}";
+
+                var _apiClient = CurrentHttpClient;
+                _apiClient.Timeout = TimeSpan.FromMinutes(10);
+
+                var jsonResponse = await _apiClient.GetStringAsync(requestUri);
+                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+
+                EnvironmentRepository.ExcluirRegistrosNecessarios(TableMobile.GetApiRegistroByModel<T>(), param1);
+            }
+            catch (System.Net.WebException)
+            {
+                SincronizacaoNewViewModel.bFalhaConexao = true;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("GetListRegistroSync", false);
+                if (!await App.IsConected() || ex.Message?.ToUpper() == "THE OPERATION WAS CANCELED")
+                    SincronizacaoNewViewModel.bFalhaConexao = true;
+                else
+                    SincronizacaoNewViewModel.ocorreuErro = true;
+
+                SincronizacaoNewViewModel.xMensagemErro = ex.Message;
+            }
+            return lregistros;
+        }
+
         public static async Task<List<T>> GetListRegistroGradeSync<T>(object param1, DateTime? param2 = null,
            object param3 = null) where T : class
         {
