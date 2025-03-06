@@ -962,8 +962,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                     else if (xTableName == TableMobile.GetTableNameByModel<EstoqueModel>())
                     {
-                        lsync = await
-                            UtilHttp.GetListRegistroSync<T>(
+                        lsync = await                     
+                            UtilHttp.GetListEstoqueRegistroSync<T>(
                                     param1: idEmp,
                                     param2: _ultimaDataSinc,
                                     param3:
