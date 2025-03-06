@@ -37,11 +37,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             int parcelas;
             if (int.TryParse(EntryParcelas.Text, out parcelas))
             {
-                double totalDias = (_page.currentModel.dtFinal.Value.Date - _page.currentModel.dtInicial.Value.Date).TotalDays;
-                totalDias = totalDias / 30.0;
+                double n = (_page.currentModel.dtFinal.Value.Date - _page.currentModel.dtInicial.Value.Date).TotalDays;
+                n = n / 30.0;
 
-                if (parcelas < 50 && _page.vSubTotal > 0 && totalDias > 0)
+                if (parcelas < 50 && _page.vSubTotal > 0 && n > 0)
                 {
+                    int totalDias = (_page.currentModel.dtFinal.Value.Date - _page.currentModel.dtInicial.Value.Date).Days;
                     var dias = totalDias / parcelas;
 
                     StackPageFaturas.Children.Clear();
@@ -51,7 +52,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     double juros = Convert.ToDouble(_page.dAcrescimoMensal) / 100;
 
                     double valorPedido = _page.vSubTotalOriginal;
-                    valorPedido = valorPedido * Math.Pow((1 + juros), totalDias);
+                    valorPedido = valorPedido * Math.Pow((1 + juros), n);
 
                     double valorParcela = valorPedido / parcelas;
 
@@ -108,16 +109,18 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
                 itens.vJuros = itens.vUnitarioVendaComImpostos - itens.vUnitarioVendaComImpostosOriginal;
                 itens.xDetalheItem = $"{itens.vQtdItem}x - {itens.vUnitarioVendaComImpostos.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}";
-            
-                foreach (var item in itens.ItensGrade)
-                {
-                    item.vUnitarioVenda = itens.vUnitarioVenda;
-                    item.vVenda = item.vUnitarioVendaComImpostos = itens.vUnitarioVendaComImpostos;
-                    item.vSubTotal = item.vVenda * item.vQtdItem;
-                    item.vDesconto = itens.vDesconto;
-                    item.pDesconto = itens.pDesconto;
-                }
 
+                if (itens?.ItensGrade != null)
+                {
+                    foreach (var item in itens?.ItensGrade)
+                    {
+                        item.vUnitarioVenda = itens.vUnitarioVenda;
+                        item.vVenda = item.vUnitarioVendaComImpostos = itens.vUnitarioVendaComImpostos;
+                        item.vSubTotal = item.vVenda * item.vQtdItem;
+                        item.vDesconto = itens.vDesconto;
+                        item.pDesconto = itens.pDesconto;
+                    }
+                }
             }
         }
 
