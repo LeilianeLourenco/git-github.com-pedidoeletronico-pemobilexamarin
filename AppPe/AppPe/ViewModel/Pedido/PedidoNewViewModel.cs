@@ -1198,11 +1198,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         itens.pDesconto -= condicaoPag.vDescCondicao.GetValueOrDefault();
                         itens.vDesconto = (_valorOrigem * (itens.pDesconto / 100)).ArredondarValorDecimal(nCasasDecimais: 2);
 
-                        if (!(currentModel.vJuros > 0))                                                                              
-                            itens.vVenda = itens.vUnitarioVendaComImpostos = _valorOrigem - itens.vDesconto;                        
-                        else                                                                                                                                       
-                            itens.vVenda = itens.vUnitarioVendaComImpostos = vSubTotal;
-                        
+                        if (!(currentModel.vJuros > 0))
+                            itens.vVenda = itens.vUnitarioVendaComImpostos = _valorOrigem - itens.vDesconto;
+                        else
+                            itens.vVenda = itens.vUnitarioVendaComImpostos = vSubTotal / currentModel.lItens.Sum(x => x.vQtdItem);
+
                         itens.vUnitarioVenda = _valorOrigem = (_valorOrigem + ((itens.pIpiVenda.GetValueOrDefault() / 100) * _valorOrigem) + ((itens.pStVenda.GetValueOrDefault() / 100) * _valorOrigem)).ArredondarValorDecimal(nCasasDecimais: 2);
 
                         //ocorre quando existe acréscimo na condição
@@ -1288,9 +1288,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 vSubTotal = currentModel.lItens.Sum(c => c.ItensGrade?.Sum(o => o.vSubTotal) ?? c.vSubTotal);
 
                 var dComplementos = currentModel.vFretePed + currentModel.vSeguroPed + currentModel.vOutrasPed;
-                vSubTotal = vSubTotal + dComplementos;                
+                vSubTotal = vSubTotal + dComplementos;
 
-                vSubTotalOriginal = vSubTotal - currentModel.vJuros;
+                if (vSubTotal > vSubTotalOriginal)
+                    vSubTotalOriginal = vSubTotal > 0 ? vSubTotal - currentModel.vJuros : 0;
+                else
+                {
+                    vSubTotalOriginal = vSubTotal;
+                    currentModel.vJuros = 0;
+                }
 
                 xDisplayComplementos = dComplementos.ToCurrencyStringPtBr();
 
