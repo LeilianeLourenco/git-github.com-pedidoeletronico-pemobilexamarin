@@ -68,7 +68,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                             nParcela = i,
                             nSequencia = i,
                             vRecebido = 0,
-                            vTitulo = parcelaBase,
+                            vTitulo = Math.Round(parcelaBase, 2),
                             xTitulo = parcelaBase.ToString("F2"),
                             vBaseComissao = Convert.ToDecimal(_page.vTotalComissao / parcelas),
                             pComissao = 0,
