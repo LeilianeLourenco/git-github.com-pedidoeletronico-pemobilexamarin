@@ -138,6 +138,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static bool GetGravaLoc(int idEmpresa_aspnetUsers)
+        {
+            var xQuery =
+              $@"select bGravaLocRepresentante from {TableMobile.TB_EMPRESA_ASPNETUSERS}
+                                                    where idEmpresa_aspnetUsers = {idEmpresa_aspnetUsers}";
+  
+            return App.Data.Connection.ExecuteScalar<bool>(xQuery);
+        }
 
         public static EmpresaAspnetUsersModel AtualizaEmpresaAspnetUsersModel(
             EmpresaAspnetUsersModel objEmpresaAspnetUsersModel)
