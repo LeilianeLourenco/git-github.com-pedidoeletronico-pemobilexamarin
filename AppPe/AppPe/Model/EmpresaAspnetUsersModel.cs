@@ -128,6 +128,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public bool bEmpresaCorrente { get; set; }
 
         public double vMetaCorrente { get; set; }
+        public bool bGravaLocRepresentante { get; set; }
 
     }
 }

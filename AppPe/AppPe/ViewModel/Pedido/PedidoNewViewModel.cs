@@ -1441,31 +1441,35 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             if (CanSave())
             {
-                var status = await UtilMethods.PermissionLoc();
-                if (status == PermissionStatus.Granted)
+                int idEmpresa_aspnetUsers = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0;
+                var bGravaLoc = EmpresaAspnetUsersRepository.GetGravaLoc(idEmpresa_aspnetUsers);
+
+                if (bGravaLoc)
                 {
-                    try
+                    var status = await UtilMethods.PermissionLoc();
+                    if (status == PermissionStatus.Granted)
                     {
-                        var location = await Geolocation.GetLastKnownLocationAsync();
+                        try
+                        {
+                            var location = await Geolocation.GetLastKnownLocationAsync();
 
-                        if (location != null)
-                            currentModel.xLocalRepresentante = $"{location.Latitude.ToString(CultureInfo.InvariantCulture)}, {location.Longitude.ToString(CultureInfo.InvariantCulture)}";
+                            if (location != null)
+                                currentModel.xLocalRepresentante = $"{location.Latitude.ToString(CultureInfo.InvariantCulture)}, {location.Longitude.ToString(CultureInfo.InvariantCulture)}";
 
-                        else
-                            await App.Current.MainPage.DisplayAlert("Erro", "Não foi possível obter a localização.", "OK");
+                            else
+                                await App.Current.MainPage.DisplayAlert("Erro", "Não foi possível obter a localização.", "OK");
 
+                        }
+                        catch (Exception ex)
+                        {
+                            await App.Current.MainPage.DisplayAlert("Erro", $"Falha ao obter a localização: {ex.Message}", "OK");
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        await App.Current.MainPage.DisplayAlert("Erro", $"Falha ao obter a localização: {ex.Message}", "OK");
-                    }
-
-                    IsBusy = true;
-                    await ValidateToSave();
-                    IsBusy = false;
                 }
-                else
-                    await App.Current.MainPage.DisplayAlert("Permissão Negada", "O acesso à localização é necessário para salvar.", "OK");
+
+                IsBusy = true;
+                await ValidateToSave();
+                IsBusy = false;
 
             }
         }
