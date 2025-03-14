@@ -23,6 +23,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public static Color CinzaEscuro => Color.FromHex("555555");
 
         public static Color VermelhoPrincipal => Color.FromHex("f44336");
+        public static Color Amarelo => Color.FromHex("FFCC00");
 
         public static Color RosaChart => Color.FromHex("BD1D47");
 

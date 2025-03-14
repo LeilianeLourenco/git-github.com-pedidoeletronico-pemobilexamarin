@@ -36,6 +36,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             tb_pedidovenda.xDisplayIntegracao,
 	                        tb_pedidovenda.stLancamento,	   
 	                        tb_pedidovenda.bPedidoComAlteracao,	   
+	                        tb_pedidovenda.xErroIntegracao,	   
+	                        tb_pedidovenda.xErroPedido,	   
                             tb_pedidovenda.XdEmissao,                                    
                             tb_pedidovenda.vSeguroPed,                              
                             tb_pedidovenda.xObsInterna,                     

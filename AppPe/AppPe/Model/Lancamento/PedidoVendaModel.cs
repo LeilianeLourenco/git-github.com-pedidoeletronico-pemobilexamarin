@@ -494,6 +494,41 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         }
 
         public string xAssinatura { get; set; }
+        public string xErroIntegracao { get; set; }
+        public string xErroPedido { get; set; }
+
+        public DateTime? _dtInicial;
+        public DateTime? dtInicial
+        {
+            get { return _dtInicial; }
+            set
+            {
+                _dtInicial = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public DateTime? _dtFinal;
+        public DateTime? dtFinal
+        {
+            get { return _dtFinal; }
+            set
+            {
+                _dtFinal = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public int? _nParcelas;
+        public int? nParcelas
+        {
+            get { return _nParcelas; }
+            set
+            {
+                _nParcelas = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         #region Propriedades que não fazem parte da base de dados
 
@@ -586,40 +621,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 _lRecebimentoTitulosManual = value;
                 NotifyPropertyChanged();
             }
-        }
-
-        public DateTime? _dtInicial;
-        public DateTime? dtInicial
-        {
-            get { return _dtInicial; }
-            set
-            {
-                _dtInicial = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public DateTime? _dtFinal;
-        public DateTime? dtFinal
-        {
-            get { return _dtFinal; }
-            set
-            {
-                _dtFinal = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public int? _nParcelas;
-        public int? nParcelas
-        {
-            get { return _nParcelas; }
-            set
-            {
-                _nParcelas = value;
-                NotifyPropertyChanged();
-            }
-        }
+        }        
 
         public int GetNextValidAgrupamento()
         {

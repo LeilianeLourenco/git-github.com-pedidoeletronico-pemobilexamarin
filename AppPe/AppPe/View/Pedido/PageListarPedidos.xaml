@@ -48,8 +48,13 @@
 
                             <Label Grid.Row="0" Grid.Column="0" TextColor="White" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" BackgroundColor="{Binding ColorTipoLancamento}" HorizontalOptions="FillAndExpand" FontAttributes="Bold" Text="{Binding TipoLancamento}"/>
                             <Label Grid.Row="0" Grid.Column="1" Text="{Binding xDisplayPedidoNew}" LineBreakMode="TailTruncation" TextColor="White" BackgroundColor="{Binding ColorTipoLancamento}" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand" FontAttributes="Bold"/>
-
-                            <Label Margin="1,2,1,0" Grid.Row="1"  Grid.Column="0" Text="{Binding DisplaySincronizacao}" TextColor="{Binding ColorSincronizacao}" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="Start" />
+                            
+                            <StackLayout Margin="1,2,1,0" Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                                <Label Text="⚠️" IsVisible="{Binding bIntegracaoComErro}" FontSize="13" FontAttributes="Bold" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="Start" />
+                                <Label Text="❌" IsVisible="{Binding bPedidoComErro}" FontSize="13" FontAttributes="Bold" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="Start" />
+                                <Label Text="{Binding DisplaySincronizacao}" TextColor="{Binding ColorSincronizacao}" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="Start" />
+                            </StackLayout>
+                            
                             <Label Margin="1,2,1,0" Grid.Row="1"  Grid.Column="1" Text="{Binding xSigla}" TextColor="{StaticResource Branco}" BackgroundColor="{Binding ColorSigla}" LineBreakMode="TailTruncation" HorizontalTextAlignment="End" HorizontalOptions="End" FontAttributes="Bold" />
 
                             <Label Margin="1,2,1,0" Grid.Row="2"  Grid.Column="0" Text="{Binding DisplayPrazo}" TextColor="{StaticResource CinzaEscuro}" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="Start" />
