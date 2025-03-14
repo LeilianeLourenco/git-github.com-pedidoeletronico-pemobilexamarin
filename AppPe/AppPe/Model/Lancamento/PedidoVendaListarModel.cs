@@ -10,6 +10,54 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         public string xDisplayIntegracao { get; set; }
         public bool bPedidoComAlteracao { get; set; }
 
+        public bool _bIntegracaoComErro { get; set; }
+
+        public bool bIntegracaoComErro
+        {
+            get { return xErroIntegracao != null; }
+            set { _bIntegracaoComErro = value; NotifyPropertyChanged(); }
+        }
+
+        public bool _bPedidoComErro { get; set; }
+
+        public bool bPedidoComErro
+        {
+            get { return xErroPedido != null; }
+            set { _bPedidoComErro = value; NotifyPropertyChanged(); }
+        }
+
+        private string _xErroIntegracao;
+
+        public string xErroIntegracao
+        {
+            get { return _xErroIntegracao; }
+            set
+            {
+                _xErroIntegracao = value;
+
+                if (_xErroIntegracao != null)
+                    bIntegracaoComErro = true;
+
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _xErroPedido;
+
+        public string xErroPedido
+        {
+            get { return _xErroPedido; }
+            set
+            {
+                _xErroPedido = value;
+
+                if (_xErroPedido != null)
+                    bPedidoComErro = true;
+
+                NotifyPropertyChanged();
+            }
+        }
+
         private int? _idPedidoVenda;
         public int? idPedidoVenda
         {
@@ -30,7 +78,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _estoqueInvalido; }
             set { _estoqueInvalido = value; NotifyPropertyChanged(); }
         }
-      
+
         private double _VTotal;
         public double VTotal
         {
@@ -227,7 +275,22 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         #endregion
 
         #region Cores
-        public Color ColorTipoLancamento => (stLancamento == 0) ? ColorStaticModel.Orcamento : ColorStaticModel.Pedido;
+        public Color ColorTipoLancamento
+        {
+            get
+            {
+                if (stLancamento == 0)
+                    return ColorStaticModel.Orcamento;
+
+                if (bPedidoComErro)
+                    return ColorStaticModel.VermelhoPrincipal;
+
+                if (bIntegracaoComErro)
+                    return ColorStaticModel.Amarelo;
+
+                return ColorStaticModel.Pedido;
+            }
+        }
 
         public Color ColorSincronizacao
         {

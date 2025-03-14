@@ -962,7 +962,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                     else if (xTableName == TableMobile.GetTableNameByModel<EstoqueModel>())
                     {
-                        lsync = await                     
+                        lsync = await
                             UtilHttp.GetListEstoqueRegistroSync<T>(
                                     param1: idEmp,
                                     param2: _ultimaDataSinc,
@@ -1123,7 +1123,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         //pedido.dEmissao = pedido.dEmissao;
                         pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
                         pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
-                        pedido.bPedidoComAlteracao = false;                        
+                        pedido.bPedidoComAlteracao = false;
 
                         pedido.dEmissao = pedido.dEmissao.AddHours(-3);
 
@@ -1143,6 +1143,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 pedido.idPedidoVenda = objPedidoSync.objModel.idPedidoVenda;
                                 pedido.idPedidoDisplay = objPedidoSync.objModel.idPedidoDisplay;
                                 pedido.idCondicaoPagamento = objPedidoSync.objModel.idCondicaoPagamento;
+                                pedido.xErroIntegracao = objPedidoSync.resulStruct.erroIntegracao;
+
                                 pedido.dtUltimaAlteracao =
                                     (objPedidoSync.objModel.dtUltimaAlteracao ?? DateTime.Now).ToDateTimeSync();
                                 App.Data.Connection.Update(pedido);
@@ -1173,32 +1175,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     DetailEstoque = _estoqueValidado
                                 });
                             }
-                            else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.EstoqueInsuficiente)
-                            {
-                                var dadosEstoque =
-                                    JsonConvert.DeserializeObject<List<EstoqueInsuficienteModel>>(
-                                        objPedidoSync.resulStruct.retorno.ToString());
-
-                                var _estoqueValidado = EstoqueRepository.SaveEstoqueInsuficiente(dadosEstoque,
-                                    pedido.idPedidoVendaOffLine ?? 0);
-
-                                currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
-                                {
-                                    idOffLine = pedido.idPedidoVendaOffLine,
-                                    Table = TableMobile.TB_PEDIDOVENDA,
-                                    Display = "Problemas com estoque",
-                                    Detail = $"Cliente: {ClienteRepository.GetDisplayByIdOffLine(pedido.idClientesOffLine)}",
-                                    DetailEstoque = _estoqueValidado
-                                });
-                            }
                             else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.Excecao)
                             {
+                                pedido.xErroPedido = objPedidoSync?.resulStruct.retorno.ToString();
+                                App.Data.Connection.Update(pedido);
+
                                 currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
                                 {
                                     idOffLine = pedido.idPedidoVendaOffLine,
                                     Table = TableMobile.TB_PEDIDOVENDA,
                                     Display = "Erro ao subir Pedido",
-                                    Detail = $"{objPedidoSync.resulStruct.retorno}"                                  
+                                    Detail = $"{objPedidoSync?.resulStruct.retorno}"
                                 });
                             }
                         }

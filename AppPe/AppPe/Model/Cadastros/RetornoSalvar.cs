@@ -6,6 +6,7 @@
     public struct RetornoRepositoriosSalvar
     {
         public RetornoSalvar stRetorno { get; set; }
+        public string erroIntegracao { get; set; }
         public object retorno { get; set; }
     }
 

@@ -7,104 +7,120 @@
         <pedido:DetalhesPedidoViewModel/>
     </ContentPage.BindingContext>
 
+    <ScrollView>
+        <StackLayout>
+            <TableView HasUnevenRows="True" BackgroundColor="White" HeightRequest="465" >
+                <TableRoot>
+                    <TableSection>
 
-    <TableView HasUnevenRows="True" BackgroundColor="White">
-        <TableRoot>
-            <TableSection>
-                <TableSection.Title>
-                    <OnPlatform x:TypeArguments="x:String" Android="Detalhes do lançamento"/>
-                </TableSection.Title>
+                        <TableSection.Title>
+                            <OnPlatform x:TypeArguments="x:String" Android="Detalhes do lançamento"/>
+                        </TableSection.Title>
 
-                <TextCell Detail="{Binding currentModel.TipoLancamento}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Tipo de lançamento" />
-                <TextCell Detail="{Binding currentModel.xDisplayPedidoNew}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Numero" />
-                <TextCell Detail="{Binding currentModel.DisplayCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Cliente" />
-                <TextCell Detail="{Binding currentModel.DisplayPrazo}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Condição de pagamento" />
-                <TextCell Detail="{Binding currentModel.DisplayForma}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Forma de pagamento" />
-                <TextCell Detail="{Binding currentModel.DisplayEmail}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Vendedor" />
-                <TextCell Detail="{Binding vDescontoTotal, Converter={StaticResource FormatDecimalConverter}}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Total de desconto" />
-                <TextCell Detail="{Binding vTotalComissao, Converter={StaticResource FormatDecimalConverter}}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Total de comissão" />
-                <ViewCell>
-                    <StackLayout Margin="15,0,5,5" Orientation="Vertical" MinimumHeightRequest="100" >
-                        <Grid VerticalOptions="StartAndExpand"  >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <TextCell Detail="{Binding currentModel.TipoLancamento}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Tipo de lançamento" />
+                        <TextCell Detail="{Binding currentModel.xDisplayPedidoNew}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Numero" />
+                        <TextCell Detail="{Binding currentModel.DisplayCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Cliente" />
+                        <TextCell Detail="{Binding currentModel.DisplayPrazo}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Condição de pagamento" />
+                        <TextCell Detail="{Binding currentModel.DisplayForma}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Forma de pagamento" />
+                        <TextCell Detail="{Binding currentModel.DisplayEmail}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Vendedor" />
+                        <TextCell Detail="{Binding vDescontoTotal, Converter={StaticResource FormatDecimalConverter}}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Total de desconto" />
+                        <TextCell Detail="{Binding vTotalComissao, Converter={StaticResource FormatDecimalConverter}}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Total de comissão" />
+                        <ViewCell>
+                            <StackLayout Margin="15,0,5,5" Orientation="Vertical" MinimumHeightRequest="100" >
+                                <Grid VerticalOptions="StartAndExpand"  >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
+                                    <Label Grid.Row="0" Grid.Column="0" Text="Anotação Privada" TextColor="{StaticResource CinzaApresentacaoCliente}" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand"/>
+                                    <Label Grid.Row="1" Grid.Column="0" Text="{Binding currentModel.xObsInterna}" FontSize="Small" TextColor="{StaticResource CinzaMaisEscuro}" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="Anotação Privada" TextColor="{StaticResource CinzaApresentacaoCliente}" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand"/>
-                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding currentModel.xObsInterna}" FontSize="Small" TextColor="{StaticResource CinzaMaisEscuro}" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
 
-                        </Grid>
-                    </StackLayout>
-                </ViewCell>
-                <ViewCell>
-                    <StackLayout Orientation="Vertical" HeightRequest="140">
-                        <Grid VerticalOptions="CenterAndExpand" >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <Label Grid.Row="0" LineBreakMode="NoWrap" Text="{Binding currentModel.DisplaySincronizacao}" TextColor="{Binding currentModel.ColorSincronizacao}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
-
-                            <Label Grid.Row="1" LineBreakMode="NoWrap" Text="{Binding ItemSatus.Display}" FontSize="Large" TextColor="{Binding currentModel.ColorSigla}" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" />
-
-                            <Label Grid.Row="2" LineBreakMode="NoWrap" Text="{Binding currentModel.VTotal, Converter={StaticResource FormatDecimalConverter}}" TextColor="{StaticResource VerdePrincipal}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" FontSize="Large" FontAttributes="Bold"/>
-
-                        </Grid>
-                    </StackLayout>
-
-                </ViewCell>
-                
-                <ViewCell>
-                    <Grid Margin="5,0,5,10" RowSpacing="2">
+            <StackLayout VerticalOptions="FillAndExpand">
+                <StackLayout Orientation="Vertical" HeightRequest="140">
+                    <Grid VerticalOptions="CenterAndExpand" >
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
+                        <Label Grid.Row="0" LineBreakMode="NoWrap" Text="{Binding currentModel.DisplaySincronizacao}" TextColor="{Binding currentModel.ColorSincronizacao}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
 
-                        <Grid Grid.Row="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Command="{Binding VisualizarCommand}" Style="{StaticResource Warning }" Text="VISUALIZAR / IMPRIMIR"/>
-                            <Button Grid.Column="1" Command="{Binding ShowItensPedidoCommand}" Style="{StaticResource Primary }" Text="ITENS"/>
-                            <Button Grid.Row="1"  Grid.Column="0" Command="{Binding AssinaturaPedido}" Style="{StaticResource Danger}" Text="ASSINATURA PEDIDO »" />
-                            <Image x:Name="imgAssinaturaPedido"
+                        <Label Grid.Row="1" LineBreakMode="NoWrap" Text="{Binding ItemSatus.Display}" FontSize="Large" TextColor="{Binding currentModel.ColorSigla}" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" />
+
+                        <Label Grid.Row="2" LineBreakMode="NoWrap" Text="{Binding currentModel.VTotal, Converter={StaticResource FormatDecimalConverter}}" TextColor="{StaticResource VerdePrincipal}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" FontSize="Large" FontAttributes="Bold"/>
+
+                    </Grid>
+                </StackLayout>
+
+                <StackLayout IsVisible="{Binding currentModel.bIntegracaoComErro}">
+                    <Label Margin="15,0,0,0" FontSize="16" Text="⚠️ Pedido não integrado"></Label>
+                    <StackLayout Orientation="Horizontal" Padding="15,5,0,15">
+                        <Label Text="❌" FontSize="13" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding currentModel.xErroIntegracao}" FontAttributes="Italic" FontSize="15"></Label>
+                        <Label></Label>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout IsVisible="{Binding currentModel.bPedidoComErro}">
+                    <Label Margin="15,0,0,0" FontSize="16" Text="⚠️ Avisos da sincronização"></Label>
+                    <StackLayout Orientation="Horizontal" Padding="15,5,0,15">
+                        <Label Text="❌" FontSize="13" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding currentModel.xErroPedido}" FontAttributes="Italic" FontSize="15"></Label>
+                        <Label></Label>
+                    </StackLayout>
+                </StackLayout>
+
+                <Grid Margin="5,0,5,10" RowSpacing="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Command="{Binding VisualizarCommand}" Style="{StaticResource Warning }" Text="VISUALIZAR / IMPRIMIR"/>
+                        <Button Grid.Column="1" Command="{Binding ShowItensPedidoCommand}" Style="{StaticResource Primary }" Text="ITENS"/>
+                        <Button Grid.Row="1"  Grid.Column="0" Command="{Binding AssinaturaPedido}" Style="{StaticResource Danger}" Text="ASSINATURA PEDIDO »" />
+                        <Image x:Name="imgAssinaturaPedido"
                                Grid.Row="1"  
                                Grid.Column="1"
                                Source="{Binding imgAssinaturaPedido}"
                                VerticalOptions="CenterAndExpand"
                                HorizontalOptions="CenterAndExpand"/>
-                        </Grid>
-
-                        <Button Grid.Row="1" Command="{Binding MudarStatusCommand}" Style="{StaticResource Info}" Text="MUDAR STATUS »" IsEnabled="{Binding bSincronizado}"/>
-                        <Button Grid.Row="2" Command="{Binding CompartilharCommand}" Style="{StaticResource Success}" Text="COMPARTILHAR »" IsEnabled="{Binding bSincronizado}"/>
-                        <Button Grid.Row="3" Command="{Binding DownloadCommand}" Style="{StaticResource Danger}" Text="DOWNLOAD PDF »"  IsEnabled="{Binding bSincronizado}"/>
-                        <Button Grid.Row="4" Command="{Binding SendEmailCommand}" Style="{StaticResource Primary}" Text="ENVIAR POR EMAIL »" IsEnabled="{Binding bSincronizado}"/>
-                        <Button Grid.Row="5" x:Name="btnDuplicar" Command="{Binding DuplicarPedidoCommand}" Style="{StaticResource Success}" Text="DUPLICAR PEDIDO »" IsEnabled="{Binding bSincronizado}"/>
                     </Grid>
-                </ViewCell>
-            </TableSection>
 
-
-        </TableRoot>
-    </TableView>
+                    <Button Grid.Row="1" Command="{Binding MudarStatusCommand}" Style="{StaticResource Info}" Text="MUDAR STATUS »" IsEnabled="{Binding bSincronizado}"/>
+                    <Button Grid.Row="2" Command="{Binding CompartilharCommand}" Style="{StaticResource Success}" Text="COMPARTILHAR »" IsEnabled="{Binding bSincronizado}"/>
+                    <Button Grid.Row="3" Command="{Binding DownloadCommand}" Style="{StaticResource Danger}" Text="DOWNLOAD PDF »"  IsEnabled="{Binding bSincronizado}"/>
+                    <Button Grid.Row="4" Command="{Binding SendEmailCommand}" Style="{StaticResource Primary}" Text="ENVIAR POR EMAIL »" IsEnabled="{Binding bSincronizado}"/>
+                    <Button Grid.Row="5" x:Name="btnDuplicar" Command="{Binding DuplicarPedidoCommand}" Style="{StaticResource Success}" Text="DUPLICAR PEDIDO »" IsEnabled="{Binding bSincronizado}"/>
+                </Grid>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Editar" Command="{Binding EditarPedidoCommand}" Icon="{Binding ImageIconEdit}"/>

@@ -10,6 +10,11 @@
     <Application.Resources>
         <ResourceDictionary>
 
+            <OnPlatform x:Key="IoniconsFont" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ionicons.ttf#Ionicons"/>
+                <On Platform="iOS" Value="Ionicons"/>
+            </OnPlatform>
+
             <OnPlatform x:Key="HeightandWidth" x:TypeArguments="x:Double" Android="40" WinPhone="32" iOS="32"/>
             <OnPlatform x:Key="FontSizePedidoApresentacao" x:TypeArguments="x:Double" WinPhone="11" Android="9" iOS="9"/>
             <OnPlatform x:Key="FontSizeContentApresentacao" x:TypeArguments="x:Double" WinPhone="13" Android="14" iOS="14"/>

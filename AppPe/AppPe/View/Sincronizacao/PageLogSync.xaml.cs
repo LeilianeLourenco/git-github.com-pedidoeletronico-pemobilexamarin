@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.View.Cliente;
+using Xamarin.HLP.Mobile.AppPE.View.Home;
 using Xamarin.HLP.Mobile.AppPE.View.Pedido;
 using Xamarin.HLP.Mobile.AppPE.View.Produto;
 using Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao;
@@ -25,13 +27,17 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
 
         public Page goToPage { get; set; }
 
-        private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var item = e.SelectedItem as AlertaSincronizacao;
             if (item == null) return;
             switch (item.Table)
             {
                 case TableMobile.TB_PEDIDOVENDA:
+                    {
+                       
+                    }
+                    break;
                 case TableMobile.tb_produto_codigocliente:
                     {
                         goToPage = new PageListarPedidos();
@@ -80,7 +86,23 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
             return bCanGotoPedido;
         }
 
-
+        protected override async void OnDisappearing()
+        {
+            if (ViewModel.LAlertaSincronizacao.FirstOrDefault()?.Table == TableMobile.TB_PEDIDOVENDA)
+            {
+                var goToPage = new PageListarPedidos();
+               
+                var currentPage = Navigation.NavigationStack.LastOrDefault();
+                if (currentPage != null)
+                {
+                    Navigation.RemovePage(currentPage);
+                }
+             
+                await Navigation.PushAsync(goToPage);
+            }
+            else
+                base.OnDisappearing();
+        }
 
     }
 }
