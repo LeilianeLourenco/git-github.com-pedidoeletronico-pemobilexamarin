@@ -1472,8 +1472,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             if (CanSave())
             {
-                int idEmpresa_aspnetUsers = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0;
-                var bGravaLoc = EmpresaAspnetUsersRepository.GetGravaLoc(idEmpresa_aspnetUsers);
+                bool bGravaLoc = App.CurrentAspnetUserModel?.objEmpresaAspnetUsersModel?.bGravaLocRepresentante ?? false;
 
                 if (bGravaLoc)
                 {
