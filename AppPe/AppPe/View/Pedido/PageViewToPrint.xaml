@@ -57,11 +57,13 @@
                         Source="{Binding imgAssinaturaPedido}"
                         VerticalOptions="CenterAndExpand"
                         HorizontalOptions="CenterAndExpand"/>
+                    <BoxView HeightRequest="1" BackgroundColor="Black" HorizontalOptions="Fill" Margin="15,5,15,10"/>
+                    <Label LineBreakMode="WordWrap" FontSize="13" Text="{Binding xRazaoSocial}" Margin="10,0,0,15" HorizontalTextAlignment="Start"/>
                     <Label LineBreakMode="WordWrap" Text="{Binding agradecimento}" HorizontalTextAlignment="End"/>
                 </StackLayout>
             </ScrollView>
 
-            <Button Text="COMPARTILHAR" Grid.Row="2" Clicked="BtnCompartilhar_Clicked" Margin="2,2,2,0" />
+            <Button Text="COMPARTILHAR" Grid.Row="2" Style="{StaticResource Primary }" Clicked="BtnCompartilhar_Clicked" Margin="2,2,2,0" />
             <Button IsVisible="{Binding bCanPrint}" Text="IMPRIMIR VIA BLUETOOTH" Style="{StaticResource Success}" Grid.Row="3" Command="{Binding PrintCommand}" Margin="2,2,2,0" />
 
             <!--<Button Text="{Binding xTextoPrint}" Style="{StaticResource Success}" Grid.Row="2" Command="{Binding PrintCommand}" Margin="2,2,2,0" />-->

@@ -70,7 +70,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         }
         private string _xheader_item;
 
-
+        private string _xRazaoSocial;
+        public string xRazaoSocial
+        {
+            get { return _xRazaoSocial; }
+            set { _xRazaoSocial = (value ?? "").ToUpper(); NotifyPropertyChanged(); }
+        }
 
         private string _xTextoPrint;
         public string xTextoPrint
@@ -413,6 +418,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (imgAssinaturaPedido?.ToString()?.Length > 0)
                     totais += $"\n";
 
+                xRazaoSocial = $"{cliente.xRazaoSocial}";
+
                 agradecimento += $"Obrigado pela preferência{Environment.NewLine}";
                 //totais += Separador2;
                 agradecimento += $"Gerado por pedidoeletronico.com{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}";
@@ -723,14 +730,22 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                                             using (var pdfImage = XImage.FromFile(tempImagePath))
                                             {
-
                                                 double newImageWidth = 80;
                                                 double newImageHeight = 80;
 
-                                                double imageX = x;
-                                                double imageY = y - 105;
+                                                double imageX = (page.Width - newImageWidth) / 2;
+                                                double imageY = y - 155;
 
                                                 gfx.DrawImage(pdfImage, imageX, imageY, newImageWidth, newImageHeight);
+                                              
+                                                double extraLineWidth = 200; 
+                                                double lineStartX = imageX - (extraLineWidth / 2); 
+                                                double lineEndX = imageX + newImageWidth + (extraLineWidth / 2); 
+                                                double lineY = imageY + newImageHeight + 10; 
+
+                                                gfx.DrawLine(XPens.Black, lineStartX, lineY, lineEndX, lineY);
+                                            
+                                                y = lineY + 60; 
                                             }
 
                                             File.Delete(tempImagePath);

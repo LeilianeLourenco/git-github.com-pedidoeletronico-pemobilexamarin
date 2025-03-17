@@ -18,13 +18,13 @@
                                            HeightRequest="300" 
                                            MinimumHeightRequest="300" />
 
-                <Button  x:Name="btnSubmit"
+                <Button x:Name="btnSubmit"
                         Text="Concluir Assinatura" 
+                        Style="{StaticResource Primary }"
                         HorizontalOptions="FillAndExpand" 
                         VerticalOptions="Start" 
                         Visual="Material" 
                         Clicked="btnSubmit_Clicked"/>
-
 
             </StackLayout>
         </ScrollView>

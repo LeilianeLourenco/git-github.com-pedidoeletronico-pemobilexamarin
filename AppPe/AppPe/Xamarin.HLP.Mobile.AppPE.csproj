@@ -78,9 +78,11 @@
     <None Remove="Images\PagesIcon\ApplicationSyncComplete.svg" />
     <None Remove="Images\PagesIcon\ApplicationTriste.svg" />
     <None Remove="ViewModel\Pedido\Belfast Regular.ttf" />
+    <None Remove="ViewModel\Pedido\Belfast Regular2.ttf" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="ViewModel\Pedido\Belfast Regular.ttf" />
     <EmbeddedResource Include="ViewModel\Pedido\Beach Thin Normal.ttf" />
     <EmbeddedResource Include="Images\ApplicationPhone.svg" />
     <EmbeddedResource Include="Images\ApplicationTabelaPreco.svg" />
@@ -140,7 +142,7 @@
     <EmbeddedResource Include="Images\PagesIcon\ApplicationPinEnderecoPrincipal.svg" />
     <EmbeddedResource Include="Images\PagesIcon\ApplicationSyncComplete.svg" />
     <EmbeddedResource Include="Images\PagesIcon\ApplicationTriste.svg" />
-    <EmbeddedResource Include="ViewModel\Pedido\Belfast Regular.ttf" />
+    <EmbeddedResource Include="ViewModel\Pedido\Belfast Regular2.ttf" />
   </ItemGroup>
 
   <ItemGroup>
