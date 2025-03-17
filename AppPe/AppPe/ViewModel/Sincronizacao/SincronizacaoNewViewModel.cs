@@ -2266,6 +2266,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 if (usuario.idEmpresa_aspnetUsers == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers)
                                 {
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.imUsuario = usuario.imUsuario;
+                                    App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.bGravaLocRepresentante = usuario.bGravaLocRepresentante;
                                     PageHomeNew.ViewModelStatic.AtualizaImagemApp();
                                 }
                             }
