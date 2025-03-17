@@ -1022,7 +1022,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     return null;
                 }
 
-
                 registro.idPedidoVendaOffLine =
                     registro.idPedidoVenda = registro.idOrcamentoOrigem = registro.idPedidoOrigem = null;
                 registro.idPedidoOrigem = pedido.idPedidoVenda;
@@ -1034,6 +1033,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 registro.idPedidoDisplay = null;
                 registro.xDisplayIntegracao = null;
+                registro.xMeuID = null;
                 registro.dEmissao = DateTime.UtcNow.ToDateTimeSync();
 
                 var status =
