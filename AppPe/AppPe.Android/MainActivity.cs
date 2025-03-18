@@ -13,6 +13,7 @@ using ImageCircle.Forms.Plugin.Droid;
 using TEditor.Droid;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Droid.Services;
+using Color = Android.Graphics.Color;
 
 namespace Xamarin.HLP.Mobile.AppPE.Droid
 {
@@ -43,6 +44,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             DisplayCrashReport();
             CheckAndRequestBluetoothPermission();        
             LoadApplication(new App());
+
+            Window.SetStatusBarColor(Color.ParseColor("#28B6F6"));
         }
 
         private void CheckAndRequestBluetoothPermission()
