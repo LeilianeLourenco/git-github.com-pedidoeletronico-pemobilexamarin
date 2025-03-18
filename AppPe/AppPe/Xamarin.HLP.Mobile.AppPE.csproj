@@ -141,8 +141,7 @@
     <EmbeddedResource Include="Images\PagesIcon\ApplicationPin.svg" />
     <EmbeddedResource Include="Images\PagesIcon\ApplicationPinEnderecoPrincipal.svg" />
     <EmbeddedResource Include="Images\PagesIcon\ApplicationSyncComplete.svg" />
-    <EmbeddedResource Include="Images\PagesIcon\ApplicationTriste.svg" />
-    <EmbeddedResource Include="ViewModel\Pedido\Belfast Regular2.ttf" />
+    <EmbeddedResource Include="Images\PagesIcon\ApplicationTriste.svg" />   
   </ItemGroup>
 
   <ItemGroup>

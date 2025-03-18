@@ -105,6 +105,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             set { _totais = (value ?? "").ToUpper(); NotifyPropertyChanged(); }
         }
 
+        private string _xFileImgAss;
+        public string xFileImgAss
+        {
+            get { return _xFileImgAss; }
+            set { _xFileImgAss = value; NotifyPropertyChanged(); }
+        }
+
         private ImageSource _imgAssinaturaPedido;
         public ImageSource imgAssinaturaPedido
         {
@@ -208,9 +215,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 {
                     xCliente += $@"Valido até: {(pedido.dtValidadeOrcamento ?? DateTime.UtcNow).ToString("dd/MM/yyyy HH:mm")}{Environment.NewLine}";
                 }
-                xCliente += $@"Prazo: {CondicaoPagamentoRepository.GetDisplay(pedido.idCondicaoPagamento ?? 0)}{Environment.NewLine}";        
+                xCliente += $@"Prazo: {CondicaoPagamentoRepository.GetDisplay(pedido.idCondicaoPagamento ?? 0)}{Environment.NewLine}";
                 xCliente += $@"Vendedor: {EmpresaAspnetUsersRepository.GetDisplay(pedido.idRepresentantePedido ?? 0)}{Environment.NewLine}";
-                xCliente += $@"________________________________{Environment.NewLine}";              
+                xCliente += $@"________________________________{Environment.NewLine}";
                 var cliente = ClienteRepository.GetClienteModel(pedido.idClientesOffLine);
                 xCliente += $@"Fantasia: {cliente.xFantasia}{Environment.NewLine}";
                 xCliente += $@"Razao: {cliente.xRazaoSocial}{Environment.NewLine}";
@@ -241,7 +248,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                 int contador = 0;
                 foreach (var item in pedido.lItens)
-                {                    
+                {
                     var cAlternativo = item.cAlternativo;
                     if ((item.idProduto ?? 0) > 0)
                     {
@@ -267,7 +274,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             xItem = $"\n{Environment.NewLine}";
 
                         if (item.vDesconto > 0)
-                        {                           
+                        {
                             xItem += $"{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} S/ Desc:  {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                             xItem += $"\n C/ desc: {item.xQtde} {item.vUnitarioVendaComImpostos.ToCurrencyStringSimplesPtBr()} = {(item.vUnitarioVendaComImpostos * item.vQtdItem).ToCurrencyStringSimplesPtBr()}";
                         }
@@ -276,7 +283,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             xItem += $"{cAlternativo.ToUpper()} | {item.xDescricao}{Environment.NewLine} {item.xQtde}  {unitarioCheio.ToCurrencyStringSimplesPtBr()} = {item.xValorSubTotal}";
                         }
 
-                        itens += xItem;                       
+                        itens += xItem;
                     }
 
                     else if ((item.idGradeCor == 0 || item.idGradeCor == null) && (item.idGradeTamanho != 0 || item.idGradeTamanho != null))
@@ -413,7 +420,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (!string.IsNullOrEmpty(pedido.xMotivoCancelamento))
                     totais += $"MOTIVO DE CANCELAMENTO: {pedido.xMotivoCancelamento.ToUpper()}{Environment.NewLine}";
 
-                imgAssinaturaPedido = _fileService?.GetImage(PedidoRepository.BuscarAssAtualizada(pedido.idPedidoVendaOffLine ?? 0)).Result;
+                xFileImgAss = PedidoRepository.BuscarAssAtualizada(pedido.idPedidoVendaOffLine ?? 0);
+                imgAssinaturaPedido = _fileService?.GetImage(xFileImgAss).Result;
 
                 if (imgAssinaturaPedido?.ToString()?.Length > 0)
                     totais += $"\n";
@@ -737,15 +745,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                                 double imageY = y - 155;
 
                                                 gfx.DrawImage(pdfImage, imageX, imageY, newImageWidth, newImageHeight);
-                                              
-                                                double extraLineWidth = 200; 
-                                                double lineStartX = imageX - (extraLineWidth / 2); 
-                                                double lineEndX = imageX + newImageWidth + (extraLineWidth / 2); 
-                                                double lineY = imageY + newImageHeight + 10; 
+
+                                                double extraLineWidth = 200;
+                                                double lineStartX = imageX - (extraLineWidth / 2);
+                                                double lineEndX = imageX + newImageWidth + (extraLineWidth / 2);
+                                                double lineY = imageY + newImageHeight + 10;
 
                                                 gfx.DrawLine(XPens.Black, lineStartX, lineY, lineEndX, lineY);
-                                            
-                                                y = lineY + 60; 
+
+                                                y = lineY + 60;
                                             }
 
                                             File.Delete(tempImagePath);
@@ -753,8 +761,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                     }
                                 }
 
-                                gfx.DrawString(line, font1, XBrushes.Black, new XPoint(x, y));
-                                y += gfx.MeasureString(line, font1).Height;
+                                if (line == xRazaoSocial)
+                                {
+                                    double textWidth = gfx.MeasureString(line, font1).Width;
+                                    double centerX = (page.Width - textWidth) / 2;
+
+                                    gfx.DrawString(line, font1, XBrushes.Black, new XPoint(centerX, y));
+                                    y += gfx.MeasureString(line, font1).Height;
+                                }
+                                else
+                                {
+                                    gfx.DrawString(line, font1, XBrushes.Black, new XPoint(x, y));
+                                    y += gfx.MeasureString(line, font1).Height;
+                                }
                             }
                         }
                     }
@@ -870,11 +889,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             else
                 App.BluetoothLe.Write(separador, "left");
 
-
             App.BluetoothLe.Write(itens.RemoverAcentos(), "left");
             App.BluetoothLe.Write((totais + Environment.NewLine).RemoverAcentos(), "left");
             App.BluetoothLe.Write((agradecimento.RemoverAcentos() + Environment.NewLine + Environment.NewLine), "right");
             UtilNavidate.PopPopupNew();
-        }
+        }     
     }
 }
