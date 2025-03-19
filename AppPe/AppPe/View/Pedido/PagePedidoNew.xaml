@@ -189,7 +189,7 @@
                                             CornerRadius="10"
                                             WidthRequest="40"
                                             HeightRequest="40"
-                                            BackgroundColor="LightGray"
+                                            Style="{StaticResource Info}"
                                             Command="{Binding GoToFaturasCommand}"
                                             ImageSource="{Binding ImageConfig}"                                         
                                             VerticalOptions="CenterAndExpand" 
