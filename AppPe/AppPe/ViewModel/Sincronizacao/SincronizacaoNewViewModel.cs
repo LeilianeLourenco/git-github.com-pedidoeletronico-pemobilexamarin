@@ -962,23 +962,30 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                     else if (xTableName == TableMobile.GetTableNameByModel<EstoqueModel>())
                     {
-                        lsync = await
+                        int pagina = 0;
+
+                        while (true)
+                        {
+                            lsync = await
                             UtilHttp.GetListEstoqueRegistroSync<T>(
                                     param1: idEmp,
                                     param2: _ultimaDataSinc,
-                                    param3:
-                                    xTableName == TableMobile.TB_PEDIDOVENDA ? App.CurrentAspnetUserModel.Id : null);
+                                    param3: pagina);
 
-                        if (lsync?.Count() > 0)
-                        {
-                            foreach (var p in lsync)
+                            if (lsync?.Count() > 0)
                             {
-                                var registro = p as EstoqueModel;
-                                EstoqueRepository.RemoveAllEstoqueSincronizacao(registro.idProduto);
+                                foreach (var p in lsync)
+                                {
+                                    var registro = p as EstoqueModel;
+                                    EstoqueRepository.RemoveAllEstoqueSincronizacao(registro.idProduto);
+                                }
                             }
-                        }
+                            else 
+                                break;
 
-                        await SavePrivate(lsync, xTableName);
+                            pagina++;
+                            await SavePrivate(lsync, xTableName);
+                        }
                     }
                     else if (xTableName == TableMobile.GetTableNameByModel<EmpresaAspnetUsersModel>())
                     {
@@ -1120,12 +1127,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                             if (pedido == null) continue;
 
-                            if (pedido.idClientes == 0)
-                                pedido.idClientes = ClienteRepository.GetIdClienteNuvem(pedido.idClientesOffLine);
-                            //pedido.dEmissao = pedido.dEmissao;
-                            pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
-                            pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
-                            pedido.bPedidoComAlteracao = false;
+                        if (pedido.idClientes == 0)
+                            pedido.idClientes = ClienteRepository.GetIdClienteNuvem(pedido.idClientesOffLine);
+                        //pedido.dEmissao = pedido.dEmissao;
+                        pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
+                        pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
+                        pedido.bPedidoComAlteracao = false;
 
                             pedido.dEmissao = pedido.dEmissao.AddHours(-3);
 
