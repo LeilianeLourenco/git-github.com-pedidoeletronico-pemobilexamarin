@@ -6,27 +6,27 @@
 
     <ScrollView>
         <StackLayout>
-            <StackLayout HeightRequest="250">
+            <StackLayout HeightRequest="300">
                 <TableView HasUnevenRows="True" BackgroundColor="White" >
                     <TableSection>
                         <ViewCell Height="60">
                             <StackLayout Padding="10">
                                 <Label Text="Data Inicial" FontAttributes="Bold" TextColor="{StaticResource AzulChart}" />
-                                <DatePicker x:Name="dtInicial" Date="{Binding currentModel.dtInicial}" Margin="0,-15,0,0" Format="dd/MM/yyyy" FontSize="16" />
+                                <DatePicker x:Name="dtInicial" Date="{Binding currentModel.dtInicial}" Format="dd/MM/yyyy" FontSize="16" />
                             </StackLayout>
                         </ViewCell>
 
                         <ViewCell Height="60">
                             <StackLayout Padding="10">
                                 <Label Text="Data Final" FontAttributes="Bold" TextColor="{StaticResource AzulChart}" />
-                                <DatePicker x:Name="dtFinal" Date="{Binding currentModel.dtFinal}" Margin="0,-15,0,0" Format="dd/MM/yyyy" FontSize="16" />
+                                <DatePicker x:Name="dtFinal" Date="{Binding currentModel.dtFinal}" Format="dd/MM/yyyy" FontSize="16" />
                             </StackLayout>
                         </ViewCell>
 
                         <ViewCell Height="60">
                             <StackLayout Padding="10">
                                 <Label Text="Parcelas" FontAttributes="Bold" TextColor="{StaticResource AzulChart}" />
-                                <Entry Margin="0,-15,0,0" x:Name="EntryParcelas" Text="{Binding currentModel.nParcelas}" FontSize="16" Keyboard="Numeric"/>
+                                <Entry x:Name="EntryParcelas" Text="{Binding currentModel.nParcelas}" FontSize="16" Keyboard="Numeric"/>
                             </StackLayout>
                         </ViewCell>
 

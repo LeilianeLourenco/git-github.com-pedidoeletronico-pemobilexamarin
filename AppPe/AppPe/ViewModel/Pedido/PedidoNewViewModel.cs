@@ -26,7 +26,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 {
     public class PedidoNewViewModel : SearchCommom
     {
-        public string ImageConfig => Device.OnPlatform("configuracoes.png", "configuracoes.png", "Assets/configuracoes.png");
+        public string ImageConfig => Device.OnPlatform("Editar_Produto.png", "configuracoes.png", "Assets/configuracoes.png");
 
         public ICommand DateOrcamentoVisibilityCommand { get; set; }
         public ICommand RepresentacaoPdfVisibilityCommand { get; set; }
