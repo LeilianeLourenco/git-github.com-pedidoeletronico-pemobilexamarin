@@ -207,14 +207,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                         ItemAtividade = AgendaRepository.GetRegistroParaListagem(currentModel.idTipoAtividade);
                     }
 
-                    if (currentModel.dtInicioEvento != null)
-                        if ((currentModel.dtInicioEvento ?? DateTime.Now).Kind != DateTimeKind.Local) 
-                            currentModel.dtInicioEvento = (currentModel.dtInicioEvento ?? DateTime.Now).ToLocalTime();
+                    //if (currentModel.dtInicioEvento != null)
+                    //    if ((currentModel.dtInicioEvento ?? DateTime.Now).Kind != DateTimeKind.Local) 
+                    //        currentModel.dtInicioEvento = (currentModel.dtInicioEvento ?? DateTime.Now).ToLocalTime();
 
 
-                    if (currentModel.dtFimEvento != null)
-                        if ((currentModel.dtFimEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
-                            currentModel.dtFimEvento = (currentModel.dtFimEvento ?? DateTime.Now).ToLocalTime();
+                    //if (currentModel.dtFimEvento != null)
+                    //    if ((currentModel.dtFimEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
+                    //        currentModel.dtFimEvento = (currentModel.dtFimEvento ?? DateTime.Now).ToLocalTime();
 
                 });
                 IsBusy = false;
