@@ -962,30 +962,23 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                     else if (xTableName == TableMobile.GetTableNameByModel<EstoqueModel>())
                     {
-                        int pagina = 0;
-
-                        while (true)
-                        {
-                            lsync = await
+                        lsync = await
                             UtilHttp.GetListEstoqueRegistroSync<T>(
                                     param1: idEmp,
                                     param2: _ultimaDataSinc,
-                                    param3: pagina);
+                                    param3:
+                                    xTableName == TableMobile.TB_PEDIDOVENDA ? App.CurrentAspnetUserModel.Id : null);
 
-                            if (lsync?.Count() > 0)
+                        if (lsync?.Count() > 0)
+                        {
+                            foreach (var p in lsync)
                             {
-                                foreach (var p in lsync)
-                                {
-                                    var registro = p as EstoqueModel;
-                                    EstoqueRepository.RemoveAllEstoqueSincronizacao(registro.idProduto);
-                                }
+                                var registro = p as EstoqueModel;
+                                EstoqueRepository.RemoveAllEstoqueSincronizacao(registro.idProduto);
                             }
-                            else 
-                                break;
-
-                            pagina++;
-                            await SavePrivate(lsync, xTableName);
                         }
+
+                        await SavePrivate(lsync, xTableName);
                     }
                     else if (xTableName == TableMobile.GetTableNameByModel<EmpresaAspnetUsersModel>())
                     {

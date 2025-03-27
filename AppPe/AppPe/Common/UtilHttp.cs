@@ -344,7 +344,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 param2 = param2.Value.AddHours(-3);
 
                 var requestUri =
-                    $"api/{TableMobile.GetApiRegistroByModel<T>()}/{param1}{(param2 != null ? "/" + ((DateTime)param2).ToString("yyyy-MM-ddTHH:mm:ss") : null)}/{param3}";
+                    $"api/{TableMobile.GetApiRegistroByModel<T>()}/{param1}{(param2 != null ? "/" + ((DateTime)param2).ToString("yyyy-MM-ddTHH:mm:ss") : null)}{(param3 != null ? "/" + param3.ToString() : "")}";
 
                 var _apiClient = NewCurrentHttpClient;
                 _apiClient.Timeout = TimeSpan.FromMinutes(10);
