@@ -345,7 +345,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                 if (ramoAtividade == null || ramoAtividade.Id == 0)
                     ramoAtividade = RamoAtividadeRepository.GetFirstItem();
                 if (tabelaPreco == null || tabelaPreco.Id == 0)
-                    tabelaPreco = new ListItemModel { Display = "clique aqui para visualizar"};
+                    tabelaPreco = new ListItemModel { Display = "clique aqui para visualizar" };
                 if (CondicaoPgto == null || CondicaoPgto.Id == 0)
                     CondicaoPgto = CondicaoPagamentoRepository.GetFirstItem();
                 if (Transportadora == null || Transportadora.Id == 0)
@@ -403,6 +403,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                 if (bUsaLimite == false)
                     currentModel.vLimiteCredito = null;
 
+                else if (currentModel.vLimiteCredito == null)
+                    currentModel.vLimiteCredito = 0;
 
                 //validação de melhoria
                 bool? bAplicaMelhoriaEmailsTelefoneTl = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaEmailsTelefoneTl(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
