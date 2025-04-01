@@ -79,7 +79,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                 }
                 else if (rep.GetType() == typeof(BuscaPrecoRepresentanteRepositorio) || rep.GetType() == typeof(BuscaPrecoRepresentanteManualRepository))
                 {
-                    _id = idRepresentante;
+                    _id = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0;
                 }
                 else if (rep.GetType() == typeof(BuscaPrecoTabelaRepositorio))
                 {
@@ -120,45 +120,45 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                     }
                 }
             }
-            
+
             // OS 35398 - Jessica Barbieri
-            if (_lRetorno?.Count() > 0)
-            {
-                foreach (var tabela in _lRetorno)
-                {
-                    int filtros = 0;
+            //if (_lRetorno?.Count() > 0)
+            //{
+            //    foreach (var tabela in _lRetorno)
+            //    {
+            //        int filtros = 0;
 
-                    if (tabela.stCampanhaCliente)
-                        filtros++;
+            //        if (tabela.stCampanhaCliente)
+            //            filtros++;
 
-                    if (tabela.stCampanhaClienteRamoAtividade && !tabela.stCampanhaClienteUF)
-                        filtros++;
+            //        if (tabela.stCampanhaClienteRamoAtividade && !tabela.stCampanhaClienteUF)
+            //            filtros++;
 
-                    if (tabela.stCampanhaClienteUF && !tabela.stCampanhaClienteRamoAtividade)
-                        filtros++;
+            //        if (tabela.stCampanhaClienteUF && !tabela.stCampanhaClienteRamoAtividade)
+            //            filtros++;
 
-                    if (tabela.stCampanhaClienteUF && tabela.stCampanhaClienteRamoAtividade)
-                        filtros++;
+            //        if (tabela.stCampanhaClienteUF && tabela.stCampanhaClienteRamoAtividade)
+            //            filtros++;
 
-                    if (tabela.stCampanhaRepresentante)
-                        filtros++;
+            //        if (tabela.stCampanhaRepresentante)
+            //            filtros++;
 
-                    if (tabela.stTabelaPrecoRepresentacao)
-                        filtros++;
+            //        if (tabela.stTabelaPrecoRepresentacao)
+            //            filtros++;
 
-                    var _contagemDeTabelas = _lRetorno
-                        .Where(t => t.idTabelaPreco == tabela.idTabelaPreco)
-                        .GroupBy(t => t.idTabelaPreco)
-                        .Count();
-                   
-                    if (filtros > 0 && _contagemDeTabelas != filtros)
-                    {
-                        tabela.bRemoveTabela = true;
-                    }
-                }
+            //        var _contagemDeTabelas = _lRetorno
+            //            .Where(t => t.idTabelaPreco == tabela.idTabelaPreco)
+            //            .GroupBy(t => t.idTabelaPreco)
+            //            .Count();
 
-                _lRetorno.RemoveAll(t => t.bRemoveTabela == true);
-            }           
+            //        if (filtros > 0 && _contagemDeTabelas != filtros)
+            //        {
+            //            tabela.bRemoveTabela = true;
+            //        }
+            //    }
+
+            //    _lRetorno.RemoveAll(t => t.bRemoveTabela == true);
+            //}
 
             return _lRetorno;
         }
