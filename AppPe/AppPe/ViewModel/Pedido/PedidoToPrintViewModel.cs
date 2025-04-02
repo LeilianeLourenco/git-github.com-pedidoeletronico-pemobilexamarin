@@ -729,6 +729,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                 if (line.ToLower().Contains("obrigado pela preferência"))
                                 {
                                     var imageSource = (stackLayout.Children.FirstOrDefault(c => c is Xamarin.Forms.Image img) as Xamarin.Forms.Image)?.Source as FileImageSource;
+                                    double newImageWidth = 80;
+                                    double newImageHeight = 80;
+                                    double imageX = (page.Width - newImageWidth) / 2;
+                                    double imageY = y - 155;
+
                                     if (imageSource != null)
                                     {
                                         var filePathImage = imageSource.File;
@@ -739,27 +744,23 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                                             using (var pdfImage = XImage.FromFile(tempImagePath))
                                             {
-                                                double newImageWidth = 80;
-                                                double newImageHeight = 80;
-
-                                                double imageX = (page.Width - newImageWidth) / 2;
-                                                double imageY = y - 155;
-
                                                 gfx.DrawImage(pdfImage, imageX, imageY, newImageWidth, newImageHeight);
-
-                                                double extraLineWidth = 200;
-                                                double lineStartX = imageX - (extraLineWidth / 2);
-                                                double lineEndX = imageX + newImageWidth + (extraLineWidth / 2);
-                                                double lineY = imageY + newImageHeight + 10;
-
-                                                gfx.DrawLine(XPens.Black, lineStartX, lineY, lineEndX, lineY);
-
-                                                y = lineY + 60;
                                             }
 
                                             File.Delete(tempImagePath);
                                         }
                                     }
+
+                                    // Desenha a linha independentemente da imagem
+                                    double extraLineWidth = 200;
+                                    double lineStartX = imageX - (extraLineWidth / 2);
+                                    double lineEndX = imageX + newImageWidth + (extraLineWidth / 2);
+                                    double lineY = imageY + newImageHeight + 10;
+
+                                    gfx.DrawLine(XPens.Black, lineStartX, lineY, lineEndX, lineY);
+
+                                    // Ajusta a posição de `y` para continuar com o conteúdo
+                                    y = lineY + 60;
                                 }
 
                                 if (line == xRazaoSocial)
