@@ -189,7 +189,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 var pedido = _buscaItensImpressao.RetornarItensParaImpressao(id: idPedidoVendaOffLine);
 
                 AtualizaTotalizadores(pedido);
-                xTitle = $"PEDIDOELETRONICO.COM{Environment.NewLine}";
+
+                xTitle = "";
 
                 if (pedido.stPedidoVenda == 1)
                     xTitle += "CANCELADO" + Environment.NewLine;
