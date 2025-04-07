@@ -1388,19 +1388,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
 
 
-                //xQuery = $@"SELECT vMetaCorrente FROM {TableMobile.CurrentUserLogin} where idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} and Email = '{App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail}'";
+                //xQuery = $@"SELECT vMetaCorrente FROM {TableMobile.CurrentUserLogin} where idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} and Email = '{App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail}'";              
+               
 
-                var registro =
-                    App.Data.Connection.Table<CurrentUserLoginModel>()
-                        .FirstOrDefault(
-                            c => c.idEmpresa == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa &&
-                                 c.Email.ToUpper() ==
-                                 App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail.ToUpper());
-
-                if (registro != null)
-                {
-                    retorno.dMeta = registro.vMetaCorrente;
-                }
+                var registro = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.vMetaCorrente;
+                retorno.dMeta = registro;
 
                 //retorno.dMeta = App.Data.Connection.ExecuteScalar<double>(xQuery);
 
