@@ -1034,6 +1034,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 registro.idPedidoDisplay = null;
                 registro.xDisplayIntegracao = null;
+                registro.xMeuID = null;
                 registro.dEmissao = DateTime.UtcNow.ToDateTimeSync();
 
                 var status =
