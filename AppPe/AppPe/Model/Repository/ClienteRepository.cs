@@ -452,7 +452,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return resultado;
         }
 
+        public static List<ClientesCondicoesPagamentoModel> GetClientesCondicaoPagamento(int idClientes, int idEmpresa)
+        {
+            var xQuery =
+                $@"SELECT * FROM {TableMobile.TB_CLIENTES_CONDICOESPAGAMENTO} WHERE idCliente = {idClientes} 
+                                                            and idEmpresa = {idEmpresa}";
 
+            return App.Data.Connection.Query<ClientesCondicoesPagamentoModel>(xQuery).ToList();
+        }
 
 
         #region Testes listview infinita
@@ -467,7 +474,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 var xQuery = "";
                 const string xFields =
-                    "xRazaoSocial Display, (xFantasia || '  ' || xCpfCnpj) Detail, idClientesOffLine Id, xCpfCnpj";
+                    "xRazaoSocial Display, (xFantasia || '  ' || xCpfCnpj) Detail, idClientesOffLine Id, idClientes IdOnline, xCpfCnpj";
                 xQuery = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAcessoTodosClientes == 1
                     ? $"select {xFields} from {TableMobile.TB_CLIENTES} where idEmpresa = {idEmpresa} "
                     : $"select {xFields} from {TableMobile.TB_CLIENTES} where idEmpresa = {idEmpresa} and (idEmpresa_aspnetUsers = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers} or idEmpresa_aspnetUsers is null)";
@@ -548,7 +555,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             List<int?> clienteIds = new List<int?>();
             var lClientes = App.Data.Connection.Query<ClientesModel>(queryClientes).ToList();
 
-            lClientes.ForEach(x => clienteIds.Add(x.idClientes ?? 0));   
+            lClientes.ForEach(x => clienteIds.Add(x.idClientes ?? 0));
 
             var data = DateTime.UtcNow.AddHours(-3).AddDays(-dias);
 

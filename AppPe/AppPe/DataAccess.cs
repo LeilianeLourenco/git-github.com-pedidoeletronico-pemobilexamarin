@@ -79,6 +79,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                 try { this.Connection.CreateTable<EnderecoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_ENDERECO; }
                 try { this.Connection.CreateTable<ContatoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_CONTATOS; }
                 try { this.Connection.CreateTable<ClientesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_CLIENTES; }
+                try { this.Connection.CreateTable<ClientesCondicoesPagamentoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_CLIENTES_CONDICOESPAGAMENTO; }
                 try { this.Connection.CreateTable<CategoriaProdutoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_CATEGORIA; }
                 try { this.Connection.CreateTable<CondicaoPagamentoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_CONDICAOPAGAMENTO; }
                 try { this.Connection.CreateTable<RamoAtividadeModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_RAMOATIVIDADE; }

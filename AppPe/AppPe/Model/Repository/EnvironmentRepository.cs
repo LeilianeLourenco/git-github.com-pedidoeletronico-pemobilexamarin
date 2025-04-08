@@ -273,6 +273,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 App.Data.Connection.Execute(xQuery);
             }
+            if (nomeApi == "APIclienteCond")
+            {
+                string xQuery = $@"DELETE FROM TB_CLIENTES_CONDICOESPAGAMENTO WHERE idEmpresa = {idEmpresa}";
+
+                App.Data.Connection.Execute(xQuery);
+            }
         }
     }
 }

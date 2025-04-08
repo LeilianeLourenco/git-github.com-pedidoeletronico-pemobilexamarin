@@ -21,7 +21,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
 
         public int? IdOnline { get; set; }
 
-        public int Id { get; set; }
+        public int Id { get; set; }     
 
         //public string XId { get; set; }
 
