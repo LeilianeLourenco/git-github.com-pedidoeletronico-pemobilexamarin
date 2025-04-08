@@ -9,11 +9,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
     public class CondicaoPagamentoRepository
     {
 
-        public static List<ListItemModel> Get(int skip, int take, string xFiltro, int? idClienteOffline = null)
+        public static List<ListItemModel> Get(int skip, int take, string xFiltro, int? idClienteOffline = null, int? idCliente = null)
         {
             try
             {
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+                var idRepresentante = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers;
                 var xQuery = "";
                 const string xFields = @"idCondicaoPagamento , xCondicaoPagamento, xFormula, nParcelas, idEmpresa, idTabelaPreco";
                 xQuery = $"select {xFields} from {TableMobile.TB_CONDICAOPAGAMENTO} where idEmpresa = {idEmpresa} and stAtivo = 1";
@@ -25,6 +26,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     //xQuery += $" and UPPER(xCondicaoPagamento) like('%{xFiltro.ToUpper()}%') ";
                 }
 
+                var _condicoesPermitidas = new List<ClientesCondicoesPagamentoModel>();
+                if (idCliente.GetValueOrDefault() > 0)
+                {
+                    _condicoesPermitidas = ClienteRepository.GetClientesCondicaoPagamento(idCliente ?? 0, idEmpresa);
+                    if (_condicoesPermitidas?.Any() == true)
+                    {
+                        var idsPermitidos = string.Join(",", _condicoesPermitidas.Select(x => x.idCondicaoPagamento));
+                        xQuery += $" and idCondicaoPagamento in ({idsPermitidos})";
+                    }
+                }
 
                 xQuery += $@" order by UPPER(xCondicaoPagamento)
                                             LIMIT {take} OFFSET {skip}";
@@ -44,7 +55,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     dados = dados.Where(c => c.idEmpresa == idEmpresa && (c.idTabelaPreco == null || _idsTabelas.Contains(c.idTabelaPreco))).ToList();
                 }
 
-                if (dados?.Count() == 0)
+                if (dados?.Count == 0 && skip == 0)
                 {
                     xQuery = $"select {xFields} from {TableMobile.TB_CONDICAOPAGAMENTO} where idEmpresa = {idEmpresa} limit 1";
 
@@ -111,10 +122,29 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
                 var xQuery = "";
                 const string xFields = @"idCondicaoPagamento , xCondicaoPagamento, xFormula, nParcelas, vDescCondicao, idEmpresa, idTabelaPreco";
+
+                int idClientes = ClienteRepository.GetIdClienteNuvem(idClienteOffLine ?? 0);
+
+                if (idClientes > 0)
+                {
+                    var _condicoesPermitidas = ClienteRepository.GetClientesCondicaoPagamento(idClientes, idEmpresa);
+                    if (_condicoesPermitidas?.Any() == true)
+                    {
+                        if (!_condicoesPermitidas.Select(x => x.idCondicaoPagamento).Contains(idCondicaoPagamento))
+                            idCondicaoPagamento = _condicoesPermitidas.FirstOrDefault().idCondicaoPagamento;
+                    }
+                }
+
                 xQuery = $"select {xFields} from {TableMobile.TB_CONDICAOPAGAMENTO} where idEmpresa = {idEmpresa} and idCondicaoPagamento = {idCondicaoPagamento} ";
 
-
                 var dados = App.Data.Connection.Query<CondicaoPagamentoModel>(xQuery);
+
+                //if (dados.Count == 0)
+                //{
+                //    xQuery = $"select {xFields} from {TableMobile.TB_CONDICAOPAGAMENTO} where idEmpresa = {idEmpresa} limit 1";
+
+                //    dados = App.Data.Connection.Query<CondicaoPagamentoModel>(xQuery);
+                //}
 
                 // método de utilização de tabela de preço na condição de pagamento.
                 if (idClienteOffLine.GetValueOrDefault() > 0 && dados?.Count() > 0)
@@ -296,7 +326,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
             catch (Exception ex)
             {
-                return 0;   
+                return 0;
             }
 
         }

@@ -10,7 +10,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pesquisas
     public partial class PagePesquisaPadrao : ContentPage
     {
         public PagePesquisaPadrao(ListItemModel item, PesquisaPadraoViewModel.Tabela Table,
-            int? idClienteOffLine = null, int? idCondicaoPagamento = null, object Filtro = null)
+            int? idClienteOffLine = null, int? idCondicaoPagamento = null, object Filtro = null, int? idCliente = null)
         {
             InitializeComponent();
             ViewModel.controlSearchPE = SearchBarPesquisa;
@@ -18,6 +18,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pesquisas
             ViewModel.tabela = Table;
             ViewModel.idClienteOffline = idClienteOffLine;
             ViewModel.idCondicaoPagamento = idCondicaoPagamento;
+            ViewModel.idCliente = idCliente;
             ViewModel.objFiltro = Filtro;
         }
 
@@ -45,11 +46,14 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pesquisas
                 else if (ViewModel.tabela == PesquisaPadraoViewModel.Tabela.TB_ENDERECO)
                     PagePedidoNew.CurrentViewModel.currentModel.xEndereco = PagePedidoNew.CurrentViewModel.ItemEndereco.Detail;
 
+                else if (ViewModel.tabela == PesquisaPadraoViewModel.Tabela.TB_CLIENTE)
+                    PagePedidoNew.CurrentViewModel.currentModel.idClientes = listItemModel.IdOnline;
+
                 UtilNavidate.PopAsync();
 
                 //os 35400
                 PagePedidoNew.CurrentViewModel.AtualizaTotalizadoresPedido();
-            }
+           }
         }
     }
 }

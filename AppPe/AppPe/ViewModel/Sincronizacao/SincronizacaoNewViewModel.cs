@@ -351,6 +351,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownload<CategoriaProdutoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<CondicaoPagamentoModel>();
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownload<ClientesCondicoesPagamentoModel>();
                 //if (!ocorreuErro && !bFalhaConexao)
                 //    await SincronizacaoDownloadPaginado<FormaPagamentoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -1644,6 +1646,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 break;
                             case TableMobile.TB_CLIENTES:
                                 AnaliseExclusao<ClientesModel>(logs: group);
+                                break;
+                            case TableMobile.TB_CLIENTES_CONDICOESPAGAMENTO:
+                                AnaliseExclusao<ClientesCondicoesPagamentoModel>(logs: group);
                                 break;
                             case TableMobile.TB_GRADETAMANHO:
                                 AnaliseExclusao<GradeTamanhoModel>(logs: group);

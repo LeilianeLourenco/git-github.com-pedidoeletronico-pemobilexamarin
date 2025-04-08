@@ -632,7 +632,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         if (ItemCondicaoPgto == null)
                             ItemCondicaoPgto = new ListItemModel();
                         var pesquisa = new PagePesquisaPadrao(ItemCondicaoPgto,
-                            PesquisaPadraoViewModel.Tabela.TB_CONDICAO_PAGAMENTO, currentModel.idClientesOffLine)
+                            PesquisaPadraoViewModel.Tabela.TB_CONDICAO_PAGAMENTO, currentModel.idClientesOffLine, idCliente: currentModel.idClientes)
                         {
                             Title = "Condição de Pagamento",
                         };
@@ -1104,7 +1104,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (currentModel.lItens == null) return;
 
 
-                var condicaoPag = CondicaoPagamentoRepository.GetItem(ItemCondicaoPgto.Id);
+                var condicaoPag = CondicaoPagamentoRepository.GetItem(ItemCondicaoPgto.Id, currentModel.idClientesOffLine);
                 idUltimaCondicaoPgto = ItemCondicaoPgto.Id;
                 if (condicaoPag.vDescCondicao != vDescCondicao || idTabelaPrecoCondicao.GetValueOrDefault() != condicaoPag.idTabelaPreco.GetValueOrDefault())
                 {

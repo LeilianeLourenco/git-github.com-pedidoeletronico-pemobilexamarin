@@ -58,6 +58,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_ENDERECO = "TB_ENDERECO";
         public const string TB_CONTATOS = "TB_CONTATOS";
         public const string TB_CLIENTES = "TB_CLIENTES";
+        public const string TB_CLIENTES_CONDICOESPAGAMENTO = "TB_CLIENTES_CONDICOESPAGAMENTO";
         public const string tb_produto_codigocliente = "tb_produto_codigocliente";
         public const string TB_TABELAESCALONADA = "TB_TABELAESCALONADA";
         public const string TB_TABELAESCALONADA_FAIXACOMISSAO = "TB_TABELAESCALONADA_FAIXACOMISSAO";
@@ -220,6 +221,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                         return "APIcliente";
                     default:
                         return TB_CLIENTES;
+                }
+            if (classe == typeof(ClientesCondicoesPagamentoModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCondicaoCliente";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "APIclienteCond";
+                    default:
+                        return TB_CLIENTES_CONDICOESPAGAMENTO;
                 }
             if (classe == typeof(ContatoModel))
                 switch (tipoRetornoInfoClass)

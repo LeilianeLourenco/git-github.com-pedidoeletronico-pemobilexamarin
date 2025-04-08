@@ -15,7 +15,7 @@ using PropertyChangingEventArgs = Xamarin.Forms.PropertyChangingEventArgs;
 namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 {
     public partial class PagePedidoNew : TabbedPage
-    {        
+    {
         private static PedidoNewViewModel _currentViewModel = null;
 
         public static PedidoNewViewModel CurrentViewModel
@@ -68,7 +68,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
         {
             base.OnAppearing();
             ViewModel.ExecuttingAnyCommand = false;
-            Device.StartTimer(UtilMethods.GetStartTime, ViewModel.Initialize); 
+            Device.StartTimer(UtilMethods.GetStartTime, ViewModel.Initialize);
         }
 
 
@@ -197,7 +197,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
         {
             UtilNavidate.PushModalAsync(new NavigationPage(new ContentPage { Content = new TEditorHtmlView(CurrentViewModel.currentModel), BackgroundColor = Color.White }));
             //await ShowTEditor();
-        } 
+        }
 
         #endregion
 
@@ -212,7 +212,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
     public class TEditorHtmlView : StackLayout
     {
         //create bindable property, html
-        public string Html { get; set; } 
+        public string Html { get; set; }
         WebView _displayWebView;
         public TEditorHtmlView(PedidoVendaModel currentModel)
         {
@@ -226,7 +226,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     await ShowTEditor(currentModel);
                 })
             });
-            _displayWebView = new WebView() { HeightRequest = 500 }; 
+            _displayWebView = new WebView() { HeightRequest = 500 };
             _displayWebView.Source = new HtmlWebViewSource() { Html = currentModel.xInformacaoContrato };
             this.Children.Add(_displayWebView);
         }
@@ -246,10 +246,10 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                 }
             }
             catch (Exception ex)
-            { 
+            {
                 throw ex;
             }
-          
+
         }
     }
 }
