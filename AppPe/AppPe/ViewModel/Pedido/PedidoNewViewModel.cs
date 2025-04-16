@@ -1104,7 +1104,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 if (currentModel.lItens == null) return;
 
 
-                var condicaoPag = CondicaoPagamentoRepository.GetItem(ItemCondicaoPgto.Id, currentModel.idClientesOffLine);
+                var condicaoPag = CondicaoPagamentoRepository.GetItem(ItemCondicaoPgto.Id);
                 idUltimaCondicaoPgto = ItemCondicaoPgto.Id;
                 if (condicaoPag.vDescCondicao != vDescCondicao || idTabelaPrecoCondicao.GetValueOrDefault() != condicaoPag.idTabelaPreco.GetValueOrDefault())
                 {
@@ -1190,6 +1190,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             }
                         }
 
+                        itens.vUnitarioVenda = _valorOrigem = (_valorOrigem + ((itens.pIpiVenda.GetValueOrDefault() / 100) * _valorOrigem) + ((itens.pStVenda.GetValueOrDefault() / 100) * _valorOrigem)).ArredondarValorDecimal(nCasasDecimais: 2);
                         //adiciono o vdesc antigo para somar no pDesconto e calcular qual o valor que deveria ficar;
                         if (vDescCondicao < 0)
                             itens.pDesconto += vDescCondicao.GetValueOrDefault();
@@ -1200,11 +1201,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                         if (!(currentModel.vJuros > 0))
                             itens.vVenda = itens.vUnitarioVendaComImpostos = _valorOrigem - itens.vDesconto;
-                        else
+                        else                        
                             itens.vVenda = itens.vUnitarioVendaComImpostos = vSubTotal / currentModel.lItens.Sum(x => x.vQtdItem);
-
-                        itens.vUnitarioVenda = _valorOrigem = (_valorOrigem + ((itens.pIpiVenda.GetValueOrDefault() / 100) * _valorOrigem) + ((itens.pStVenda.GetValueOrDefault() / 100) * _valorOrigem)).ArredondarValorDecimal(nCasasDecimais: 2);
-
+                        
                         //ocorre quando existe acréscimo na condição
                         if (itens.pDesconto < 0 || itens.vDesconto < 0)
                         {
@@ -1312,9 +1311,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 ex.TrakException("PedidoViewModel.AtualizaTotalizadoresPedido");
             }
-        }
-
-
+        }       
 
         public void BuscaFormasPagamentoTelaVendas()
         {
@@ -1328,9 +1325,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 ex.TrakException("PedidoViewModel.BuscaFormasPagamentos");
             }
         }
-
-
-
 
         public void RateiaDescontoTotalPedido()
         {

@@ -1,59 +1,213 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:converter="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:generic="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.App">
+<Application
+    x:Class="Xamarin.HLP.Mobile.AppPE.App"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:converter="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:generic="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Pedido;assembly=Xamarin.HLP.Mobile.AppPE">
     <Application.Resources>
         <ResourceDictionary>
 
             <OnPlatform x:Key="IoniconsFont" x:TypeArguments="x:String">
-                <On Platform="Android" Value="ionicons.ttf#Ionicons"/>
-                <On Platform="iOS" Value="Ionicons"/>
+                <On Platform="Android" Value="ionicons.ttf#Ionicons" />
+                <On Platform="iOS" Value="Ionicons" />
             </OnPlatform>
 
-            <OnPlatform x:Key="HeightandWidth" x:TypeArguments="x:Double" Android="40" WinPhone="32" iOS="32"/>
-            <OnPlatform x:Key="FontSizePedidoApresentacao" x:TypeArguments="x:Double" WinPhone="11" Android="9" iOS="9"/>
-            <OnPlatform x:Key="FontSizeContentApresentacao" x:TypeArguments="x:Double" WinPhone="13" Android="14" iOS="14"/>
-            <OnPlatform x:Key="HeightGridCheck" x:TypeArguments="x:Double" Android="55" WinPhone="90" iOS="74"/>
-            <OnPlatform x:Key="HeightEditor" x:TypeArguments="x:Double" Android="100" WinPhone="120" iOS="74"/>
-            <OnPlatform x:Key="GridDefault" x:TypeArguments="Thickness" Android="10,10,10,2" WinPhone="0,4,10,-10" iOS="0,4,0,10"/>
-            <OnPlatform x:Key="PaddingWinNegative5" x:TypeArguments="Thickness" Android="0,-5,0,0" WinPhone="0,-5,0,0" iOS="0,-1,0,0"/>
-            <OnPlatform x:Key="GridSwitch" x:TypeArguments="Thickness" Android="10,10,10,2" WinPhone="-15,0,0,-20" iOS="10,0,0,0"/>
-            <OnPlatform x:Key="HeightImageNenhumRegistro" x:TypeArguments="x:Double" Android="100" WinPhone="150" iOS="100"/>
-            <OnPlatform x:Key="PaddingGridToFind" x:TypeArguments="Thickness" Android="-13,0,0,0" WinPhone="-12,0,0,8" iOS="-13,0,0,0"/>
-            <OnPlatform x:Key="GridDefaultContentPadding" x:TypeArguments="Thickness" iOS="10,-5,15,0"/>
-            <OnPlatform x:Key="HeighRowDefault" x:TypeArguments="GridLength" Android="40" WinPhone="40" iOS="45"/>
-            <OnPlatform x:Key="WidthLogin" x:TypeArguments="GridLength" Android="25" WinPhone="29" iOS="21"/>
-            <OnPlatform x:Key="WidthLogin-2" x:TypeArguments="GridLength" Android="18" WinPhone="18" iOS="15"/>
-            <OnPlatform x:Key="PaddingScrollView" x:TypeArguments="Thickness" WinPhone="0,0,0,5" iOS="0,0,0,0" Android="0,0,0,0"/>
-            <OnPlatform x:Key="PaddingStackTela" x:TypeArguments="Thickness" WinPhone="5,0,0,0" Android="0,0,0,0" iOS="5,5,5,5"/>
-            <OnPlatform x:Key="PaddingApresentacoes" x:TypeArguments="Thickness" WinPhone="-18,-30,-18,0" Android="-5,0,-5,0" iOS="-5,0,-5 ,0"/>
-            <OnPlatform x:Key="HeightButtonsApresentacao" x:TypeArguments="x:Double" Android="55" WinPhone="55" iOS="55"/>
-            <OnPlatform x:Key="HeightSwitchApresentacao" x:TypeArguments="x:Double" WinPhone="54" Android="35" iOS="35" />
-            <OnPlatform x:Key="HeightHomeInformacoesAdicionais" x:TypeArguments="x:Double" Android="27" WinPhone="27" iOS="27"/>
+            <OnPlatform
+                x:Key="HeightandWidth"
+                x:TypeArguments="x:Double"
+                Android="40"
+                WinPhone="32"
+                iOS="32" />
+            <OnPlatform
+                x:Key="FontSizePedidoApresentacao"
+                x:TypeArguments="x:Double"
+                Android="9"
+                WinPhone="11"
+                iOS="9" />
+            <OnPlatform
+                x:Key="FontSizeContentApresentacao"
+                x:TypeArguments="x:Double"
+                Android="14"
+                WinPhone="13"
+                iOS="14" />
+            <OnPlatform
+                x:Key="HeightGridCheck"
+                x:TypeArguments="x:Double"
+                Android="55"
+                WinPhone="90"
+                iOS="74" />
+            <OnPlatform
+                x:Key="HeightEditor"
+                x:TypeArguments="x:Double"
+                Android="100"
+                WinPhone="120"
+                iOS="74" />
+            <OnPlatform
+                x:Key="GridDefault"
+                x:TypeArguments="Thickness"
+                Android="10,10,10,2"
+                WinPhone="0,4,10,-10"
+                iOS="0,4,0,10" />
+            <OnPlatform
+                x:Key="PaddingWinNegative5"
+                x:TypeArguments="Thickness"
+                Android="0,-5,0,0"
+                WinPhone="0,-5,0,0"
+                iOS="0,-1,0,0" />
+            <OnPlatform
+                x:Key="GridSwitch"
+                x:TypeArguments="Thickness"
+                Android="10,10,10,2"
+                WinPhone="-15,0,0,-20"
+                iOS="10,0,0,0" />
+            <OnPlatform
+                x:Key="HeightImageNenhumRegistro"
+                x:TypeArguments="x:Double"
+                Android="100"
+                WinPhone="150"
+                iOS="100" />
+            <OnPlatform
+                x:Key="PaddingGridToFind"
+                x:TypeArguments="Thickness"
+                Android="-13,0,0,0"
+                WinPhone="-12,0,0,8"
+                iOS="-13,0,0,0" />
+            <OnPlatform
+                x:Key="GridDefaultContentPadding"
+                x:TypeArguments="Thickness"
+                iOS="10,-5,15,0" />
+            <OnPlatform
+                x:Key="HeighRowDefault"
+                x:TypeArguments="GridLength"
+                Android="40"
+                WinPhone="40"
+                iOS="45" />
+            <OnPlatform
+                x:Key="WidthLogin"
+                x:TypeArguments="GridLength"
+                Android="25"
+                WinPhone="29"
+                iOS="21" />
+            <OnPlatform
+                x:Key="WidthLogin-2"
+                x:TypeArguments="GridLength"
+                Android="18"
+                WinPhone="18"
+                iOS="15" />
+            <OnPlatform
+                x:Key="PaddingScrollView"
+                x:TypeArguments="Thickness"
+                Android="0,0,0,0"
+                WinPhone="0,0,0,5"
+                iOS="0,0,0,0" />
+            <OnPlatform
+                x:Key="PaddingStackTela"
+                x:TypeArguments="Thickness"
+                Android="0,0,0,0"
+                WinPhone="5,0,0,0"
+                iOS="5,5,5,5" />
+            <OnPlatform
+                x:Key="PaddingApresentacoes"
+                x:TypeArguments="Thickness"
+                Android="-5,0,-5,0"
+                WinPhone="-18,-30,-18,0"
+                iOS="-5,0,-5 ,0" />
+            <OnPlatform
+                x:Key="HeightButtonsApresentacao"
+                x:TypeArguments="x:Double"
+                Android="55"
+                WinPhone="55"
+                iOS="55" />
+            <OnPlatform
+                x:Key="HeightSwitchApresentacao"
+                x:TypeArguments="x:Double"
+                Android="35"
+                WinPhone="54"
+                iOS="35" />
+            <OnPlatform
+                x:Key="HeightHomeInformacoesAdicionais"
+                x:TypeArguments="x:Double"
+                Android="27"
+                WinPhone="27"
+                iOS="27" />
 
 
-            <OnPlatform x:Key="IconCliente" x:TypeArguments="FileImageSource" iOS="Cliente-Principal.png"/>
-            <OnPlatform x:Key="IconContato" x:TypeArguments="FileImageSource" iOS="Contato.png"/>
-            <OnPlatform x:Key="IconEstoque" x:TypeArguments="FileImageSource" iOS="Estoque.png"/>
-            <OnPlatform x:Key="IconEndereco" x:TypeArguments="FileImageSource" iOS="Endereco.png"/>
-            <OnPlatform x:Key="IconPesquisaAvancada" x:TypeArguments="FileImageSource" iOS="PesquisaAvancada.png"/>
-            <OnPlatform x:Key="IconListagem" x:TypeArguments="FileImageSource" iOS="Lista.png"/>
-            <OnPlatform x:Key="IconPrincipalPedido" x:TypeArguments="FileImageSource" iOS="Principal_Pedido.png"/>
-            <OnPlatform x:Key="IconProduto" x:TypeArguments="FileImageSource" iOS="Produtos.png"/>
-            <OnPlatform x:Key="IconImage" x:TypeArguments="FileImageSource" iOS="Images.png"/>
-            <OnPlatform x:Key="IconApresentacaoAvisos" x:TypeArguments="FileImageSource" iOS="Aviso.png"/>
-            <OnPlatform x:Key="IconEmpresa" x:TypeArguments="FileImageSource" iOS="Empresa.png"/>
-            <OnPlatform x:Key="IconHome" x:TypeArguments="FileImageSource" iOS="ApplicationBarHome.png"/>
-            <OnPlatform x:Key="IconLogin" x:TypeArguments="FileImageSource" iOS="ApplicationLogin.png"/>
-            <OnPlatform x:Key="IconRegistrar" x:TypeArguments="FileImageSource" iOS="ApplicationAddUser.png"/>
-            <OnPlatform x:Key="IconEsqueciSenha" x:TypeArguments="FileImageSource" iOS="ApplicationForgotPassword.png"/>
-            <OnPlatform x:Key="PaddingContentPageComHeader" x:TypeArguments="Thickness" WinPhone="-18,0,-18,0" Android="-5,0,-5,10" iOS="-7,0,-7,10"/>
-            <OnPlatform x:Key="PaddingContentPageComHeader2" x:TypeArguments="Thickness" WinPhone="-18,-10,-18,0" Android="-5,0,-5,10" iOS="-7,0,-7,10"/>
+            <OnPlatform
+                x:Key="IconCliente"
+                x:TypeArguments="FileImageSource"
+                iOS="Cliente-Principal.png" />
+            <OnPlatform
+                x:Key="IconContato"
+                x:TypeArguments="FileImageSource"
+                iOS="Contato.png" />
+            <OnPlatform
+                x:Key="IconEstoque"
+                x:TypeArguments="FileImageSource"
+                iOS="Estoque.png" />
+            <OnPlatform
+                x:Key="IconEndereco"
+                x:TypeArguments="FileImageSource"
+                iOS="Endereco.png" />
+            <OnPlatform
+                x:Key="IconPesquisaAvancada"
+                x:TypeArguments="FileImageSource"
+                iOS="PesquisaAvancada.png" />
+            <OnPlatform
+                x:Key="IconListagem"
+                x:TypeArguments="FileImageSource"
+                iOS="Lista.png" />
+            <OnPlatform
+                x:Key="IconPrincipalPedido"
+                x:TypeArguments="FileImageSource"
+                iOS="Principal_Pedido.png" />
+            <OnPlatform
+                x:Key="IconProduto"
+                x:TypeArguments="FileImageSource"
+                iOS="Produtos.png" />
+            <OnPlatform
+                x:Key="IconImage"
+                x:TypeArguments="FileImageSource"
+                iOS="Images.png" />
+            <OnPlatform
+                x:Key="IconApresentacaoAvisos"
+                x:TypeArguments="FileImageSource"
+                iOS="Aviso.png" />
+            <OnPlatform
+                x:Key="IconEmpresa"
+                x:TypeArguments="FileImageSource"
+                iOS="Empresa.png" />
+            <OnPlatform
+                x:Key="IconHome"
+                x:TypeArguments="FileImageSource"
+                iOS="ApplicationBarHome.png" />
+            <OnPlatform
+                x:Key="IconLogin"
+                x:TypeArguments="FileImageSource"
+                iOS="ApplicationLogin.png" />
+            <OnPlatform
+                x:Key="IconRegistrar"
+                x:TypeArguments="FileImageSource"
+                iOS="ApplicationAddUser.png" />
+            <OnPlatform
+                x:Key="IconEsqueciSenha"
+                x:TypeArguments="FileImageSource"
+                iOS="ApplicationForgotPassword.png" />
+            <OnPlatform
+                x:Key="PaddingContentPageComHeader"
+                x:TypeArguments="Thickness"
+                Android="-5,0,-5,10"
+                WinPhone="-18,0,-18,0"
+                iOS="-7,0,-7,10" />
+            <OnPlatform
+                x:Key="PaddingContentPageComHeader2"
+                x:TypeArguments="Thickness"
+                Android="-5,0,-5,10"
+                WinPhone="-18,-10,-18,0"
+                iOS="-7,0,-7,10" />
 
 
             <x:String x:Key="ImagemEmail">Xamarin.HLP.Mobile.AppPE.Images.PagesIcon.ApplicationEmail.svg</x:String>
@@ -77,23 +231,23 @@
             <x:String x:Key="ImagemPEBranco">Xamarin.HLP.Mobile.AppPE.Images.PagesIcon.ApplicationPeBranco.svg</x:String>
 
 
-            <pedido:BoolToColorConverterLitaItensPedido x:Key="BoolToColorConverterLitaItensPedido"/>
-            <generic:InvertBoolConvert x:Key="InvertBoolConvert"/>
-            <generic:FormatDecimalConverter x:Key="FormatDecimalConverter"/>
-            <generic:FormatNoSimboloDecimalConverter x:Key="FormatNoSimboloDecimalConverter"/>
-            <generic:FormatPermiteNullSimboloDecimalConverter x:Key="FormatPermiteNullSimboloDecimalConverter"/>
-            <generic:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter"/>
-            <generic:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
-            <generic:DecimalPlacesToStringConverter x:Key="DecimalPlacesToStringConverter"/>
-            <generic:DateTimeToExtenseDateConveter x:Key="DateTimeToExtenseDateConveter"/>
-            <generic:DateTimeToExtenseFullDateConveter x:Key="DateTimeToExtenseFullDateConveter"/>
-            <converter:SettingsSizeConverter x:Key="SizeConverter"/>
-            <converter:SvgAssemblyConverter x:Key="SvgAssemblyConverter"/>
-            <generic:AnyRegisterListConverter x:Key="AnyRegisterListConverter"/>
-            <pedido:ShortGroupKeyConverter x:Key="ShortGroupKeyConverter"/>
-            <pedido:IdDisplayPedidoConverter x:Key="idDisplayPedidoConverter"/>
-            <generic:BoolToStringConverter x:Key="BoolToStringConverter"></generic:BoolToStringConverter>
-            <generic:FormatToPorcentConvert x:Key="FormatToPorcentConvert"></generic:FormatToPorcentConvert>
+            <pedido:BoolToColorConverterLitaItensPedido x:Key="BoolToColorConverterLitaItensPedido" />
+            <generic:InvertBoolConvert x:Key="InvertBoolConvert" />
+            <generic:FormatDecimalConverter x:Key="FormatDecimalConverter" />
+            <generic:FormatNoSimboloDecimalConverter x:Key="FormatNoSimboloDecimalConverter" />
+            <generic:FormatPermiteNullSimboloDecimalConverter x:Key="FormatPermiteNullSimboloDecimalConverter" />
+            <generic:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter" />
+            <generic:DecimalToStringConverter x:Key="DecimalToStringConverter" />
+            <generic:DecimalPlacesToStringConverter x:Key="DecimalPlacesToStringConverter" />
+            <generic:DateTimeToExtenseDateConveter x:Key="DateTimeToExtenseDateConveter" />
+            <generic:DateTimeToExtenseFullDateConveter x:Key="DateTimeToExtenseFullDateConveter" />
+            <converter:SettingsSizeConverter x:Key="SizeConverter" />
+            <converter:SvgAssemblyConverter x:Key="SvgAssemblyConverter" />
+            <generic:AnyRegisterListConverter x:Key="AnyRegisterListConverter" />
+            <pedido:ShortGroupKeyConverter x:Key="ShortGroupKeyConverter" />
+            <pedido:IdDisplayPedidoConverter x:Key="idDisplayPedidoConverter" />
+            <generic:BoolToStringConverter x:Key="BoolToStringConverter" />
+            <generic:FormatToPorcentConvert x:Key="FormatToPorcentConvert" />
 
 
             <Color x:Key="ColorTextCell">#4F5A63</Color>
@@ -126,8 +280,8 @@
 
 
             <Style TargetType="Switch">
-                <Setter Property="HeightRequest" Value="{StaticResource HeightSwitchApresentacao}"/>
-                <Setter Property="HorizontalOptions" Value="End"/>
+                <Setter Property="HeightRequest" Value="{StaticResource HeightSwitchApresentacao}" />
+                <Setter Property="HorizontalOptions" Value="End" />
                 <Setter Property="Margin" Value="0,0,0,5" />
             </Style>
 
@@ -138,7 +292,7 @@
             <Style TargetType="custom:ExtendedEntry">
                 <Setter Property="BackgroundColor">
                     <Setter.Value>
-                        <OnPlatform x:TypeArguments="Color" WinPhone="{StaticResource CinzaClarissimo}"/>
+                        <OnPlatform x:TypeArguments="Color" WinPhone="{StaticResource CinzaClarissimo}" />
                     </Setter.Value>
                 </Setter>
                 <Setter Property="Margin" Value="0,0,0,5" />
@@ -147,7 +301,7 @@
             <Style TargetType="Entry">
                 <Setter Property="BackgroundColor">
                     <Setter.Value>
-                        <OnPlatform x:TypeArguments="Color" WinPhone="{StaticResource CinzaClarissimo}"/>
+                        <OnPlatform x:TypeArguments="Color" WinPhone="{StaticResource CinzaClarissimo}" />
                     </Setter.Value>
                 </Setter>
 
@@ -156,7 +310,7 @@
             <Style TargetType="Editor">
                 <Setter Property="BackgroundColor">
                     <Setter.Value>
-                        <OnPlatform x:TypeArguments="Color" WinPhone="{StaticResource CinzaClarissimo}"/>
+                        <OnPlatform x:TypeArguments="Color" WinPhone="{StaticResource CinzaClarissimo}" />
                     </Setter.Value>
                 </Setter>
                 <Setter Property="Margin" Value="0,0,0,5" />
@@ -165,20 +319,28 @@
             <Style x:Key="Medium" TargetType="Label">
                 <Setter Property="FontSize">
                     <Setter.Value>
-                        <OnPlatform x:TypeArguments="x:Double" Android="16" WinPhone="16" iOS="18"/>
+                        <OnPlatform
+                            x:TypeArguments="x:Double"
+                            Android="16"
+                            WinPhone="16"
+                            iOS="18" />
                     </Setter.Value>
                 </Setter>
             </Style>
 
             <Style TargetType="abstractions:SvgImage">
-                <Setter Property="SvgAssembly" Value="{Binding Converter={StaticResource SvgAssemblyConverter}}"/>
-                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="SvgAssembly" Value="{Binding Converter={StaticResource SvgAssemblyConverter}}" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
             </Style>
 
-            <Style TargetType="Label" x:Key="HeaderLabel">
+            <Style x:Key="HeaderLabel" TargetType="Label">
                 <Setter Property="FontSize">
                     <Setter.Value>
-                        <OnPlatform x:TypeArguments="x:Double" iOS="12" Android="12" WinPhone="14"/>
+                        <OnPlatform
+                            x:TypeArguments="x:Double"
+                            Android="12"
+                            WinPhone="14"
+                            iOS="12" />
                     </Setter.Value>
                 </Setter>
                 <Setter Property="TextColor" Value="{StaticResource CinzaPrincipal}" />
@@ -205,167 +367,115 @@
                 </Setter>
                 <Setter Property="FontSize">
                     <Setter.Value>
-                        <OnPlatform x:TypeArguments="x:Double" WinPhone="14" iOS="14" Android="14"/>
+                        <OnPlatform
+                            x:TypeArguments="x:Double"
+                            Android="14"
+                            WinPhone="14"
+                            iOS="14" />
                     </Setter.Value>
                 </Setter>
             </Style>
 
             <Style TargetType="Button">
-                <Setter Property="FontSize" Value="{Binding Converter={StaticResource SizeConverter}}"  />
+                <Setter Property="FontSize" Value="{Binding Converter={StaticResource SizeConverter}}" />
             </Style>
 
             <Style TargetType="ContentPage">
                 <Setter Property="Padding">
                     <Setter.Value>
-                        <OnPlatform x:TypeArguments="Thickness" Android="5,4,5,10" WinPhone="0,-15,0,5" iOS="0,25,0,0"/>
+                        <OnPlatform
+                            x:TypeArguments="Thickness"
+                            Android="5,4,5,10"
+                            WinPhone="0,-15,0,5"
+                            iOS="0,25,0,0" />
                     </Setter.Value>
                 </Setter>
 
             </Style>
 
-            <Style TargetType="Button" x:Key="Primary">
-                <Setter Property="TextColor" Value="White"/>
+            <Style x:Key="Primary" TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
                 <Style.Triggers>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="False">
-                        <Setter
-                Property="BackgroundColor"
-                Value="{StaticResource CinzaDesabilitado}" />
-                        <Setter
-                Property="Opacity"
-                Value="0.6" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                        <Setter Property="BackgroundColor" Value="{StaticResource CinzaDesabilitado}" />
+                        <Setter Property="Opacity" Value="0.6" />
                     </Trigger>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="True">
-                        <Setter
-                Property="BackgroundColor"
-                Value="#2196f3" />
-                        <Setter
-                Property="Opacity"
-                Value="1" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="True">
+                        <Setter Property="BackgroundColor" Value="#2196f3" />
+                        <Setter Property="Opacity" Value="1" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
-            <Style TargetType="Button" x:Key="Success">
-                <Setter Property="TextColor" Value="White"/>
+            <Style x:Key="Success" TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
                 <Style.Triggers>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="False">
-                        <Setter
-                Property="BackgroundColor"
-                Value="{StaticResource CinzaDesabilitado}" />
-                        <Setter
-                Property="Opacity"
-                Value="0.6" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                        <Setter Property="BackgroundColor" Value="{StaticResource CinzaDesabilitado}" />
+                        <Setter Property="Opacity" Value="0.6" />
                     </Trigger>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="True">
-                        <Setter
-                Property="BackgroundColor"
-                Value="#2ECC71" />
-                        <Setter
-                Property="Opacity"
-                Value="1" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="True">
+                        <Setter Property="BackgroundColor" Value="#2ECC71" />
+                        <Setter Property="Opacity" Value="1" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
-            <Style TargetType="Button" x:Key="Info">
-                <Setter Property="TextColor" Value="White"/>
+            <Style x:Key="Info" TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
                 <Style.Triggers>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="False">
-                        <Setter
-                Property="BackgroundColor"
-                Value="{StaticResource CinzaDesabilitado}" />
-                        <Setter
-                Property="Opacity"
-                Value="0.6" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                        <Setter Property="BackgroundColor" Value="{StaticResource CinzaDesabilitado}" />
+                        <Setter Property="Opacity" Value="0.6" />
                     </Trigger>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="True">
-                        <Setter
-                Property="BackgroundColor"
-                Value="#29b6f6" />
-                        <Setter
-                Property="Opacity"
-                Value="1" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="True">
+                        <Setter Property="BackgroundColor" Value="#29b6f6" />
+                        <Setter Property="Opacity" Value="1" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
-            <Style TargetType="Button" x:Key="Danger">
-                <Setter Property="TextColor" Value="White"/>
+            <Style x:Key="Danger" TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
                 <Style.Triggers>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="False">
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
 
-                        <Setter
-                 Property="BackgroundColor"
-                 Value="{StaticResource CinzaDesabilitado}" />
-                        <Setter
-                Property="Opacity"
-                Value="0.6" />
+                        <Setter Property="BackgroundColor" Value="{StaticResource CinzaDesabilitado}" />
+                        <Setter Property="Opacity" Value="0.6" />
                     </Trigger>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="True">
-                        <Setter
-                Property="BackgroundColor"
-                Value="#f44336" />
-                        <Setter
-                Property="Opacity"
-                Value="1" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="True">
+                        <Setter Property="BackgroundColor" Value="#f44336" />
+                        <Setter Property="Opacity" Value="1" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
-            <Style TargetType="Button" x:Key="Warning">
-                <Setter Property="TextColor" Value="White"/>
+            <Style x:Key="Warning" TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
                 <Style.Triggers>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="False">
-                        <Setter
-                Property="BackgroundColor"
-                Value="{StaticResource CinzaDesabilitado}" />
-                        <Setter
-                Property="Opacity"
-                Value="0.6" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                        <Setter Property="BackgroundColor" Value="{StaticResource CinzaDesabilitado}" />
+                        <Setter Property="Opacity" Value="0.6" />
                     </Trigger>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="True">
-                        <Setter
-                Property="BackgroundColor"
-                Value="#ffc107" />
-                        <Setter
-                Property="Opacity"
-                Value="1" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="True">
+                        <Setter Property="BackgroundColor" Value="#ffc107" />
+                        <Setter Property="Opacity" Value="1" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
-            <Style TargetType="Button" x:Key="Default">
-                <Setter Property="TextColor" Value="White"/>
+            <Style x:Key="Default" TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
                 <Style.Triggers>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="False">
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
 
-                        <Setter
-                 Property="BackgroundColor"
-                 Value="{StaticResource CinzaDesabilitado}" />
+                        <Setter Property="BackgroundColor" Value="{StaticResource CinzaDesabilitado}" />
 
-                        <Setter
-                Property="Opacity"
-                Value="0.6" />
+                        <Setter Property="Opacity" Value="0.6" />
                     </Trigger>
-                    <Trigger TargetType="Button"
-             Property="IsEnabled" Value="True">
-                        <Setter
-                Property="BackgroundColor"
-                Value="#90a4ae" />
-                        <Setter
-                Property="Opacity"
-                Value="1" />
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="True">
+                        <Setter Property="BackgroundColor" Value="#90a4ae" />
+                        <Setter Property="Opacity" Value="1" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
