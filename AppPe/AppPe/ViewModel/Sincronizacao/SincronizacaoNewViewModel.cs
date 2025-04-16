@@ -982,7 +982,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     EstoqueRepository.RemoveAllEstoqueSincronizacao(registro.idProduto);
                                 }
                             }
-                            else
+                            else 
                                 break;
 
                             pagina++;
@@ -1129,12 +1129,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                             if (pedido == null) continue;
 
-                            if (pedido.idClientes == 0)
-                                pedido.idClientes = ClienteRepository.GetIdClienteNuvem(pedido.idClientesOffLine);
-                            //pedido.dEmissao = pedido.dEmissao;
-                            pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
-                            pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
-                            pedido.bPedidoComAlteracao = false;
+                        if (pedido.idClientes == 0)
+                            pedido.idClientes = ClienteRepository.GetIdClienteNuvem(pedido.idClientesOffLine);
+                        //pedido.dEmissao = pedido.dEmissao;
+                        pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
+                        pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
+                        pedido.bPedidoComAlteracao = false;
 
                             pedido.dEmissao = pedido.dEmissao.AddHours(-3);
 
@@ -1164,24 +1164,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                                     if (pedido.stLancamento == 0)
                                         PedidoRepository.UpdateAfterUpload(idPedidoOffLine, pedido.idPedidoVenda ?? 0);
-                                }
-                                else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.EstoqueInsuficiente)
-                                {
-                                    var dadosEstoque =
-                                        JsonConvert.DeserializeObject<List<EstoqueInsuficienteModel>>(
-                                            objPedidoSync.resulStruct.retorno.ToString());
-
-                                    var _estoqueValidado = EstoqueRepository.SaveEstoqueInsuficiente(dadosEstoque,
-                                        pedido.idPedidoVendaOffLine ?? 0);
-
-                                    currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
-                                    {
-                                        idOffLine = pedido.idPedidoVendaOffLine,
-                                        Table = TableMobile.TB_PEDIDOVENDA,
-                                        Display = "Problemas com estoque",
-                                        Detail = $"Cliente: {ClienteRepository.GetDisplayByIdOffLine(pedido.idClientesOffLine)}",
-                                        DetailEstoque = _estoqueValidado
-                                    });
                                 }
                                 else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.Excecao)
                                 {
