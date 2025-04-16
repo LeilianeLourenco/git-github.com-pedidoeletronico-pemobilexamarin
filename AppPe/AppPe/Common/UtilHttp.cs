@@ -346,7 +346,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{param1}{(param2 != null ? "/" + ((DateTime)param2).ToString("yyyy-MM-ddTHH:mm:ss") : null)}{(param3 != null ? "/" + param3.ToString() : "")}";
 
-                var _apiClient = NewCurrentHttpClient;
+                var _apiClient = CurrentHttpClient;
                 _apiClient.Timeout = TimeSpan.FromMinutes(10);
 
                 var jsonResponse = await _apiClient.GetStringAsync(requestUri);
@@ -1159,22 +1159,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 if (_currentHttpClient != null)
                     return _currentHttpClient;
 
-                var _clientHandler = new System.Net.Http.HttpClientHandler();
-                _clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-
-                _currentHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlWebApi) };
-                _currentHttpClient.DefaultRequestHeaders.Accept.Clear();
-                _currentHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                _currentHttpClient.Timeout = TimeSpan.FromSeconds(100);
-                return _currentHttpClient;
-            }
-            set { _currentHttpClient = value; }
-        }
-
-        public static HttpClient NewCurrentHttpClient
-        {
-            get
-            {            
                 var _clientHandler = new System.Net.Http.HttpClientHandler();
                 _clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
