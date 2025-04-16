@@ -1,37 +1,90 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"                      
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageTabelaFaturas"
-             Title="Duplicatas Manual">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageTabelaFaturas"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Duplicatas Manual">
 
     <ScrollView>
         <StackLayout>
-            <StackLayout HeightRequest="300">
-                <TableView HasUnevenRows="True" BackgroundColor="White" >
+            <StackLayout>
+                <StackLayout.HeightRequest>
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="Android" Value="300" />
+                        <On Platform="iOS" Value="250" />
+                    </OnPlatform>
+                </StackLayout.HeightRequest>
+                <TableView BackgroundColor="White" HasUnevenRows="True">
                     <TableSection>
                         <ViewCell Height="60">
                             <StackLayout Padding="10">
-                                <Label Text="Data Inicial" FontAttributes="Bold" TextColor="{StaticResource AzulChart}" />
-                                <DatePicker x:Name="dtInicial" Date="{Binding currentModel.dtInicial}" Format="dd/MM/yyyy" FontSize="16" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Data Inicial"
+                                    TextColor="{StaticResource AzulChart}" />
+                                <DatePicker
+                                    x:Name="dtInicial"
+                                    Date="{Binding currentModel.dtInicial}"
+                                    FontSize="16"
+                                    Format="dd/MM/yyyy">
+                                    <DatePicker.Margin>
+                                        <OnPlatform x:TypeArguments="Thickness">
+                                            <On Platform="Android" Value="0,-15,0,0" />
+                                            <On Platform="iOS" Value="0,0,0,0" />
+                                        </OnPlatform>
+                                    </DatePicker.Margin>
+                                </DatePicker>
                             </StackLayout>
                         </ViewCell>
 
                         <ViewCell Height="60">
                             <StackLayout Padding="10">
-                                <Label Text="Data Final" FontAttributes="Bold" TextColor="{StaticResource AzulChart}" />
-                                <DatePicker x:Name="dtFinal" Date="{Binding currentModel.dtFinal}" Format="dd/MM/yyyy" FontSize="16" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Data Final"
+                                    TextColor="{StaticResource AzulChart}" />
+                                <DatePicker
+                                    x:Name="dtFinal"
+                                    Date="{Binding currentModel.dtFinal}"
+                                    FontSize="16"
+                                    Format="dd/MM/yyyy">
+                                    <DatePicker.Margin>
+                                        <OnPlatform x:TypeArguments="Thickness">
+                                            <On Platform="Android" Value="0,-15,0,0" />
+                                            <On Platform="iOS" Value="0,0,0,0" />
+                                        </OnPlatform>
+                                    </DatePicker.Margin>
+                                </DatePicker>
                             </StackLayout>
                         </ViewCell>
 
                         <ViewCell Height="60">
                             <StackLayout Padding="10">
-                                <Label Text="Parcelas" FontAttributes="Bold" TextColor="{StaticResource AzulChart}" />
-                                <Entry x:Name="EntryParcelas" Text="{Binding currentModel.nParcelas}" FontSize="16" Keyboard="Numeric"/>
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Parcelas"
+                                    TextColor="{StaticResource AzulChart}" />
+                                <Entry
+                                    x:Name="EntryParcelas"
+                                    FontSize="16"
+                                    Keyboard="Numeric"
+                                    Text="{Binding currentModel.nParcelas}">
+                                    <Entry.Margin>
+                                        <OnPlatform x:TypeArguments="Thickness">
+                                            <On Platform="Android" Value="0,-15,0,0" />
+                                            <On Platform="iOS" Value="0,0,0,0" />
+                                        </OnPlatform>
+                                    </Entry.Margin>
+                                </Entry>
                             </StackLayout>
                         </ViewCell>
 
-                        <TextCell Height="60" Text="Taxa de Juros (%)" Detail="{Binding dAcrescimoMensal}" DetailColor="{StaticResource CinzaMaisEscuro}"
-                             TextColor="{StaticResource AzulChart}" />
+                        <TextCell
+                            Height="60"
+                            Detail="{Binding dAcrescimoMensal}"
+                            DetailColor="{StaticResource CinzaMaisEscuro}"
+                            Text="Taxa de Juros (%)"
+                            TextColor="{StaticResource AzulChart}" />
                     </TableSection>
                 </TableView>
             </StackLayout>
@@ -39,9 +92,12 @@
             <ScrollView MinimumHeightRequest="345">
                 <StackLayout Padding="0,20,0,0" HorizontalOptions="FillAndExpand">
 
-                    <Grid ColumnSpacing="1" RowSpacing="0" BackgroundColor="Transparent">
+                    <Grid
+                        BackgroundColor="Transparent"
+                        ColumnSpacing="1"
+                        RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -49,32 +105,65 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <StackLayout Grid.Column="0" BackgroundColor="#03a9f4" HeightRequest="40">
-                            <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand" TextColor="#fff" Text="Parcela"/>
+                        <StackLayout
+                            Grid.Column="0"
+                            BackgroundColor="#03a9f4"
+                            HeightRequest="40">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="Parcela"
+                                TextColor="#fff"
+                                VerticalOptions="CenterAndExpand" />
                         </StackLayout>
 
-                        <StackLayout Grid.Column="1" BackgroundColor="#03a9f4" HeightRequest="40">
-                            <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand" TextColor="#fff" Text="Vencimento"/>
+                        <StackLayout
+                            Grid.Column="1"
+                            BackgroundColor="#03a9f4"
+                            HeightRequest="40">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="Vencimento"
+                                TextColor="#fff"
+                                VerticalOptions="CenterAndExpand" />
                         </StackLayout>
 
-                        <StackLayout Grid.Column="2" BackgroundColor="#03a9f4" HeightRequest="40">
-                            <Label HorizontalOptions="EndAndExpand" Padding="0,0,15,0" VerticalOptions="CenterAndExpand" TextColor="#fff" Text="Valor"/>
+                        <StackLayout
+                            Grid.Column="2"
+                            BackgroundColor="#03a9f4"
+                            HeightRequest="40">
+                            <Label
+                                Padding="0,0,15,0"
+                                HorizontalOptions="EndAndExpand"
+                                Text="Valor"
+                                TextColor="#fff"
+                                VerticalOptions="CenterAndExpand" />
                         </StackLayout>
                     </Grid>
 
-                    <StackLayout Orientation="Vertical" x:Name="StackPageFaturas"/>
+                    <StackLayout x:Name="StackPageFaturas" Orientation="Vertical" />
 
                 </StackLayout>
             </ScrollView>
 
-            <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand" Padding="0,15,20,10">
-                <Label FontSize="18" Text="Total"></Label>
+            <StackLayout
+                Padding="0,15,20,10"
+                HorizontalOptions="EndAndExpand"
+                Orientation="Vertical">
+                <Label FontSize="18" Text="Total" />
                 <StackLayout Orientation="Horizontal">
-                    <Label FontSize="18" FontAttributes="Bold" Text="{Binding vSubTotal , Converter={StaticResource FormatDecimalConverter}}"></Label>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        Text="{Binding vSubTotal, Converter={StaticResource FormatDecimalConverter}}" />
                 </StackLayout>
             </StackLayout>
 
-            <Button Margin="20,0,20,20" Style="{StaticResource Success}" Clicked="btnGerar" Text="Gerar" HorizontalOptions="FillAndExpand" />
+            <Button
+                Margin="20,0,20,20"
+                Clicked="btnGerar"
+                HorizontalOptions="FillAndExpand"
+                Style="{StaticResource Success}"
+                Text="Gerar" />
 
         </StackLayout>
     </ScrollView>
