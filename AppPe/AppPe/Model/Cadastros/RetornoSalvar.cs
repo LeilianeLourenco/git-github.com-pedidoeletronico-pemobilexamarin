@@ -8,6 +8,7 @@
         public RetornoSalvar stRetorno { get; set; }
         public string erroIntegracao { get; set; }
         public object retorno { get; set; }
+        public string msgErroApi { get; set; }
     }
 
     public enum StatusCrud

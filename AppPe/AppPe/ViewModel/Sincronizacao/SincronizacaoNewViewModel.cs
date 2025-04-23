@@ -318,8 +318,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 await SincronizacaoDownload<EmpresaModel>();
 
-
-
                 if (App.planoAtual != Planos.plfree
                     && App.planoAtual != Planos.nenhum
                     && App.planoAtual != Planos.plstarter)
@@ -1138,7 +1136,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                             pedido.dEmissao = pedido.dEmissao.AddHours(-3);
 
-                            var objPedidoSync = UtilHttp.PostRegistroToCloud(pedido).Result;
+                            var objPedidoSync = await UtilHttp.PostRegistroToCloud(pedido);
 
                             if (objPedidoSync != null)
                             {
