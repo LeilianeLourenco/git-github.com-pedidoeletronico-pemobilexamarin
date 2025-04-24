@@ -1022,6 +1022,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     return null;
                 }
 
+
                 registro.idPedidoVendaOffLine =
                     registro.idPedidoVenda = registro.idOrcamentoOrigem = registro.idPedidoOrigem = null;
                 registro.idPedidoOrigem = pedido.idPedidoVenda;
