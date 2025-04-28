@@ -36,8 +36,6 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
         public PageSelectDate(AtividadeAgendaModel evento, SelectDateViewModel.tipolancamento tipo)
         {
-
-
             InitializeComponent();
             ViewModel.Tipolancamento = tipo;
             ViewModel.atividade = evento;
@@ -45,12 +43,12 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             if (tipo == SelectDateViewModel.tipolancamento.INICIO_EVENTO)
             {
                 ViewModel.date = evento.dtInicioEvento ?? DateTime.Now;
-                ViewModel.time = (evento.dtInicioEvento ?? DateTime.Now).ToLocalTime().TimeOfDay;
+                ViewModel.time = (evento.dtInicioEvento ?? DateTime.Now).TimeOfDay;
             }
             else if (tipo == SelectDateViewModel.tipolancamento.FIM_EVENTO)
             {
                 ViewModel.date = evento.dtFimEvento ?? DateTime.Now;
-                ViewModel.time = (evento.dtFimEvento ?? DateTime.Now).ToLocalTime().TimeOfDay;
+                ViewModel.time = (evento.dtFimEvento ?? DateTime.Now).TimeOfDay;
             }
         }
 
