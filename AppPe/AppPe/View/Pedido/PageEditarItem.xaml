@@ -1,312 +1,548 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:behaviors="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE" 
-             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageEditarItem" BackgroundColor="{StaticResource CinzaMedio}"            
-             Title="Edição do item">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageEditarItem"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:behaviors="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    Title="Edição do item"
+    BackgroundColor="{StaticResource CinzaMedio}">
     <ContentPage.BindingContext>
-        <pedido:EditarItemViewModel/>
+        <pedido:EditarItemViewModel />
     </ContentPage.BindingContext>
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <AbsoluteLayout BackgroundColor="#ffff" Grid.Row="0">
-                <ScrollView AbsoluteLayout.LayoutFlags="All"
-                      AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <AbsoluteLayout Grid.Row="0" BackgroundColor="#ffff">
+                <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
                     <Grid Padding="0,0,0,0">
                         <Grid.RowSpacing>
-                            <OnPlatform x:TypeArguments="x:Double" iOS="10"/>
+                            <OnPlatform x:TypeArguments="x:Double" iOS="10" />
                         </Grid.RowSpacing>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <CarouselView x:Name="ImageCarouselView" 
-              Grid.Row="0"  
-              HorizontalOptions="FillAndExpand"  
-              VerticalOptions="FillAndExpand"
-              HeightRequest="250"
-              ItemsSource="{Binding ListaImagens}">
+                        <CarouselView
+                            x:Name="ImageCarouselView"
+                            Grid.Row="0"
+                            HeightRequest="250"
+                            HorizontalOptions="FillAndExpand"
+                            ItemsSource="{Binding ListaImagens}"
+                            VerticalOptions="FillAndExpand">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <ffimageloading:CachedImage Aspect="AspectFit"
-                                            HorizontalOptions="FillAndExpand" 
-                                            VerticalOptions="FillAndExpand"
+                                        <ffimageloading:CachedImage
+                                            Aspect="AspectFit"
                                             DownsampleToViewSize="true"
-                                            Source="{Binding .}" />
+                                            HorizontalOptions="FillAndExpand"
+                                            Source="{Binding .}"
+                                            VerticalOptions="FillAndExpand" />
                                     </Grid>
                                 </DataTemplate>
                             </CarouselView.ItemTemplate>
                         </CarouselView>
 
-                        <StackLayout BackgroundColor="{StaticResource Branco}"  Padding="18,8,0,10" Orientation="Vertical" Grid.Row="1">
-                            <Label Text="{Binding currentModel.cAlternativo}" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontSize="Medium"/>
-                            <Label  Text="{Binding currentModel.xDescricao}"  VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaApresentacaoCliente}" FontSize="Small"/>
+                        <StackLayout
+                            Grid.Row="1"
+                            Padding="18,8,0,10"
+                            BackgroundColor="{StaticResource Branco}"
+                            Orientation="Vertical">
+                            <Label
+                                FontSize="Medium"
+                                LineBreakMode="TailTruncation"
+                                Text="{Binding currentModel.cAlternativo}"
+                                TextColor="{StaticResource CinzaEscuro}"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                FontSize="Small"
+                                LineBreakMode="TailTruncation"
+                                Text="{Binding currentModel.xDescricao}"
+                                TextColor="{StaticResource CinzaApresentacaoCliente}"
+                                VerticalTextAlignment="Center" />
                         </StackLayout>
 
 
-                        <Frame Grid.Row="2" HasShadow="True" Padding="0,0,0,0">
-                            <Grid  RowSpacing="0">
+                        <Frame
+                            Grid.Row="2"
+                            Padding="0,0,0,0"
+                            HasShadow="True">
+                            <Grid RowSpacing="0">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <Grid x:Name="GridQuantidadeGrade" BackgroundColor="{StaticResource VerdePrincipal}" Padding="5,5,5,5">
-                                    <Label Text="QUANTIDADE / GRADE" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                                <Grid
+                                    x:Name="GridQuantidadeGrade"
+                                    Padding="5,5,5,5"
+                                    BackgroundColor="{StaticResource VerdePrincipal}">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        HorizontalTextAlignment="Center"
+                                        Text="QUANTIDADE / GRADE"
+                                        TextColor="White" />
                                 </Grid>
 
-                                <!--Local Estoque-->
-                                <Label Margin="5,5,0,0" Grid.Row="1" Text="Local de Estoque" IsVisible="{Binding bUsaLocaisEstoque}" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
-                                <Grid RowSpacing="0" Grid.Row="2" IsVisible="{Binding bUsaLocaisEstoque}">
+                                <!--  Local Estoque  -->
+                                <Label
+                                    Grid.Row="1"
+                                    Margin="5,5,0,0"
+                                    IsVisible="{Binding bUsaLocaisEstoque}"
+                                    LineBreakMode="NoWrap"
+                                    Style="{StaticResource HeaderLabel}"
+                                    Text="Local de Estoque" />
+                                <Grid
+                                    Grid.Row="2"
+                                    IsVisible="{Binding bUsaLocaisEstoque}"
+                                    RowSpacing="0">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <custom:BindablePicker x:Name="BindableLocalEstoque" ItemsSource="{Binding ListaLocalEstoque, Mode=TwoWay}" SelectedItem="{Binding CurrentLocalEstoque, Mode=TwoWay}" />
+                                    <custom:BindablePicker
+                                        x:Name="BindableLocalEstoque"
+                                        ItemsSource="{Binding ListaLocalEstoque, Mode=TwoWay}"
+                                        SelectedItem="{Binding CurrentLocalEstoque, Mode=TwoWay}" />
                                 </Grid>
 
-                                <Grid Grid.Row="3" Padding="5,5,5,5" BackgroundColor="White">
+                                <Grid
+                                    Grid.Row="3"
+                                    Padding="5,5,5,5"
+                                    BackgroundColor="White">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <StackLayout Orientation="Vertical" x:Name="StackLayoutItens"></StackLayout>
+                                    <StackLayout x:Name="StackLayoutItens" Orientation="Vertical" />
                                 </Grid>
 
                             </Grid>
                         </Frame>
 
-                        <Frame Grid.Row="3" HasShadow="True" Padding="0,0,0,0">
-                            <Grid  RowSpacing="0">
+                        <Frame
+                            Grid.Row="3"
+                            Padding="0,0,0,0"
+                            HasShadow="True">
+                            <Grid RowSpacing="0">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <Grid x:Name="GridValoresHeader" Padding="5,5,5,5" BackgroundColor="{StaticResource VermelhoPrincipal}">
-                                    <Label Text="INFORMAÇÃO DE PREÇO" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                                <Grid
+                                    x:Name="GridValoresHeader"
+                                    Padding="5,5,5,5"
+                                    BackgroundColor="{StaticResource VermelhoPrincipal}">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        HorizontalTextAlignment="Center"
+                                        Text="INFORMAÇÃO DE PREÇO"
+                                        TextColor="White" />
                                 </Grid>
 
-                                <Grid Grid.Row="1" x:Name="GridValoresContent" Padding="5,5,5,5" BackgroundColor="White">
-                                    <StackLayout Orientation="Vertical" Padding="20,10,20,0" Spacing="0">
+                                <Grid
+                                    x:Name="GridValoresContent"
+                                    Grid.Row="1"
+                                    Padding="5,5,5,5"
+                                    BackgroundColor="White">
+                                    <StackLayout
+                                        Padding="20,10,20,0"
+                                        Orientation="Vertical"
+                                        Spacing="0">
 
-                                        <!--VALOR DE VENDA-->
-                                        <Label Margin="5,5,0,0" Text="Valor Origem" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                                        <!--  VALOR DE VENDA  -->
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="Valor Origem" />
                                         <Grid Margin="5,5,0,0" ColumnSpacing="0">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
 
-                                            <Label Text="{Binding xValorPromocional}" Opacity="0.7" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaClaro}" HorizontalTextAlignment="Start" VerticalOptions="End"/>
-                                            <Label Grid.Column="1" Text="{Binding vUnitarioVenda, Converter={StaticResource FormatDecimalConverter}}" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" HorizontalTextAlignment="Start" VerticalOptions="Center"/>
+                                            <Label
+                                                HorizontalTextAlignment="Start"
+                                                LineBreakMode="TailTruncation"
+                                                Opacity="0.7"
+                                                Text="{Binding xValorPromocional}"
+                                                TextColor="{StaticResource CinzaClaro}"
+                                                VerticalOptions="End" />
+                                            <Label
+                                                Grid.Column="1"
+                                                HorizontalTextAlignment="Start"
+                                                LineBreakMode="TailTruncation"
+                                                Text="{Binding vUnitarioVenda, Converter={StaticResource FormatDecimalConverter}}"
+                                                TextColor="{StaticResource CinzaEscuro}"
+                                                VerticalOptions="Center" />
 
                                         </Grid>
 
 
 
-                                        <!--Tabela de Preço-->
-                                        <Label Margin="5,5,0,0" Text="Tabela de Preço" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
+                                        <!--  Tabela de Preço  -->
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="Tabela de Preço" />
                                         <Grid RowSpacing="0">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
-                                            <custom:BindablePicker x:Name="BindableTabelaPreco" ItemsSource="{Binding ListaTabelaPreco, Mode=TwoWay}" SelectedItem="{Binding CurrentTabelaPreco, Mode=TwoWay}" />
-                                            <Grid Margin="5,0,0,0" Grid.Row="1">
-                                                <Label Text="{Binding xDescontoMaximo}" FontSize="Small" TextColor="{StaticResource AzulPrincipal}"/>
+                                            <custom:BindablePicker
+                                                x:Name="BindableTabelaPreco"
+                                                ItemsSource="{Binding ListaTabelaPreco, Mode=TwoWay}"
+                                                SelectedItem="{Binding CurrentTabelaPreco, Mode=TwoWay}" />
+                                            <Grid Grid.Row="1" Margin="5,0,0,0">
+                                                <Label
+                                                    FontSize="Small"
+                                                    Text="{Binding xDescontoMaximo}"
+                                                    TextColor="{StaticResource AzulPrincipal}" />
                                             </Grid>
                                         </Grid>
 
 
-                                        <!--Valor Unitario Com Impostos-->
-                                        <Label Margin="5,5,0,0" Text="Valor Unitário de Venda" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
+                                        <!--  Valor Unitario Com Impostos  -->
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="Valor Unitário de Venda" />
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <custom:ExtendedEntry MaxLength="14" IsEnabled="{Binding currentModel.currentTabelaPreco.BloquearValor, Converter={StaticResource InvertBoolConvert} }"
+                                            <custom:ExtendedEntry
                                                 x:Name="EntryValorUnitario"
-                                            Text="{Binding vUnitarioVendaComImpostos, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  >
+                                                IsEnabled="{Binding currentModel.currentTabelaPreco.BloquearValor, Converter={StaticResource InvertBoolConvert}}"
+                                                Keyboard="Numeric"
+                                                MaxLength="14"
+                                                Text="{Binding vUnitarioVendaComImpostos, Converter={StaticResource DecimalToStringConverter}}">
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:ValorUnitarioComImpostosBehaviors x:Name="ValorUnitarioComImpostos" />
                                                 </custom:ExtendedEntry.Behaviors>
                                             </custom:ExtendedEntry>
-                                            <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center">
-                                                <abstractions:SvgImage HorizontalOptions="End"
-                                            SvgPath="{StaticResource ImagemCheck}"
-                                            IsVisible="{Binding Source={x:Reference ValorUnitarioComImpostos}, Path=IsValid}">
+                                            <Grid
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                HorizontalOptions="End"
+                                                VerticalOptions="Center">
+                                                <abstractions:SvgImage
+                                                    HorizontalOptions="End"
+                                                    IsVisible="{Binding Source={x:Reference ValorUnitarioComImpostos}, Path=IsValid}"
+                                                    SvgPath="{StaticResource ImagemCheck}">
                                                     <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.HeightRequest>
                                                     <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.WidthRequest>
                                                 </abstractions:SvgImage>
-                                                <abstractions:SvgImage  HorizontalOptions="End"
-                                                                  SvgPath="{StaticResource ImagemErro}"
-                                                                  IsVisible="{Binding Source={x:Reference ValorUnitarioComImpostos}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}">
+                                                <abstractions:SvgImage
+                                                    HorizontalOptions="End"
+                                                    IsVisible="{Binding Source={x:Reference ValorUnitarioComImpostos}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}"
+                                                    SvgPath="{StaticResource ImagemErro}">
                                                     <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.HeightRequest>
                                                     <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.WidthRequest>
 
                                                 </abstractions:SvgImage>
                                             </Grid>
                                         </Grid>
 
-                                        <!--IPI DE VENDA-->
-                                        <Label Margin="5,5,0,0" Text="% Ipi Venda" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
-                                        <custom:ExtendedEntry IsEnabled="False" TextChanged="EntryImpostos_OnTextChanged" MaxLength="6" x:Name="EntryIpiVenda" Placeholder="% ipi"
-                                            Text="{Binding pIpiVenda, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  />
+                                        <!--  IPI DE VENDA  -->
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="% Ipi Venda" />
+                                        <custom:ExtendedEntry
+                                            x:Name="EntryIpiVenda"
+                                            IsEnabled="False"
+                                            Keyboard="Numeric"
+                                            MaxLength="6"
+                                            Placeholder="% ipi"
+                                            Text="{Binding pIpiVenda, Converter={StaticResource DecimalToStringConverter}}"
+                                            TextChanged="EntryImpostos_OnTextChanged" />
 
-                                        <!--ST DE VENDA-->
-                                        <Label Margin="5,5,0,0" Text="% St Venda" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
-                                        <custom:ExtendedEntry IsEnabled="False" TextChanged="EntryImpostos_OnTextChanged" MaxLength="6" x:Name="EntryStVenda" Placeholder="% st"
-                                            Text="{Binding pStVenda, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  />
+                                        <!--  ST DE VENDA  -->
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="% St Venda" />
+                                        <custom:ExtendedEntry
+                                            x:Name="EntryStVenda"
+                                            IsEnabled="False"
+                                            Keyboard="Numeric"
+                                            MaxLength="6"
+                                            Placeholder="% st"
+                                            Text="{Binding pStVenda, Converter={StaticResource DecimalToStringConverter}}"
+                                            TextChanged="EntryImpostos_OnTextChanged" />
 
-                                        <Label Margin="5,5,0,0" Text="Total s/impostos" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                                        <Label Margin="5,5,0,0"  TextColor="{StaticResource VerdePrincipal}" Text="{Binding vSubTotalSemImpostos,  Converter={StaticResource FormatDecimalConverter}}" />
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="Total s/impostos" />
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            Text="{Binding vSubTotalSemImpostos, Converter={StaticResource FormatDecimalConverter}}"
+                                            TextColor="{StaticResource VerdePrincipal}" />
 
 
-                                        <!--% DESCONTO-->
+                                        <!--  % DESCONTO  -->
 
-                                        <Label Margin="5,5,0,0" Text="% Desconto" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="% Desconto" />
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
-                                            <custom:ExtendedEntry MaxLength="6" x:Name="EntryDesconto" 
-                                                                  Text="{Binding pDesconto, Converter={StaticResource DecimalToStringConverter}}"
-                                                                  HorizontalTextAlignment="Start" IsEnabled="{Binding currentModel.currentTabelaPreco.bBloquearValorProdutoApp, Converter={StaticResource InvertBoolConvert}}"  Keyboard="Numeric">
+                                            <custom:ExtendedEntry
+                                                x:Name="EntryDesconto"
+                                                HorizontalTextAlignment="Start"
+                                                IsEnabled="{Binding currentModel.currentTabelaPreco.bBloquearValorProdutoApp, Converter={StaticResource InvertBoolConvert}}"
+                                                Keyboard="Numeric"
+                                                MaxLength="6"
+                                                Text="{Binding pDesconto, Converter={StaticResource DecimalToStringConverter}}">
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:DescontoItemBehaviors x:Name="descontoPorcent" TpValidacao="PORCENTAGEM" />
                                                 </custom:ExtendedEntry.Behaviors>
                                             </custom:ExtendedEntry>
 
-                                            <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center">
-                                                <abstractions:SvgImage HorizontalOptions="End" SvgPath="{StaticResource ImagemCheck}" IsVisible="{Binding Source={x:Reference descontoPorcent}, Path=IsValid}">
+                                            <Grid
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                HorizontalOptions="End"
+                                                VerticalOptions="Center">
+                                                <abstractions:SvgImage
+                                                    HorizontalOptions="End"
+                                                    IsVisible="{Binding Source={x:Reference descontoPorcent}, Path=IsValid}"
+                                                    SvgPath="{StaticResource ImagemCheck}">
                                                     <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.HeightRequest>
                                                     <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.WidthRequest>
                                                 </abstractions:SvgImage>
-                                                <abstractions:SvgImage  HorizontalOptions="End"
-                                                                  SvgPath="{StaticResource ImagemErro}"
-                                                                  IsVisible="{Binding Source={x:Reference descontoPorcent}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}">
+                                                <abstractions:SvgImage
+                                                    HorizontalOptions="End"
+                                                    IsVisible="{Binding Source={x:Reference descontoPorcent}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}"
+                                                    SvgPath="{StaticResource ImagemErro}">
                                                     <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.HeightRequest>
                                                     <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.WidthRequest>
 
                                                 </abstractions:SvgImage>
                                             </Grid>
                                         </Grid>
 
-                                        <!--VALOR DESCONTO-->
+                                        <!--  VALOR DESCONTO  -->
 
-                                        <Label Margin="5,5,0,0" Text="Valor Desconto" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="Valor Desconto" />
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <custom:ExtendedEntry  MaxLength="14" x:Name="EntryValorDesconto" Text="{Binding vDesconto, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric" 
-                                                    IsEnabled="{Binding currentModel.currentTabelaPreco.bBloquearValorProdutoApp, Converter={StaticResource InvertBoolConvert}}">
+                                            <custom:ExtendedEntry
+                                                x:Name="EntryValorDesconto"
+                                                IsEnabled="{Binding currentModel.currentTabelaPreco.bBloquearValorProdutoApp, Converter={StaticResource InvertBoolConvert}}"
+                                                Keyboard="Numeric"
+                                                MaxLength="14"
+                                                Text="{Binding vDesconto, Converter={StaticResource DecimalToStringConverter}}">
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:DescontoItemBehaviors x:Name="descontoValor" TpValidacao="VALOR" />
                                                 </custom:ExtendedEntry.Behaviors>
                                             </custom:ExtendedEntry>
-                                            <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center">
-                                                <abstractions:SvgImage HorizontalOptions="End"
-                                            SvgPath="{StaticResource ImagemCheck}"
-                                            IsVisible="{Binding Source={x:Reference descontoValor}, Path=IsValid}">
+                                            <Grid
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                HorizontalOptions="End"
+                                                VerticalOptions="Center">
+                                                <abstractions:SvgImage
+                                                    HorizontalOptions="End"
+                                                    IsVisible="{Binding Source={x:Reference descontoValor}, Path=IsValid}"
+                                                    SvgPath="{StaticResource ImagemCheck}">
                                                     <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.HeightRequest>
                                                     <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.WidthRequest>
                                                 </abstractions:SvgImage>
-                                                <abstractions:SvgImage  HorizontalOptions="End"
-                                                                  SvgPath="{StaticResource ImagemErro}"
-                                                                  IsVisible="{Binding Source={x:Reference descontoValor}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}">
+                                                <abstractions:SvgImage
+                                                    HorizontalOptions="End"
+                                                    IsVisible="{Binding Source={x:Reference descontoValor}, Path=IsValid, Converter={StaticResource InvertBoolConvert}}"
+                                                    SvgPath="{StaticResource ImagemErro}">
                                                     <abstractions:SvgImage.HeightRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.HeightRequest>
                                                     <abstractions:SvgImage.WidthRequest>
-                                                        <OnPlatform x:TypeArguments="x:Double" Android="15" WinPhone="20" iOS="20"/>
+                                                        <OnPlatform
+                                                            x:TypeArguments="x:Double"
+                                                            Android="15"
+                                                            WinPhone="20"
+                                                            iOS="20" />
                                                     </abstractions:SvgImage.WidthRequest>
 
                                                 </abstractions:SvgImage>
                                             </Grid>
                                         </Grid>
 
-                                        <Label Margin="5,5,0,0" Text="Subtotal" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                                        <Label Margin="5,5,0,0" TextColor="{StaticResource VerdePrincipal}" Text="{Binding vSubTotal,  Converter={StaticResource FormatDecimalConverter}}" />
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="Subtotal" />
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            Text="{Binding vSubTotal, Converter={StaticResource FormatDecimalConverter}}"
+                                            TextColor="{StaticResource VerdePrincipal}" />
 
-                                        <!--Comissão-->
+                                        <!--  Comissão  -->
 
-                                        <Label Margin="5,5,0,0" Text="% Comissão" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="% Comissão" />
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <custom:ExtendedEntry  MaxLength="8" IsEnabled="{Binding bAdmin}"
-                                          x:Name="EntryPComissao" Text="{Binding pComissao, Converter={StaticResource DecimalPlacesToStringConverter}}" Keyboard="Numeric" >
+                                            <custom:ExtendedEntry
+                                                x:Name="EntryPComissao"
+                                                IsEnabled="{Binding bAdmin}"
+                                                Keyboard="Numeric"
+                                                MaxLength="8"
+                                                Text="{Binding pComissao, Converter={StaticResource DecimalPlacesToStringConverter}}">
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:ComissaoItemBehaviors x:Name="ComissaoPorcent" TpValidacao="PORCENTAGEM" />
                                                 </custom:ExtendedEntry.Behaviors>
                                             </custom:ExtendedEntry>
                                         </Grid>
 
-                                        <!--VALOR DESCONTO-->
+                                        <!--  VALOR DESCONTO  -->
 
-                                        <Label Margin="5,5,0,0" Text="Valor Comissão" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="Valor Comissão" />
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <custom:ExtendedEntry MaxLength="14"
-                                          IsEnabled="False"
-                                          x:Name="EntryValorComissao" Placeholder="valor desconto" Text="{Binding vComissao, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric"  >
+                                            <custom:ExtendedEntry
+                                                x:Name="EntryValorComissao"
+                                                IsEnabled="False"
+                                                Keyboard="Numeric"
+                                                MaxLength="14"
+                                                Placeholder="valor desconto"
+                                                Text="{Binding vComissao, Converter={StaticResource DecimalToStringConverter}}">
                                                 <custom:ExtendedEntry.Behaviors>
                                                     <behaviors:ComissaoItemBehaviors x:Name="ComissaoValor" TpValidacao="VALOR" />
                                                 </custom:ExtendedEntry.Behaviors>
                                             </custom:ExtendedEntry>
                                         </Grid>
 
-                                        <!--Informações Adicionais-->
+                                        <!--  Informações Adicionais  -->
 
-                                        <Label Margin="5,5,0,0" Text="Informações Adicionais" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"  />
-                                        <Editor Keyboard="Chat" HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand" HeightRequest="{StaticResource HeightEditor}" Text="{Binding currentModel.xInfAdicionais}" />
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="Informações Adicionais" />
+                                        <Editor
+                                            HeightRequest="{StaticResource HeightEditor}"
+                                            HorizontalOptions="FillAndExpand"
+                                            Keyboard="Chat"
+                                            Text="{Binding currentModel.xInfAdicionais}"
+                                            VerticalOptions="FillAndExpand" />
 
 
 
@@ -318,16 +554,20 @@
 
                     </Grid>
                 </ScrollView>
-                <xaml:ExtendedActivityIndicator IsRunning="True"
-                                       IsVisible="{Binding IsBusy}"
-                                       Color="{StaticResource AzulPrincipal}"
-                                       AbsoluteLayout.LayoutFlags="PositionProportional"
-                                       AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"/>
+                <xaml:ExtendedActivityIndicator
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    IsRunning="True"
+                    IsVisible="{Binding IsBusy}"
+                    Color="{StaticResource AzulPrincipal}" />
             </AbsoluteLayout>
         </Grid>
     </ScrollView>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem  Icon="{Binding ImageIconSave}" Text="Salvar" Clicked="ItemSave_OnClicked" />
+        <ToolbarItem
+            Clicked="ItemSave_OnClicked"
+            Icon="{Binding ImageIconSave}"
+            Text="Salvar" />
     </ContentPage.ToolbarItems>
 </ContentPage>
