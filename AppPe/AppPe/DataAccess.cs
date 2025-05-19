@@ -12,6 +12,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.Empresa;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
+using Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais;
 using Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao;
 
 namespace Xamarin.HLP.Mobile.AppPE
@@ -117,6 +118,18 @@ namespace Xamarin.HLP.Mobile.AppPE
                 try { this.Connection.CreateTable<StatusRepresentanteProibido>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_STATUS_PROIBIDO; }
                 try { this.Connection.CreateTable<PermissoesRepresentantesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_PERMISSOES_REPRESENTANTES; }              
                 try { this.Connection.CreateTable<EquipeRepresentantesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_EQUIPE_REPRESENTANTES; }
+
+                try { this.Connection.CreateTable<RegrasComerciaisModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS; }
+                try { this.Connection.CreateTable<RcFaixasModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_FAIXAS; }
+                try { this.Connection.CreateTable<RegrasComerciaisCriteriosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS; }
+                try { this.Connection.CreateTable<RccProdutosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_PRODUTOS; }
+                try { this.Connection.CreateTable<RccClientesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_CLIENTES; }
+                try { this.Connection.CreateTable<RccCategoriaProdutoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_CATEGORIAPRODUTO; }
+                try { this.Connection.CreateTable<RccCondicaoPagamentoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_CONDICAOPAGAMENTO; }
+                try { this.Connection.CreateTable<RccRamoAtividadesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_RAMOATIVIDADES; }
+                try { this.Connection.CreateTable<RccUfModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_UF; }
+                try { this.Connection.CreateTable<RccRepresentadasModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_REPRESENTADAS; }
+                try { this.Connection.CreateTable<RccTabelaPrecoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_TABELAPRECO; }
 
                 try
                 {

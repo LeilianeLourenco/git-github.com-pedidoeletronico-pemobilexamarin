@@ -7,6 +7,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.Empresa;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
+using Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais;
 using Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao;
 
 namespace Xamarin.HLP.Mobile.AppPE.Common
@@ -52,7 +53,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_EMPRESA = "TB_EMPRESA";
         public const string TB_EMPRESA_ASPNETUSERS_METAS = "TB_EMPRESA_ASPNETUSERS_METAS";
         public const string TB_EMPRESA_ASPNETUSERS = "TB_EMPRESA_ASPNETUSERS";
-        public const string TB_PERMISSOES_REPRESENTANTES = "TB_PERMISSOES_REPRESENTANTES";       
+        public const string TB_PERMISSOES_REPRESENTANTES = "TB_PERMISSOES_REPRESENTANTES";
         public const string TB_EQUIPE_REPRESENTANTES = "TB_EQUIPE_REPRESENTANTES";
         public const string TB_REPRESENTADA = "TB_REPRESENTADA";
         public const string TB_ENDERECO = "TB_ENDERECO";
@@ -76,6 +77,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_TABELAPRECO_REPRESENTACOES = "TB_TABELAPRECO_REPRESENTACOES";
         public const string TB_INTEGRACAO = "TB_INTEGRACAO";
         public const string AspNetUsers = "AspNetUsers";
+
+        //tb_regras_comerciais_faixas
+        //tb_regras_comerciais
+
+        public const string TB_REGRAS_COMERCIAIS = "TB_REGRAS_COMERCIAIS";
+        public const string TB_REGRAS_COMERCIAIS_FAIXAS = "TB_REGRAS_COMERCIAIS_FAIXAS";
 
         public const string TB_REGRAS_COMERCIAIS_CRITERIOS = "TB_REGRAS_COMERCIAIS_CRITERIOS";
         public const string TB_REGRAS_COMERCIAIS_CRITERIOS_PRODUTOS = "TB_REGRAS_COMERCIAIS_CRITERIOS_PRODUTOS";
@@ -144,8 +151,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return tb_produto_codigocliente;
                 }
-            if(classe == typeof(IntegracaoModel))
-                switch(tipoRetornoInfoClass)
+            if (classe == typeof(IntegracaoModel))
+                switch (tipoRetornoInfoClass)
                 {
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
                         return "idIntegracao";
@@ -157,7 +164,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 {
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
                         return "idExtensaoEmpresa";
-                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:                       
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
                         return "APIextensaoEmpresa";
                     default:
                         return TB_EXTENSAO_EMPRESA;
@@ -694,7 +701,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return TB_TABELAESCALONADA_FAIXACOMISSAO;
                 }
-            if(classe == typeof(TabelaPrecoClienteUfModel))
+            if (classe == typeof(RegrasComerciaisModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idRegraComercial";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS;
+                }
+            if (classe == typeof(TabelaPrecoClienteUfModel))
             {
                 switch (tipoRetornoInfoClass)
                 {
@@ -712,7 +729,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                         }
                 }
             }
-            if(classe == typeof(TabelaPrecoClienteRamoModel))
+            if (classe == typeof(TabelaPrecoClienteRamoModel))
             {
                 switch (tipoRetornoInfoClass)
                 {
@@ -729,7 +746,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 }
             }
 
-            if(classe == typeof(ClienteRamosAtividade))
+            if (classe == typeof(ClienteRamosAtividade))
             {
                 switch (tipoRetornoInfoClass)
                 {
