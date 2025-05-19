@@ -20,6 +20,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.PagSeguro;
+using Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Integracao;
@@ -433,12 +434,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadGrades<GradeVariacaoProdutoComposicaoModel>();
 
-                if (bFalhaConexao)
-                    AnaliseFinalSincronizacao("Ocorreu um erro de conexão com a internet durante a sincronização, tente novamente.");
-                else if (ocorreuErro)
-                    AnaliseFinalSincronizacao("Houve uma queda na conexão da internet durante a sincronização, tente novamente.");
-                else
-                    AnaliseFinalSincronizacao();
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadRegrasComerciais<RegrasComerciaisModel>();
+
+                if (!ocorreuErro && !bFalhaConexao)
+                    if (bFalhaConexao)
+                        AnaliseFinalSincronizacao("Ocorreu um erro de conexão com a internet durante a sincronização, tente novamente.");
+                    else if (ocorreuErro)
+                        AnaliseFinalSincronizacao("Houve uma queda na conexão da internet durante a sincronização, tente novamente.");
+                    else
+                        AnaliseFinalSincronizacao();
             }
             catch (Exception ex)
             {
@@ -1072,6 +1077,44 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 {
                     throw new Exception($"{xTableName} - {ex.Message}");
                 }
+            }
+        }
+
+        private async Task SincronizacaoDownloadRegrasComerciais<T>() where T : class
+        {
+            IntegracaoRepository integ = new IntegracaoRepository();
+
+            var xTableName = TableMobile.GetTableNameByModel<T>();
+
+            int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+
+            var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
+
+            if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
+                _ultimaDataSinc = DateTime.Today.AddYears(-50);
+            else
+                _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-5);
+
+            try
+            {
+                if (!ocorreuErro && !bFalhaConexao)
+                {
+                    currentModel.Display = xTableName;
+
+                    var lsync = await UtilHttp.GetListRegistroSync<T>(
+                                         param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
+                                         param2: _ultimaDataSinc);
+
+
+                    await SavePrivate(lsync, xTableName);
+
+                    integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{xTableName} - {ex.Message}");
+
             }
         }
 
