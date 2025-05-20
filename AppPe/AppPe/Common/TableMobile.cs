@@ -77,10 +77,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_TABELAPRECO_REPRESENTACOES = "TB_TABELAPRECO_REPRESENTACOES";
         public const string TB_INTEGRACAO = "TB_INTEGRACAO";
         public const string AspNetUsers = "AspNetUsers";
-
-        //tb_regras_comerciais_faixas
-        //tb_regras_comerciais
-
+    
         public const string TB_REGRAS_COMERCIAIS = "TB_REGRAS_COMERCIAIS";
         public const string TB_REGRAS_COMERCIAIS_FAIXAS = "TB_REGRAS_COMERCIAIS_FAIXAS";
 
@@ -711,6 +708,106 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return TB_REGRAS_COMERCIAIS;
                 }
+            if (classe == typeof(RcFaixasModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idRegraFaixa";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_FAIXAS;
+                }
+            if (classe == typeof(RegrasComerciaisCriteriosModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCriterio";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_CRITERIOS;
+                }
+            if (classe == typeof(RccClientesModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCriterioCliente";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_CRITERIOS_CLIENTES;
+                }
+            if (classe == typeof(RccCategoriaProdutoModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCriterioCategoriaProduto";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_CRITERIOS_CATEGORIAPRODUTO;
+                }
+            if (classe == typeof(RccCondicaoPagamentoModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCriterioCondicao";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_CRITERIOS_CONDICAOPAGAMENTO;
+                }
+            if (classe == typeof(RccProdutosModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCriterioProduto";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_CRITERIOS_PRODUTOS;
+                }
+            if (classe == typeof(RccRamoAtividadesModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCriterioRamoAtividade";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_CRITERIOS_RAMOATIVIDADES;
+                }
+            if (classe == typeof(RccRepresentadasModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCriterioRepresentada";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_CRITERIOS_REPRESENTADAS;
+                }
+            if (classe == typeof(RccTabelaPrecoModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCriterioTabelaPreco";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_CRITERIOS_TABELAPRECO;
+                }
+            if (classe == typeof(RccUfModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idCriterioUF";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_CRITERIOS_UF;
+                }           
             if (classe == typeof(TabelaPrecoClienteUfModel))
             {
                 switch (tipoRetornoInfoClass)
