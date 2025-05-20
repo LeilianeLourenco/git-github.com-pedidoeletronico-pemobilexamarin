@@ -1105,8 +1105,32 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                          param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
                                          param2: _ultimaDataSinc);
 
-
                     await SavePrivate(lsync, xTableName);
+
+                    if (lsync is List<RegrasComerciaisModel> regras)
+                    {
+                        foreach (var item in regras)
+                        {
+                            await SavePrivate(item.lFaixas, "TB_REGRAS_COMERCIAIS_FAIXAS");
+
+                            foreach (var faixa in item.lFaixas)
+                            {
+                                await SavePrivate(faixa.lCriterios, "TB_REGRAS_COMERCIAIS_CRITERIOS");
+
+                                foreach (var criterio in faixa.lCriterios)
+                                {
+                                    await SavePrivate(criterio.lClientes, "TB_REGRAS_COMERCIAIS_CRITERIOS_CLIENTES");
+                                    await SavePrivate(criterio.lCategoriasProduto, "TB_REGRAS_COMERCIAIS_CRITERIOS_CATEGORIAPRODUTO");
+                                    await SavePrivate(criterio.lCondicoesPagamento, "TB_REGRAS_COMERCIAIS_CRITERIOS_CONDICAOPAGAMENTO");
+                                    await SavePrivate(criterio.lProdutos, "TB_REGRAS_COMERCIAIS_CRITERIOS_PRODUTOS");
+                                    await SavePrivate(criterio.lRamosAtividade, "TB_REGRAS_COMERCIAIS_CRITERIOS_RAMOATIVIDADES");
+                                    await SavePrivate(criterio.lRepresentadas, "TB_REGRAS_COMERCIAIS_CRITERIOS_REPRESENTADAS");
+                                    await SavePrivate(criterio.lTabelasPreco, "TB_REGRAS_COMERCIAIS_CRITERIOS_TABELAPRECO");
+                                    await SavePrivate(criterio.lUfs, "TB_REGRAS_COMERCIAIS_CRITERIOS_UF");
+                                }
+                            }
+                        }
+                    }
 
                     integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
                 }
