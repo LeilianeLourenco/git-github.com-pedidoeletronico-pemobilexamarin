@@ -7,8 +7,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
 {    
     [Table(TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_TABELAPRECO)]
     public class RccTabelaPrecoModel : ModelComum
-    {                
-        [PrimaryKey, AutoIncrement]
+    {
+        [PrimaryKey]
         public long idCriterioTabelaPreco { get; set; }
 
         /// <summary>

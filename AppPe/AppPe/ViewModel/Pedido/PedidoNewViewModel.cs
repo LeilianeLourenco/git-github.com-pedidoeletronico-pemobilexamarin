@@ -16,6 +16,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
+using Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;
 using Xamarin.HLP.Mobile.AppPE.View.Pedido;
@@ -587,7 +588,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         App.Messages.ShowAsync("Impossível alterar o cliente do pedido após ter sido lançado itens.");
                     }
                 }
-
             });
 
             GoToComplementosCommand = new Command(async () =>
@@ -1037,7 +1037,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
 
                 SetConfiguracoes(idRepresentante, idTransportadora, idUltimaCondicaoPgto, null, idRedespacho, currentModel.xFormaPagamento);
-
+                SetRegrasComerciais(currentModel.idClientesOffLine);
             });
         }
 
@@ -1090,6 +1090,31 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 xFormaPagamento = ItemFormaPgto.Display;
             }
             else ItemFormaPgto = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao(string.Empty, idCondicaoPgto).Where(t => t.Display == xFormaPagamento).FirstOrDefault();
+        }
+
+        public void SetRegrasComerciais(int idClientesOffLine)
+        {
+            int idClientes = ClienteRepository.GetClienteModel(currentModel.idClientesOffLine, false).idClientes ?? 0;
+            List<RcFaixasModel> regraCliente = new List<RcFaixasModel>();
+
+            int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+            var teste = RegrasComerciaisRepository.GetRegrasComerciais(idEmpresa).Where(x => !x.bDeletado).ToList();
+
+            foreach (var item in teste)
+            {
+                foreach (var item2 in item.lFaixas)
+                {
+                    foreach (var item3 in item2.lCriterios.Where(x => x.stCondicao == 0))
+                    {
+                        foreach (var item4 in item3.lClientes.Where(x => x.idClientes == idClientes))
+                        {
+                            regraCliente.Add(item2);
+                        }
+                    }
+                }
+            }
+
+            var teste2 = teste;
         }
 
         public void VerificaStatusCancelado()
@@ -1201,9 +1226,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                         if (!(currentModel.vJuros > 0))
                             itens.vVenda = itens.vUnitarioVendaComImpostos = _valorOrigem - itens.vDesconto;
-                        else                        
+                        else
                             itens.vVenda = itens.vUnitarioVendaComImpostos = vSubTotal / currentModel.lItens.Sum(x => x.vQtdItem);
-                        
+
                         //ocorre quando existe acréscimo na condição
                         if (itens.pDesconto < 0 || itens.vDesconto < 0)
                         {
@@ -1311,7 +1336,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 ex.TrakException("PedidoViewModel.AtualizaTotalizadoresPedido");
             }
-        }       
+        }
 
         public void BuscaFormasPagamentoTelaVendas()
         {

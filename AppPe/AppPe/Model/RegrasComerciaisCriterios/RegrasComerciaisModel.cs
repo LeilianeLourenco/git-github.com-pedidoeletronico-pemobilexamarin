@@ -8,7 +8,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
     [Table(TableMobile.TB_REGRAS_COMERCIAIS)]
     public class RegrasComerciaisModel : ModelComum
     {
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public long idRegraComercial { get; set; }
         /// <summary>
         /// Nome da regra

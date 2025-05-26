@@ -7,8 +7,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
 {    
     [Table(TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_RAMOATIVIDADES)]
     public class RccRamoAtividadesModel : ModelComum
-    {                
-        [PrimaryKey, AutoIncrement]  
+    {
+        [PrimaryKey]
         public int idCriterioRamoAtividade { get; set; }
 
         /// <summary>

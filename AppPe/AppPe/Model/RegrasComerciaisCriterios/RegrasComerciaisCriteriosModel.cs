@@ -13,7 +13,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
 
         }
 
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public long idCriterio { get; set; }
 
         /// <summary>

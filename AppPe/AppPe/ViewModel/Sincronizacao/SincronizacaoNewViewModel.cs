@@ -1100,11 +1100,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                 {
                     currentModel.Display = xTableName;
+                    int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
                     var lsync = await UtilHttp.GetListRegistroSync<T>(
-                                         param1: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
+                                         param1: idEmpresa,
                                          param2: _ultimaDataSinc);
 
+                    EnvironmentRepository.ExcluirRegistrosNecessarios(TableMobile.GetApiRegistroByModel<T>(), idEmpresa);
                     await SavePrivate(lsync, xTableName);
 
                     if (lsync is List<RegrasComerciaisModel> regras)

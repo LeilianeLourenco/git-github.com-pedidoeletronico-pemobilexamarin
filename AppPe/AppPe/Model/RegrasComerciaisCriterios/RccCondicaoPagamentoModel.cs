@@ -7,8 +7,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
 {    
     [Table(TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_CONDICAOPAGAMENTO)]
     public class RccCondicaoPagamentoModel : ModelComum
-    {                
-        [PrimaryKey, AutoIncrement]    
+    {
+        [PrimaryKey]
         public long idCriterioCondicao { get; set; }
 
         /// <summary>
