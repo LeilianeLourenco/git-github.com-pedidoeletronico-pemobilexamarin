@@ -7,8 +7,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
 {    
     [Table(TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_CLIENTES)]
     public class RccClientesModel : ModelComum
-    {                
-        [PrimaryKey, AutoIncrement]
+    {
+        [PrimaryKey]
         public long idCriterioCliente { get; set; }
 
         /// <summary>

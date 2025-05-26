@@ -7,8 +7,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
 {    
     [Table(TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_REPRESENTADAS)]
     public class RccRepresentadasModel : ModelComum
-    {                
-        [PrimaryKey, AutoIncrement]
+    {
+        [PrimaryKey]
         public long idCriterioRepresentada { get; set; }
 
         /// <summary>

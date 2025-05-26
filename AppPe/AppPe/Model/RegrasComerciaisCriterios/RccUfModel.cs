@@ -7,8 +7,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
 {    
     [Table(TableMobile.TB_REGRAS_COMERCIAIS_CRITERIOS_UF)]
     public class RccUfModel : ModelComum
-    {                
-        [PrimaryKey, AutoIncrement]
+    {
+        [PrimaryKey]
         public long idCriterioUF { get; set; }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xamarin.HLP.Mobile.AppPE.Common;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
@@ -278,6 +279,25 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 string xQuery = $@"DELETE FROM TB_CLIENTES_CONDICOESPAGAMENTO WHERE idEmpresa = {idEmpresa}";
 
                 App.Data.Connection.Execute(xQuery);
+            }
+            if (nomeApi == "ApiRegrasComerciais")
+            {
+                var queries = new List<string>
+                {
+                    "DELETE FROM TB_REGRAS_COMERCIAIS_CRITERIOS_TABELAPRECO",
+                    $"DELETE FROM TB_REGRAS_COMERCIAIS_CRITERIOS_REPRESENTADAS",
+                    $"DELETE FROM TB_REGRAS_COMERCIAIS_CRITERIOS_UF",
+                    $"DELETE FROM TB_REGRAS_COMERCIAIS_CRITERIOS_RAMOATIVIDADES",
+                    $"DELETE FROM TB_REGRAS_COMERCIAIS_CRITERIOS_CONDICAOPAGAMENTO",
+                    $"DELETE FROM TB_REGRAS_COMERCIAIS_CRITERIOS_CATEGORIAPRODUTO",
+                    $"DELETE FROM TB_REGRAS_COMERCIAIS_CRITERIOS_CLIENTES",
+                    $"DELETE FROM TB_REGRAS_COMERCIAIS_CRITERIOS",
+                    $"DELETE FROM TB_REGRAS_COMERCIAIS_FAIXAS",
+                    $"DELETE FROM TB_REGRAS_COMERCIAIS WHERE idEmpresa = {idEmpresa}"
+                };
+
+                foreach (var query in queries)               
+                    App.Data.Connection.Execute(query);               
             }
         }
     }

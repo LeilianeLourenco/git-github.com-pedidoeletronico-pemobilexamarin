@@ -8,7 +8,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
     [Table(TableMobile.TB_REGRAS_COMERCIAIS_FAIXAS)]
     public class RcFaixasModel : ModelComum
     {
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public long idRegraFaixa { get; set; }
         /// <summary>
         /// boleano de deleção da regra
