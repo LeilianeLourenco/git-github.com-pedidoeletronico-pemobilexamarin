@@ -12,22 +12,22 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
         public static List<RegrasComerciaisModel> GetRegrasComerciais(int idEmpresa)
         {
             var regras = App.Data.Connection.Table<RegrasComerciaisModel>()
-                        .Where(c => c.idEmpresa == idEmpresa && !c.bDeletado).ToList();
+                        .Where(c => c.idEmpresa == idEmpresa).ToList();    
 
             foreach (var regra in regras)
             {
                 regra.lFaixas = App.Data.Connection.Table<RcFaixasModel>()
-                                        .Where(f => f.idRegraComercial == regra.idRegraComercial).ToList();
+                                        .Where(f => f.idRegraComercial == regra.idRegraComercial).ToList();               
 
                 foreach (var faixa in regra.lFaixas)
                 {
-                    faixa.lCriterios = App.Data.Connection.Table<RegrasComerciaisCriteriosModel>()
-                                                .Where(c => c.idRegraFaixa == faixa.idRegraFaixa).ToList();
+                    faixa.lCriterios = App.Data.Connection.Table<RcCriteriosModel>()
+                                                .Where(c => c.idRegraComercialFaixa == faixa.idRegraComercialFaixa).ToList();
 
                     foreach (var criterio in faixa.lCriterios)
                     {
-                        criterio.lClientes = App.Data.Connection.Table<RccClientesModel>()
-                                                    .Where(x => x.idCriterio == criterio.idCriterio).ToList();
+                        criterio.lClientes = App.Data.Connection.Table<RcFaixasCriterioVinculoModel>()
+                                                    .Where(x => x.idRegraComercialFaixaCriterio == criterio.idRegraComercialFaixaCriterio).ToList();
 
                         //criterio.lCategoriasProduto = App.Data.Connection.Table<CriterioCategoriaProdutoModel>()
                         //                                .Where(x => x.idCriterio == criterio.id).ToList();

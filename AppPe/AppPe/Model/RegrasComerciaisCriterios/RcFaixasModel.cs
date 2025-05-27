@@ -9,38 +9,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais
     public class RcFaixasModel : ModelComum
     {
         [PrimaryKey]
-        public long idRegraFaixa { get; set; }
-        /// <summary>
-        /// boleano de deleção da regra
-        /// </summary>
-        public bool bDeletado { get; set; }
-        /// <summary>
-        /// numero sequencia
-        /// </summary>
-        public int nSequenciaRegra { get; set; }
-
-        /// <summary>
-        /// data de ultima alteração da regra
-        /// </summary>
+        public long idRegraComercialFaixa { get; set; }
         public DateTime? dtUltimaAlteracao { get; set; }
-
-        /// <summary>
-        /// utilizado para o acréscimo ou desconto
-        /// </summary>  
-        public decimal? nPercentual { get; set; }
-
-        /// <summary>
-        /// 0 - acrécismo
-        /// 1 - desconto
-        /// </summary>
-        public byte? stTipoPercentual { get; set; }
-
-        /// <summary>
-        /// Relação tb_regras_comerciais e faixas
-        /// </summary>
         public long idRegraComercial { get; set; }
+        public byte? stTipoPercentual { get; set; }
+        public int nSequenciaRegra { get; set; }
+        public decimal? nPercentual { get; set; }
+        public bool bDeletado { get; set; }
 
         [Ignore]
-        public List<RegrasComerciaisCriteriosModel> lCriterios { get; set; }
+        public List<RcCriteriosModel> lCriterios { get; set; }
     }
 }

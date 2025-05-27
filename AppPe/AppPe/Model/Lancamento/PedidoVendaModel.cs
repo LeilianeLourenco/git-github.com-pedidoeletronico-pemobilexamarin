@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
 using System.ComponentModel.Design.Serialization;
+using Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais;
 
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
@@ -107,7 +108,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _xEndereco; }
             set
             {
-                _xEndereco = value; NotifyPropertyChanged();               
+                _xEndereco = value; NotifyPropertyChanged();
             }
         }
 
@@ -171,8 +172,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _vJuros; }
             set
             {
-                _vJuros = value; 
-                NotifyPropertyChanged();    
+                _vJuros = value;
+                NotifyPropertyChanged();
             }
         }
 
@@ -530,6 +531,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
+        private int? _idRegraComercial { get; set; }
+
+        public int? idRegraComercial
+        {
+            get
+            {
+                return _idRegraComercial;
+            }
+            set
+            {
+                _idRegraComercial = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #region Propriedades que não fazem parte da base de dados
 
         [Ignore]
@@ -621,7 +637,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 _lRecebimentoTitulosManual = value;
                 NotifyPropertyChanged();
             }
-        }        
+        }
+
+        [Ignore]
+        [IgnoreDataMember]
+        private List<RcFaixasModel> _lRegrasComerciais { get; set; } = new List<RcFaixasModel>();
+
+        [IgnoreDataMember]
+        [Ignore]
+        public List<RcFaixasModel> lRegrasComerciais
+        {
+            get { return _lRegrasComerciais; }
+            set { _lRegrasComerciais = value; NotifyPropertyChanged(); }
+        }       
 
         public int GetNextValidAgrupamento()
         {

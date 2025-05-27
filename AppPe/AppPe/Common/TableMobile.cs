@@ -80,8 +80,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
     
         public const string TB_REGRAS_COMERCIAIS = "TB_REGRAS_COMERCIAIS";
         public const string TB_REGRAS_COMERCIAIS_FAIXAS = "TB_REGRAS_COMERCIAIS_FAIXAS";
-
         public const string TB_REGRAS_COMERCIAIS_CRITERIOS = "TB_REGRAS_COMERCIAIS_CRITERIOS";
+
+        public const string TB_REGRAS_COMERCIAIS_FAIXAS_CRITERIO_VINCULO = "TB_REGRAS_COMERCIAIS_FAIXAS_CRITERIO_VINCULO";
+
         public const string TB_REGRAS_COMERCIAIS_CRITERIOS_PRODUTOS = "TB_REGRAS_COMERCIAIS_CRITERIOS_PRODUTOS";
         public const string TB_REGRAS_COMERCIAIS_CRITERIOS_CLIENTES = "TB_REGRAS_COMERCIAIS_CRITERIOS_CLIENTES";
         public const string TB_REGRAS_COMERCIAIS_CRITERIOS_CATEGORIAPRODUTO = "TB_REGRAS_COMERCIAIS_CRITERIOS_CATEGORIAPRODUTO";
@@ -712,21 +714,31 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 switch (tipoRetornoInfoClass)
                 {
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
-                        return "idRegraFaixa";
+                        return "idRegraComercialFaixa";
                     case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
                         return "ApiRegrasComerciais";
                     default:
                         return TB_REGRAS_COMERCIAIS_FAIXAS;
                 }
-            if (classe == typeof(RegrasComerciaisCriteriosModel))
+            if (classe == typeof(RcCriteriosModel))
                 switch (tipoRetornoInfoClass)
                 {
                     case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
-                        return "idCriterio";
+                        return "idRegraComercialFaixaCriterio";
                     case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
                         return "ApiRegrasComerciais";
                     default:
                         return TB_REGRAS_COMERCIAIS_CRITERIOS;
+                }
+            if (classe == typeof(RcFaixasCriterioVinculoModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "id";
+                    case UtilHttp.TipoRetornoInfoClass.ApiRegistro:
+                        return "ApiRegrasComerciais";
+                    default:
+                        return TB_REGRAS_COMERCIAIS_FAIXAS_CRITERIO_VINCULO;
                 }
             if (classe == typeof(RccClientesModel))
                 switch (tipoRetornoInfoClass)
