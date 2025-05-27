@@ -1121,14 +1121,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                                 foreach (var criterio in faixa.lCriterios)
                                 {
-                                    await SavePrivate(criterio.lClientes, "TB_REGRAS_COMERCIAIS_CRITERIOS_CLIENTES");
-                                    await SavePrivate(criterio.lCategoriasProduto, "TB_REGRAS_COMERCIAIS_CRITERIOS_CATEGORIAPRODUTO");
-                                    await SavePrivate(criterio.lCondicoesPagamento, "TB_REGRAS_COMERCIAIS_CRITERIOS_CONDICAOPAGAMENTO");
-                                    await SavePrivate(criterio.lProdutos, "TB_REGRAS_COMERCIAIS_CRITERIOS_PRODUTOS");
-                                    await SavePrivate(criterio.lRamosAtividade, "TB_REGRAS_COMERCIAIS_CRITERIOS_RAMOATIVIDADES");
-                                    await SavePrivate(criterio.lRepresentadas, "TB_REGRAS_COMERCIAIS_CRITERIOS_REPRESENTADAS");
-                                    await SavePrivate(criterio.lTabelasPreco, "TB_REGRAS_COMERCIAIS_CRITERIOS_TABELAPRECO");
-                                    await SavePrivate(criterio.lUfs, "TB_REGRAS_COMERCIAIS_CRITERIOS_UF");
+                                    await SavePrivate(criterio.lClientes, "TB_REGRAS_COMERCIAIS_FAIXAS_CRITERIO_VINCULO");
+                                    //await SavePrivate(criterio.lCategoriasProduto, "TB_REGRAS_COMERCIAIS_CRITERIOS_CATEGORIAPRODUTO");
+                                    //await SavePrivate(criterio.lCondicoesPagamento, "TB_REGRAS_COMERCIAIS_CRITERIOS_CONDICAOPAGAMENTO");
+                                    //await SavePrivate(criterio.lProdutos, "TB_REGRAS_COMERCIAIS_CRITERIOS_PRODUTOS");
+                                    //await SavePrivate(criterio.lRamosAtividade, "TB_REGRAS_COMERCIAIS_CRITERIOS_RAMOATIVIDADES");
+                                    //await SavePrivate(criterio.lRepresentadas, "TB_REGRAS_COMERCIAIS_CRITERIOS_REPRESENTADAS");
+                                    //await SavePrivate(criterio.lTabelasPreco, "TB_REGRAS_COMERCIAIS_CRITERIOS_TABELAPRECO");
+                                    //await SavePrivate(criterio.lUfs, "TB_REGRAS_COMERCIAIS_CRITERIOS_UF");
                                 }
                             }
                         }

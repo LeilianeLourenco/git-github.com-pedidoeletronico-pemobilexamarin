@@ -1037,7 +1037,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
 
                 SetConfiguracoes(idRepresentante, idTransportadora, idUltimaCondicaoPgto, null, idRedespacho, currentModel.xFormaPagamento);
-                SetRegrasComerciais(currentModel.idClientesOffLine);
+                GetRegrasComerciais();
             });
         }
 
@@ -1092,34 +1092,66 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             else ItemFormaPgto = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao(string.Empty, idCondicaoPgto).Where(t => t.Display == xFormaPagamento).FirstOrDefault();
         }
 
-        public void SetRegrasComerciais(int idClientesOffLine)
+        public void GetRegrasComerciais()
         {
             int idClientes = ClienteRepository.GetClienteModel(currentModel.idClientesOffLine, false).idClientes ?? 0;
-            List<RcFaixasModel> regraCliente = new List<RcFaixasModel>();
 
             int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
-            var teste = RegrasComerciaisRepository.GetRegrasComerciais(idEmpresa).Where(x => !x.bDeletado).ToList();
+            var regras = RegrasComerciaisRepository.GetRegrasComerciais(idEmpresa).ToList();
 
-            foreach (var item in teste)
+            foreach (var regra in regras)
             {
-                foreach (var item2 in item.lFaixas)
+                foreach (var faixa in regra.lFaixas)
                 {
-                    foreach (var item3 in item2.lCriterios.Where(x => x.stCondicao == 0))
-                    {
-                        foreach (var item4 in item3.lClientes.Where(x => x.idClientes == idClientes))
-                        {
-                            regraCliente.Add(item2);
-                        }
-                    }
+                    foreach (var criterio in faixa.lCriterios.Where(x => x.stQualRegra == 0))
+                        criterio.lClientes.Where(x => x.idVinculo == idClientes).ForEach(x => currentModel.lRegrasComerciais.Add(faixa));
+
                 }
             }
+        }
 
-            var teste2 = teste;
+        public void AplicaRegraComercial()
+        {
+            if (!(currentModel.lRegrasComerciais.Count > 0))
+                return;
+
+            var regra = currentModel.lRegrasComerciais?.FirstOrDefault();
+
+            switch (regra.stTipoPercentual)
+            {
+                case 0:
+                    break;
+                case 1:
+
+                    foreach (var item in currentModel.lItens)
+                    {
+                        item.pDesconto += (double)(regra?.nPercentual ?? 0);
+                        item.vDesconto += item.vSubTotalSemImpostos * (item.pDesconto / 100.0);
+
+                        item.vSubTotal -= item.vDesconto;
+                        item.vSubTotalSemImpostos -= item.vDesconto;
+
+                        item.vUnitarioVendaComImpostos -= item.vDesconto;
+                        item.vUnitarioVendaComImpostosOriginal -= item.vDesconto;
+                    }
+
+                    currentModel.idRegraComercial = (int)(regra.idRegraComercial);
+
+                    break;
+                case 2:
+
+                    //foreach (var item in currentModel.lItens)
+                    //{
+                    //    item.vAcrescimo += item.vSubTotalSemImpostos - item.vSubTotal;
+                    //}
+
+                    break;
+            }
         }
 
         public void VerificaStatusCancelado()
         {
-            bCancelado = ItemSatus.Id == 1;
+            bCancelado = ItemSatus?.Id == 1;
         }
 
         public void AtualizaTotalizadoresPedido()
@@ -1538,6 +1570,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     await App.Messages.ShowAsync("Cliente é um campo obrigatório para o lançamento.");
                     return;
                 }
+
                 if (ItemCondicaoPgto.Id == 0 && lRecebimentoTitulosManualModel.Count == 0)
                 {
                     await App.Messages.ShowAsync("Condição de pagamento é um campo obrigatório para o lançamento");
@@ -1549,13 +1582,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     await App.Messages.ShowAsync("Ao menos um item é necessário para finalizarmos.");
                     return;
                 }
-                if (ItemSatus.Id == 1 && (currentModel.xMotivoCancelamento ?? "").Equals(""))
+
+                if (ItemSatus?.Id == 1 && (currentModel.xMotivoCancelamento ?? "").Equals(""))
                 {
                     await App.Messages.ShowAsync("Informe o motivo de cancelamento.");
                     return;
                 }
 
-                if (currentModel.stLancamento == 0 && ItemSatus.Id == 2 && currentModel.stPedidoVenda == 0)
+                if (currentModel.stLancamento == 0 && ItemSatus?.Id == 2 && currentModel.stPedidoVenda == 0)
                 {
                     if (
                         await
@@ -1658,7 +1692,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                     if (currentModel.bValidadoMinimoVendas)
                     {
-                        currentModel.stPedidoVenda = (byte)ItemSatus.Id;
+                        currentModel.stPedidoVenda = (byte)(ItemSatus?.Id ?? 0);
                         if (!string.IsNullOrEmpty(ItemSatus?.XId))
                             currentModel.idStatus = Convert.ToInt32(ItemSatus.XId);
 
@@ -1690,6 +1724,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     if (currentModel.idPedidoVenda != null)
                         currentModel.bPedidoComAlteracao = true;
 
+                    AplicaRegraComercial();
                     PedidoRepository.SavePedidoVenda(currentModel);
 
                     foreach (var item in lRecebimentoTitulosManualModel)
