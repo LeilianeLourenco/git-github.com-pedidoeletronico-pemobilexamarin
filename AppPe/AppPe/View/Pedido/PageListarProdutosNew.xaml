@@ -1,28 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:behaviors="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:pedido1="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageListarProdutosNew" IsBusy="{Binding IsBusy}">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Pedido.PageListarProdutosNew"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:behaviors="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:pedido1="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    IsBusy="{Binding IsBusy}">
     <ContentPage.Title>
-        <OnPlatform x:TypeArguments="x:String" Android="Produtos" WinPhone="Produtos" />
+        <OnPlatform
+            x:TypeArguments="x:String"
+            Android="Produtos"
+            WinPhone="Produtos" />
     </ContentPage.Title>
     <ContentPage.BindingContext>
-        <pedido:ListarProdutosNewViewModel/>
+        <pedido:ListarProdutosNewViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <pedido1:QtdeItemEditItemConverter x:Key="QtdeItemPedidoConverter"/>
-            <pedido1:BoolToColorConverter x:Key="BoolToColorConverter"/>
+            <pedido1:QtdeItemEditItemConverter x:Key="QtdeItemPedidoConverter" />
+            <pedido1:BoolToColorConverter x:Key="BoolToColorConverter" />
 
-            <Style TargetType="Label" x:Key="HeaderLabelProduto">
+            <Style x:Key="HeaderLabelProduto" TargetType="Label">
                 <Setter Property="FontSize">
                     <Setter.Value>
-                        <OnPlatform x:TypeArguments="x:Double" iOS="9" Android="9" WinPhone="14"/>
+                        <OnPlatform
+                            x:TypeArguments="x:Double"
+                            Android="9"
+                            WinPhone="14"
+                            iOS="9" />
                     </Setter.Value>
                 </Setter>
                 <Setter Property="TextColor" Value="{StaticResource CinzaPrincipal}" />
@@ -41,159 +50,218 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" IsVisible="{Binding bFind}" Padding="5,5,5,5">
+        <Grid
+            Grid.Row="0"
+            Padding="5,5,5,5"
+            IsVisible="{Binding bFind}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <xaml:SearchPE Grid.Column="0" x:Name="SearchBarPesquisa" SearchCommand="{Binding SearchCommand}" Placeholder="pesquisar..." Text="{Binding xFiltro, Mode=TwoWay}" />
-            <Grid Grid.Column="1" x:Name="GridPesquisaBarCode">
-                <abstractions:SvgImage x:Name="btnExecutePesquisaBarCode" HorizontalOptions="Center" VerticalOptions="Center" SvgPath="{StaticResource ImagemPesquisarBarCode}" >
+            <xaml:SearchPE
+                x:Name="SearchBarPesquisa"
+                Grid.Column="0"
+                Placeholder="pesquisar..."
+                SearchCommand="{Binding SearchCommand}"
+                Text="{Binding xFiltro, Mode=TwoWay}" />
+            <Grid x:Name="GridPesquisaBarCode" Grid.Column="1">
+                <abstractions:SvgImage
+                    x:Name="btnExecutePesquisaBarCode"
+                    HorizontalOptions="Center"
+                    SvgPath="{StaticResource ImagemPesquisarBarCode}"
+                    VerticalOptions="Center">
                     <abstractions:SvgImage.HeightRequest>
-                        <OnPlatform x:TypeArguments="x:Double" WinPhone="40" Android="34" iOS="30"/>
+                        <OnPlatform
+                            x:TypeArguments="x:Double"
+                            Android="34"
+                            WinPhone="40"
+                            iOS="30" />
                     </abstractions:SvgImage.HeightRequest>
                     <abstractions:SvgImage.WidthRequest>
-                        <OnPlatform x:TypeArguments="x:Double" WinPhone="40" Android="34" iOS="30"/>
+                        <OnPlatform
+                            x:TypeArguments="x:Double"
+                            Android="34"
+                            WinPhone="40"
+                            iOS="30" />
                     </abstractions:SvgImage.WidthRequest>
                 </abstractions:SvgImage>
             </Grid>
         </Grid>
 
         <Grid Grid.Row="1">
-            <ScrollView Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <StackLayout Orientation="Horizontal" Margin="10,10,10,10"  x:Name="ScrollButtonsFiltros">
-                    <Button Text="Itens" CornerRadius="50"  
-                            Command="{Binding AplicaFiltroItensCommand}"
-                            Clicked="ButtonFiltros_OnClicked">
-                        <Button.BackgroundColor> 
-                            <OnPlatform x:TypeArguments="Color" Android="{StaticResource CinzaEscuro}"/>
+            <ScrollView HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                <StackLayout
+                    x:Name="ScrollButtonsFiltros"
+                    Margin="10,10,10,10"
+                    Orientation="Horizontal">
+                    <Button
+                        Clicked="ButtonFiltros_OnClicked"
+                        Command="{Binding AplicaFiltroItensCommand}"
+                        CornerRadius="50"
+                        Text="Itens">
+                        <Button.BackgroundColor>
+                            <OnPlatform x:TypeArguments="Color" Android="{StaticResource CinzaEscuro}" />
                         </Button.BackgroundColor>
                         <Button.TextColor>
-                            <OnPlatform x:TypeArguments="Color" Android="{StaticResource Branco}" iOS="{StaticResource CinzaEscuro}" />
+                            <OnPlatform
+                                x:TypeArguments="Color"
+                                Android="{StaticResource Branco}"
+                                iOS="{StaticResource CinzaEscuro}" />
                         </Button.TextColor>
                     </Button>
-                    <Button Text="Recorrência" 
-                            Clicked="ButtonFiltros_OnClicked"
-                            Command="{Binding AplicaFiltroRecorrenciaCommand}"
-                            CornerRadius="50">
-                    </Button>
-                    <Button Text="Campanhas"  
-                            Clicked="ButtonFiltros_OnClicked" 
-                            Command="{Binding AplicaFiltroCampanhaCommand}"
-                            CornerRadius="50">
-                    </Button>
-                    <Button Text="Destaques" 
-                            Clicked="ButtonFiltros_OnClicked" 
-                            Command="{Binding AplicaFiltroDestaquesCommand}"
-                            CornerRadius="50">
-                    </Button> 
-                </StackLayout> 
+                    <Button
+                        Clicked="ButtonFiltros_OnClicked"
+                        Command="{Binding AplicaFiltroRecorrenciaCommand}"
+                        CornerRadius="50"
+                        Text="Recorrência" />
+                    <Button
+                        Clicked="ButtonFiltros_OnClicked"
+                        Command="{Binding AplicaFiltroCampanhaCommand}"
+                        CornerRadius="50"
+                        Text="Campanhas" />
+                    <Button
+                        Clicked="ButtonFiltros_OnClicked"
+                        Command="{Binding AplicaFiltroDestaquesCommand}"
+                        CornerRadius="50"
+                        Text="Destaques" />
+                </StackLayout>
             </ScrollView>
         </Grid>
 
-        <Grid Grid.Row="2" RowSpacing="0" IsVisible="False" x:Name="GridImpostos" Padding="5,0,5,0">
+        <Grid
+            x:Name="GridImpostos"
+            Grid.Row="2"
+            Padding="5,0,5,0"
+            IsVisible="False"
+            RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition  Height="Auto"/>
-                <RowDefinition  Height="Auto"/>
-                <RowDefinition  Height="Auto"/>
-                <RowDefinition  Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <StackLayout IsVisible="{Binding bUsaLocaisEstoque}" Grid.Row="0" x:Name="StackLayoutLocalEstoque">
+            <StackLayout
+                x:Name="StackLayoutLocalEstoque"
+                Grid.Row="0"
+                IsVisible="{Binding bUsaLocaisEstoque}">
 
-                <custom:BindablePickerV2 HorizontalOptions="FillAndExpand" DisplayMemberPath="Display" ItemsSource="{Binding ListaLocalEstoque}" SelectedItem="{Binding CurrentLocalEstoque, Mode=TwoWay}" />
+                <custom:BindablePickerV2
+                    DisplayMemberPath="Display"
+                    HorizontalOptions="FillAndExpand"
+                    ItemsSource="{Binding ListaLocalEstoque}"
+                    SelectedItem="{Binding CurrentLocalEstoque, Mode=TwoWay}" />
 
             </StackLayout>
 
-            <StackLayout Grid.Row="1" x:Name="StackLayoutListaPreco">
+            <StackLayout x:Name="StackLayoutListaPreco" Grid.Row="1">
 
-                <custom:BindablePickerV2 HorizontalOptions="FillAndExpand" DisplayMemberPath="Display" ItemsSource="{Binding ListaTabelaPreco}" SelectedItem="{Binding CurrentTabelaPreco, Mode=TwoWay}" />
+                <custom:BindablePickerV2
+                    DisplayMemberPath="Display"
+                    HorizontalOptions="FillAndExpand"
+                    ItemsSource="{Binding ListaTabelaPreco}"
+                    SelectedItem="{Binding CurrentTabelaPreco, Mode=TwoWay}" />
 
             </StackLayout>
 
             <Grid Grid.Row="2" ColumnSpacing="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25*"/>
-                    <ColumnDefinition Width="25*"/>
-                    <ColumnDefinition Width="25*"/>
-                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*" />
+                    <ColumnDefinition Width="25*" />
+                    <ColumnDefinition Width="25*" />
+                    <ColumnDefinition Width="25*" />
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Row="0"  
-               Grid.Column="0" 
-               Text="QUANTIDADE"
-               LineBreakMode="NoWrap"
-               Style="{StaticResource HeaderLabelProduto}"/>
-                <Label Grid.Row="0"
-               Grid.Column="1" 
-               Text="R$ UNITÁRIO C/IMP" 
-               LineBreakMode="NoWrap" 
-               Style="{StaticResource HeaderLabelProduto}" />
-                <Label Grid.Row="0" 
-               Grid.Column="2" 
-               Text="% DESCONTO" 
-               LineBreakMode="NoWrap" 
-               Style="{StaticResource HeaderLabelProduto}" />
-                <Label Grid.Row="0" 
-               Grid.Column="3" 
-               Text="R$ DESCONTO" 
-               LineBreakMode="NoWrap" 
-               Style="{StaticResource HeaderLabelProduto}"/>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabelProduto}"
+                    Text="QUANTIDADE" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabelProduto}"
+                    Text="R$ UNITÁRIO C/IMP" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabelProduto}"
+                    Text="% DESCONTO" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabelProduto}"
+                    Text="R$ DESCONTO" />
 
 
-                <custom:ExtendedEntry 
-            Grid.Row="1"  
-            x:Name="EntryQtde"
-            Keyboard="Numeric" 
-            IsVisible="{Binding HasGradeSelected, Converter={StaticResource InvertBoolConvert}}"                         
-            Grid.Column="0" 
-            Placeholder="0" 
-            Text="{Binding editarItemViewModel.currentModel.vQtdItem, Converter={StaticResource QtdeItemPedidoConverter}}"
-            PropertyChanged="EntryQtde_OnPropertyChanged"  TextChanged="EntryQtde_OnTextChanged" />
+                <custom:ExtendedEntry
+                    x:Name="EntryQtde"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    IsVisible="{Binding HasGradeSelected, Converter={StaticResource InvertBoolConvert}}"
+                    Keyboard="Numeric"
+                    Placeholder="0"
+                    PropertyChanged="EntryQtde_OnPropertyChanged"
+                    Text="{Binding editarItemViewModel.currentModel.vQtdItem, Converter={StaticResource QtdeItemPedidoConverter}}"
+                    TextChanged="EntryQtde_OnTextChanged" />
 
-                <Entry Grid.Row="1" 
-               Keyboard="Numeric" 
-               IsEnabled="False" 
-               IsVisible="{Binding HasGradeSelected}" 
-               Text="{Binding editarItemViewModel.vQtdeTotal, Converter={StaticResource QtdeItemPedidoConverter}}"
-               Grid.Column="0" Placeholder="0"/>
+                <Entry
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    IsEnabled="False"
+                    IsVisible="{Binding HasGradeSelected}"
+                    Keyboard="Numeric"
+                    Placeholder="0"
+                    Text="{Binding editarItemViewModel.vQtdeTotal, Converter={StaticResource QtdeItemPedidoConverter}}" />
 
-                <custom:ExtendedEntry Grid.Row="1" 
-                              IsEnabled="{Binding editarItemViewModel.currentModel.currentTabelaPreco.bEscalonada, Converter={StaticResource InvertBoolConvert}}" 
-                              x:Name="EntryValorUnitario" 
-                              Grid.Column="1"
-                              Placeholder="0,00"
-                              Text="{Binding editarItemViewModel.vUnitarioVendaComImpostos, Converter={StaticResource DecimalToStringConverter}}"
-                              Keyboard="Numeric">
+                <custom:ExtendedEntry
+                    x:Name="EntryValorUnitario"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    IsEnabled="{Binding editarItemViewModel.currentModel.currentTabelaPreco.bEscalonada, Converter={StaticResource InvertBoolConvert}}"
+                    Keyboard="Numeric"
+                    Placeholder="0,00"
+                    Text="{Binding editarItemViewModel.vUnitarioVendaComImpostos, Converter={StaticResource DecimalToStringConverter}}">
                     <custom:ExtendedEntry.Behaviors>
                         <behaviors:ValorUnitarioComImpostosBehaviors x:Name="ValorUnitarioComImpostos" />
                     </custom:ExtendedEntry.Behaviors>
                 </custom:ExtendedEntry>
 
-                <custom:ExtendedEntry Grid.Row="1"   
-                              x:Name="EntryDesconto" 
-                              TextColor="{Binding Source={x:Reference DescontoPorcent}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}"
-                              Grid.Column="2" 
-                              Placeholder="0" 
-                              Text="{Binding editarItemViewModel.pDesconto, Converter={StaticResource DecimalToStringConverter}}" 
-                              Keyboard="Numeric">
+                <custom:ExtendedEntry
+                    x:Name="EntryDesconto"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Keyboard="Numeric"
+                    Placeholder="0"
+                    Text="{Binding editarItemViewModel.pDesconto, Converter={StaticResource DecimalToStringConverter}}"
+                    TextColor="{Binding Source={x:Reference DescontoPorcent}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}">
                     <custom:ExtendedEntry.Behaviors>
                         <behaviors:DescontoItemBehaviors x:Name="DescontoPorcent" TpValidacao="PORCENTAGEM" />
                     </custom:ExtendedEntry.Behaviors>
                 </custom:ExtendedEntry>
 
-                <custom:ExtendedEntry Grid.Row="1" x:Name="EntryValorDesconto" TextColor="{Binding Source={x:Reference DescontoValor}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}" Grid.Column="3" Placeholder="0,00"
-                      Text="{Binding editarItemViewModel.vDesconto, Converter={StaticResource DecimalToStringConverter}}" Keyboard="Numeric">
+                <custom:ExtendedEntry
+                    x:Name="EntryValorDesconto"
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Keyboard="Numeric"
+                    Placeholder="0,00"
+                    Text="{Binding editarItemViewModel.vDesconto, Converter={StaticResource DecimalToStringConverter}}"
+                    TextColor="{Binding Source={x:Reference DescontoValor}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}">
                     <custom:ExtendedEntry.Behaviors>
                         <behaviors:DescontoItemBehaviors x:Name="DescontoValor" TpValidacao="VALOR" />
                     </custom:ExtendedEntry.Behaviors>
@@ -203,58 +271,96 @@
 
             <Grid Grid.Row="3" ColumnSpacing="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="30*" />
+                    <ColumnDefinition Width="30*" />
+                    <ColumnDefinition Width="40*" />
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Row="0" Grid.Column="0" Text="% COMISSÃO" LineBreakMode="TailTruncation" TextColor="{Binding Source={x:Reference ComissaoPorcent}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}" FontSize="9">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    FontSize="9"
+                    LineBreakMode="TailTruncation"
+                    Text="% COMISSÃO"
+                    TextColor="{Binding Source={x:Reference ComissaoPorcent}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}">
                     <Label.Margin>
-                        <OnPlatform x:TypeArguments="Thickness" Android="5,0,0,-8"/>
+                        <OnPlatform x:TypeArguments="Thickness" Android="5,0,0,-8" />
                     </Label.Margin>
                 </Label>
-                <Label Grid.Row="0" Grid.Column="1" Text="R$ COMISSÃO" LineBreakMode="TailTruncation" TextColor="{Binding Source={x:Reference ComissaoValor}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}" FontSize="9">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="9"
+                    LineBreakMode="TailTruncation"
+                    Text="R$ COMISSÃO"
+                    TextColor="{Binding Source={x:Reference ComissaoValor}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}">
                     <Label.Margin>
-                        <OnPlatform x:TypeArguments="Thickness" Android="5,0,0,-8"/>
+                        <OnPlatform x:TypeArguments="Thickness" Android="5,0,0,-8" />
                     </Label.Margin>
                 </Label>
-                <Label Grid.Row="0" Grid.Column="2" Text="R$ SUBTOTAL" LineBreakMode="TailTruncation" TextColor="{StaticResource VerdePedido}" FontSize="9">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    FontSize="9"
+                    LineBreakMode="TailTruncation"
+                    Text="R$ SUBTOTAL"
+                    TextColor="{StaticResource VerdePedido}">
                     <Label.Margin>
-                        <OnPlatform x:TypeArguments="Thickness" Android="5,0,0,-8"/>
+                        <OnPlatform x:TypeArguments="Thickness" Android="5,0,0,-8" />
                     </Label.Margin>
                 </Label>
 
-                <custom:ExtendedEntry IsEnabled="{Binding bAdmin}"  Keyboard="Numeric"  x:Name="EntryPComissao" Grid.Row="1" TextColor="{Binding Source={x:Reference ComissaoPorcent}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}"
-                       Grid.Column="0"  Placeholder="0" Text="{Binding editarItemViewModel.pComissao, Converter={StaticResource DecimalPlacesToStringConverter}}">
+                <custom:ExtendedEntry
+                    x:Name="EntryPComissao"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    IsEnabled="{Binding bAdmin}"
+                    Keyboard="Numeric"
+                    Placeholder="0"
+                    Text="{Binding editarItemViewModel.pComissao, Converter={StaticResource DecimalPlacesToStringConverter}}"
+                    TextColor="{Binding Source={x:Reference ComissaoPorcent}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}">
                     <custom:ExtendedEntry.Behaviors>
                         <behaviors:ComissaoItemBehaviors x:Name="ComissaoPorcent" TpValidacao="PORCENTAGEM" />
                     </custom:ExtendedEntry.Behaviors>
                 </custom:ExtendedEntry>
-                <custom:ExtendedEntry IsEnabled="{Binding bAdmin}" Keyboard="Numeric"  x:Name="EntryValorComissao" Grid.Row="1" TextColor="{Binding Source={x:Reference ComissaoValor}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}" Grid.Column="1"  Placeholder="0,00"
-                       Text="{Binding editarItemViewModel.vComissao, Converter={StaticResource DecimalToStringConverter}}" >
+                <custom:ExtendedEntry
+                    x:Name="EntryValorComissao"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    IsEnabled="{Binding bAdmin}"
+                    Keyboard="Numeric"
+                    Placeholder="0,00"
+                    Text="{Binding editarItemViewModel.vComissao, Converter={StaticResource DecimalToStringConverter}}"
+                    TextColor="{Binding Source={x:Reference ComissaoValor}, Path=IsValid, Converter={StaticResource BoolToColorConverter}}">
                     <custom:ExtendedEntry.Behaviors>
                         <behaviors:ComissaoItemBehaviors x:Name="ComissaoValor" TpValidacao="VALOR" />
                     </custom:ExtendedEntry.Behaviors>
                 </custom:ExtendedEntry>
 
-                <custom:ExtendedEntry Grid.Row="1" Grid.Column="2" IsEnabled="False" Placeholder ="0,00" Text="{Binding editarItemViewModel.vSubTotal,  Converter={StaticResource DecimalToStringConverter}}"/>
+                <custom:ExtendedEntry
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    IsEnabled="False"
+                    Placeholder="0,00"
+                    Text="{Binding editarItemViewModel.vSubTotal, Converter={StaticResource DecimalToStringConverter}}" />
 
             </Grid>
 
         </Grid>
 
-        <custom:InfiniteSimpleListView x:Name="ListViewDados"
-                                   Grid.Row="3"
-                                   ItemsSource="{Binding Produtos}"
-                                   IsEnabled="{x:Binding bListaItensHabilitada}"
-                                   HasUnevenRows="True"  
-                                   SelectedItem="{Binding itemSelected, Mode=TwoWay}"
-                                   LoadMoreCommand="{Binding LoadItensCommand}"
-                                   ItemSelected="ListViewDados_OnItemSelected">
+        <custom:InfiniteSimpleListView
+            x:Name="ListViewDados"
+            Grid.Row="3"
+            HasUnevenRows="True"
+            IsEnabled="{x:Binding bListaItensHabilitada}"
+            ItemSelected="ListViewDados_OnItemSelected"
+            ItemsSource="{Binding Produtos}"
+            LoadMoreCommand="{Binding LoadItensCommand}"
+            SelectedItem="{Binding itemSelected, Mode=TwoWay}">
             <!--<x:Arguments>
                 <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
             </x:Arguments>-->
@@ -266,12 +372,18 @@
     <ContentPage.ToolbarItems>
 
 
-        <ToolbarItem Clicked="MenuItem_OnClicked" >
+        <ToolbarItem Clicked="MenuItem_OnClicked">
             <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" WinPhone="Secondary" />
+                <OnPlatform
+                    x:TypeArguments="ToolbarItemOrder"
+                    Android="Secondary"
+                    WinPhone="Secondary" />
             </ToolbarItem.Order>
             <ToolbarItem.Text>
-                <OnPlatform x:TypeArguments="x:String" Android="Mudar tipo de Lista" WinPhone="Mudar tipo de Lista"/>
+                <OnPlatform
+                    x:TypeArguments="x:String"
+                    Android="Mudar tipo de Lista"
+                    WinPhone="Mudar tipo de Lista" />
             </ToolbarItem.Text>
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource" iOS="TrocaLista.png" />
@@ -280,24 +392,42 @@
 
         <ToolbarItem Command="{Binding ConfiguracaoCommand}">
             <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" WinPhone="Secondary" />
+                <OnPlatform
+                    x:TypeArguments="ToolbarItemOrder"
+                    Android="Secondary"
+                    WinPhone="Secondary" />
             </ToolbarItem.Order>
             <ToolbarItem.Text>
-                <OnPlatform x:TypeArguments="x:String" Android="Configurar Pesquisa" WinPhone="Configurar Pesquisa" />
+                <OnPlatform
+                    x:TypeArguments="x:String"
+                    Android="Configurar Pesquisa"
+                    WinPhone="Configurar Pesquisa" />
             </ToolbarItem.Text>
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource" iOS="PesquisaAvancada.png" />
             </ToolbarItem.Icon>
         </ToolbarItem>
 
-        <ToolbarItem x:Name="toolbarEscalonada" Icon="{Binding ImageIconPedido}" Command="{Binding itemSelected.TableEscalonada}" Order="Primary" />
+        <ToolbarItem
+            x:Name="toolbarEscalonada"
+            Command="{Binding itemSelected.TableEscalonada}"
+            Icon="{Binding ImageIconPedido}"
+            Order="Primary" />
 
-        <ToolbarItem Icon="{Binding ImageIconSearch}" Command="{Binding HabiliteToSearchCommand}" Order="Primary" />
+        <ToolbarItem
+            Command="{Binding HabiliteToSearchCommand}"
+            Icon="{Binding ImageIconSearch}"
+            Order="Primary" />
 
-        <ToolbarItem Icon="{Binding ImageIconEdit}"  Command="{Binding itemSelected.EditItemPedidoCommand}" Order="Primary" />
+        <ToolbarItem
+            Command="{Binding itemSelected.EditItemPedidoCommand}"
+            Icon="{Binding ImageIconEdit}"
+            Order="Primary" />
 
-        <ToolbarItem x:Name="ToolbarItemSave" Icon="{Binding ImageIconSave}" Order="Primary">
-        </ToolbarItem>
+        <ToolbarItem
+            x:Name="ToolbarItemSave"
+            Icon="{Binding ImageIconSave}"
+            Order="Primary" />
 
 
 
