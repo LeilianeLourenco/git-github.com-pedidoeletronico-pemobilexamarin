@@ -1037,7 +1037,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
 
                 SetConfiguracoes(idRepresentante, idTransportadora, idUltimaCondicaoPgto, null, idRedespacho, currentModel.xFormaPagamento);
-                GetRegrasComerciais();
+                VerificarRegrasComerciais();
             });
         }
 
@@ -1092,7 +1092,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             else ItemFormaPgto = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao(string.Empty, idCondicaoPgto).Where(t => t.Display == xFormaPagamento).FirstOrDefault();
         }
 
-        public void GetRegrasComerciais()
+        public void VerificarRegrasComerciais()
         {
             int idClientes = ClienteRepository.GetClienteModel(currentModel.idClientesOffLine, false).idClientes ?? 0;
 
@@ -1108,46 +1108,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                 }
             }
-        }
 
-        public void AplicaRegraComercial()
-        {
-            if (!(currentModel.lRegrasComerciais.Count > 0))
-                return;
-
-            var regra = currentModel.lRegrasComerciais?.FirstOrDefault();
-
-            switch (regra.stTipoPercentual)
-            {
-                case 0:
-                    break;
-                case 1:
-
-                    foreach (var item in currentModel.lItens)
-                    {
-                        item.pDesconto += (double)(regra?.nPercentual ?? 0);
-                        item.vDesconto += item.vSubTotalSemImpostos * (item.pDesconto / 100.0);
-
-                        item.vSubTotal -= item.vDesconto;
-                        item.vSubTotalSemImpostos -= item.vDesconto;
-
-                        item.vUnitarioVendaComImpostos -= item.vDesconto;
-                        item.vUnitarioVendaComImpostosOriginal -= item.vDesconto;
-                    }
-
-                    currentModel.idRegraComercial = (int)(regra.idRegraComercial);
-
-                    break;
-                case 2:
-
-                    //foreach (var item in currentModel.lItens)
-                    //{
-                    //    item.vAcrescimo += item.vSubTotalSemImpostos - item.vSubTotal;
-                    //}
-
-                    break;
-            }
-        }
+        }        
 
         public void VerificaStatusCancelado()
         {
@@ -1723,8 +1685,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                     if (currentModel.idPedidoVenda != null)
                         currentModel.bPedidoComAlteracao = true;
-
-                    AplicaRegraComercial();
+                    
                     PedidoRepository.SavePedidoVenda(currentModel);
 
                     foreach (var item in lRecebimentoTitulosManualModel)

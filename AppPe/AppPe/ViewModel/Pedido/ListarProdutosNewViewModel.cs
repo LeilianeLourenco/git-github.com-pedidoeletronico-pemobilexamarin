@@ -270,7 +270,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             get
             {
                 try
-                {                    
+                {
                     return App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
                 }
                 catch (Exception)
@@ -419,6 +419,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             idTabelaPrecoCondicao: currentPedidoViewModel.idTabelaPrecoCondicao
                             );
 
+                        AplicaRegrasComerciaisProduto(lItens);
 
                         bool bAplicaBloquearVisualizacaoEstoque = false;
                         if (currentPedidoViewModel.currentModel.bBloquearVisualizacaoEstoqueVendedor && App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
@@ -495,7 +496,59 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        public void AplicaRegrasComerciaisProduto(List<PedidoVendaItensModel> lItens)
+        {
 
+            if (!(currentPedidoViewModel.currentModel.lRegrasComerciais.Count > 0))
+                return;
+
+            var regra = currentPedidoViewModel.currentModel.lRegrasComerciais?.FirstOrDefault();
+
+            switch (regra.stTipoPercentual)
+            {
+                case 0:
+                    break;
+                case 1:
+
+                    //foreach (var item in currentModel.lItens)
+                    //{
+                    //    item.vAcrescimo += item.vSubTotalSemImpostos - item.vSubTotal;
+                    //}
+
+                    break;
+                case 2:
+
+                    foreach (var item in lItens)
+                    {
+                        item.pDesconto += (double)(regra?.nPercentual ?? 0);
+                        item.vDesconto += item.vUnitarioVendaComImpostos * (item.pDesconto / 100.0);
+
+                        //item.vSubTotal -= item.vDesconto;
+                        //item.vSubTotalSemImpostos -= item.vDesconto;
+
+                        item.vUnitarioVendaComImpostos -= item.vDesconto;
+                        item.vUnitarioVendaComImpostosOriginal -= item.vDesconto;
+                        //item.vVenda = item.vDesconto;
+
+
+                        // item.pDesconto += (double)(regra?.nPercentual ?? 0);
+                        //item.vDesconto += item.vSubTotalSemImpostos * (item.pDesconto / 100.0);
+
+                        //item.vSubTotal -= item.vDesconto;
+                        //item.vSubTotalSemImpostos -= item.vDesconto;
+
+                        //item.vUnitarioVenda -= item.vDesconto;
+                        //item.vUnitarioVendaSemImposto -= item.vDesconto;
+                        //item.vUnitarioVendaComImpostos -= item.vDesconto;
+                        //item.vUnitarioVendaComImpostosOriginal -= item.vDesconto;
+                        //item.vVenda = item.vDesconto;
+                    }
+
+                    currentPedidoViewModel.currentModel.idRegraComercial = (int)(regra.idRegraComercial);
+
+                    break;
+            }
+        }
 
         public async void AplicaFiltroItens()
         {
@@ -704,8 +757,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         {
                             if (ItensSelecionados.Any(c => c.idProduto == itemSelected.idProduto) == false)
                             {
-                                if ((itemSelected.vQtdEstoque > 0 || itemSelected.vQtdEstoque == null) || itemSelected.stVendaSemEstoque)                                
-                                    ItensSelecionados.Add(itemSelected);                                                                    
+                                if ((itemSelected.vQtdEstoque > 0 || itemSelected.vQtdEstoque == null) || itemSelected.stVendaSemEstoque)
+                                    ItensSelecionados.Add(itemSelected);
                                 else
                                 {
                                     itemSelected.vQtdItem -= 1;
@@ -776,6 +829,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             PagePedidoNew.CurrentViewModel.AtualizaTotalizadoresPedido();
             UtilNavidate.PopAsync();
         }
-       
+
     }
 }
