@@ -274,6 +274,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                                                 tb_produto.idEmpresa, 
                                                                 tb_produto.cAlternativo,    
                                                                 tb_produto.stVendaSemEstoque,
+                                                                tb_produto.dPesoBruto,
                                                                 tb_produto.bProdutoVariacao,
                                                                 {xNomeDisplay}         
                                                                 {xFields}
@@ -401,7 +402,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         var _image = UtilMethods.GetLocalProdutoImageSource("");
 
                         lproduto.ListaImagens.Add(_image);
-                    }
+                    }                
                 }
 
                 return objReturn;
@@ -743,7 +744,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 throw ex;
             }
         }
-        
+
         public static List<PedidoVendaItensModel> GetVariacaoItem(PedidoVendaItensModel produto)
         {
             var lItens = new List<PedidoVendaItensModel>();
@@ -789,11 +790,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                 lTiposVariacoes = new List<VariacaoModel>()
                             };
                         }
-                      
+
                         variacaoDict[tipoVariacao].lTiposVariacoes.AddRange(variacoes);
                     }
                 }
-             
+
                 foreach (var item in variacaoDict.Values)
                 {
                     var agrupado = item.lTiposVariacoes
@@ -803,7 +804,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                            NomeVariacao = g.Key,
                                            idProdutoLista = g.Select(v => v.idProduto).ToList()
                                        }).ToList();
-               
+
                     item.lTiposVariacoes = agrupado;
                 }
 
@@ -811,11 +812,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
             catch (Exception ex)
             {
-                ex.TrakException();              
+                ex.TrakException();
             }
             return lItens;
         }
-       
+
         /// <summary>
         /// Método para buscar a comissão e setar no objeto do item do pedido
         /// </summary>

@@ -22,6 +22,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 "idConfiguracaoGeral, " +
                 "dAcrescimoMensal, " +
                 "bUtilizaLimiteMinimoVendas, " +
+                "bExibirValorPorPeso, " +
                 "stCadastroLimiteVendasEmpresa,  " +
                 "bBloquearVisualizacaoEstoqueVendedor,  " +
                 "stCalculoLimiteVendasEmpresa, " +
@@ -58,8 +59,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 _configsGerais.idEmpresa = result.idEmpresa;
                 _configsGerais.xInformacaoContrato = result.xInformacaoContrato;
                 _configsGerais.bBloqueiaValorProdutoApp = result.bBloqueiaValorProdutoApp;
+                _configsGerais.bExibirValorPorPeso = result.bExibirValorPorPeso;
             }
-
 
             return _configsGerais;
         }

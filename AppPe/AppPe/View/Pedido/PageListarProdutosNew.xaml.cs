@@ -32,7 +32,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                 }
 
                 NavigationPage.SetHasBackButton(this, false);
-                currentViewModel = ViewModel;
+                currentViewModel = ViewModel;                
                 ViewModel.currentPedidoViewModel = pedido;
                 ViewModel.controlSearchPE = SearchBarPesquisa;
 
@@ -392,7 +392,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     if (App.EnvironmentPE.TipoPageProdutos == 0)
                     {
                         ListViewDados.ItemTemplate = new DataTemplateFull();
-                        GridImpostos.IsVisible = false;
+                        GridImpostos.IsVisible = false;                        
                     }
                     else if (App.EnvironmentPE.TipoPageProdutos == 1)
                     {

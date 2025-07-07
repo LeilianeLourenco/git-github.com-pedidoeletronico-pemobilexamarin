@@ -42,6 +42,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
         public int lIdsProduto { get; set; }
 
+        public decimal? dPesoBruto { get; set; }
         public bool bTabelasCarregadas { get; set; }
         public bool stVendaSemEstoque { get; set; }
 
@@ -173,7 +174,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         /// <summary>
         /// utilizado na tela de ultimos produtos adquiridos do cliente para trazer a info da ultima venda
         /// </summary>
-      
+
         public double vUltimaVenda
         {
             get { return _vUltimaVenda; }
@@ -185,7 +186,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         /// <summary>
         /// utilizado na tela de ultimos produtos adquiridos do cliente para trazer a info da ultima venda
         /// </summary>
-       
+
         public double vQtdUltimaVenda
         {
             get { return _vQtdUltimaVenda; }
@@ -213,6 +214,34 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 return _xQtdEstoque;
             }
             set { _xQtdEstoque = value; NotifyPropertyChanged(); }
+        }
+
+        private double? _vValorPorPeso;
+
+        public double? vValorPorPeso
+        {
+            get { return _vValorPorPeso; }
+            set { _vValorPorPeso = value; NotifyPropertyChanged(); }
+        }
+
+        private string _xValorPorPeso;
+
+        public string xValorPorPeso
+        {
+            get
+            {            
+              
+                double valorPorPeso = 0;
+
+                if (vUnitarioVendaComImpostos > 0 && dPesoBruto > 0)
+                    valorPorPeso = vUnitarioVendaComImpostos / (double)(dPesoBruto ?? 0);
+                else
+                    valorPorPeso = vUnitarioVendaComImpostos;
+
+                _xValorPorPeso = $"Valor por peso: {valorPorPeso.ToCurrencyStringPtBr()}";
+                return _xValorPorPeso;
+            }
+            set { _xValorPorPeso = value; NotifyPropertyChanged(); }
         }
 
         private string _xUltimaVendaInfo;
@@ -300,7 +329,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         /// <summary>
         /// Campo padrão da tabela de preço - não é alteravel ( com impostos )
         /// </summary>
-        
+
         [NotNull]
         public double vVenda
         {
@@ -317,7 +346,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         /// <summary>
         /// Valor do cadastro do produto
         /// </summary>
-             
+
         public double vVendaOriginal
         {
             get { return _vVendaOriginal; }
@@ -333,7 +362,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         /// <summary>
         /// Valor de compra do produto
         /// </summary>
-       
+
         public double vCusto
         {
             get { return _vCusto; }
@@ -586,7 +615,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
 
         private string _cAlternativo;
-      
+
         public string cAlternativo
         {
             get { return (_cAlternativo ?? "").ToUpper(); }
@@ -704,6 +733,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
+        private bool _bExibirValorPorPeso = false;
+
+        [Ignore]
+        [IgnoreDataMember]
+        public bool bExibirValorPorPeso
+        {
+            get { return _bExibirValorPorPeso; }
+            set
+            {
+                _bExibirValorPorPeso = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private double _vVendaDef;
 

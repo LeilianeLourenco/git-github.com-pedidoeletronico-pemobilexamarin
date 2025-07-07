@@ -1,57 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Grid xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:lancamento="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.GridItemPedidoApresentacao">
-  
-  <Grid.RowDefinitions>
-    <RowDefinition Height="Auto"/>
-    <RowDefinition Height="Auto"/>
-    <RowDefinition Height="Auto"/>
-    <RowDefinition Height="Auto"/>
-  </Grid.RowDefinitions>
+<Grid
+    x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.GridItemPedidoApresentacao"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:lancamento="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model.Lancamento;assembly=Xamarin.HLP.Mobile.AppPE">
 
-  <Grid Grid.Row="0">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="30*"/>
-      <ColumnDefinition Width="70*"/>
-    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
 
-    <Label TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizeContentApresentacao}" Text="{Binding cAlternativo}"/>
+    <Grid Grid.Row="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*" />
+            <ColumnDefinition Width="70*" />
+        </Grid.ColumnDefinitions>
 
-    <Label Grid.Column="1" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizeContentApresentacao}" Text="{Binding xDescricao}" />
+        <Label
+            FontSize="{StaticResource FontSizeContentApresentacao}"
+            Text="{Binding cAlternativo}"
+            TextColor="{StaticResource CinzaEscuro}" />
 
-  </Grid>
+        <Label
+            Grid.Column="1"
+            FontSize="{StaticResource FontSizeContentApresentacao}"
+            Text="{Binding xDescricao}"
+            TextColor="{StaticResource CinzaEscuro}" />
 
-  <Grid Grid.Row="1">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="25*"/>
-      <ColumnDefinition Width="15*"/>
-      <ColumnDefinition Width="25*"/>
-      <ColumnDefinition Width="35*"/>
-    </Grid.ColumnDefinitions>
-
-    <Grid Padding="{StaticResource PaddingWinNegative5}">
-      <Label TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizeContentApresentacao}" Text="{Binding xQtde}" />
     </Grid>
 
-    <Grid Grid.Column="1" Padding="{StaticResource PaddingWinNegative5}">
-      <Label TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizeContentApresentacao}" Text="{Binding xSigla}" />
+    <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="15*" />
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="35*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Padding="{StaticResource PaddingWinNegative5}">
+            <Label
+                FontSize="{StaticResource FontSizeContentApresentacao}"
+                Text="{Binding xQtde}"
+                TextColor="{StaticResource CinzaEscuro}" />
+        </Grid>
+
+        <Grid Grid.Column="1" Padding="{StaticResource PaddingWinNegative5}">
+            <Label
+                FontSize="{StaticResource FontSizeContentApresentacao}"
+                Text="{Binding xSigla}"
+                TextColor="{StaticResource CinzaEscuro}" />
+        </Grid>
+
+        <Grid Grid.Column="2" Padding="{StaticResource PaddingWinNegative5}">
+            <Label
+                FontSize="{StaticResource FontSizeContentApresentacao}"
+                HorizontalTextAlignment="End"
+                Text="{Binding xValorPrincipal}"
+                TextColor="{StaticResource CinzaEscuro}" />
+        </Grid>
+
+        <Grid Grid.Column="3" Padding="{StaticResource PaddingWinNegative5}">
+            <Label
+                FontSize="{StaticResource FontSizeContentApresentacao}"
+                HorizontalTextAlignment="End"
+                Text="{Binding xValorSubTotal}"
+                TextColor="{StaticResource CinzaEscuro}" />
+        </Grid>
+
     </Grid>
 
-    <Grid Grid.Column="2" Padding="{StaticResource PaddingWinNegative5}">
-      <Label  TextColor="{StaticResource CinzaEscuro}" HorizontalTextAlignment="End" FontSize="{StaticResource FontSizeContentApresentacao}" Text="{Binding xValorPrincipal}" />
+    <Grid
+        Grid.Row="2"
+        Padding="{StaticResource PaddingWinNegative5}"
+        IsVisible="{Binding xInfAdicionais, Converter={StaticResource IsNullOrEmptyConverter}}">
+        <Label
+            FontSize="{StaticResource FontSizePedidoApresentacao}"
+            Text="{Binding xInfAdicionais}"
+            TextColor="{StaticResource CinzaEscuro}" />
     </Grid>
 
-    <Grid Grid.Column="3" Padding="{StaticResource PaddingWinNegative5}">
-      <Label  TextColor="{StaticResource CinzaEscuro}" HorizontalTextAlignment="End" FontSize="{StaticResource FontSizeContentApresentacao}" Text="{Binding xValorSubTotal}" />
-    </Grid>
-
-  </Grid>
-
-  <Grid IsVisible="{Binding xInfAdicionais, Converter={StaticResource IsNullOrEmptyConverter}}" Grid.Row="2" Padding="{StaticResource PaddingWinNegative5}">
-    <Label TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}" Text="{Binding xInfAdicionais}" />
-  </Grid>
-
-  <BoxView Grid.Row="3" HeightRequest="1" BackgroundColor="#BFBEBE" Opacity="0.5"/>
+    <BoxView
+        Grid.Row="3"
+        BackgroundColor="#BFBEBE"
+        HeightRequest="1"
+        Opacity="0.5" />
 </Grid>

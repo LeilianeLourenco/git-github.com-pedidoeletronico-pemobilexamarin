@@ -287,7 +287,21 @@
                                             </Grid>
                                         </Grid>
 
-                                        <!--  IPI DE VENDA  -->
+                                        <Label
+                                            Margin="5,5,0,0"
+                                            IsVisible="{Binding bExibirValorPorPeso}"
+                                            LineBreakMode="NoWrap"
+                                            Style="{StaticResource HeaderLabel}"
+                                            Text="R$ Valor por Peso" />
+                                        <custom:ExtendedEntry
+                                            IsEnabled="False"
+                                            IsVisible="{Binding bExibirValorPorPeso}"
+                                            Keyboard="Numeric"
+                                            MaxLength="6"
+                                            Placeholder="0,00"
+                                            Text="{Binding vValorPorPeso}"
+                                            TextChanged="EntryImpostos_OnTextChanged" />
+
                                         <Label
                                             Margin="5,5,0,0"
                                             LineBreakMode="NoWrap"

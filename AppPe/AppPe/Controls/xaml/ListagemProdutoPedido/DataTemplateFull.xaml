@@ -1,108 +1,136 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<DataTemplate xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido.DataTemplateFull">
+<DataTemplate
+    x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido.DataTemplateFull"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
 
     <ViewCell>
-        <Grid RowSpacing="0" Padding="7,3,3,7">
+        <Grid Padding="7,3,3,7" RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Label Text="{Binding xDescricao}" 
-                   FontSize="17"
-                   TextColor="{Binding ItemJaIncluso, Converter={StaticResource BoolToColorConverterLitaItensPedido}}" 
-                   FontAttributes="Bold" />
+            <Label
+                FontAttributes="Bold"
+                FontSize="17"
+                Text="{Binding xDescricao}"
+                TextColor="{Binding ItemJaIncluso, Converter={StaticResource BoolToColorConverterLitaItensPedido}}" />
 
-            <StackLayout Orientation="Horizontal" Grid.Row="1" Margin="0,2,0,0" VerticalOptions="Center">
+            <StackLayout
+                Grid.Row="1"
+                Margin="0,2,0,0"
+                Orientation="Horizontal"
+                VerticalOptions="Center">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <StackLayout Grid.Row="0">
 
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
 
-                            <Label Grid.Row="0"
-                                    Grid.Column="0"                          
-                                       Text="{Binding xQtde}"                          
-                                       HorizontalOptions="StartAndExpand"                           
-                                       HorizontalTextAlignment="Start"                        
-                                       FontSize="Small"                          
-                                       TextColor="{StaticResource CinzaClaro}"                         
-                                       LineBreakMode="NoWrap"/>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                FontSize="Small"
+                                HorizontalOptions="StartAndExpand"
+                                HorizontalTextAlignment="Start"
+                                LineBreakMode="NoWrap"
+                                Text="{Binding xQtde}"
+                                TextColor="{StaticResource CinzaClaro}" />
 
-                            <Label Grid.Row="0"
-                                       Grid.Column="1"                        
-                                       Text="{Binding xValorPromocional}"                        
-                                       TextColor="{StaticResource CinzaClaro}"                        
-                                       FontSize="Small"                         
-                                       LineBreakMode="NoWrap"/>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                FontSize="Small"
+                                LineBreakMode="NoWrap"
+                                Text="{Binding xValorPromocional}"
+                                TextColor="{StaticResource CinzaClaro}" />
 
-                            <Label Grid.Row="0" 
-                                       Grid.Column="2"                           
-                                       Text="{Binding xValorPrincipal}"                           
-                                       FontSize="Small"                          
-                                       TextColor="{StaticResource CinzaEscuro}"                         
-                                       LineBreakMode="NoWrap"/>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                FontSize="Small"
+                                LineBreakMode="NoWrap"
+                                Text="{Binding xValorPrincipal}"
+                                TextColor="{StaticResource CinzaEscuro}" />
 
                         </Grid>
                     </StackLayout>
 
                     <StackLayout Grid.Row="1">
+                        <Label
+                            FontSize="Small"
+                            HorizontalOptions="Start"
+                            HorizontalTextAlignment="Start"
+                            IsVisible="{Binding bExibirValorPorPeso}"
+                            LineBreakMode="NoWrap"
+                            Text="{Binding xValorPorPeso}"
+                            TextColor="{StaticResource CinzaClaro}" />
 
-                        <Label  IsVisible="{Binding bBloquearVisualizacaoEstoqueVendedor, Converter={StaticResource InvertBoolConvert}}"                         
-                           Text="{Binding xQtdEstoque}"                            
-                           FontSize="Small" 
-                           HorizontalOptions="Start"  
-                           HorizontalTextAlignment="Start"
-                           TextColor="{StaticResource CinzaClaro}" 
-                           LineBreakMode="NoWrap"/>
-
+                        <Label
+                            FontSize="Small"
+                            HorizontalOptions="Start"
+                            HorizontalTextAlignment="Start"
+                            IsVisible="{Binding bBloquearVisualizacaoEstoqueVendedor, Converter={StaticResource InvertBoolConvert}}"
+                            LineBreakMode="NoWrap"
+                            Text="{Binding xQtdEstoque}"
+                            TextColor="{StaticResource CinzaClaro}" />
                     </StackLayout>
 
                     <StackLayout Grid.Row="2">
-
-                        <Label                       
-                           Text="{Binding xUltimaVendaInfo}"                            
-                           FontSize="Small" 
-                           HorizontalOptions="Start"  
-                           HorizontalTextAlignment="Start"
-                           TextColor="{StaticResource CinzaClaro}" 
-                           LineBreakMode="NoWrap"/>
-
+                        <Label
+                            FontSize="Small"
+                            HorizontalOptions="Start"
+                            HorizontalTextAlignment="Start"
+                            LineBreakMode="NoWrap"
+                            Text="{Binding xUltimaVendaInfo}"
+                            TextColor="{StaticResource CinzaClaro}" />
                     </StackLayout>
 
                 </Grid>
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" Grid.Row="2">
-                <Label Text="{Binding xValorSubTotal}" VerticalOptions="End" TextColor="{StaticResource VerdePedido}" FontSize="15" LineBreakMode="NoWrap" FontAttributes="Bold"/>
-                <Stepper 
+            <StackLayout Grid.Row="2" Orientation="Horizontal">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    LineBreakMode="NoWrap"
+                    Text="{Binding xValorSubTotal}"
+                    TextColor="{StaticResource VerdePedido}"
+                    VerticalOptions="End" />
+                <Stepper
+                    HorizontalOptions="EndAndExpand"
+                    Increment="1"
                     IsVisible="{Binding HasGrade, Converter={StaticResource InvertBoolConvert}}"
-                    HorizontalOptions="EndAndExpand" 
-                    ValueChanged="StepperValor_OnValueChanged" 
-                    Value="{Binding vQtdItem}"
-                    Maximum="999999999" Increment="1" Minimum="0"/>
+                    Maximum="999999999"
+                    Minimum="0"
+                    ValueChanged="StepperValor_OnValueChanged"
+                    Value="{Binding vQtdItem}" />
             </StackLayout>
-            <StackLayout Orientation="Horizontal" Grid.Row="3" >
-                <Label IsVisible="{Binding bUsaMinimoVendas}"  Text="{Binding xMinimoVendas}" FontSize="15" TextColor="{StaticResource VermelhoPrincipal}" FontAttributes="Bold"/>
+            <StackLayout Grid.Row="3" Orientation="Horizontal">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    IsVisible="{Binding bUsaMinimoVendas}"
+                    Text="{Binding xMinimoVendas}"
+                    TextColor="{StaticResource VermelhoPrincipal}" />
             </StackLayout>
         </Grid>
     </ViewCell>
