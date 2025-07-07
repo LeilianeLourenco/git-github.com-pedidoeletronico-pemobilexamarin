@@ -48,9 +48,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         currentTabPreco = currentModel.lTabelaPreco.FirstOrDefault(c => c.idTabelaPreco == value.Id);
                         if (currentTabPreco == null) return;
 
-                        if (currentModel.bProdutoVariacao)                                                  
+                        if (currentModel.bProdutoVariacao)
                             currentTabPreco.vVenda = ReturnValorProdutoVariacao(value.Id);
-                        
+
                         currentModel.currentTabelaPreco = currentTabPreco;
                         if (currentModel.ItensGrade == null) return;
                         foreach (var item in currentModel.ItensGrade)
@@ -82,7 +82,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
 
                         vUnitarioVendaComImpostos = vUnitarioVenda = currentModel.currentTabelaPreco.vVenda;
-                        _vUnitarioVendaSemImposto = currentModel.vUnitarioVendaSemImposto;                       
+                        _vUnitarioVendaSemImposto = currentModel.vUnitarioVendaSemImposto;
 
                         // caso a comissão seja por tabela de preço e a a tabela seja aterada.
                         if (HelperPedidoVenda.GetTipoComissao(xComissao: currentModel.stComissao) ==
@@ -114,7 +114,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         if (vDesconto > 0)
                         {
                             vDesconto = (vUnitarioVenda * (pDesconto / 100)).ArredondarValorDecimal(nCasasDecimais: 2);
-                            vUnitarioVendaComImpostos -= vDesconto;                         
+                            vUnitarioVendaComImpostos -= vDesconto;
                         }
 
                         if (currentModel.vDescontoDaCondicao.GetValueOrDefault() > 0)
@@ -143,13 +143,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public double ReturnValorProdutoVariacao(int idTabelaPreco)
         {
             var tabelaPreco = currentModel.lTabelaPreco.FirstOrDefault(c => c.idTabelaPreco == idTabelaPreco);
-            
+
             var porcentagem = tabelaPreco?.pIndice ?? 0;
             var vVenda = currentModel.ItensGrade?.FirstOrDefault().vVendaOriginal ?? 0;
-      
+
             var valor = (vVenda * porcentagem) / 100;
 
-            return vVenda + valor;       
+            return vVenda + valor;
         }
 
         private List<BasicPickerModel> _listaLocalEstoque = new List<BasicPickerModel>();
@@ -394,6 +394,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        private double _vValorPorPeso;
+        public double vValorPorPeso
+        {
+            get { return _vValorPorPeso; }
+            set
+            {
+                _vValorPorPeso = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #endregion
 
         private double _vQtdeTotal;
@@ -415,6 +426,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             set
             {
                 _bUsaLocaisEstoque = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _bExibirValorPorPeso = false;
+
+        public bool bExibirValorPorPeso
+        {
+            get { return _bExibirValorPorPeso; }
+            set
+            {
+                _bExibirValorPorPeso = value;
                 NotifyPropertyChanged();
             }
         }
@@ -556,9 +579,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
 
                             _vUnitarioVenda = itemBase.vUnitarioVenda;
-                            _vUnitarioVendaComImpostos = itemBase.vUnitarioVendaComImpostos;                     
+                            _vUnitarioVendaComImpostos = itemBase.vUnitarioVendaComImpostos;
 
                             _vUnitarioVendaSemImposto = itemBase.vUnitarioVendaSemImposto;
+
+                            if (_vUnitarioVendaComImpostos > 0 && itemBase.dPesoBruto > 0)
+                                _vValorPorPeso = _vUnitarioVendaComImpostos / (double)(itemBase.dPesoBruto ?? 0);
+                            else
+                                _vValorPorPeso = _vUnitarioVendaComImpostos;
 
                             var _tblAtual = currentModel.currentTabelaPreco;
 
@@ -592,6 +620,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         }
                     }
 
+                    bExibirValorPorPeso = PagePedidoNew.CurrentViewModel.bExibirValorPorPeso;
 
                     if (ListaLocalEstoque.Where(t => t.Id > 0).Count() > 0)
                     {
@@ -604,7 +633,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     }
                 }
                 catch (Exception ex)
-                {
+                {  
                     ex.TrakException();
                 }
 

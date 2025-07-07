@@ -314,6 +314,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
+        private bool _bExibirValorPorPeso;
+
+        public bool bExibirValorPorPeso
+        {
+            get { return _bExibirValorPorPeso; }
+            set
+            {
+                _bExibirValorPorPeso = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #endregion
 
 
@@ -1410,6 +1422,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     currentModel.stCadastroMinimoVenda = _configuracoesGerais.stCadastroLimiteVendasEmpresa;
                     currentModel.stCalculoMinimoVenda = _configuracoesGerais.stCalculoLimiteVendasEmpresa;
                     currentModel.bForcarMinimoVendas = _configuracoesGerais.bForcarMinimoVendas;
+                    bExibirValorPorPeso = _configuracoesGerais.bExibirValorPorPeso;
                 }
 
                 if (currentModel.idPedidoVenda > 0)

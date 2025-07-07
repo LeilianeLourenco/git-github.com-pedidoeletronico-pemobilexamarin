@@ -90,6 +90,14 @@
                         </StackLayout>
 
                         <StackLayout Grid.Row="1">
+                            <Label
+                                FontSize="Small"
+                                HorizontalOptions="Start"
+                                HorizontalTextAlignment="Start"
+                                IsVisible="{Binding bExibirValorPorPeso}"
+                                LineBreakMode="NoWrap"
+                                Text="{Binding xValorPorPeso}"
+                                TextColor="{StaticResource CinzaClaro}" />
 
                             <Label
                                 FontSize="Small"
@@ -99,7 +107,6 @@
                                 LineBreakMode="NoWrap"
                                 Text="{Binding xQtdEstoque}"
                                 TextColor="{StaticResource CinzaClaro}" />
-
                         </StackLayout>
 
                         <!--<StackLayout Grid.Row="2">

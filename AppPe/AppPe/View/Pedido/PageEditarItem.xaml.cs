@@ -52,7 +52,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                     ViewModel.canExecuteInicial = false;
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        if (StackLayoutItens.Children.Count == 0 && ViewModel.currentModel.ItensGrade != null
+                        if (StackLayoutItens?.Children?.Count == 0 && ViewModel.currentModel.ItensGrade != null
                             && ViewModel.currentModel.ItensVariacao == null)
                         {
                             foreach (var item in ViewModel.currentModel.ItensGrade)
@@ -61,7 +61,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                             }
                         }
 
-                        if (StackLayoutItens.Children.Count == 0 && ViewModel.currentModel.ItensVariacao != null)
+                        if (StackLayoutItens?.Children?.Count == 0 && ViewModel.currentModel.ItensVariacao != null)
                         {                         
                             foreach (var item in ViewModel.currentModel.ItensVariacao)
                             {

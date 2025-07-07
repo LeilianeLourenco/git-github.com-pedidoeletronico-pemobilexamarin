@@ -430,6 +430,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                         foreach (var item in lItens)
                         {
                             item.bBloquearVisualizacaoEstoqueVendedor = bAplicaBloquearVisualizacaoEstoque;
+                            item.bExibirValorPorPeso = currentPedidoViewModel.bExibirValorPorPeso;
                             if (ItensSelecionados != null)
                             {
                                 Produtos.Add(ItensSelecionados.Any(c => c.idProduto == item.idProduto)

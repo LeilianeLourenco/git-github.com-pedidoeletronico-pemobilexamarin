@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<DataTemplate xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido.DataTemplateBasic">
+<DataTemplate
+    x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido.DataTemplateBasic"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <ViewCell>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition Width="85*"/>
@@ -16,42 +18,47 @@
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="85*"/>
-                    <ColumnDefinition Width="15*"/>
+                    <ColumnDefinition Width="85*" />
+                    <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
 
-                <Label 
-                Margin="10,5,0,0" 
-                Grid.Column="0"
-                x:Name="TextCellItem"                                            
-                Text="{Binding xDescricao }"                             
-                TextColor="{Binding ItemJaIncluso, Converter={StaticResource BoolToColorConverterLitaItensPedido}}" />
+                <Label
+                    x:Name="TextCellItem"
+                    Grid.Column="0"
+                    Margin="10,5,0,0"
+                    Text="{Binding xDescricao}"
+                    TextColor="{Binding ItemJaIncluso, Converter={StaticResource BoolToColorConverterLitaItensPedido}}" />
 
-
-                <Label IsVisible="{Binding bBloquearVisualizacaoEstoqueVendedor, Converter={StaticResource InvertBoolConvert}}"    
-                Margin="0,5,0,0"
-                Text="{Binding xQtdEstoqueValor }" 
-                Grid.Column="1"  />
+                <Label
+                    Grid.Column="1"
+                    Margin="0,5,0,0"
+                    IsVisible="{Binding bBloquearVisualizacaoEstoqueVendedor, Converter={StaticResource InvertBoolConvert}}"
+                    Text="{Binding xQtdEstoqueValor}" />
             </Grid>
 
-
-
-            <Label 
-                Margin="10,0,0,5"
+            <Label
                 Grid.Row="1"
-                Text="{Binding xDetalheItem }"                          
-                TextColor="{StaticResource VerdePrincipal}"  />
+                Margin="10,0,0,5"
+                IsVisible="{Binding bExibirValorPorPeso}"
+                Text="{Binding xValorPorPeso}"
+                TextColor="{StaticResource VerdePedido}" />
+
+            <Label
+                Grid.Row="2"
+                Margin="10,0,0,5"
+                Text="{Binding xDetalheItem}"
+                TextColor="{StaticResource VerdePrincipal}" />
         </Grid>
 
     </ViewCell>
 
 
-    <!--<TextCell          
-        Disappearing="TextCellItem_OnDisappearing"         
-        x:Name="TextCellItem"          
-        Text="{Binding xDescricao }"          
-        TextColor="{Binding ItemJaIncluso, Converter={StaticResource BoolToColorConverterLitaItensPedido}}"          
-        Detail="{Binding xDetalheItem}"       
+    <!--<TextCell
+        Disappearing="TextCellItem_OnDisappearing"
+        x:Name="TextCellItem"
+        Text="{Binding xDescricao }"
+        TextColor="{Binding ItemJaIncluso, Converter={StaticResource BoolToColorConverterLitaItensPedido}}"
+        Detail="{Binding xDetalheItem}"
         DetailColor="{StaticResource VerdePrincipal}" />-->
 
 </DataTemplate>
