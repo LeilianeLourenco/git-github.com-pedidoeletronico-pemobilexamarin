@@ -193,8 +193,6 @@
 
                                         </Grid>
 
-
-
                                         <!--  Tabela de Preço  -->
                                         <Label
                                             Margin="5,5,0,0"
@@ -206,10 +204,27 @@
                                                 <RowDefinition Height="*" />
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
-                                            <custom:BindablePicker
+                                            <TableView Grid.Row="0" HeightRequest="50">
+                                                <TableRoot>
+                                                    <TableSection>
+                                                        <ViewCell>
+                                                            <StackLayout Padding="5,10,5,5">
+                                                                <StackLayout.GestureRecognizers>
+                                                                    <TapGestureRecognizer Tapped="PopupTabelaPreco" />
+                                                                </StackLayout.GestureRecognizers>
+                                                                <Label
+                                                                    FontSize="18"
+                                                                    Text="{Binding CurrentTabelaPreco.Display}"
+                                                                    TextColor="#000" />
+                                                            </StackLayout>
+                                                        </ViewCell>
+                                                    </TableSection>
+                                                </TableRoot>
+                                            </TableView>
+                                            <!--<custom:BindablePicker
                                                 x:Name="BindableTabelaPreco"
                                                 ItemsSource="{Binding ListaTabelaPreco, Mode=TwoWay}"
-                                                SelectedItem="{Binding CurrentTabelaPreco, Mode=TwoWay}" />
+                                                SelectedItem="{Binding CurrentTabelaPreco, Mode=TwoWay}" />-->
                                             <Grid Grid.Row="1" Margin="5,0,0,0">
                                                 <Label
                                                     FontSize="Small"
@@ -217,7 +232,6 @@
                                                     TextColor="{StaticResource AzulPrincipal}" />
                                             </Grid>
                                         </Grid>
-
 
                                         <!--  Valor Unitario Com Impostos  -->
                                         <Label

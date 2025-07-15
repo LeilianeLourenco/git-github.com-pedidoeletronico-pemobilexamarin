@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Popup.PagePopupTabelaPreco"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup">
+
+    <Frame
+        Margin="30"
+        Padding="15"
+        BackgroundColor="White"
+        CornerRadius="10"
+        VerticalOptions="Center">
+        <StackLayout Spacing="10">
+            <Entry
+                x:Name="searchEntry"
+                Completed="OnSearchCompleted"
+                Placeholder="Buscar..." />
+
+            <ListView
+                x:Name="listaTabelaPreco"
+                HasUnevenRows="True"
+                HeightRequest="300"
+                ItemSelected="OnItemSelected"
+                SeparatorVisibility="Default">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label
+                                    FontSize="16"
+                                    Text="{Binding Display}"
+                                    TextColor="{Binding ColorDisplay}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button
+                BackgroundColor="Transparent"
+                Clicked="OnFecharClicked"
+                HorizontalOptions="End"
+                Text="Cancelar" />
+        </StackLayout>
+    </Frame>
+</pages:PopupPage>
