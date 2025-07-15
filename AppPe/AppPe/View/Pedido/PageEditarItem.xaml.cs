@@ -9,6 +9,8 @@ using System.Linq;
 using Xamarin.HLP.Mobile.AppPE.Controls.xaml;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using System.Collections.Generic;
+using Rg.Plugins.Popup.Services;
+using Xamarin.HLP.Mobile.AppPE.View.Popup;
 
 namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 {
@@ -62,14 +64,14 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                         }
 
                         if (StackLayoutItens?.Children?.Count == 0 && ViewModel.currentModel.ItensVariacao != null)
-                        {                         
+                        {
                             foreach (var item in ViewModel.currentModel.ItensVariacao)
                             {
                                 StackLayoutItens.Children.Add(new VariacaoEditItemPedido(StackLayoutItens,
                                     ViewModel.currentModel.ItensGrade, ViewModel)
                                 { BindingContext = item });
                             }
-                        
+
                             StackLayoutItens.Children.Add(new BoxView { HeightRequest = 15, BackgroundColor = Color.Transparent });
                             StackLayoutItens.Children.Add(new GridEditItemPedido()
                             {
@@ -189,7 +191,6 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
         private async Task<bool> IsValidPage(bool zerarvalores = false)
         {
-
             var valorUnitario = (EntryValorUnitario.Behaviors[0] as ValorUnitarioComImpostosBehaviors);
             var pdesconto = (EntryDesconto.Behaviors[0] as DescontoItemBehaviors);
             var vdesconto = (EntryValorDesconto.Behaviors[0] as DescontoItemBehaviors);
@@ -202,6 +203,16 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             if (!App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
                 await IsValidPage(true);
             base.OnDisappearing();
+        }
+
+        private async void PopupTabelaPreco(object sender, EventArgs e)
+        {
+            var popup = new PagePopupTabelaPreco(ViewModel);
+            popup.ItemSelecionado += item =>
+            {
+                ViewModel.CurrentTabelaPreco = item;
+            };
+            await PopupNavigation.Instance.PushAsync(popup);
         }
     }
 }

@@ -24,13 +24,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
         public ConfiguracaoPesquisaProdutoModel Config { get; set; }
         public ICommand HabiliteToSearchCommand { get; set; }
-
         public ICommand ConfiguracaoCommand { get; set; }
         public ICommand AplicaFiltroItensCommand { get; set; }
         public ICommand AplicaFiltroRecorrenciaCommand { get; set; }
         public ICommand AplicaFiltroCampanhaCommand { get; set; }
         public ICommand AplicaFiltroDestaquesCommand { get; set; }
-
 
         private PedidoNewViewModel _currentPedidoViewModel;
 
@@ -343,8 +341,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
             return canExecuteInicial;
         }
-
-
 
         private async void LoadItens()
         {

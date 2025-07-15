@@ -30,7 +30,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
             LimpaItensTabelaManual();
         }
 
-        public void Buscar(List<PedidoVendaItensModel> itens, int idClienteOff, int idCliente, int idRepresentante, int idEmpresa, int? idTabelaPrecoCondicao = null)
+        public void Buscar(List<PedidoVendaItensModel> itens, int idClienteOff, int idCliente, int idRepresentante, int idEmpresa, int? idTabelaPrecoCondicao = null, string filtro = null)
         {
             List<TabelaEscalonadaModel> _lEscalonadasAtivas = TabelaPrecoRepository.VerificaSeUtilizaEscalonadas();
             //TabelaEscalonadaModel _tbEscalonada = TabelaPrecoRepository.VerificaSeUtilizaEscalonada();
@@ -66,26 +66,25 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
 
             //rotina nova
             _tblDef = _repCliente.RetornaPrecos(idEmpresa: idEmpresa,
-            id: idClienteOff, stBusca: Model.Repository.Interfaces.TipoPrecoBusca.tbl)?.FirstOrDefault();
-            if(_lEscalonadasAtivas?.Count() > 0)
+            id: idClienteOff, stBusca: Model.Repository.Interfaces.TipoPrecoBusca.tbl, filtro)?.FirstOrDefault();
+            if (_lEscalonadasAtivas?.Count() > 0 && _tblDef != null)
             {
                 //primeiro busco se a tabela de preço que veio é especifica da tabela escalonada
                 _tbEscalonada = _lEscalonadasAtivas.Where(t => t.idTabelaPrecoVinculo == _tblDef.idTabelaPreco).FirstOrDefault();
 
                 //se for nulo, tento buscar a tabela escalonada que não tem nenhuma tabela de preço definida
-                if(_tbEscalonada == null || _tbEscalonada.idTabelaPrecoEscalonada == 0) 
-                    _tbEscalonada = _lEscalonadasAtivas.Where(t => t.idTabelaPrecoVinculo == null).FirstOrDefault();  
+                if (_tbEscalonada == null || _tbEscalonada.idTabelaPrecoEscalonada == 0)
+                    _tbEscalonada = _lEscalonadasAtivas.Where(t => t.idTabelaPrecoVinculo == null).FirstOrDefault();
 
 
-                if(_tbEscalonada != null)
+                if (_tbEscalonada != null)
                 {
                     _bBuscaCampanhas = _tbEscalonada.stExibeCampanhas;
-                } 
+                }
             }
 
             List<TabelaPrecoModel> _lCampanhasValidas;
             List<TabelaPrecoSimplificada> _lCampanhasValidasVenda;
-
 
             List<TabelaPrecoModel> _lCampanhasCliente = new List<TabelaPrecoModel>();
             List<TabelaPrecoModel> _lCampanhasRpres = new List<TabelaPrecoModel>();
@@ -96,7 +95,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
                 if (_filtroCliente.Key == 0)
                 {
                     var _cmpsCliente = _buscaRep.BuscarCampanhasCliente(idEmpresa: idEmpresa,
-                        idCliente: idCliente);
+                        idCliente: idCliente, filtro: filtro);
 
                     _lCampanhasCliente = _cmpsCliente;
                     _lFiltroCampCliente.Add(new KeyValuePair<int, List<TabelaPrecoModel>>(key: idCliente,
@@ -114,7 +113,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
                 if (_filtroRepre.Key == 0)
                 {
                     _lCampanhasRpres = _buscaRep.BuscarCampanhasRepresentante(idEmpresa: idEmpresa,
-                        idUsuario: idRepresentante);
+                        idUsuario: idRepresentante, filtro: filtro);
 
                     _lFiltroCampRepre.Add(new KeyValuePair<int, List<TabelaPrecoModel>>(key: idRepresentante, value: _lCampanhasRpres));
                 }
@@ -124,7 +123,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
                 }
             }
 
-            var _lCampanhasGerais = _buscaRep.BuscarCampanhasGerais(idEmpresa: idEmpresa);
+            var _lCampanhasGerais = _buscaRep.BuscarCampanhasGerais(idEmpresa: idEmpresa, filtro: filtro);
 
             TabelaPrecoSimplificada _tblAux;
             TabelaPrecoModel _tblVendaAux;
@@ -145,7 +144,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
                     if (_filtroCampRpra.Key == 0)
                     {
                         _lCampsRpra = _buscaRep.BuscarCampanhasRepresentacao(idEmpresa: idEmpresa,
-                            idRepresentacao: _idRpra);
+                            idRepresentacao: _idRpra, filtro: filtro);
                     }
                 }
 
@@ -153,7 +152,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
                 {
                     _infProduto = new ProdutoModel
                     {
-                        vVenda = pr.vVenda,                        
+                        vVenda = pr.vVenda,
                         pIpiVenda = pr.pIpiVenda,
                         pStVenda = pr.pStVenda
                     };
@@ -238,9 +237,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
                                 _infProduto: _infProduto,
                                 pr: pr);
 
-                        if (_tbEscalonada != null && 
+                        if (_tbEscalonada != null &&
                             _tblDefParaVenda != null &&
-                            _tbEscalonada.stAtivo == true && 
+                            _tbEscalonada.stAtivo == true &&
                             _tbEscalonada.idTabelaPrecoVinculo.HasValue &&
                             _tbEscalonada.idTabelaPrecoVinculo == _tblDefParaVenda.idTabelaPreco)
                         //if (_tbEscalonada != null && _tbEscalonada.idTabelaPrecoVinculo.HasValue == true)
@@ -250,39 +249,39 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
 
                             //pr.bTabelasCarregadas = true;
                         }
-                        else if (_tbEscalonada != null && 
-                            _tblDefParaVenda != null && 
-                            _tbEscalonada.stAtivo == true && 
+                        else if (_tbEscalonada != null &&
+                            _tblDefParaVenda != null &&
+                            _tbEscalonada.stAtivo == true &&
                             !_tbEscalonada.idTabelaPrecoVinculo.HasValue)
-                        { 
+                        {
                             _tblDefParaVenda.bEscalonada = true;
-                            _tblDefParaVenda.lFaixaComissao = _tbEscalonada.lFaixaComissao; 
+                            _tblDefParaVenda.lFaixaComissao = _tbEscalonada.lFaixaComissao;
                         }
 
                         if (_tblDefParaVenda != null)
                         {
                             if (idTabelaPrecoCondicao.GetValueOrDefault() == 0 || idTabelaPrecoCondicao.GetValueOrDefault() == _tblDefParaVenda.idTabelaPreco)
-                            { 
+                            {
                                 pr.lTabelaPreco.Add(_tblDefParaVenda);
                                 pr.currentTabelaPreco = _tblDefParaVenda;
                             }
                             else
                             {
                                 TabelaPrecoRepository.SetTabelaPrecoByProduto(item: pr,
-                            idClienteOffLine: idClienteOff, idCliente: idCliente, _idRepresentante: idRepresentante, idTabelaPrecoCondicao: idTabelaPrecoCondicao);
+                                        idClienteOffLine: idClienteOff, idCliente: idCliente, _idRepresentante: idRepresentante, idTabelaPrecoCondicao: idTabelaPrecoCondicao, filtro: filtro);
                             }
                         }
                         else
                         {
                             TabelaPrecoRepository.SetTabelaPrecoByProduto(item: pr,
-                                idClienteOffLine: idClienteOff, idCliente: idCliente, _idRepresentante: idRepresentante, idTabelaPrecoCondicao: idTabelaPrecoCondicao);
+                                    idClienteOffLine: idClienteOff, idCliente: idCliente, _idRepresentante: idRepresentante, idTabelaPrecoCondicao: idTabelaPrecoCondicao, filtro: filtro);
                         }
 
                     }
                     else
                     {
                         TabelaPrecoRepository.SetTabelaPrecoByProduto(item: pr,
-                                idClienteOffLine: idClienteOff, idCliente: idCliente, _idRepresentante: idRepresentante, idTabelaPrecoCondicao: idTabelaPrecoCondicao);
+                                idClienteOffLine: idClienteOff, idCliente: idCliente, _idRepresentante: idRepresentante, idTabelaPrecoCondicao: idTabelaPrecoCondicao, filtro: filtro);
                     }
 
                     if (_lCampanhasValidasVenda.Count > 0)

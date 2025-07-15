@@ -10,10 +10,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
     public class BuscaPrecoCalculoHelper
     {
 
-        public static void CalcularTabelaManual(int idTabelaPreco, int idProduto, TabelaPrecoSimplificada tblAux)
+        public static void CalcularTabelaManual(int idTabelaPreco, int idProduto, TabelaPrecoSimplificada tblAux, string filtro = null)
         {
             TabelaPrecoItemModel _itemManualAux = BuscaPrecoItemManualRepositorio.ObterItem(idTabelaPreco: idTabelaPreco,
-                                idProduto: idProduto);
+                                idProduto: idProduto, filtro: filtro);
 
             AplicarCalculoTabelaManual(tblAux: tblAux, _itemManualAux: _itemManualAux);
         }
@@ -41,15 +41,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                 var st = (double)_itemManualAux.vVenda * ((double)_itemManualAux.pStVenda / 100);
 
                 tblAux.vVendaSemArredondamento = (double)_itemManualAux.vVenda + ipi + st;
-                tblAux.vVenda = Extensions.ArredondarValorDecimal(((double)_itemManualAux.vVenda + ipi + st));  
+                tblAux.vVenda = Extensions.ArredondarValorDecimal(((double)_itemManualAux.vVenda + ipi + st));
             }
             else
             {
                 tblAux.vUnitario = (double)_itemManualAux.vVendaComImpostos;
-                tblAux.vVenda = (double)_itemManualAux.vVendaComImpostos; 
+                tblAux.vVenda = (double)_itemManualAux.vVendaComImpostos;
             }
-            
-            if(tblAux.bEscalonada == true)
+
+            if (tblAux.bEscalonada == true)
             {
                 tblAux.pComissao = tblAux.lFaixaComissao.FirstOrDefault()?.pComissao ?? 0;
             }
@@ -78,9 +78,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
             {
                 tblAux.vVenda = tblAux.vVenda + (_vTabela * (infProd.pStVenda.Value / 100));
             }
-            
 
-            if(tblAux.bEscalonada == true)
+
+            if (tblAux.bEscalonada == true)
             {
                 tblAux.pComissao = tblAux.lFaixaComissao.FirstOrDefault()?.pComissao ?? 0;
             }
