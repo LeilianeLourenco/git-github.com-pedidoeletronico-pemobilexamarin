@@ -204,20 +204,29 @@
                                                 <RowDefinition Height="*" />
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
-                                             
-                                        <StackLayout Padding="5,10,5,10" Grid.Row="0" >
-                                             <StackLayout.GestureRecognizers>
-                                                 <TapGestureRecognizer Tapped="PopupTabelaPreco" />
-                                             </StackLayout.GestureRecognizers>
-
-                                        <Label FontSize="18"
-                                                Text="{Binding CurrentTabelaPreco.Display}"
-                                                TextColor="#000" />
-                                        </StackLayout>
-
+                                            <TableView Grid.Row="0" HeightRequest="50">
+                                                <TableRoot>
+                                                    <TableSection>
+                                                        <ViewCell>
+                                                            <StackLayout Padding="5,10,5,5">
+                                                                <StackLayout.GestureRecognizers>
+                                                                    <TapGestureRecognizer Tapped="PopupTabelaPreco" />
+                                                                </StackLayout.GestureRecognizers>
+                                                                <Label
+                                                                    FontSize="18"
+                                                                    Text="{Binding CurrentTabelaPreco.Display}"
+                                                                    TextColor="#000" />
+                                                            </StackLayout>
+                                                        </ViewCell>
+                                                    </TableSection>
+                                                </TableRoot>
+                                            </TableView>
+                                            <!--<custom:BindablePicker
+                                                x:Name="BindableTabelaPreco"
+                                                ItemsSource="{Binding ListaTabelaPreco, Mode=TwoWay}"
+                                                SelectedItem="{Binding CurrentTabelaPreco, Mode=TwoWay}" />-->
                                             <Grid Grid.Row="1" Margin="5,0,0,0">
                                                 <Label
-                                                    Margin="0."                                                   
                                                     FontSize="Small"
                                                     Text="{Binding xDescontoMaximo}"
                                                     TextColor="{StaticResource AzulPrincipal}" />

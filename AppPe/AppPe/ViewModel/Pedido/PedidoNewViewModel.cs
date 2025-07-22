@@ -1422,7 +1422,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     currentModel.stCadastroMinimoVenda = _configuracoesGerais.stCadastroLimiteVendasEmpresa;
                     currentModel.stCalculoMinimoVenda = _configuracoesGerais.stCalculoLimiteVendasEmpresa;
                     currentModel.bForcarMinimoVendas = _configuracoesGerais.bForcarMinimoVendas;
-                    bExibirValorPorPeso = _configuracoesGerais.bExibirValorPorPeso ?? false;
+                    bExibirValorPorPeso = _configuracoesGerais.bExibirValorPorPeso;
                 }
 
                 if (currentModel.idPedidoVenda > 0)
