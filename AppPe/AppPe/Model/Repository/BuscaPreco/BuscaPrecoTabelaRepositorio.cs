@@ -11,7 +11,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
 {
     public class BuscaPrecoTabelaRepositorio : IBuscaPrecoRepositorio
     {
-        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca, string filtro = null)
+        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca)
         {
             //return App.Data.Connection.Table<TabelaPrecoModel>()
             //    .Where(tbl => tbl.idTabelaPreco == id && tbl.idEmpresa == idEmpresa).ToList();
@@ -21,7 +21,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                    stCampanhaRepresentante, stCampanhaCliente,
                    stTabelaPrecoRepresentacao, stCampanhaClienteRamoAtividade, stCampanhaClienteUF 
             from {TableMobile.TB_TABELAPRECO}
-            where stAtivo = 1 and idEmpresa = {idEmpresa}";
+            where stAtivo = 1 and idEmpresa = {idEmpresa}"; 
 
             var _tbls = App.Data.Connection.Query<TabelaPrecoSimples>(_xQry);
 

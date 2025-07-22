@@ -9,7 +9,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
 {
     public class BuscaPrecoClienteRepositorio : IBuscaPrecoRepositorio
     {
-        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca, string filtro = null)
+        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca)
         {
             string _xQry =
                 $@"select t.idTabelaPreco, t.xNome, t.pIndiceTabela, t.idEmpresa, 
@@ -25,15 +25,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
 
             //REMOVIDAS LINHAS DE QUERY por não conseguir trazer dados de sql lite com condição de data/hora
 
-            //            and(t.dInicial is null or t.dInicial < '{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}')
-            //and(t.dFinal is null or t.dFinal > '{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}')
+//            and(t.dInicial is null or t.dInicial < '{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}')
+//and(t.dFinal is null or t.dFinal > '{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}')
 
             if (stBusca != TipoPrecoBusca.tud)
+            {
                 _xQry = $"{_xQry} and t.stTabelaPreco = {(byte)stBusca}";
+            }
 
-            if (!string.IsNullOrWhiteSpace(filtro))
-                _xQry += $" AND t.xNome LIKE '%{filtro.Replace("'", "''")}%'";
-            
             var _tbls = App.Data.Connection.Query<TabelaPrecoSimples>(query: _xQry);
 
             _tbls = _tbls?.Where(tb => (tb.dInicial == null || tb.dInicial <= DateTime.UtcNow)
@@ -44,8 +43,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                 return new List<TabelaPrecoModel>();
             }
 
-            return _tbls.Select(l => new TabelaPrecoModel
-            {
+            return _tbls.Select(l => new TabelaPrecoModel {
                 dFinal = l.dFinal,
                 dInicial = l.dInicial,
                 idEmpresa = l.idEmpresa,

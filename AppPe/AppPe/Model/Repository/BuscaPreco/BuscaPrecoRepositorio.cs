@@ -11,7 +11,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
 {
     public class BuscaPrecoRepositorio
     {
-        public List<TabelaPrecoModel> BuscarCampanhasCliente(int idEmpresa, int idCliente, string filtro = null)
+        public List<TabelaPrecoModel> BuscarCampanhasCliente(int idEmpresa, int idCliente)
         {
             List<TabelaPrecoModel> _lRetornoAux;
             List<IBuscaPrecoRepositorio> _lReposisBusca = new List<IBuscaPrecoRepositorio>();
@@ -24,7 +24,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
 
             foreach (var rep in _lReposisBusca)
             {
-                _lRetornoAux = rep.RetornaPrecos(idEmpresa: idEmpresa, id: idCliente, stBusca: TipoPrecoBusca.cmp, filtro: filtro);
+                _lRetornoAux = rep.RetornaPrecos(idEmpresa: idEmpresa, id: idCliente, stBusca: TipoPrecoBusca.cmp);
 
                 if (_lRetornoAux != null && _lRetornoAux.Count > 0)
                 {
@@ -34,26 +34,26 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
             return _lRetorno;
         }
 
-        public List<TabelaPrecoModel> BuscarCampanhasRepresentante(int idEmpresa, int idUsuario, string filtro = null)
+        public List<TabelaPrecoModel> BuscarCampanhasRepresentante(int idEmpresa, int idUsuario)
         {
             BuscaPrecoRepresentanteRepositorio rep = new BuscaPrecoRepresentanteRepositorio();
-            List<TabelaPrecoModel> _lRetornoAux = rep.RetornaPrecos(idEmpresa: idEmpresa, id: idUsuario, stBusca: TipoPrecoBusca.cmp, filtro: filtro);
+            List<TabelaPrecoModel> _lRetornoAux = rep.RetornaPrecos(idEmpresa: idEmpresa, id: idUsuario, stBusca: TipoPrecoBusca.cmp);
 
             return _lRetornoAux;
         }
 
-        public List<TabelaPrecoModel> BuscarCampanhasRepresentacao(int idEmpresa, int idRepresentacao, string filtro = null)
+        public List<TabelaPrecoModel> BuscarCampanhasRepresentacao(int idEmpresa, int idRepresentacao)
         {
             BuscaPrecoRepresentacaoRepositorio _rep = new BuscaPrecoRepresentacaoRepositorio();
-            List<TabelaPrecoModel> _lRetornoAux = _rep.RetornaPrecos(idEmpresa: idEmpresa, id: idRepresentacao, stBusca: TipoPrecoBusca.cmp, filtro: filtro);
+            List<TabelaPrecoModel> _lRetornoAux = _rep.RetornaPrecos(idEmpresa: idEmpresa, id: idRepresentacao, stBusca: TipoPrecoBusca.cmp);
 
             return _lRetornoAux;
         }
 
-        public List<TabelaPrecoModel> BuscarCampanhasGerais(int idEmpresa, string filtro = null)
+        public List<TabelaPrecoModel> BuscarCampanhasGerais(int idEmpresa)
         {
             BuscaPrecoGeralRepositorio _rep = new BuscaPrecoGeralRepositorio();
-            var _lRetornoAux = _rep.RetornaPrecos(idEmpresa: idEmpresa, id: 0, stBusca: TipoPrecoBusca.cmp, filtro: filtro);
+            var _lRetornoAux = _rep.RetornaPrecos(idEmpresa: idEmpresa, id: 0, stBusca: TipoPrecoBusca.cmp);
 
             return _lRetornoAux;
         }

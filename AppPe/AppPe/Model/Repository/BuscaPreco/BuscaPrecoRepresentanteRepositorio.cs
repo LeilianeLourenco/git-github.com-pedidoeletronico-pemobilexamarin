@@ -11,7 +11,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
 {
     public class BuscaPrecoRepresentanteRepositorio : IBuscaPrecoRepositorio
     {
-        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca, string filtro = null)
+        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca)
         {
             string _xQry =
                 $@"select t.idTabelaPreco, t.xNome, t.pIndiceTabela, t.idEmpresa, 
@@ -19,17 +19,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                    t.stCampanhaRepresentante, t.stCampanhaCliente, t.pDescontoMaximo,
                    t.stTabelaPrecoRepresentacao, t.stCampanhaClienteRamoAtividade, t.stCampanhaClienteUF
                    from  {TableMobile.TB_TABELAPRECO} t
-                   join {TableMobile.TB_TABELA_PRECO_REPRESENTANTES} tr on t.idTabelaPreco = tr.idTabelaPreco
-                        and t.stAtivo = 1
-                        and t.stCampanhaRepresentante = 1
-                        and tr.idEmpresa_aspnetUsers = {id}
-                        and t.idEmpresa = {idEmpresa}";
+join {TableMobile.TB_TABELA_PRECO_REPRESENTANTES} tr on t.idTabelaPreco = tr.idTabelaPreco
+and t.stAtivo = 1
+and t.stCampanhaRepresentante = 1
+and tr.idEmpresa_aspnetUsers = {id}
+and t.idEmpresa = {idEmpresa}";
 
             if (stBusca != TipoPrecoBusca.tud)
+            {
                 _xQry = $"{_xQry} and t.stTabelaPreco = {(byte)stBusca}";
-
-            if (!string.IsNullOrWhiteSpace(filtro))
-                _xQry += $" AND t.xNome LIKE '%{filtro.Replace("'", "''")}%'";
+            }
 
             var _tbls = App.Data.Connection.Query<TabelaPrecoSimples>(query: _xQry);
             _tbls = _tbls?.Where(tb => (tb.dInicial == null || tb.dInicial <= DateTime.UtcNow)

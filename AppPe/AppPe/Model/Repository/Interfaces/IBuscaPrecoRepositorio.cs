@@ -10,7 +10,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Interfaces
     public interface IBuscaPrecoRepositorio
     {
 
-        List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca, string filtro = null);
+        List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca);
 
     }
 

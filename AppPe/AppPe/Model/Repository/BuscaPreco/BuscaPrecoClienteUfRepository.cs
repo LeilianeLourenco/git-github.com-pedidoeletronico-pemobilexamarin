@@ -14,7 +14,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
     {
 
 
-        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca, string filtro = null)
+        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca)
         {
             ClienteEnderecoRepositorio _cliEnderRepos = new ClienteEnderecoRepositorio();
 
@@ -40,10 +40,9 @@ and t.idEmpresa = {idEmpresa}
 and LOWER(tuf.xUF) = '{_xUf}'";
 
             if (stBusca != TipoPrecoBusca.tud)
+            {
                 _xQry = $"{_xQry} and t.stTabelaPreco = {(byte)stBusca}";
-            
-            if (!string.IsNullOrWhiteSpace(filtro))
-                _xQry += $" AND t.xNome LIKE '%{filtro.Replace("'", "''")}%'";
+            }
 
             var _tbls = App.Data.Connection.Query<TabelaPrecoSimples>(query: _xQry);
             _tbls = _tbls?.Where(tb => (tb.dInicial == null || tb.dInicial <= DateTime.UtcNow)

@@ -1,109 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<TabbedPage
-    x:Class="Xamarin.HLP.Mobile.AppPE.View.ListaPreco.PageListaPreco"
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
-    xmlns:listaPreco="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.ListaPreco;assembly=Xamarin.HLP.Mobile.AppPE"
-    xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE">
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:listaPreco="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.ListaPreco;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.ListaPreco.PageListaPreco" >
     <TabbedPage.BindingContext>
-        <listaPreco:ListaPrecoViewModel />
+        <listaPreco:ListaPrecoViewModel/>
     </TabbedPage.BindingContext>
     <TabbedPage.Title>
-        <OnPlatform
-            x:TypeArguments="x:String"
-            Android="Preços"
-            WinPhone="Preços"
-            iOS="Preços" />
+        <OnPlatform x:TypeArguments="x:String" WinPhone="Preços" Android="Preços" iOS="Preços"/>
     </TabbedPage.Title>
     <TabbedPage.Resources>
         <ResourceDictionary>
-            <OnPlatform
-                x:Key="IconListaEscalonada"
-                x:TypeArguments="FileImageSource"
-                iOS="ListaEscalonada.png" />
+            <OnPlatform x:Key="IconListaEscalonada" x:TypeArguments="FileImageSource" iOS="ListaEscalonada.png"/>
         </ResourceDictionary>
     </TabbedPage.Resources>
 
     <TabbedPage.Children>
 
-        <ContentPage
-            Padding="{StaticResource PaddingContentPageComHeader}"
-            BackgroundColor="{StaticResource CinzaMedio}"
-            Icon="{StaticResource IconListagem}">
+        <ContentPage Icon="{StaticResource IconListagem}" Padding="{StaticResource PaddingContentPageComHeader}" BackgroundColor="{StaticResource CinzaMedio}">
             <ContentPage.Title>
-                <OnPlatform
-                    x:TypeArguments="x:String"
-                    Android="Listagem"
-                    WinPhone="Preços"
-                    iOS="Listagem" />
+                <OnPlatform x:TypeArguments="x:String" WinPhone="Preços" Android="Listagem" iOS="Listagem"/>
             </ContentPage.Title>
-            <Grid
-                Padding="0,10,0,10"
-                BackgroundColor="{StaticResource CinzaMedio}"
-                ColumnSpacing="0"
-                RowSpacing="5">
+            <Grid ColumnSpacing="0" BackgroundColor="{StaticResource CinzaMedio}" RowSpacing="5" Padding="0,10,0,10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Frame
-                    Grid.Row="0"
-                    Padding="0,0,0,0"
-                    HasShadow="True"
-                    IsVisible="{Binding bSearch}">
-                    <Grid IsVisible="{Binding canExecuteInicial, Converter={StaticResource InvertBoolConvert}}" RowSpacing="0">
+                <Frame IsVisible="{Binding bSearch}" HasShadow="True" Grid.Row="0" Padding="0,0,0,0">
+                    <Grid RowSpacing="0" IsVisible="{Binding canExecuteInicial, Converter={StaticResource InvertBoolConvert}}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Grid
-                            Grid.Row="0"
-                            Padding="7,7,7,7"
-                            BackgroundColor="#0072c6">
-                            <Label
-                                FontAttributes="Bold"
-                                HorizontalTextAlignment="Center"
-                                Style="{StaticResource Medium}"
-                                Text="Filtros"
-                                TextColor="White" />
+                        <Grid Grid.Row="0" BackgroundColor="#0072c6" Padding="7,7,7,7" >
+                            <Label HorizontalTextAlignment="Center" TextColor="White" Text="Filtros" Style="{StaticResource Medium}" FontAttributes="Bold"/>
                         </Grid>
 
-                        <StackLayout
-                            Grid.Row="1"
-                            BackgroundColor="{StaticResource CinzaApresentacao}"
-                            Orientation="Vertical">
+                        <StackLayout Orientation="Vertical" Grid.Row="1" BackgroundColor="{StaticResource CinzaApresentacao}">
                             <StackLayout.Padding>
-                                <OnPlatform
-                                    x:TypeArguments="Thickness"
-                                    Android="7,7,7,7"
-                                    WinPhone="7,7,7,7"
-                                    iOS="17,7,17,7" />
+                                <OnPlatform x:TypeArguments="Thickness" WinPhone="7,7,7,7" Android="7,7,7,7" iOS="17,7,17,7" />
                             </StackLayout.Padding>
 
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid>
                                     <Grid.Padding>
-                                        <OnPlatform
-                                            x:TypeArguments="Thickness"
-                                            Android="5,0,0,0"
-                                            WinPhone="5,0,0,0"
-                                            iOS="3,0,0,0" />
+                                        <OnPlatform x:TypeArguments="Thickness" Android="5,0,0,0" iOS="3,0,0,0" WinPhone="5,0,0,0" />
                                     </Grid.Padding>
-                                    <Label
-                                        FontAttributes="Bold"
-                                        Text="TIPO DE FILTRO"
-                                        TextColor="{StaticResource CinzaEscuro}" />
+                                    <Label Text="TIPO DE FILTRO" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" />
                                 </Grid>
 
 
-                                <Picker Grid.Row="1" SelectedIndex="{Binding TipoPesquisa, Mode=TwoWay}">
+                                <Picker Grid.Row="1" SelectedIndex="{Binding TipoPesquisa, Mode=TwoWay}" >
                                     <Picker.Items>
                                         <x:String>PRODUTO</x:String>
                                         <x:String>TABELA DE PREÇO</x:String>
@@ -112,28 +67,16 @@
 
                             </Grid>
 
-                            <Grid IsVisible="{Binding bShowPesquisaProduto}">
-                                <xaml:GridToFind
-                                    x:Name="ViewCellProduto"
-                                    Padding="{StaticResource PaddingGridToFind}"
-                                    Command="{Binding OpenFindCommand}"
-                                    ShowImage="False" />
+                            <Grid IsVisible="{Binding bShowPesquisaProduto}"  >
+                                <xaml:GridToFind Padding="{StaticResource PaddingGridToFind}" ShowImage="False"  x:Name="ViewCellProduto" Command="{Binding OpenFindCommand}"/>
                             </Grid>
 
-                            <Grid IsVisible="{Binding bShowPesquisTabela}">
-                                <xaml:GridToFind
-                                    x:Name="ViewCellTabelaPreco"
-                                    Padding="{StaticResource PaddingGridToFind}"
-                                    Command="{Binding OpenFindCommand}"
-                                    ShowImage="False" />
+                            <Grid IsVisible="{Binding bShowPesquisTabela}" >
+                                <xaml:GridToFind  Padding="{StaticResource PaddingGridToFind}" ShowImage="False"  x:Name="ViewCellTabelaPreco" Command="{Binding OpenFindCommand}"/>
                             </Grid>
 
                             <Grid Padding="0,5,0,0">
-                                <xaml:SearchPE
-                                    x:Name="SearchBarPesquisa"
-                                    Placeholder="pesquisar..."
-                                    SearchCommand="{Binding PesquisarCommand}"
-                                    Text="{Binding Filtro, Mode=TwoWay}" />
+                                <xaml:SearchPE x:Name="SearchBarPesquisa" SearchCommand="{Binding PesquisarCommand}" Placeholder="pesquisar..." Text="{Binding  Filtro , Mode=TwoWay}" />
                             </Grid>
 
                         </StackLayout>
@@ -141,66 +84,43 @@
                     </Grid>
                 </Frame>
 
-                <Frame
-                    Grid.Row="1"
-                    Padding="0,0,0,0"
-                    HasShadow="True">
+                <Frame HasShadow="True" Padding="0,0,0,0" Grid.Row="1">
                     <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Grid
-                            Grid.Row="0"
-                            Padding="7,7,7,7"
-                            BackgroundColor="{StaticResource Roxo}">
-                            <Label
-                                FontAttributes="Bold"
-                                HorizontalTextAlignment="Center"
-                                Style="{StaticResource Medium}"
-                                Text="Resultado"
-                                TextColor="White" />
+                        <Grid Grid.Row="0" Padding="7,7,7,7" BackgroundColor="{StaticResource Roxo}">
+                            <Label TextColor="White" HorizontalTextAlignment="Center" Text="Resultado" Style="{StaticResource Medium}" FontAttributes="Bold"/>
                         </Grid>
 
-                        <Grid
-                            Grid.Row="1"
-                            Padding="15"
-                            BackgroundColor="{StaticResource CinzaApresentacao}">
+                        <Grid Grid.Row="1" BackgroundColor="{StaticResource CinzaApresentacao}" Padding="15">
 
                             <AbsoluteLayout>
-                                <xaml:GridDefaultToListGeneric
-                                    AbsoluteLayout.LayoutBounds="0,0,1,1"
-                                    AbsoluteLayout.LayoutFlags="All"
-                                    IsRunning="{Binding IsBusy, Mode=TwoWay}"
-                                    IsVisibleList="{Binding isVisibleListView, Mode=TwoWay}">
+                                <xaml:GridDefaultToListGeneric AbsoluteLayout.LayoutFlags="All"
+                                  AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                  IsVisibleList="{Binding isVisibleListView, Mode=TwoWay}"
+                                  IsRunning="{Binding IsBusy, Mode=TwoWay}">
                                     <xaml:GridDefaultToListGeneric.Padding>
-                                        <OnPlatform
-                                            x:TypeArguments="Thickness"
-                                            Android="0,0,0,0"
-                                            WinPhone="-2,0,0,-10"
-                                            iOS="10,0,10,0" />
+                                        <OnPlatform x:TypeArguments="Thickness" WinPhone="-2,0,0,-10" iOS="10,0,10,0" Android="0,0,0,0"/>
                                     </xaml:GridDefaultToListGeneric.Padding>
 
-                                    <ListView
-                                        x:Name="ListViewDados"
-                                        AbsoluteLayout.LayoutBounds="0,0,1,1"
-                                        AbsoluteLayout.LayoutFlags="All"
-                                        BackgroundColor="{StaticResource CinzaApresentacao}"
-                                        CachingStrategy="RecycleElement"
-                                        HasUnevenRows="True"
-                                        IsVisible="{Binding isVisibleListView, Mode=TwoWay}"
-                                        ItemsSource="{Binding RegistrosResearched}"
-                                        SeparatorVisibility="None">
+                                    <ListView x:Name="ListViewDados"
+                            BackgroundColor="{StaticResource CinzaApresentacao}"
+                            AbsoluteLayout.LayoutFlags="All"
+                            SeparatorVisibility="None"
+                            AbsoluteLayout.LayoutBounds="0,0,1,1"
+                            IsVisible="{Binding isVisibleListView, Mode=TwoWay}"
+                                              CachingStrategy="RecycleElement"
+                      ItemsSource="{Binding RegistrosResearched}"
+                      HasUnevenRows="True">
                                         <!--<ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <ViewCell>
                                                     <Grid Padding="0,5,0,5">
-                                                        <Label
-                                                            LineBreakMode="WordWrap"
-                                                            Text="{Binding xDisplay}"
-                                                            TextColor="{StaticResource CinzaPrincipal}" />
+                                                        <Label TextColor="{StaticResource CinzaPrincipal}" LineBreakMode="WordWrap" Text="{Binding xDisplay}" />
                                                     </Grid>
                                                 </ViewCell>
                                             </DataTemplate>
@@ -208,12 +128,10 @@
                                     </ListView>
                                 </xaml:GridDefaultToListGeneric>
 
-                                <xaml:ExtendedActivityIndicator
-                                    AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
-                                    AbsoluteLayout.LayoutFlags="PositionProportional"
-                                    IsRunning="True"
-                                    IsVisible="{Binding IsBusy, Mode=TwoWay}"
-                                    Color="{StaticResource AzulPrincipal}" />
+                                <xaml:ExtendedActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy, Mode=TwoWay}"
+                                                Color="{StaticResource AzulPrincipal}"
+                                                AbsoluteLayout.LayoutFlags="PositionProportional"
+                                                AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize" />
                             </AbsoluteLayout>
                         </Grid>
 
@@ -223,98 +141,51 @@
 
         </ContentPage>
 
-        <ContentPage
-            x:Name="PageTabelaEscalonada"
-            Title="Escalonada"
-            Padding="{StaticResource PaddingApresentacoes}"
-            BackgroundColor="{StaticResource CinzaMedio}"
-            Icon="{StaticResource IconListaEscalonada}">
+        <ContentPage BackgroundColor="{StaticResource CinzaMedio}" x:Name="PageTabelaEscalonada" Title="Escalonada" Icon="{StaticResource IconListaEscalonada}" Padding="{StaticResource PaddingApresentacoes}">
 
-            <Grid
-                Padding="0,10,0,10"
-                BackgroundColor="{StaticResource CinzaMedio}"
-                ColumnSpacing="0"
-                RowSpacing="5">
+            <Grid ColumnSpacing="0" BackgroundColor="{StaticResource CinzaMedio}" RowSpacing="5" Padding="0,10,0,10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Frame
-                    Padding="0,0,0,0"
-                    HasShadow="True"
-                    IsVisible="{Binding bSearch}">
-                    <Grid IsVisible="{Binding canExecuteInicial, Converter={StaticResource InvertBoolConvert}}" RowSpacing="0">
+                <Frame IsVisible="{Binding bSearch}" HasShadow="True" Padding="0,0,0,0">
+                    <Grid RowSpacing="0" IsVisible="{Binding canExecuteInicial, Converter={StaticResource InvertBoolConvert}}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Grid
-                            Grid.Row="0"
-                            Padding="7,7,7,7"
-                            BackgroundColor="#0072c6">
-                            <Label
-                                FontAttributes="Bold"
-                                HorizontalTextAlignment="Center"
-                                Style="{StaticResource Medium}"
-                                Text="Filtros"
-                                TextColor="White" />
+                        <Grid Grid.Row="0" BackgroundColor="#0072c6" Padding="7,7,7,7" >
+                            <Label HorizontalTextAlignment="Center" TextColor="White" Text="Filtros" Style="{StaticResource Medium}" FontAttributes="Bold"/>
                         </Grid>
 
-                        <StackLayout
-                            Grid.Row="1"
-                            Padding="7,7,7,7"
-                            BackgroundColor="{StaticResource CinzaApresentacao}"
-                            Orientation="Vertical">
+                        <StackLayout Orientation="Vertical" Grid.Row="1" BackgroundColor="{StaticResource CinzaApresentacao}" Padding="7,7,7,7">
 
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <Grid
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Padding="5,0,0,0">
-                                    <Label
-                                        FontAttributes="Bold"
-                                        Text="TABELA ESCALONADA"
-                                        TextColor="{StaticResource CinzaEscuro}" />
+                                <Grid Padding="5,0,0,0" Grid.Row="0" Grid.Column="0">
+                                    <Label Text="TABELA ESCALONADA" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" />
                                 </Grid>
-                                <custom:BindablePicker
-                                    x:Name="BindableEscalonada"
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    HorizontalOptions="FillAndExpand"
-                                    ItemsSource="{Binding lTabelaEscalonada}"
-                                    SelectedItem="{Binding currentTabelaEscalonada, Mode=TwoWay}" />
+                                <custom:BindablePicker Grid.Column="0" Grid.Row="1" HorizontalOptions="FillAndExpand" x:Name="BindableEscalonada" ItemsSource="{Binding lTabelaEscalonada}" SelectedItem="{Binding currentTabelaEscalonada, Mode=TwoWay}" />
                                 <!--<custom:SearchControl Placeholder="pesquisar..." SearchCommand="{Binding FiltrarEscalonadaCommand}" Grid.Row="1" Grid.Column="1" Text="{Binding xFiltroEscalonada}" />-->
                             </Grid>
 
                             <Grid Padding="0,5,0,0">
                                 <Grid.HeightRequest>
-                                    <OnPlatform
-                                        x:TypeArguments="x:Double"
-                                        Android="40"
-                                        WinPhone="40"
-                                        iOS="34" />
+                                    <OnPlatform x:TypeArguments="x:Double" iOS="34" WinPhone="40" Android="40"/>
                                 </Grid.HeightRequest>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*" />
-                                    <ColumnDefinition Width="50*" />
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button
-                                    Command="{Binding CarregarEscalonadaCommand}"
-                                    Style="{StaticResource Primary}"
-                                    Text="Carregar dados"
-                                    TextColor="White" />
+                                <Button Command="{Binding CarregarEscalonadaCommand}" Text="Carregar dados" Style="{StaticResource Primary}" TextColor="White"/>
                                 <Grid Grid.Column="1">
-                                    <xaml:SearchPE
-                                        Placeholder="pesquisar..."
-                                        SearchCommand="{Binding FiltrarEscalonadaCommand}"
-                                        Text="{Binding xFiltroEscalonada, Mode=TwoWay}" />
+                                    <xaml:SearchPE Placeholder="pesquisar..." SearchCommand="{Binding FiltrarEscalonadaCommand}" Text="{Binding xFiltroEscalonada, Mode=TwoWay}"/>
                                 </Grid>
                             </Grid>
                         </StackLayout>
@@ -324,131 +195,72 @@
 
 
 
-                <Frame
-                    Grid.Row="1"
-                    Padding="0,0,0,0"
-                    HasShadow="True">
+                <Frame HasShadow="True" Padding="0,0,0,0" Grid.Row="1">
                     <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Grid
-                            Grid.Row="0"
-                            Padding="7,7,7,7"
-                            BackgroundColor="{StaticResource Roxo}">
-                            <Label
-                                FontAttributes="Bold"
-                                HorizontalTextAlignment="Center"
-                                Style="{StaticResource Medium}"
-                                Text="Resultado"
-                                TextColor="White" />
+                        <Grid Grid.Row="0" Padding="7,7,7,7" BackgroundColor="{StaticResource Roxo}">
+                            <Label TextColor="White" HorizontalTextAlignment="Center" Text="Resultado" Style="{StaticResource Medium}" FontAttributes="Bold"/>
                         </Grid>
 
-                        <Grid
-                            Grid.Row="1"
-                            Padding="15"
-                            BackgroundColor="{StaticResource CinzaApresentacao}">
+                        <Grid Grid.Row="1" BackgroundColor="{StaticResource CinzaApresentacao}" Padding="15">
 
                             <AbsoluteLayout>
-                                <xaml:GridDefaultToListGeneric
-                                    AbsoluteLayout.LayoutBounds="0,0,1,1"
-                                    AbsoluteLayout.LayoutFlags="All"
-                                    IsRunning="{Binding IsBusy, Mode=TwoWay}"
-                                    IsVisibleList="{Binding isVisibleListView, Mode=TwoWay}">
+                                <xaml:GridDefaultToListGeneric AbsoluteLayout.LayoutFlags="All"
+                                  AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                  IsVisibleList="{Binding isVisibleListView, Mode=TwoWay}"
+                                  IsRunning="{Binding IsBusy, Mode=TwoWay}">
                                     <xaml:GridDefaultToListGeneric.Padding>
-                                        <OnPlatform
-                                            x:TypeArguments="Thickness"
-                                            Android="0,0,0,0"
-                                            WinPhone="-2,0,0,-10"
-                                            iOS="10,0,10,0" />
+                                        <OnPlatform x:TypeArguments="Thickness" WinPhone="-2,0,0,-10" iOS="10,0,10,0" Android="0,0,0,0"/>
                                     </xaml:GridDefaultToListGeneric.Padding>
 
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <Grid BackgroundColor="{StaticResource CinzaClarissimo}" IsVisible="{Binding isVisibleListView, Mode=TwoWay}">
+                                        <Grid  IsVisible="{Binding isVisibleListView, Mode=TwoWay}" BackgroundColor="{StaticResource CinzaClarissimo}">
                                             <Grid Padding="0,0,0,5">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="15*" />
-                                                    <ColumnDefinition Width="25*" />
-                                                    <ColumnDefinition Width="25*" />
-                                                    <ColumnDefinition Width="35*" />
+                                                    <ColumnDefinition Width="15*"/>
+                                                    <ColumnDefinition Width="25*"/>
+                                                    <ColumnDefinition Width="25*"/>
+                                                    <ColumnDefinition Width="35*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Label
-                                                    HorizontalTextAlignment="Start"
-                                                    LineBreakMode="NoWrap"
-                                                    Text="Faixa"
-                                                    TextColor="{StaticResource CinzaPrincipal}" />
-                                                <Label
-                                                    Grid.Column="1"
-                                                    HorizontalTextAlignment="Start"
-                                                    LineBreakMode="NoWrap"
-                                                    Text="De"
-                                                    TextColor="{StaticResource CinzaPrincipal}" />
-                                                <Label
-                                                    Grid.Column="2"
-                                                    HorizontalTextAlignment="Start"
-                                                    LineBreakMode="NoWrap"
-                                                    Text="Até"
-                                                    TextColor="{StaticResource VermelhoPrincipal}" />
-                                                <Label
-                                                    Grid.Column="3"
-                                                    HorizontalTextAlignment="Start"
-                                                    LineBreakMode="NoWrap"
-                                                    Text="Comissão"
-                                                    TextColor="{StaticResource AzulPrincipal}" />
+                                                <Label HorizontalTextAlignment="Start" Text="Faixa" TextColor="{StaticResource CinzaPrincipal}" LineBreakMode="NoWrap"/>
+                                                <Label HorizontalTextAlignment="Start" Grid.Column="1" Text="De" TextColor="{StaticResource CinzaPrincipal}" LineBreakMode="NoWrap"/>
+                                                <Label HorizontalTextAlignment="Start" Grid.Column="2" Text="Até" TextColor="{StaticResource VermelhoPrincipal}" LineBreakMode="NoWrap"/>
+                                                <Label HorizontalTextAlignment="Start" Grid.Column="3" Text="Comissão" TextColor="{StaticResource AzulPrincipal}" LineBreakMode="NoWrap"/>
                                             </Grid>
                                         </Grid>
-                                        <ListView
-                                            x:Name="ListViewDadosEscalonada"
-                                            Grid.Row="1"
-                                            AbsoluteLayout.LayoutBounds="0,0,1,1"
-                                            AbsoluteLayout.LayoutFlags="All"
-                                            BackgroundColor="{StaticResource CinzaApresentacao}"
-                                            CachingStrategy="RecycleElement"
-                                            HasUnevenRows="True"
-                                            IsVisible="{Binding isVisibleListView, Mode=TwoWay}"
-                                            ItemsSource="{Binding lEscalonadaDisplays}"
-                                            SeparatorVisibility="None">
+                                        <ListView Grid.Row="1" x:Name="ListViewDadosEscalonada"
+                                                  CachingStrategy="RecycleElement"
+                              BackgroundColor="{StaticResource CinzaApresentacao}"
+                              AbsoluteLayout.LayoutFlags="All"
+                              SeparatorVisibility="None"
+                              AbsoluteLayout.LayoutBounds="0,0,1,1"
+                              IsVisible="{Binding isVisibleListView, Mode=TwoWay}"
+                        ItemsSource="{Binding lEscalonadaDisplays}"
+                        HasUnevenRows="True">
                                             <!--<ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>-->
                                             <ListView.ItemTemplate>
                                                 <DataTemplate>
                                                     <ViewCell>
                                                         <Grid Padding="0,5,0,5">
                                                             <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="15*" />
-                                                                <ColumnDefinition Width="25*" />
-                                                                <ColumnDefinition Width="25*" />
-                                                                <ColumnDefinition Width="35*" />
+                                                                <ColumnDefinition Width="15*"/>
+                                                                <ColumnDefinition Width="25*"/>
+                                                                <ColumnDefinition Width="25*"/>
+                                                                <ColumnDefinition Width="35*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <Label
-                                                                HorizontalTextAlignment="Start"
-                                                                LineBreakMode="NoWrap"
-                                                                Text="{Binding order}"
-                                                                TextColor="{StaticResource CinzaPrincipal}" />
-                                                            <Label
-                                                                Grid.Column="1"
-                                                                HorizontalTextAlignment="Start"
-                                                                LineBreakMode="NoWrap"
-                                                                Text="{Binding xDescontoDe}"
-                                                                TextColor="{StaticResource CinzaPrincipal}" />
-                                                            <Label
-                                                                Grid.Column="2"
-                                                                HorizontalTextAlignment="Start"
-                                                                LineBreakMode="NoWrap"
-                                                                Text="{Binding xDescontoAte}"
-                                                                TextColor="{StaticResource VermelhoPrincipal}" />
-                                                            <Label
-                                                                Grid.Column="3"
-                                                                HorizontalTextAlignment="Start"
-                                                                LineBreakMode="NoWrap"
-                                                                Text="{Binding pComissao}"
-                                                                TextColor="{StaticResource AzulPrincipal}" />
+                                                            <Label HorizontalTextAlignment="Start" Text="{Binding order}" TextColor="{StaticResource CinzaPrincipal}" LineBreakMode="NoWrap"/>
+                                                            <Label HorizontalTextAlignment="Start" Grid.Column="1" Text="{Binding xDescontoDe}" TextColor="{StaticResource CinzaPrincipal}" LineBreakMode="NoWrap"/>
+                                                            <Label HorizontalTextAlignment="Start" Grid.Column="2" Text="{Binding xDescontoAte}" TextColor="{StaticResource VermelhoPrincipal}" LineBreakMode="NoWrap"/>
+                                                            <Label HorizontalTextAlignment="Start" Grid.Column="3" Text="{Binding pComissao}" TextColor="{StaticResource AzulPrincipal}" LineBreakMode="NoWrap"/>
                                                         </Grid>
                                                     </ViewCell>
                                                 </DataTemplate>
@@ -458,12 +270,10 @@
                                     </Grid>
                                 </xaml:GridDefaultToListGeneric>
 
-                                <xaml:ExtendedActivityIndicator
-                                    AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
-                                    AbsoluteLayout.LayoutFlags="PositionProportional"
-                                    IsRunning="True"
-                                    IsVisible="{Binding IsBusy, Mode=TwoWay}"
-                                    Color="{StaticResource AzulPrincipal}" />
+                                <xaml:ExtendedActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy, Mode=TwoWay}"
+                                                Color="{StaticResource AzulPrincipal}"
+                                                AbsoluteLayout.LayoutFlags="PositionProportional"
+                                                AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize" />
                             </AbsoluteLayout>
                         </Grid>
 
@@ -478,9 +288,6 @@
     </TabbedPage.Children>
 
     <TabbedPage.ToolbarItems>
-        <ToolbarItem
-            Command="{Binding HabilitarSearchCommand}"
-            Icon="{Binding ImageIconSearch}"
-            Text="Filtro" />
+        <ToolbarItem Command="{Binding HabilitarSearchCommand}"  Text="Filtro" Icon="{Binding ImageIconSearch}"/>
     </TabbedPage.ToolbarItems>
 </TabbedPage>

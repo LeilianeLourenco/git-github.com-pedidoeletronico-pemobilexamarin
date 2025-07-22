@@ -17,7 +17,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
             this._lIdRpras = lIdRpras;
         }
 
-        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca, string filtro = null)
+        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca)
         {
             var _idsClausulaIn = _lIdRpras.Select(pr => pr)
                 .ToList().Aggregate("", (current, item) => current + (current == "" ? "" : " , ") + item);
