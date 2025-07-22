@@ -1,5 +1,4 @@
-﻿using PdfSharpCore.Pdf.Filters;
-using Rg.Plugins.Popup.Pages;
+﻿using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
@@ -17,7 +16,8 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Popup
     {
         BuscaPreco _buscaPreco = new BuscaPreco();
 
-        private ObservableCollection<BasicPickerModel> _todos = new ObservableCollection<BasicPickerModel>();
+        private ObservableCollection<BasicPickerModel> _todos;
+        private ObservableCollection<BasicPickerModel> _todosOriginal;
         public event Action<BasicPickerModel> ItemSelecionado;
 
         public PagePopupTabelaPreco(EditarItemViewModel editarViewModel)
@@ -25,60 +25,45 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Popup
             InitializeComponent();
             BindingContext = editarViewModel;
 
+            var lista = editarViewModel.ListaTabelaPreco ?? new ObservableCollection<BasicPickerModel>();
+            _todosOriginal = new ObservableCollection<BasicPickerModel>(lista);
+            _todos = new ObservableCollection<BasicPickerModel>(_todosOriginal);
             listaTabelaPreco.ItemsSource = _todos;
-            Inicializar();
 
-            listaTabelaPreco.SelectedItem = null;
+            listaTabelaPreco.SelectedItem = null; 
         }
 
         public EditarItemViewModel ViewModel => BindingContext as EditarItemViewModel;
 
-        public void Inicializar()
-        {
-            if (BindingContext is EditarItemViewModel vm)
-            {
-                vm.BuscarTabelaPrecoFiltro(null);
-
-                foreach (var item in vm.currentModel.lTabelaPreco)
-                {
-                    _todos.Add(new BasicPickerModel
-                    {
-                        Id = item.idTabelaPreco,
-                        Display = item.xTabelaPreco
-                    });
-                }
-            }
-        }
-
         private void OnSearchCompleted(object sender, EventArgs e)
         {
-            if (BindingContext is EditarItemViewModel vm)
+            string filtro = searchEntry.Text?.ToLower() ?? string.Empty;
+
+            _todos.Clear();
+
+            if (!string.IsNullOrWhiteSpace(filtro))
             {
-                string filtro = searchEntry.Text?.ToLower() ?? string.Empty;
+                var filtrados = _todosOriginal
+                    .Where(x => x.Display?.ToLower().Contains(filtro) == true)
+                    .ToList();
 
-                _todos.Clear();
-
-                vm.BuscarTabelaPrecoFiltro(filtro);
-
-                foreach (var item in vm.currentModel.lTabelaPreco)
-                {
-                    _todos.Add(new BasicPickerModel
-                    {
-                        Id = item.idTabelaPreco,
-                        Display = item.xTabelaPreco
-                    });
-                }
-
-                listaTabelaPreco.ItemsSource = _todos;
-                listaTabelaPreco.SelectedItem = null;
+                foreach (var item in filtrados)
+                    _todos.Add(item);
             }
+            else
+            {
+                foreach (var item in _todosOriginal)
+                    _todos.Add(item);
+            }
+
+            listaTabelaPreco.SelectedItem = null;
         }
 
         private void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is BasicPickerModel selecionado)
             {
-                listaTabelaPreco.SelectedItem = null;
+                listaTabelaPreco.SelectedItem = null; 
 
                 ItemSelecionado?.Invoke(selecionado);
                 PopupNavigation.Instance.PopAsync();
