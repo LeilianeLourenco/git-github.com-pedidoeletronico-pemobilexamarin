@@ -11,31 +11,25 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
     public class BuscaPrecoItemManualRepositorio
     {
 
-        public static TabelaPrecoItemModel ObterItem(int idTabelaPreco, int idProduto, string filtro = null)
+        public static TabelaPrecoItemModel ObterItem(int idTabelaPreco, int idProduto)
         {
             //var _item = App.Data.Connection.Table<TabelaPrecoItemModel>(
             //    ).FirstOrDefault(ti => ti.idTabelaPreco == idTabelaPreco && ti.idProduto == idProduto);
 
-            var query =
+            var _item = App.Data.Connection.Query<TabelaPrecoItemModel>(
                 $@"select pIpiVenda, pStVenda, vVendaComImpostos, vVenda, idProduto, pDescontoMaximo, pComissao from {TableMobile.TB_TABELAPRECOITEM} 
-                    where idTabelaPreco = {idTabelaPreco} and idProduto = {idProduto}";
+                    where idTabelaPreco = {idTabelaPreco} and idProduto = {idProduto}"
+                ).FirstOrDefault();
 
-            //if (!string.IsNullOrWhiteSpace(filtro))
-            //    query += $" AND xNome LIKE '%{filtro.Replace("'", "''")}%'";
-
-            return App.Data.Connection.Query<TabelaPrecoItemModel>(query).FirstOrDefault();
+            return _item;
         }
 
-        public static List<TabelaPrecoItemModel> ObterItems(int idTabelaPreco, int idEmpresa, string filtro = null)
+        public static List<TabelaPrecoItemModel> ObterItems(int idTabelaPreco, int idEmpresa)
         {
-
-            var query = $@"select pIpiVenda, pStVenda, vVendaComImpostos, vVenda, idProduto, pDescontoMaximo, pComissao from {TableMobile.TB_TABELAPRECOITEM} 
-                    where idEmpresa = {idEmpresa} and idTabelaPreco = {idTabelaPreco}";
-
-            //if (!string.IsNullOrWhiteSpace(filtro))
-            //    query += $" AND xNome LIKE '%{filtro.Replace("'", "''")}%'";
-
-            var _itens = App.Data.Connection.Query<TabelaPrecoItemModel>(query);
+            var _itens = App.Data.Connection.Query<TabelaPrecoItemModel>(
+                $@"select pIpiVenda, pStVenda, vVendaComImpostos, vVenda, idProduto, pDescontoMaximo, pComissao from {TableMobile.TB_TABELAPRECOITEM} 
+                    where idEmpresa = {idEmpresa} and idTabelaPreco = {idTabelaPreco}"
+                );
 
             return _itens;
         }

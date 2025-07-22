@@ -11,7 +11,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
 {
     public class BuscaPrecoRepresentacaoRepositorio : IBuscaPrecoRepositorio
     {
-        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca, string filtro = null)
+        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca)
         {
             string _xQry =
                 $@"select t.idTabelaPreco, t.xNome, t.pIndiceTabela, t.idEmpresa, t.stDefault, t.stTabelaPreco, t.stValor, t.dInicial, t.dFinal,
@@ -25,10 +25,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                     and t.idEmpresa = {idEmpresa}";
 
             if (stBusca != TipoPrecoBusca.tud)
+            {
                 _xQry = $"{_xQry} and t.stTabelaPreco = {(byte)stBusca}";
-
-            if (!string.IsNullOrWhiteSpace(filtro))
-                _xQry += $" AND t.xNome LIKE '%{filtro.Replace("'", "''")}%'";
+            }
 
             var _tbls = App.Data.Connection.Query<TabelaPrecoSimples>(query: _xQry);
             _tbls = _tbls?.Where(tb => (tb.dInicial == null || tb.dInicial <= DateTime.UtcNow)

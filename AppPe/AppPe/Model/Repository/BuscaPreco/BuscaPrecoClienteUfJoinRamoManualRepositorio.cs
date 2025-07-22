@@ -18,7 +18,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
             this._idProduto = idProduto;
         }
 
-        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca, string filtro = null)
+        public List<TabelaPrecoModel> RetornaPrecos(int idEmpresa, int id, TipoPrecoBusca stBusca)
         {
             ClienteEnderecoRepositorio _cliEnderRepos = new ClienteEnderecoRepositorio();
 

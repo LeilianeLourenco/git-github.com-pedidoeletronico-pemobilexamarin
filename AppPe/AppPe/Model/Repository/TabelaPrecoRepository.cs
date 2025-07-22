@@ -573,7 +573,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return tbl.stValor == 0 ? (vVenda * (1 - (tbl.pIndiceTabela / 100))) : ((vVenda * (1 + (tbl.pIndiceTabela / 100))));
         }
 
-        public static PedidoVendaItensModel SetTabelaPrecoByProduto(PedidoVendaItensModel item, int idClienteOffLine, int? idCliente, int _idRepresentante, int? idTabelaPrecoCondicao = null, string filtro = null)
+        public static PedidoVendaItensModel SetTabelaPrecoByProduto(PedidoVendaItensModel item, int idClienteOffLine, int? idCliente, int _idRepresentante, int? idTabelaPrecoCondicao = null)
         {
             try
             {
@@ -585,8 +585,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     idProduto: item.idProduto ?? 0,
                     idRepresentacao: item.idRepresentada,
                     idRepresentante: _idRepresentante,
-                    stBusca: Interfaces.TipoPrecoBusca.tud,
-                    filtro: filtro);
+                    stBusca: Interfaces.TipoPrecoBusca.tud);
 
                 List<TabelaPrecoSimplificada> _lTabelas = new List<TabelaPrecoSimplificada>();
                 TabelaPrecoSimplificada _tblAux;

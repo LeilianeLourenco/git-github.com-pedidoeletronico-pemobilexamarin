@@ -195,9 +195,6 @@
     <Compile Update="View\Pedido\PageFaturas.xaml.cs">
       <DependentUpon>PageFaturas.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pedido\Popup\PagePopupTabelaPreco.xaml.cs">
-      <DependentUpon>PagePopupTabelaPreco.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>

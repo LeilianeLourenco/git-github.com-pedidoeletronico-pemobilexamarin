@@ -8,7 +8,6 @@ using Hlp.PedidoEletronico.Domain.Business.Enums;
 using Hlp.PedidoEletronico.Domain.Business.Helpers;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
-using Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
@@ -20,13 +19,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 {
     public class EditarItemViewModel : ViewModelComum<PedidoVendaItensModel>
     {
-        BuscaPreco _buscaPreco = new BuscaPreco();
-
         #region Properties
 
-        private ObservableCollection<BasicPickerModel> _listaTabelaPreco = new ObservableCollection<BasicPickerModel>();
+        private List<BasicPickerModel> _listaTabelaPreco = new List<BasicPickerModel>();
 
-        public ObservableCollection<BasicPickerModel> ListaTabelaPreco
+        public List<BasicPickerModel> ListaTabelaPreco
         {
             get { return _listaTabelaPreco; }
             set { _listaTabelaPreco = value; NotifyPropertyChanged(); }
@@ -490,7 +487,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 currentModel = PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel;
 
                 StaticModel.StaticEditarItemViewModel = this;
-                ListaTabelaPreco = new ObservableCollection<BasicPickerModel>();
+                ListaTabelaPreco = new List<BasicPickerModel>();
                 ListaLocalEstoque = new List<BasicPickerModel>();
 
 
@@ -636,7 +633,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     }
                 }
                 catch (Exception ex)
-                {
+                {  
                     ex.TrakException();
                 }
 
@@ -693,43 +690,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
             });
             return bretorno;
-        }
-
-        public void BuscarTabelaPrecoFiltro(string filtro)
-        {
-            List<PedidoVendaItensModel> itens = new List<PedidoVendaItensModel>();
-
-            var idClientesOffLine = PagePedidoNew.CurrentViewModel.currentModel.idClientesOffLine;
-            var idClientes = PagePedidoNew.CurrentViewModel.currentModel.idClientes;
-            var idRepresentante = PagePedidoNew.CurrentViewModel.currentModel.idRepresentantePedido;
-            var idTabelaPrecoCondicao = PagePedidoNew.CurrentViewModel.idTabelaPrecoCondicao;
-
-            var item = PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel;
-            itens.Add(item);
-
-            if (string.IsNullOrEmpty(filtro))
-                filtro = null;
-
-            this._buscaPreco.Buscar(
-                        itens: itens,
-                        idClienteOff: idClientesOffLine,
-                        idCliente: idClientes ?? 0,
-                        idRepresentante: idRepresentante ?? 0,
-                        idEmpresa: App.EnvironmentPE.idEmpresaLogada,
-                        idTabelaPrecoCondicao: idTabelaPrecoCondicao,
-                        filtro: filtro
-                    );
-
-            //ListaTabelaPreco.Clear();
-
-            //foreach (var tabelaPrecoSimplificada in currentModel.lTabelaPreco)
-            //{
-            //    ListaTabelaPreco.Add(new BasicPickerModel
-            //    {
-            //        Id = tabelaPrecoSimplificada.idTabelaPreco,
-            //        Display = tabelaPrecoSimplificada.xTabelaPreco
-            //    });
-            //}
         }
     }
 }
