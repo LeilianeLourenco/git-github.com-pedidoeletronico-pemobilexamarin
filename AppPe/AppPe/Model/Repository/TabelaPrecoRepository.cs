@@ -573,7 +573,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return tbl.stValor == 0 ? (vVenda * (1 - (tbl.pIndiceTabela / 100))) : ((vVenda * (1 + (tbl.pIndiceTabela / 100))));
         }
 
-        public static PedidoVendaItensModel SetTabelaPrecoByProduto(PedidoVendaItensModel item, int idClienteOffLine, int? idCliente, int _idRepresentante, int? idTabelaPrecoCondicao = null)
+        public static PedidoVendaItensModel SetTabelaPrecoByProduto(PedidoVendaItensModel item, int idClienteOffLine, int? idCliente, int _idRepresentante, int? idTabelaPrecoCondicao = null, bool remover = true, string filtro = null)
         {
             try
             {
@@ -585,7 +585,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     idProduto: item.idProduto ?? 0,
                     idRepresentacao: item.idRepresentada,
                     idRepresentante: _idRepresentante,
-                    stBusca: Interfaces.TipoPrecoBusca.tud);
+                    stBusca: Interfaces.TipoPrecoBusca.tud,
+                    filtro: filtro);
 
                 List<TabelaPrecoSimplificada> _lTabelas = new List<TabelaPrecoSimplificada>();
                 TabelaPrecoSimplificada _tblAux;
@@ -645,7 +646,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     }
                 }
 
-                if (item.lTabelaPreco.Count > 0) //Verificar se item já possui campanhas carregadas, consequentemente, já definido um preço de venda para o item
+                if (item.lTabelaPreco.Count > 0 && remover) //Verificar se item já possui campanhas carregadas, consequentemente, já definido um preço de venda para o item
                 {
                     var _tblsJaInseridas = item.lTabelaPreco.Select(tb => tb.idTabelaPreco).ToList();
                     var _bTeveTabelaRemovida = false;

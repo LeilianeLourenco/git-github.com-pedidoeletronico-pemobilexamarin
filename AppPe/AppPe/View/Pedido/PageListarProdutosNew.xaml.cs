@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rg.Plugins.Popup.Services;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento.Behaviors;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
+using Xamarin.HLP.Mobile.AppPE.View.Popup;
 using Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;
 using ZXing.Net.Mobile.Forms;
 
@@ -432,6 +434,16 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                 _canClose = false;
                 UtilNavidate.PopAsync();
             }
+        }
+
+        private async void PopupTabelaPreco(object sender, EventArgs e)
+        {
+            var popup = new PagePopupTabelaPreco(ViewModel.editarItemViewModel);
+            popup.ItemSelecionado += item =>
+            {
+                ViewModel.CurrentTabelaPreco = item;
+            };
+            await PopupNavigation.Instance.PushAsync(popup);
         }
     }
 }

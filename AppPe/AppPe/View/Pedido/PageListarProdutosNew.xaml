@@ -160,14 +160,19 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="StackLayoutListaPreco" Grid.Row="1">
-
-                <custom:BindablePickerV2
-                    DisplayMemberPath="Display"
-                    HorizontalOptions="FillAndExpand"
-                    ItemsSource="{Binding ListaTabelaPreco}"
-                    SelectedItem="{Binding CurrentTabelaPreco, Mode=TwoWay}" />
-
+            <StackLayout
+                x:Name="StackLayoutListaPreco"
+                Grid.Row="1"
+                Margin="0,0,0,10">
+                <StackLayout Margin="5,0,0,0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="PopupTabelaPreco" />
+                    </StackLayout.GestureRecognizers>
+                    <Label
+                        FontSize="18"
+                        Text="{Binding CurrentTabelaPreco.Display}"
+                        TextColor="#000" />
+                </StackLayout>
             </StackLayout>
 
             <Grid Grid.Row="2" ColumnSpacing="2">
