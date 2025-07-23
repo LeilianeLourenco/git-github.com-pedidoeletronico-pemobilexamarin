@@ -8,6 +8,7 @@ using Hlp.PedidoEletronico.Domain.Business.Enums;
 using Hlp.PedidoEletronico.Domain.Business.Helpers;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
@@ -19,6 +20,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 {
     public class EditarItemViewModel : ViewModelComum<PedidoVendaItensModel>
     {
+        BuscaPreco _buscaPreco = new BuscaPreco();
+
         #region Properties
 
         private List<BasicPickerModel> _listaTabelaPreco = new List<BasicPickerModel>();
@@ -27,6 +30,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             get { return _listaTabelaPreco; }
             set { _listaTabelaPreco = value; NotifyPropertyChanged(); }
+        }
+
+        private List<BasicPickerModel> _listaTabelaPrecoOriginal = new List<BasicPickerModel>();
+
+        public List<BasicPickerModel> ListaTabelaPrecoOriginal
+        {
+            get { return _listaTabelaPrecoOriginal; }
+            set { _listaTabelaPrecoOriginal = value; NotifyPropertyChanged(); }
         }
 
         private BasicPickerModel _currentTabelaPreco;
@@ -633,7 +644,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     }
                 }
                 catch (Exception ex)
-                {  
+                {
                     ex.TrakException();
                 }
 
@@ -690,6 +701,20 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
             });
             return bretorno;
+        }
+
+        public void BuscarTabelaPreco(string filtro)
+        {
+            var idClientesOffLine = PagePedidoNew.CurrentViewModel.currentModel.idClientesOffLine;
+            var idClientes = PagePedidoNew.CurrentViewModel.currentModel.idClientes;
+            var idRepresentante = PagePedidoNew.CurrentViewModel.currentModel.idRepresentantePedido;
+            var idTabelaPrecoCondicao = PagePedidoNew.CurrentViewModel.idTabelaPrecoCondicao;
+
+            var item = PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel;
+         
+            TabelaPrecoRepository.SetTabelaPrecoByProduto(item: item,
+                             idClienteOffLine: idClientesOffLine, idCliente: idClientes, _idRepresentante: idRepresentante ?? 0,
+                             idTabelaPrecoCondicao: idTabelaPrecoCondicao, false, filtro);
         }
     }
 }

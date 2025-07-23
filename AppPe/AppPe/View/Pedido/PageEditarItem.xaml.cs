@@ -9,6 +9,8 @@ using System.Linq;
 using Xamarin.HLP.Mobile.AppPE.Controls.xaml;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using System.Collections.Generic;
+using Rg.Plugins.Popup.Services;
+using Xamarin.HLP.Mobile.AppPE.View.Popup;
 
 namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 {
@@ -202,6 +204,16 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
             if (!App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
                 await IsValidPage(true);
             base.OnDisappearing();
+        }
+
+        private async void PopupTabelaPreco(object sender, EventArgs e)
+        {
+            var popup = new PagePopupTabelaPreco(ViewModel);
+            popup.ItemSelecionado += item =>
+            {
+                ViewModel.CurrentTabelaPreco = item;
+            };
+            await PopupNavigation.Instance.PushAsync(popup);
         }
     }
 }

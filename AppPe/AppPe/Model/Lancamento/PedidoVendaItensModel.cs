@@ -793,6 +793,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             }
         }
 
+        private TabelaPrecoSimplificada _tabelaPrecoSelecionada = new TabelaPrecoSimplificada();
+
+        [Ignore]
+        public TabelaPrecoSimplificada tabelaPrecoSelecionada
+        {
+            get { return _tabelaPrecoSelecionada; }
+            set
+            {
+                _tabelaPrecoSelecionada = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private List<LocalEstoqueSimplificado> _lLocaisEstoque = new List<LocalEstoqueSimplificado>();
 

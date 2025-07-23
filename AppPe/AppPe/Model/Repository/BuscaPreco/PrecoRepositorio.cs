@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros.Escalonada;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Interfaces;
@@ -13,7 +12,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
     public class PrecoRepositorio : IPrecoRepositorio
     {
         public List<TabelaPrecoModel> Buscar(int idEmpresa, int idCliente, int idClienteOffLine,
-            int idRepresentacao, int idRepresentante, int idProduto, TipoPrecoBusca stBusca)
+            int idRepresentacao, int idRepresentante, int idProduto, TipoPrecoBusca stBusca, string filtro = null)
         {
             List<IBuscaPrecoRepositorio> _lReposisBusca = new List<IBuscaPrecoRepositorio>();
             List<TabelaPrecoModel> _lRetorno = new List<TabelaPrecoModel>();
@@ -90,7 +89,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                     _id = 0;
                 }
 
-                _lRetornoAux = rep.RetornaPrecos(idEmpresa: idEmpresa, id: _id, stBusca: _stBusca);
+                if (!string.IsNullOrEmpty(filtro))
+                {
+                    var lista = rep.RetornaPrecos(idEmpresa: idEmpresa, id: _id, stBusca: _stBusca).ToList();
+                    _lRetornoAux = lista
+                        .Where(x => !string.IsNullOrEmpty(x.xNome) && x.xNome.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0)
+                        .ToList();
+                }
+                else
+                    _lRetornoAux = rep.RetornaPrecos(idEmpresa: idEmpresa, id: _id, stBusca: _stBusca).Take(20).ToList();
 
                 if (_lRetornoAux != null && _lRetornoAux.Count > 0)
                 {
@@ -120,7 +127,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                     }
                 }
             }
-            
+
             // OS 35398 - Jessica Barbieri
             if (_lRetorno?.Count() > 0)
             {
@@ -150,7 +157,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                         .Where(t => t.idTabelaPreco == tabela.idTabelaPreco)
                         .GroupBy(t => t.idTabelaPreco)
                         .Count();
-                   
+
                     if (filtros > 0 && _contagemDeTabelas != filtros)
                     {
                         tabela.bRemoveTabela = true;
@@ -158,7 +165,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                 }
 
                 _lRetorno.RemoveAll(t => t.bRemoveTabela == true);
-            }           
+            }
 
             return _lRetorno;
         }

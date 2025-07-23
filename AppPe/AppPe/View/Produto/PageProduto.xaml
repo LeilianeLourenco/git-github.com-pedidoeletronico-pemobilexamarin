@@ -1,120 +1,222 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:produto="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Produto;assembly=Xamarin.HLP.Mobile.AppPE"
-            xmlns:controls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:generic="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Produto.PageProduto">
+<TabbedPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Produto.PageProduto"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:controls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:generic="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:produto="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Produto;assembly=Xamarin.HLP.Mobile.AppPE">
     <TabbedPage.Title>
-        <OnPlatform x:TypeArguments="x:String" WinPhone="Produto" Android="Produto"/>
+        <OnPlatform
+            x:TypeArguments="x:String"
+            Android="Produto"
+            WinPhone="Produto" />
     </TabbedPage.Title>
     <TabbedPage.BindingContext>
         <produto:ProdutoViewModel />
     </TabbedPage.BindingContext>
     <TabbedPage.Resources>
         <ResourceDictionary>
-            <OnPlatform x:Key="IconValores" x:TypeArguments="FileImageSource" iOS="Valores.png"/>
+            <OnPlatform
+                x:Key="IconValores"
+                x:TypeArguments="FileImageSource"
+                iOS="Valores.png" />
         </ResourceDictionary>
     </TabbedPage.Resources>
     <TabbedPage.Children>
 
-        <ContentPage Title="Cadastro" Icon="{StaticResource IconProduto}" Padding="{StaticResource PaddingContentPageComHeader}" >
+        <ContentPage
+            Title="Cadastro"
+            Padding="{StaticResource PaddingContentPageComHeader}"
+            Icon="{StaticResource IconProduto}">
 
-            <ScrollView Orientation="Vertical" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <ScrollView
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                Orientation="Vertical">
 
-                <StackLayout Orientation="Vertical" Padding="20,10,20,0">
+                <StackLayout Padding="20,10,20,0" Orientation="Vertical">
 
-                    <controls:GridSeparador Text="DADOS DO PRODUTO"/>
+                    <controls:GridSeparador Text="DADOS DO PRODUTO" />
 
-                    <!--Nome-->
-                    <Label Text="Nome*" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <custom:ExtendedEntry MaxLength="100" x:Name="EntryName" Placeholder="Digite o nome do produto" Text="{Binding currentModel.xNome} " />
+                    <!--  Nome  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Nome*" />
+                    <custom:ExtendedEntry
+                        x:Name="EntryName"
+                        MaxLength="100"
+                        Placeholder="Digite o nome do produto"
+                        Text="{Binding currentModel.xNome}" />
 
-                    <!--Codigo-->
-                    <Label Text="Código*" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <custom:ExtendedEntry MaxLength="45" x:Name="EntryCodAlternativo" Placeholder="Digite o código alternativo" Text="{Binding currentModel.cAlternativo} " />
+                    <!--  Codigo  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Código*" />
+                    <custom:ExtendedEntry
+                        x:Name="EntryCodAlternativo"
+                        MaxLength="45"
+                        Placeholder="Digite o código alternativo"
+                        Text="{Binding currentModel.cAlternativo}" />
 
-                    <!--Unidade de Medida-->
-                    <Label Text="Unidade de Medida*" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <custom:BindablePicker  VerticalOptions="FillAndExpand" x:Name="BindableUnidadeMedida"
-                             ItemsSource="{Binding lUnidMedidaBasicPickerModel, Mode=TwoWay}"
-                             SelectedItem="{Binding currentUnidMedidaBasicPickerModel, Mode=TwoWay}"  />
+                    <!--  Unidade de Medida  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Unidade de Medida*" />
+                    <custom:BindablePicker
+                        x:Name="BindableUnidadeMedida"
+                        ItemsSource="{Binding lUnidMedidaBasicPickerModel, Mode=TwoWay}"
+                        SelectedItem="{Binding currentUnidMedidaBasicPickerModel, Mode=TwoWay}"
+                        VerticalOptions="FillAndExpand" />
 
-                    <!--Representação-->
-                    <Label Text="Representação" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <custom:BindablePicker VerticalOptions="FillAndExpand"  x:Name="BindableRepresentada"
-                              ItemsSource="{Binding LRepresentadasBasicPickerModels, Mode=TwoWay}" SelectedIndexChanged="BindableRepresentada_OnSelectedIndexChanged"
-                              SelectedItem="{Binding currentRepresentadaBasicPickerModel, Mode=TwoWay}"  />
+                    <!--  Representação  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Representação" />
+                    <custom:BindablePicker
+                        x:Name="BindableRepresentada"
+                        ItemsSource="{Binding LRepresentadasBasicPickerModels, Mode=TwoWay}"
+                        SelectedIndexChanged="BindableRepresentada_OnSelectedIndexChanged"
+                        SelectedItem="{Binding currentRepresentadaBasicPickerModel, Mode=TwoWay}"
+                        VerticalOptions="FillAndExpand" />
 
-                    <!--Categoria-->
-                    <Label Text="Categoria" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <custom:BindablePicker  VerticalOptions="FillAndExpand"     x:Name="BindableCategoria"
-                                ItemsSource="{Binding LCategoriaBasicPickerModels, Mode=TwoWay}"
-                                SelectedItem="{Binding currentCategoriaBasicPickerModel, Mode=TwoWay}"  />
+                    <!--  Categoria  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Categoria" />
+                    <custom:BindablePicker
+                        x:Name="BindableCategoria"
+                        ItemsSource="{Binding LCategoriaBasicPickerModels, Mode=TwoWay}"
+                        SelectedItem="{Binding currentCategoriaBasicPickerModel, Mode=TwoWay}"
+                        VerticalOptions="FillAndExpand" />
 
-                    <controls:GridSeparador Text="DADOS ADICIONAIS"/>
+                    <controls:GridSeparador Text="DADOS ADICIONAIS" />
 
-                    <!--Fabricante-->
-                    <Label Text="Código de barras EAN" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                    <!--  Fabricante  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Código de barras EAN" />
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <custom:ExtendedEntry MaxLength="13" Placeholder="Digite o código de barras" Text="{Binding currentModel.cEan} " />
+                        <custom:ExtendedEntry
+                            MaxLength="13"
+                            Placeholder="Digite o código de barras"
+                            Text="{Binding currentModel.cEan}" />
                         <Grid Grid.Column="1" IsVisible="{Binding FindyBarCode}">
-                            <abstractions:SvgImage x:Name="BtncEan" HorizontalOptions="Center" VerticalOptions="Center" SvgPath="{StaticResource ImagemPesquisarBarCode}" >
+                            <abstractions:SvgImage
+                                x:Name="BtncEan"
+                                HorizontalOptions="Center"
+                                SvgPath="{StaticResource ImagemPesquisarBarCode}"
+                                VerticalOptions="Center">
                                 <abstractions:SvgImage.HeightRequest>
-                                    <OnPlatform x:TypeArguments="x:Double" WinPhone="40" Android="34" iOS="30"/>
+                                    <OnPlatform
+                                        x:TypeArguments="x:Double"
+                                        Android="34"
+                                        WinPhone="40"
+                                        iOS="30" />
                                 </abstractions:SvgImage.HeightRequest>
                                 <abstractions:SvgImage.WidthRequest>
-                                    <OnPlatform x:TypeArguments="x:Double" WinPhone="40" Android="34" iOS="30"/>
+                                    <OnPlatform
+                                        x:TypeArguments="x:Double"
+                                        Android="34"
+                                        WinPhone="40"
+                                        iOS="30" />
                                 </abstractions:SvgImage.WidthRequest>
                             </abstractions:SvgImage>
                         </Grid>
                     </Grid>
 
 
-                    <Label Text="Código de barras embalagem EAN" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Código de barras embalagem EAN" />
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <custom:ExtendedEntry MaxLength="13" Placeholder="Digite o código de barras" Text="{Binding currentModel.cEanEmb} " />
+                        <custom:ExtendedEntry
+                            MaxLength="13"
+                            Placeholder="Digite o código de barras"
+                            Text="{Binding currentModel.cEanEmb}" />
                         <Grid Grid.Column="1" IsVisible="{Binding FindyBarCode}">
-                            <abstractions:SvgImage x:Name="BtncEanEmb" HorizontalOptions="Center" VerticalOptions="Center" SvgPath="{StaticResource ImagemPesquisarBarCode}" >
+                            <abstractions:SvgImage
+                                x:Name="BtncEanEmb"
+                                HorizontalOptions="Center"
+                                SvgPath="{StaticResource ImagemPesquisarBarCode}"
+                                VerticalOptions="Center">
                                 <abstractions:SvgImage.HeightRequest>
-                                    <OnPlatform x:TypeArguments="x:Double" WinPhone="40" Android="34" iOS="30"/>
+                                    <OnPlatform
+                                        x:TypeArguments="x:Double"
+                                        Android="34"
+                                        WinPhone="40"
+                                        iOS="30" />
                                 </abstractions:SvgImage.HeightRequest>
                                 <abstractions:SvgImage.WidthRequest>
-                                    <OnPlatform x:TypeArguments="x:Double" WinPhone="40" Android="34" iOS="30"/>
+                                    <OnPlatform
+                                        x:TypeArguments="x:Double"
+                                        Android="34"
+                                        WinPhone="40"
+                                        iOS="30" />
                                 </abstractions:SvgImage.WidthRequest>
                             </abstractions:SvgImage>
                         </Grid>
                     </Grid>
 
-                    <!--Fabricante-->
-                    <Label Text="Fabricante" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}" />
-                    <custom:ExtendedEntry MaxLength="65" Placeholder="Digite o nome do fabricante" Text="{Binding currentModel.xFabricante} " />
+                    <!--  Fabricante  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Fabricante" />
+                    <custom:ExtendedEntry
+                        MaxLength="65"
+                        Placeholder="Digite o nome do fabricante"
+                        Text="{Binding currentModel.xFabricante}" />
 
-                    <!--Venda sem Estoque-->
-                    <Label Text="Venda sem Estoque" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <Switch IsToggled="{Binding currentModel.stVendaSemEstoque}" HorizontalOptions="Start" />
+                    <!--  Venda sem Estoque  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Venda sem Estoque" />
+                    <Switch HorizontalOptions="Start" IsToggled="{Binding currentModel.stVendaSemEstoque}" />
 
-                    <!--Registro Ativo-->
-                    <Label Text="Registro ativo ?" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <Switch IsToggled="{Binding currentModel.stAtivo}" HorizontalOptions="Start"/>
+                    <!--  Registro Ativo  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Registro ativo ?" />
+                    <Switch HorizontalOptions="Start" IsToggled="{Binding currentModel.stAtivo}" />
 
-                    <!--Observação do Produto-->
-                    <Label Text="Observação do Produto" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <Editor Keyboard="Chat"  Text="{Binding currentModel.xAnotacao}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="{StaticResource HeightEditor}"/>
+                    <!--  Observação do Produto  -->
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Observação do Produto" />
+                    <Editor
+                        HeightRequest="{StaticResource HeightEditor}"
+                        HorizontalOptions="FillAndExpand"
+                        Keyboard="Chat"
+                        Text="{Binding currentModel.xAnotacao}"
+                        VerticalOptions="FillAndExpand" />
 
 
-                    <Label Text="Mostrar anotações no pedido ?" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <Switch IsToggled="{Binding currentModel.bExibirAnotacaoNoPedido}" HorizontalOptions="Start"/>
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Mostrar anotações no pedido ?" />
+                    <Switch HorizontalOptions="Start" IsToggled="{Binding currentModel.bExibirAnotacaoNoPedido}" />
 
                 </StackLayout>
 
@@ -122,97 +224,190 @@
 
         </ContentPage>
 
-        <ContentPage Padding="{StaticResource PaddingContentPageComHeader}"  Title="Valores" Icon="{StaticResource IconValores}">
+        <ContentPage
+            Title="Valores"
+            Padding="{StaticResource PaddingContentPageComHeader}"
+            Icon="{StaticResource IconValores}">
 
             <ScrollView>
                 <Grid Padding="20,10,20,0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <StackLayout Grid.Row="0" Orientation="Vertical" >
+                    <StackLayout Grid.Row="0" Orientation="Vertical">
 
-                        <controls:GridSeparador Text="VENDAS"/>
+                        <controls:GridSeparador Text="VENDAS" />
 
-                        <!--Valor de Venda S/ IPI e ST-->
-                        <Label Text="Valor de Venda s/ ST e IPI" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry  x:Name="EntryValorVenda" Placeholder="Digite o valor de venda"
-                               TextChanged="EntryValorVenda_OnTextChanged"
-                               VerticalOptions="FillAndExpand"  Keyboard="Numeric"
-                             Text="{Binding currentModel.vVenda, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  Valor de Venda S/ IPI e ST  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="Valor de Venda s/ ST e IPI" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryValorVenda"
+                            Keyboard="Numeric"
+                            Placeholder="Digite o valor de venda"
+                            Text="{Binding currentModel.vVenda, Converter={StaticResource DecimalToStringConverter}}"
+                            TextChanged="EntryValorVenda_OnTextChanged"
+                            VerticalOptions="FillAndExpand" />
 
-                        <!--Valor de venda-->
-                        <Label Text="Valor de Venda c/ ST e IPI" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry x:Name="EntryValorVendaComStIpi" IsEnabled="False"
-                               VerticalOptions="FillAndExpand"  Keyboard="Numeric"
-                            Text="{Binding vVendaComImpostos, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  Valor de venda  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="Valor de Venda c/ ST e IPI" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryValorVendaComStIpi"
+                            IsEnabled="False"
+                            Keyboard="Numeric"
+                            Text="{Binding vVendaComImpostos, Converter={StaticResource DecimalToStringConverter}}"
+                            VerticalOptions="FillAndExpand" />
 
-                        <!--% de comissão-->
-                        <Label Text="% Comissão" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry x:Name="EntryComissao" VerticalOptions="FillAndExpand"
-                            Keyboard="Numeric" Text="{Binding currentModel.pComissao, Converter={StaticResource DecimalPlacesToStringConverter} } " />
+                        <!--  % de comissão  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="% Comissão" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryComissao"
+                            Keyboard="Numeric"
+                            Text="{Binding currentModel.pComissao, Converter={StaticResource DecimalPlacesToStringConverter}}"
+                            VerticalOptions="FillAndExpand" />
 
-                        <!--Mostrar mais configurações-->
-                        <Label Text="Mostrar mais Configurações" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <Switch IsToggled="{Binding showCustos}" HorizontalOptions="Start" />
+                        <!--  Mostrar mais configurações  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="Mostrar mais Configurações" />
+                        <Switch HorizontalOptions="Start" IsToggled="{Binding showCustos}" />
                     </StackLayout>
 
-                    <StackLayout Grid.Row="1" Orientation="Vertical" IsVisible="{Binding showCustos}">
-                        <controls:GridSeparador  Text="CUSTO E IMPOSTOS"/>
+                    <StackLayout
+                        Grid.Row="1"
+                        IsVisible="{Binding showCustos}"
+                        Orientation="Vertical">
+                        <controls:GridSeparador Text="CUSTO E IMPOSTOS" />
 
-                        <!--Valor de Compra-->
-                        <Label Text="Valor de compra" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry x:Name="EntryValorCompra" Keyboard="Numeric" Placeholder="Digite o valor de compra"
-                              TextChanged="EntryValores_OnTextChanged"
-                              Text="{Binding currentModel.vCompra, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  Valor de Compra  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="Valor de compra" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryValorCompra"
+                            Keyboard="Numeric"
+                            Placeholder="Digite o valor de compra"
+                            Text="{Binding currentModel.vCompra, Converter={StaticResource DecimalToStringConverter}}"
+                            TextChanged="EntryValores_OnTextChanged" />
 
-                        <!--Aliquota de ST-->
-                        <Label Text="% Aliquota ST" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry x:Name="EntrySt" VerticalOptions="FillAndExpand" Placeholder="Digite a aliquota de ST" TextChanged="EntryValores_OnTextChanged" Keyboard="Numeric"
-                            Text="{Binding currentModel.pSt, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  Aliquota de ST  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="% Aliquota ST" />
+                        <custom:ExtendedEntry
+                            x:Name="EntrySt"
+                            Keyboard="Numeric"
+                            Placeholder="Digite a aliquota de ST"
+                            Text="{Binding currentModel.pSt, Converter={StaticResource DecimalToStringConverter}}"
+                            TextChanged="EntryValores_OnTextChanged"
+                            VerticalOptions="FillAndExpand" />
 
-                        <!--Aliquota de IMCS-->
-                        <Label Text="% Aliquota ICMS" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry x:Name="EntryIcms" Keyboard="Numeric" Placeholder="Digite a aliquota de ICMS" TextChanged="EntryValores_OnTextChanged"   VerticalOptions="FillAndExpand"
-                            Text="{Binding currentModel.pIcms, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  Aliquota de IMCS  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="% Aliquota ICMS" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryIcms"
+                            Keyboard="Numeric"
+                            Placeholder="Digite a aliquota de ICMS"
+                            Text="{Binding currentModel.pIcms, Converter={StaticResource DecimalToStringConverter}}"
+                            TextChanged="EntryValores_OnTextChanged"
+                            VerticalOptions="FillAndExpand" />
 
-                        <!--Aliquota de IPI-->
-                        <Label Text="% Aliquota IPI" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry x:Name="EntryIpi" VerticalOptions="FillAndExpand" Placeholder="Digite a aliquota de IPI" TextChanged="EntryValores_OnTextChanged"  Keyboard="Numeric"
-          Text="{Binding currentModel.pIpi, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  Aliquota de IPI  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="% Aliquota IPI" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryIpi"
+                            Keyboard="Numeric"
+                            Placeholder="Digite a aliquota de IPI"
+                            Text="{Binding currentModel.pIpi, Converter={StaticResource DecimalToStringConverter}}"
+                            TextChanged="EntryValores_OnTextChanged"
+                            VerticalOptions="FillAndExpand" />
 
-                        <!--% de ourtos / frete-->
+                        <!--  % de ourtos / frete  -->
 
-                        <Label Text="% Outros e Frete" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry MaxLength="6" x:Name="EntryOutros"  VerticalOptions="FillAndExpand" Placeholder="Digite a % de outros/frete" TextChanged="EntryValores_OnTextChanged"  Keyboard="Numeric"
-                            Text="{Binding currentModel.pOutras, Converter={StaticResource DecimalToStringConverter}} " />
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="% Outros e Frete" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryOutros"
+                            Keyboard="Numeric"
+                            MaxLength="6"
+                            Placeholder="Digite a % de outros/frete"
+                            Text="{Binding currentModel.pOutras, Converter={StaticResource DecimalToStringConverter}}"
+                            TextChanged="EntryValores_OnTextChanged"
+                            VerticalOptions="FillAndExpand" />
 
-                        <!--Custo do produto-->
-                        <Label Text="Custo do Produto" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry IsEnabled="False" x:Name="EntryCusto" Placeholder="Digite o custo do Produto"
-           Text="{Binding currentModel.vCusto, Converter={StaticResource DecimalToStringConverter }}" VerticalOptions="FillAndExpand"  Keyboard="Numeric" />
+                        <!--  Custo do produto  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="Custo do Produto" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryCusto"
+                            IsEnabled="False"
+                            Keyboard="Numeric"
+                            Placeholder="Digite o custo do Produto"
+                            Text="{Binding currentModel.vCusto, Converter={StaticResource DecimalToStringConverter}}"
+                            VerticalOptions="FillAndExpand" />
 
-                        <controls:GridSeparador IsVisible="{Binding showCustos}" Text="LUCRO SOBRE VENDAS"/>
+                        <controls:GridSeparador IsVisible="{Binding showCustos}" Text="LUCRO SOBRE VENDAS" />
 
-                        <!--% de lucro desejado-->
-                        <Label Text="Lucro Desejado" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry x:Name="EntryLucro" VerticalOptions="FillAndExpand"
-                            Placeholder="Digite a % de lucro desejado" TextChanged="EntryFieldsToValorVenda_OnTextChanged" Keyboard="Numeric"
-                            Text="{Binding currentModel.pLucro, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  % de lucro desejado  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="Lucro Desejado" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryLucro"
+                            Keyboard="Numeric"
+                            Placeholder="Digite a % de lucro desejado"
+                            Text="{Binding currentModel.pLucro, Converter={StaticResource DecimalToStringConverter}}"
+                            TextChanged="EntryFieldsToValorVenda_OnTextChanged"
+                            VerticalOptions="FillAndExpand" />
 
-                        <controls:GridSeparador IsVisible="{Binding showCustos}" Text="IMPOSTO SOBRE VENDA"/>
+                        <controls:GridSeparador IsVisible="{Binding showCustos}" Text="IMPOSTO SOBRE VENDA" />
 
-                        <!--IPI Venda-->
-                        <Label Text="IPI Sobre Vendas" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry x:Name="EntrypIpiVenda" TextChanged="EntryFieldsToValorVenda_OnTextChanged"
-                           VerticalOptions="FillAndExpand" Keyboard="Numeric"
-                           Text="{Binding currentModel.pIpiVenda, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  IPI Venda  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="IPI Sobre Vendas" />
+                        <custom:ExtendedEntry
+                            x:Name="EntrypIpiVenda"
+                            Keyboard="Numeric"
+                            Text="{Binding currentModel.pIpiVenda, Converter={StaticResource DecimalToStringConverter}}"
+                            TextChanged="EntryFieldsToValorVenda_OnTextChanged"
+                            VerticalOptions="FillAndExpand" />
 
-                        <!--ST Venda-->
-                        <Label Text="ST Sobre Vendas" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry x:Name="EntrypStVenda" TextChanged="EntryFieldsToValorVenda_OnTextChanged"
-                            VerticalOptions="FillAndExpand" Keyboard="Numeric"
-                            Text="{Binding currentModel.pStVenda, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  ST Venda  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="ST Sobre Vendas" />
+                        <custom:ExtendedEntry
+                            x:Name="EntrypStVenda"
+                            Keyboard="Numeric"
+                            Text="{Binding currentModel.pStVenda, Converter={StaticResource DecimalToStringConverter}}"
+                            TextChanged="EntryFieldsToValorVenda_OnTextChanged"
+                            VerticalOptions="FillAndExpand" />
                     </StackLayout>
                 </Grid>
 
@@ -221,29 +416,50 @@
 
         </ContentPage>
 
-        <ContentPage Padding="{StaticResource PaddingContentPageComHeader}"  x:Name="PageEstoque" Title="Estoque" Icon="{StaticResource IconEstoque}">
+        <ContentPage
+            x:Name="PageEstoque"
+            Title="Estoque"
+            Padding="{StaticResource PaddingContentPageComHeader}"
+            Icon="{StaticResource IconEstoque}">
 
             <ScrollView>
-                <StackLayout Orientation="Vertical" Padding="20,10,20,0">
+                <StackLayout Padding="20,10,20,0" Orientation="Vertical">
 
-                    <controls:GridSeparador Text="CONTROLE DE ESTOQUE"/>
+                    <controls:GridSeparador Text="CONTROLE DE ESTOQUE" />
 
                     <StackLayout Orientation="Vertical">
 
-                        <!--Estoque MIn/Maz-->
-                        <Label Text="Utilizar Estoque Min/Max" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <Switch IsToggled="{Binding currentModel.bUtilizaEstoqueMinMax}" HorizontalOptions="Start" />
+                        <!--  Estoque MIn/Maz  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="Utilizar Estoque Min/Max" />
+                        <Switch HorizontalOptions="Start" IsToggled="{Binding currentModel.bUtilizaEstoqueMinMax}" />
 
 
-                        <!--ESTOQUE MIN -->
-                        <Label Text="Estoque Mínimo" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry IsEnabled="{Binding currentModel.bUtilizaEstoqueMinMax}" x:Name="EntryEstoqueMin"
-                          VerticalOptions="FillAndExpand"  Keyboard="Numeric"  Text="{Binding currentModel.vEstoqueMin, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  ESTOQUE MIN  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="Estoque Mínimo" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryEstoqueMin"
+                            IsEnabled="{Binding currentModel.bUtilizaEstoqueMinMax}"
+                            Keyboard="Numeric"
+                            Text="{Binding currentModel.vEstoqueMin, Converter={StaticResource DecimalToStringConverter}}"
+                            VerticalOptions="FillAndExpand" />
 
-                        <!--ESTOQUE MAX -->
-                        <Label Text="Estoque Máximo" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry IsEnabled="{Binding currentModel.bUtilizaEstoqueMinMax}"  x:Name="EntryEstoqueMax"
-                             VerticalOptions="FillAndExpand"  Keyboard="Numeric"  Text="{Binding currentModel.vEstoqueMax, Converter={StaticResource DecimalToStringConverter}} " />
+                        <!--  ESTOQUE MAX  -->
+                        <Label
+                            LineBreakMode="NoWrap"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="Estoque Máximo" />
+                        <custom:ExtendedEntry
+                            x:Name="EntryEstoqueMax"
+                            IsEnabled="{Binding currentModel.bUtilizaEstoqueMinMax}"
+                            Keyboard="Numeric"
+                            Text="{Binding currentModel.vEstoqueMax, Converter={StaticResource DecimalToStringConverter}}"
+                            VerticalOptions="FillAndExpand" />
 
                     </StackLayout>
 
@@ -257,10 +473,17 @@
     </TabbedPage.Children>
 
     <TabbedPage.ToolbarItems>
-        <ToolbarItem x:Name="ToolbarItemSave" Text="Salvar" Icon="{Binding ImageIconSave}"  Command="{Binding SalvarRegistroCommand}"/>
-        <ToolbarItem Icon="{Binding ImageIconCancel}" Text="Cancelar" Command="{Binding CancelCommand}">
+        <ToolbarItem
+            x:Name="ToolbarItemSave"
+            Command="{Binding SalvarRegistroCommand}"
+            Icon="{Binding ImageIconSave}"
+            Text="Salvar" />
+        <ToolbarItem
+            Command="{Binding CancelCommand}"
+            Icon="{Binding ImageIconCancel}"
+            Text="Cancelar">
             <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
             </ToolbarItem.Order>
         </ToolbarItem>
     </TabbedPage.ToolbarItems>
