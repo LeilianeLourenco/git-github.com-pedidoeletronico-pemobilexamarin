@@ -184,13 +184,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             {
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
-                var xQuery = $@"Select idPedidoVendaOffLine Id from {TableMobile.TB_PEDIDOVENDA} 
-                                    where idEmpresa = {idEmpresa} AND idAspnetUsers = '{App.CurrentAspnetUserModel.Id}' 
-                                    and idPedidoVenda is null or bPedidoComAlteracao
-                                    order by idPedidoVendaOffLine";
+                var xQuery = $@"SELECT idPedidoVendaOffLine Id 
+                                 FROM {TableMobile.TB_PEDIDOVENDA} 
+                                 WHERE idEmpresa = {idEmpresa} 
+                                 AND idAspnetUsers = '{App.CurrentAspnetUserModel.Id}' 
+                                 AND (idPedidoVenda IS NULL OR bPedidoComAlteracao)
+                                 ORDER BY idPedidoVendaOffLine";
 
                 var dados = App.Data.Connection.Query<BasicPickerModel>(xQuery);
-                List<int> ids = dados.Select(c => c.Id).ToList();
+                List<int> ids = dados?.Select(c => c.Id).ToList() ?? new List<int>();
                 return ids;
 
             }
