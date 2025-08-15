@@ -1294,6 +1294,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                         PedidoRepository.UpdateStatusParaNaoAlterado(pedidoComStatusAlterado.idPedidoVenda ?? 0);
                     }
+
                 });
 
                 if (bMudouStatusPedido)
@@ -1550,18 +1551,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             if (logs == null) return;
 
-            var firstLog = logs.FirstOrDefault();
-            if (firstLog == null) return;
-            currentModel.Display = firstLog.xTable; 
-            
+            currentModel.Display = logs.FirstOrDefault().xTable;
             try
             {
                 var xPrimaryKey = TableMobile.GetPrimaryKeyNameByModel<T>();
                 foreach (var log in logs)
                 {
-                    if (string.IsNullOrWhiteSpace(log.xTable))
-                        continue;
-
                     var icount =
                         App.Data.Connection.ExecuteScalar<int>(
                             $"select count(*) from {log.xTable} where {xPrimaryKey} = {log.idPK}");
@@ -1582,8 +1577,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             List<EstoqueModel> _listagemEstoque = new List<EstoqueModel>();
                             var _pedidoVendaModelAux = PedidoRepository.GetPedidoVendaModel(pedidoVendaModel.idPedidoVendaOffLine ?? 0);
 
-                            if (_pedidoVendaModelAux?.lItens == null) continue;
-
                             foreach (var p in _pedidoVendaModelAux.lItens)
                             {
                                 EstoqueRepository.RemoveAllEstoqueSincronizacao(p.idProduto ?? 0);
@@ -1597,13 +1590,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     idPK: p.idProduto,
                                     data: dateserver);
 
-                                var listaEstoque = registro as List<EstoqueModel>;
-                                if (listaEstoque != null)
-                                    _listagemEstoque.AddRange(listaEstoque);
-                                
+                                _listagemEstoque.AddRange(registro as List<EstoqueModel>);
                                 PedidoRepository.Delete(pedidoVendaModel.idPedidoVendaOffLine ?? 0);
 
-                                if (_listagemEstoque != null && _listagemEstoque.Any())
+                                if (_listagemEstoque?.Count() > 0)
                                     await SavePrivate(_listagemEstoque, TableMobile.GetTableNameByModel<EstoqueModel>());
                             }
                         }
@@ -1676,10 +1666,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 //var date = currentModel.lastDateServerSync.AddHours(-2);
                 //var lregistros = await UtilHttp.GetRegistroToRemoveSync<LogExclusaoModel>(date);
                 var lregistros = await UtilHttp.GetRegistroToRemoveSync<LogExclusaoModel>(dtUltimaSincronizacaoServidor);
-
-                //if (lregistros == null)
-                //    throw new Exception("GetRegistroToRemoveSync retornou null");
-               
                 if (lregistros.Any())
                 {
                     currentModel.iCount = lregistros.Count;
