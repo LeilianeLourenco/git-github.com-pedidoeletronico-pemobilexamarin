@@ -1422,6 +1422,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     currentModel.stCadastroMinimoVenda = _configuracoesGerais.stCadastroLimiteVendasEmpresa;
                     currentModel.stCalculoMinimoVenda = _configuracoesGerais.stCalculoLimiteVendasEmpresa;
                     currentModel.bForcarMinimoVendas = _configuracoesGerais.bForcarMinimoVendas;
+                    bExibirValorPorPeso = _configuracoesGerais.bExibirValorPorPeso;
                 }
 
                 if (currentModel.idPedidoVenda > 0)
@@ -1438,7 +1439,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                 ShowTxtInfoNF = ConfiguracaoGeralRepositorio.GetExibeNF(_configuracoesGerais.idEmpresa);
 
-                bExibirValorPorPeso = _configuracoesGerais.bExibirValorPorPeso;
                 currentModel.bBloquearVisualizacaoEstoqueVendedor = _configuracoesGerais.bBloquearVisualizacaoEstoqueVendedor;
                 currentModel.bMostraFaixaEscalonada = _configuracoesGerais.bMostraFaixaTabelaEscalonada;
 
