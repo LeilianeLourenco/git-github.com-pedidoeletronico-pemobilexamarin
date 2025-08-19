@@ -36,15 +36,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
             await Task.Run(() =>
             {
                 Device.BeginInvokeOnMainThread(() =>
-                { 
+                {
                     IsBusy = true;
 
                     var characters = ClienteRepository.Get(LItens.Count, 50, (IsUsingSearch ? xFiltro : ""));
                     foreach (var character in characters)
-                    { 
-                        LItens.Add(character); 
+                    {
+                        LItens.Add(character);
                     }
-                     
+
                     IsBusy = false;
                 });
             });
@@ -73,7 +73,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
                     });
                 });
             }
-               
+
         }
 
         public ListItemModel ItemSelected
@@ -106,9 +106,19 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
             LItens = new ObservableCollection<ListItemModel>();
             LoadItensCommand = new Command(LoadItens);
             SearchCommand = new Command(Search);
-            NovoCommand = new Command(() =>
+            NovoCommand = new Command(async () =>
             {
-                UtilNavidate.PushAsync(new PageCliente(new ClientesModel()));
+                bool permite = !(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel
+                                    .bProibidoAlterarCadastroCliente ?? false);
+
+                if (permite)
+                    UtilNavidate.PushAsync(new PageCliente(new ClientesModel()));
+                else
+                    await App.Current.MainPage.DisplayAlert(
+                        "Acesso negado",
+                        "Você não tem permissão para criar ou alterar clientes.",
+                        "Ok"
+                    );
             });
             SincronizarCommand = new Command(() =>
             {

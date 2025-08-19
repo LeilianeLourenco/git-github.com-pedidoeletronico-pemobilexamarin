@@ -1,20 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:chartControls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml.ChartControls;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:dashBoard="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.DashBoard.PageListagemClientes"
-             Title="Listagem">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.DashBoard.PageListagemClientes"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:chartControls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml.ChartControls;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:dashBoard="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard;assembly=Xamarin.HLP.Mobile.AppPE"
+    Title="Listagem">
     <ContentPage.BindingContext>
-        <dashBoard:DashBoardViewModel/>
+        <dashBoard:DashBoardViewModel />
     </ContentPage.BindingContext>
 
-    <ScrollView BackgroundColor="{StaticResource CinzaMedio}" Margin="5,0,5,0">
-        <StackLayout Orientation="Vertical" Margin="0" Padding="0,5,0,0">
-            <Frame HasShadow="True" Padding="0,0,0,0">
-                <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Branco}" Spacing="10" Padding="7,7,7,7">
-                    <ListView x:Name="ListaClientes" ItemSelected="ListaClientes_ItemSelected" RowHeight="55">
+    <ScrollView Margin="5,0,5,0" BackgroundColor="{StaticResource CinzaMedio}">
+        <StackLayout
+            Margin="0"
+            Padding="0,5,0,0"
+            Orientation="Vertical">
+            <Frame Padding="0,0,0,0" HasShadow="True">
+                <StackLayout
+                    Padding="7,7,7,7"
+                    BackgroundColor="{StaticResource Branco}"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <ListView
+                        x:Name="ListaClientes"
+                        ItemSelected="ListaClientes_ItemSelected"
+                        RowHeight="55">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
@@ -25,17 +36,42 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
 
-                                            <Frame VerticalOptions="Center" Grid.Column="0" HeightRequest="45" WidthRequest="45" Padding="0" Margin="0" HasShadow="False" BackgroundColor="Transparent">
-                                                <Label Text="{Binding xAbreviacao}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" />
+                                            <Frame
+                                                Grid.Column="0"
+                                                Margin="0"
+                                                Padding="0"
+                                                BackgroundColor="Transparent"
+                                                HasShadow="False"
+                                                HeightRequest="45"
+                                                VerticalOptions="Center"
+                                                WidthRequest="45">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="15"
+                                                    HorizontalOptions="Center"
+                                                    Text="{Binding xAbreviacao}"
+                                                    VerticalOptions="Center" />
                                             </Frame>
 
-                                            <Grid VerticalOptions="Center" Grid.Column="1" Padding="15,0,0,0">
+                                            <Grid
+                                                Grid.Column="1"
+                                                Padding="15,0,0,0"
+                                                VerticalOptions="Center">
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
-                                                <Label Text="{Binding xRazaoSocial}" FontSize="13" FontAttributes="Bold" VerticalOptions="Center" Grid.Row="0"/>
-                                                <Label Text="{Binding xFantasia}" FontSize="15" VerticalOptions="Center" Grid.Row="1"/>
+                                                <Label
+                                                    Grid.Row="0"
+                                                    FontAttributes="Bold"
+                                                    FontSize="13"
+                                                    Text="{Binding xRazaoSocial}"
+                                                    VerticalOptions="Center" />
+                                                <Label
+                                                    Grid.Row="1"
+                                                    FontSize="15"
+                                                    Text="{Binding xFantasia}"
+                                                    VerticalOptions="Center" />
                                             </Grid>
 
                                         </Grid>

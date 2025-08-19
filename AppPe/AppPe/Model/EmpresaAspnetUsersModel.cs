@@ -55,6 +55,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
 
         public string imUsuarioCropped { get; set; }
 
+        public bool? bProibidoAlterarCadastroCliente { get; set; }
+
         public int? qVisitaNovosCliente { get; set; } = 0;
 
         public byte? stPeriodoNovosClientes { get; set; }
