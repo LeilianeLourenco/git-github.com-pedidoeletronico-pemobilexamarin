@@ -2357,6 +2357,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 {
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.imUsuario = usuario.imUsuario;
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.bGravaLocRepresentante = usuario.bGravaLocRepresentante;
+                                    App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.bProibidoAlterarCadastroCliente = usuario.bProibidoAlterarCadastroCliente;
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.vMetaCorrente = usuario.vMetaCorrente;
                                     PageHomeNew.ViewModelStatic.AtualizaImagemApp();
                                 }

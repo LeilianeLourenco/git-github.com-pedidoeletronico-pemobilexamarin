@@ -1,20 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:cadastro="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageApresentacaoClienteNew">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageApresentacaoClienteNew"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cadastro="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro;assembly=Xamarin.HLP.Mobile.AppPE">
     <ContentPage.Title>
-        <OnPlatform x:TypeArguments="x:String" Android="Apresentação" WinPhone="Aprensentação" />
+        <OnPlatform
+            x:TypeArguments="x:String"
+            Android="Apresentação"
+            WinPhone="Aprensentação" />
     </ContentPage.Title>
     <ContentPage.BindingContext>
-        <cadastro:ClienteApresentacaoNewViewModel/>
+        <cadastro:ClienteApresentacaoNewViewModel />
     </ContentPage.BindingContext>
 
-    <TableView HasUnevenRows="True" BackgroundColor="White">
+    <TableView BackgroundColor="White" HasUnevenRows="True">
         <TableRoot>
             <TableSection>
                 <TableSection.Title>
-                    <OnPlatform x:TypeArguments="x:String" Android="Todos as informações do seu cliente !"/>
+                    <OnPlatform x:TypeArguments="x:String" Android="Todas as informações do seu cliente !" />
                 </TableSection.Title>
                 <ViewCell>
                     <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
@@ -24,22 +28,53 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="DADOS GERAIS" TextColor="{StaticResource CinzaEscuro}" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            HorizontalTextAlignment="Center"
+                            Text="DADOS GERAIS"
+                            TextColor="{StaticResource CinzaEscuro}"
+                            VerticalTextAlignment="Center" />
                     </Grid>
                 </ViewCell>
-                <TextCell Detail="{Binding currentModel.xRazaoSocial}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Razão social / Nome" />
-                <TextCell Detail="{Binding currentModel.xFantasia}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Nome fantasia / Apelido"/>
-                <TextCell Detail="{Binding currentModel.cAlternativo}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Código alternativo"/>
-                <TextCell Detail="{Binding currentModel.stAtivo, Converter={StaticResource BoolToStringConverter}}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Cliente ativo"/>
-                <TextCell Detail="{Binding currentModel.xCpfCnpj}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Cnpj / cpf"></TextCell>
-                <TextCell Detail="{Binding currentModel.xRgIe}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Inscrição estadual / RG"></TextCell>
+                <TextCell
+                    Detail="{Binding currentModel.xRazaoSocial}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Razão social / Nome"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.xFantasia}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Nome fantasia / Apelido"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.cAlternativo}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Código alternativo"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.stAtivo, Converter={StaticResource BoolToStringConverter}}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Cliente ativo"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.xCpfCnpj}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Cnpj / cpf"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.xRgIe}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Inscrição estadual / RG"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
             </TableSection>
 
-            <TableSection >
+            <TableSection>
                 <ViewCell>
                     <Grid BackgroundColor="{StaticResource CinzaClarissimo}">
                         <Grid.RowDefinitions>
@@ -48,11 +83,18 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="VISUALIZAR" TextColor="{StaticResource CinzaEscuro}" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            HorizontalTextAlignment="Center"
+                            Text="VISUALIZAR"
+                            TextColor="{StaticResource CinzaEscuro}"
+                            VerticalTextAlignment="Center" />
                     </Grid>
                 </ViewCell>
 
@@ -76,28 +118,56 @@
                     </StackLayout>-->
                     <Grid Margin="5,0,5,10" RowSpacing="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Row="0" Command="{Binding FinanceiroCommand}" Style="{StaticResource Info}" Text="Histórico Financeiro"/>
-                        <Button Grid.Row="1" Command="{Binding PedidosCommand}" Style="{StaticResource Info}" Text="Histórico de pedidos"/>
-                        <Button Grid.Row="2" Command="{Binding AgendaCommand}"  Style="{StaticResource Info}" Text="Histórico de Atividades"/>
-                        <Button Grid.Row="3" Command="{Binding ProdutosCommand}" Style="{StaticResource Info}" Text="Produtos adquiridos"/>
-                        <Button Grid.Row="4" Command="{Binding FoneEmailCommand}" Style="{StaticResource Warning}" Text="Fone / Email"/>
-                        <Button Grid.Row="5" Command="{Binding ContatosCommand}" Style="{StaticResource Success}" Text="Contatos"/>
-                        <Button Grid.Row="6" Command="{Binding EnderecoCommand}" Style="{StaticResource Success}" Text="Endereços"/>
-                     
+                        <Button
+                            Grid.Row="0"
+                            Command="{Binding FinanceiroCommand}"
+                            Style="{StaticResource Info}"
+                            Text="Histórico Financeiro" />
+                        <Button
+                            Grid.Row="1"
+                            Command="{Binding PedidosCommand}"
+                            Style="{StaticResource Info}"
+                            Text="Histórico de pedidos" />
+                        <Button
+                            Grid.Row="2"
+                            Command="{Binding AgendaCommand}"
+                            Style="{StaticResource Info}"
+                            Text="Histórico de Atividades" />
+                        <Button
+                            Grid.Row="3"
+                            Command="{Binding ProdutosCommand}"
+                            Style="{StaticResource Info}"
+                            Text="Produtos adquiridos" />
+                        <Button
+                            Grid.Row="4"
+                            Command="{Binding FoneEmailCommand}"
+                            Style="{StaticResource Warning}"
+                            Text="Fone / Email" />
+                        <Button
+                            Grid.Row="5"
+                            Command="{Binding ContatosCommand}"
+                            Style="{StaticResource Success}"
+                            Text="Contatos" />
+                        <Button
+                            Grid.Row="6"
+                            Command="{Binding EnderecoCommand}"
+                            Style="{StaticResource Success}"
+                            Text="Endereços" />
+
                     </Grid>
                 </ViewCell>
 
-                
-                
+
+
             </TableSection>
 
             <TableSection>
@@ -112,28 +182,65 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" Text="INFORMAÇÕES ADICIONAIS" TextColor="{StaticResource CinzaEscuro}" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            HorizontalTextAlignment="Center"
+                            Text="INFORMAÇÕES ADICIONAIS"
+                            TextColor="{StaticResource CinzaEscuro}"
+                            VerticalTextAlignment="Center" />
                     </Grid>
                 </ViewCell>
-                <TextCell Detail="{Binding xProspeccao}" DetailColor="{StaticResource CinzaApresentacaoCliente}" TextColor="{StaticResource CinzaMaisEscuro}" Text="Situação da prospecção"/>
-                <TextCell Detail="{Binding currentModel.vLimiteCredito, Converter={StaticResource FormatDecimalConverter}}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource VermelhoPrincipal}" Text="Límite de crédito"/>
-                <TextCell Detail="{Binding xTransportadora}" TextColor="{StaticResource CinzaApresentacaoCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" Text="Transportadora"/>
-                <TextCell Detail="{Binding xCondPgto}" TextColor="{StaticResource CinzaApresentacaoCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" Text="Condição de pagamento"/>
-                <TextCell Detail="{Binding xTabelaPreco}" TextColor="{StaticResource CinzaApresentacaoCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" Text="Tabela de preço"></TextCell>
-                <TextCell Detail="{Binding currentModel.dtCadastro, Converter={StaticResource DateTimeToExtenseDateConveter}}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Data de cadastro"></TextCell>
+                <TextCell
+                    Detail="{Binding xProspeccao}"
+                    DetailColor="{StaticResource CinzaApresentacaoCliente}"
+                    Text="Situação da prospecção"
+                    TextColor="{StaticResource CinzaMaisEscuro}" />
+                <TextCell
+                    Detail="{Binding currentModel.vLimiteCredito, Converter={StaticResource FormatDecimalConverter}}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Límite de crédito"
+                    TextColor="{StaticResource VermelhoPrincipal}" />
+                <TextCell
+                    Detail="{Binding xTransportadora}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Transportadora"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding xCondPgto}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Condição de pagamento"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding xTabelaPreco}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Tabela de preço"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.dtCadastro, Converter={StaticResource DateTimeToExtenseDateConveter}}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Data de cadastro"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
             </TableSection>
 
         </TableRoot>
     </TableView>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Alterar" Command="{Binding AtualizarCommand}" Icon="{Binding ImageIconEdit}"/>
-        <ToolbarItem  Text="Deletar" Command="{Binding DeleteCommand}" Icon="{Binding ImageIconDelete}"> 
+        <ToolbarItem
+            Command="{Binding AtualizarCommand}"
+            Icon="{Binding ImageIconEdit}"
+            Text="Alterar" />
+        <ToolbarItem
+            Command="{Binding DeleteCommand}"
+            Icon="{Binding ImageIconDelete}"
+            Text="Deletar">
             <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
             </ToolbarItem.Order>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

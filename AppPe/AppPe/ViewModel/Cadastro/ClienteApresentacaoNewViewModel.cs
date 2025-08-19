@@ -99,7 +99,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
         {
             AgendaCommand = new Command(() =>
             {
-                var page = new PageListagemEventos(bUsaClienteEspecifico: true); 
+                var page = new PageListagemEventos(bUsaClienteEspecifico: true);
                 UtilNavidate.PushAsync(page);
             });
 
@@ -118,7 +118,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
 
             FinanceiroCommand = new Command(() =>
             {
-                PageFinanceiroCliente page = new PageFinanceiroCliente(currentModel.idClientesOffLine.GetValueOrDefault()); 
+                PageFinanceiroCliente page = new PageFinanceiroCliente(currentModel.idClientesOffLine.GetValueOrDefault());
                 UtilNavidate.PushAsync(page);
             });
 
@@ -143,10 +143,23 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                 UtilNavidate.PushAsync(new PageListarProdutosByCliente(currentModel.idClientesOffLine ?? 0, currentModel.idClientes ?? 0, bUltimosProdutosAdquiridos: true));
             });
 
-            AtualizarCommand = new Command(() =>
+            AtualizarCommand = new Command(async () =>
             {
-                pageCliente.ViewModel.currentModel = currentModel;
-                UtilNavidate.PushAsync(pageCliente);
+
+                bool permite = !(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel
+                                 .bProibidoAlterarCadastroCliente ?? false);
+
+                if (permite)
+                {
+                    pageCliente.ViewModel.currentModel = currentModel;
+                    UtilNavidate.PushAsync(pageCliente);
+                }
+                else
+                    await App.Current.MainPage.DisplayAlert(
+                        "Acesso negado",
+                        "Você não tem permissão para criar ou alterar clientes.",
+                        "Ok"
+                    );
             });
 
         }
@@ -168,7 +181,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     currentModel = ClienteRepository.GetClienteModel(idClientesOffLine);
-                    bAcessaAgenda = (App.planoAtual == Hlp.PedidoEletronico.Domain.Business.Bo.Planos.plbus 
+                    bAcessaAgenda = (App.planoAtual == Hlp.PedidoEletronico.Domain.Business.Bo.Planos.plbus
                     || App.planoAtual == Hlp.PedidoEletronico.Domain.Business.Bo.Planos.plprem
                     || App.planoAtual == Hlp.PedidoEletronico.Domain.Business.Bo.Planos.pldeg) ? true : false;
 
@@ -187,7 +200,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
         }
 
         private async void GerarPedido()
-        {              
+        {
             UtilNavidate.PushAsync(new PagePedidoNew(PagePedidoNew.CurrentViewModel.currentModel, true));
         }
 
