@@ -145,6 +145,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
 
             AtualizarCommand = new Command(async () =>
             {
+                if (pageCliente == null || currentModel == null)
+                    return; 
 
                 bool permite = !(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel
                                  .bProibidoAlterarCadastroCliente ?? false);
