@@ -48,7 +48,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         {
             double _vVendaComImposto = 0;
             if (item.ItensGrade != null && item.ItensGrade.Any())
-            {  
+            {
                 foreach (var i in item.ItensGrade)
                 {
                     _vVendaComImposto = i.vUnitarioVendaComImpostos;
@@ -69,7 +69,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 }
             }
             else
-            {  
+            {
                 item.vSubTotal = item.vQtdItem * item.vUnitarioVendaComImpostos;
             }
 
@@ -170,22 +170,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                         if (i.vDescontoDaCondicao > 0 && _pDesconto <= 0)
                             _pDesconto = i.vDescontoDaCondicao.GetValueOrDefault() * -1;
 
-
-
-                        i.vSubTotalSemImpostos = i.vUnitarioVendaSemImposto - (i.vUnitarioVendaSemImposto * (_pDesconto / 100));                        
+                        i.vSubTotalSemImpostos = i.vUnitarioVendaSemImposto - (i.vUnitarioVendaSemImposto * (_pDesconto / 100));
+                        i.vSubTotalSemImpostos *= i.vQtdItem;
                     }
                     else
                     {
                         var _pDesconto = i.pDesconto;
                         var _desconto = i.vDesconto;
                         if (i.vDescontoDaCondicao > 0 && i.pDesconto <= 0)
-                        { 
+                        {
                             _pDesconto = i.vDescontoDaCondicao.GetValueOrDefault() * -1;
                             _desconto = i.vUnitarioVendaSemImposto * (_pDesconto / 100);
                         }
 
-
                         i.vSubTotalSemImpostos = i.vUnitarioVendaSemImposto - _desconto;
+                        i.vSubTotalSemImpostos *= i.vQtdItem;
                     }
                 }
             }
@@ -201,7 +200,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                         _pDesconto = item.vDescontoDaCondicao.GetValueOrDefault() * -1;
 
 
-                    item.vSubTotalSemImpostos = item.vUnitarioVendaSemImposto - (item.vUnitarioVendaSemImposto * (_pDesconto / 100)); 
+                    item.vSubTotalSemImpostos = item.vUnitarioVendaSemImposto - (item.vUnitarioVendaSemImposto * (_pDesconto / 100));
+                    item.vSubTotalSemImpostos *= item.vQtdItem;
+
                 }
                 else
                 {
@@ -215,8 +216,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
 
                     item.vSubTotalSemImpostos = item.vUnitarioVendaSemImposto - _desconto;
+                    item.vSubTotalSemImpostos *= item.vQtdItem;
                 }
-               
+
 
             }
             SumTotalizadoresPageEditarItem();
@@ -351,7 +353,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             {
                 foreach (var i in item.ItensGrade)
                 {
-                    i.vDesconto = item.vUnitarioVendaComImpostos - _vTabela ;
+                    i.vDesconto = item.vUnitarioVendaComImpostos - _vTabela;
 
                     if (i.vDesconto < 0)
                         i.vDesconto = i.vDesconto * (-1);
@@ -411,8 +413,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                     var _itemComQtdade = PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.Where(i => i.vQtdItem > 0).FirstOrDefault();
 
                     foreach (var item in PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade)
-                    {      
-                        if(item.vQtdItem == 0 && _itemComQtdade != null)
+                    {
+                        if (item.vQtdItem == 0 && _itemComQtdade != null)
                         {
                             item.vUnitarioVenda = _itemComQtdade.vUnitarioVenda;
                             item.vUnitarioVendaComImpostos = _itemComQtdade.vUnitarioVendaComImpostos;
@@ -435,7 +437,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                     if (StaticModel.StaticEditarItemViewModel != null && PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade != null)
                     {
                         StaticModel.StaticEditarItemViewModel.vDesconto =
-                            PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.Where(c =>  c.vDesconto > 0)
+                            PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.Where(c => c.vDesconto > 0)
                             .Select(c => c.vDesconto).FirstOrDefault();
                         StaticModel.StaticEditarItemViewModel.vComissao =
                             PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.Where(c => c.vQtdItem > 0).Sum(
@@ -448,7 +450,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                             .Select(c => c.pDesconto).FirstOrDefault();
                         StaticModel.StaticEditarItemViewModel.pIpiVenda =
                             PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.FirstOrDefault()
-                                .pIpiVenda;                        
+                                .pIpiVenda;
 
                         StaticModel.StaticEditarItemViewModel.pStVenda =
                             PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.FirstOrDefault()
@@ -532,9 +534,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 {
                     if (objToCalc.currentTabelaPreco.lFaixaComissao.OrderByDescending(f => f.pFimFaixa).FirstOrDefault().pFimFaixa > objToCalc.pComissao)
                         return true;
-                } 
+                }
             }
-             
+
 
 
             return !(objToCalc.pComissao > objToCalc.pComissaoOriginal);
@@ -552,7 +554,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                             PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.Sum(c => c.vSubTotal);
                         StaticModel.StaticEditarItemViewModel.vSubTotalSemImpostos =
                             PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.Sum(
-                                c => (c.vQtdItem * c.vSubTotalSemImpostos));
+                                c => (c.vSubTotalSemImpostos));
                         StaticModel.StaticEditarItemViewModel.vQtdeTotal =
                             PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.Sum(c => c.vQtdItem);
                     }
