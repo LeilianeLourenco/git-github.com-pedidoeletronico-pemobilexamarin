@@ -211,7 +211,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
 
                 xCliente += $@"{(pedido.stLancamento == 0 ? "Orçamento" : "Pedido")}: {xNumPedido} - ";
-                xCliente += $@"{(pedido.idPedidoVenda > 0 ? pedido.dEmissao.AddHours(-3).ToString("dd/MM/yyyy HH:mm") : pedido.dEmissao.ToString("dd/MM/yyyy HH:mm"))}{Environment.NewLine}";
+                xCliente += $@"{(pedido.idPedidoVenda > 0 ? pedido.dEmissao.ToString("dd/MM/yyyy HH:mm") : pedido.dEmissao.ToString("dd/MM/yyyy HH:mm"))}{Environment.NewLine}";
                 if (pedido.stLancamento == 0)
                 {
                     xCliente += $@"Valido até: {(pedido.dtValidadeOrcamento ?? DateTime.UtcNow).ToString("dd/MM/yyyy HH:mm")}{Environment.NewLine}";
