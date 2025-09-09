@@ -8,6 +8,7 @@ using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.View;
 using Xamarin.HLP.Mobile.AppPE.View.MainPage;
+using Xamarin.HLP.Mobile.AppPE.View.Sincronizacao;
 using Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao;
 
 namespace Xamarin.HLP.Mobile.AppPE.ViewModel
@@ -114,9 +115,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel
                                     {
                                         var currentAspnetUserModel =
                                             LoginRepository.SaveAspnetUsers(model: objreturn.objModel);
+
                                         App.CurrentAspnetUserModel = currentAspnetUserModel;
                                         this.currentModel.BProcessando = false;
-                                        Application.Current.MainPage = new RootPage();
+
+                                        if (!currentAspnetUserModel.objEmpresaAspnetUsersModel.stAtivo)
+                                            Application.Current.MainPage = new RootPage();
+                                        else
+                                            Application.Current.MainPage = new NavigationPage(new PageLogBloqueioSync());
                                     }
                                     break;
                                 case SignInStatus.LockedOut:

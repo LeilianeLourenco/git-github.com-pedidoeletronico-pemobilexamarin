@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Hlp.PedidoEletronico.Domain.Business.Bo;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
-using Hlp.PedidoEletronico.Domain.Business.Bo;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Home;
@@ -8,10 +12,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Services;
 using Xamarin.HLP.Mobile.AppPE.View.Login;
 using Xamarin.HLP.Mobile.AppPE.View.MainPage;
-using System.Reflection;
-using System.Threading.Tasks;
-using Plugin.Connectivity;
-using Xamarin.Essentials;
+using Xamarin.HLP.Mobile.AppPE.View.Sincronizacao;
 
 namespace Xamarin.HLP.Mobile.AppPE
 {
@@ -52,7 +53,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                 //    return await CrossConnectivity.Current.IsReachable(host: "pedidoeletronico.azurewebsites.net");
 
                 //return CrossConnectivity.Current.IsConnected;
-                
+
                 var current = Connectivity.NetworkAccess;
 
                 if (current == NetworkAccess.Internet)
@@ -135,7 +136,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                         return "http://pereporthom.pedidoeletronico.com/";
                     case Ambiente.Producao:
                         //return "https://191.235.81.52/"; 
-                        return "http://pe-reports.sytes.net/"; 
+                        return "http://pe-reports.sytes.net/";
                     case Ambiente.Local:
                         return "http://hlpsistemas.sytes.net:8094/";
                     case Ambiente.HomologacaoProducao:
@@ -161,7 +162,7 @@ namespace Xamarin.HLP.Mobile.AppPE
 
                     case Ambiente.Local:
                         return "http://hom-portalpedidoeletronico.azurewebsites.net/";
-                    case Ambiente.HomologacaoProducao: 
+                    case Ambiente.HomologacaoProducao:
                         return "http://portalpagamentos.pedidoeletronico.com/";
                     default:
                         return "http://hom-portalpedidoeletronico.azurewebsites.net/";
@@ -201,8 +202,16 @@ namespace Xamarin.HLP.Mobile.AppPE
                 Data = new DataAccess();
                 Data.PrimeiraAnalise();
 
+                if (LoginRepository.StatusBloqueio())
+                {
+                    CurrentAspnetUserModel = LoginRepository.GetAspnetUsers();
 
+                    if (App.EnvironmentPE == null)
+                        App.EnvironmentPE = LoginRepository.GetUserLoginModel();
 
+                    MainPage = new NavigationPage(new PageLogBloqueioSync());
+                    return;
+                }
 
                 if (LoginRepository.HasLogin())
                     CurrentAspnetUserModel = LoginRepository.GetAspnetUsers();

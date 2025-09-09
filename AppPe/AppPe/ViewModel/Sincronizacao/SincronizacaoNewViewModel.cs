@@ -23,6 +23,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.PagSeguro;
 using Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository.Anexos;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Integracao;
 using Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao;
 using Xamarin.HLP.Mobile.AppPE.View.Cliente;
@@ -172,6 +173,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!IsBusy)
                     if (await App.IsConected())
                     {
+                        LoginRepository.DesbloquearUser();
+
                         IsBusy = true;
                         ocorreuErro = bFalhaConexao = false;
                         currentModel.Display = "iniciando...";
@@ -266,12 +269,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 }
                                 else
                                 {
-                                    currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
+                                    currentModel.LAlertaBloqueio.Add(new AlertaSincronizacao
                                     {
                                         Table = "REPRESENTANTEINATIVO",
                                         Display = "Vendedor inativo.",
                                         Detail = "Vendedor inativo para a empresa corrente. Entre em contato com seu administrador!"
-                                    });
+                                    });                                    
                                     AnaliseFinalSincronizacao();
                                 }
                             }
@@ -283,7 +286,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 Table = "PLANO",
                                 Display =
                                     $"Sincronização não disponível - {acesso.stAcessoPermitido} - {acesso.idProdutoPlanoAtual}",
-                                Detail = "Algo deu errado ao buscar seu plano."
+                                Detail = "Algo deu errado ao buscar seu plano.",
                             });
                             AnaliseFinalSincronizacao();
                         }
@@ -1540,8 +1543,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 GoogleInsightsReportingConstants.TrakException("SincronizacaoViewModel.PostUploadAgenda", ex.Message, true);
             }
 
-        }
-
+        }     
 
         #endregion
 
@@ -2297,6 +2299,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             try
             {
+                bool bloqueio = currentModel.LAlertaBloqueio.Count > 0;
+
                 CrossConnectivity.Current.ConnectivityChanged -= Current_ConnectivityChanged;
                 await App.Navigation.PopPopupAsync();
                 var main = Application.Current.MainPage as RootPage;
@@ -2313,8 +2317,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         }
                 }
                 if (viewError)
-                {
                     UtilNavidate.PushAsync(new PageLogSync(currentModel.LAlertaSincronizacao));
+                else if (bloqueio)
+                {
+                    LoginRepository.BloquearUser();
+                    App.Current.MainPage = new NavigationPage(new PageLogBloqueioSync());
                 }
             }
             catch (Exception ex)
@@ -2355,6 +2362,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             {
                                 if (usuario.idEmpresa_aspnetUsers == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers)
                                 {
+                                    App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador = usuario.stAdministrador;
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.imUsuario = usuario.imUsuario;
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.bGravaLocRepresentante = usuario.bGravaLocRepresentante;
                                     App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.bProibidoAlterarCadastroCliente = usuario.bProibidoAlterarCadastroCliente;

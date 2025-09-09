@@ -62,6 +62,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 SaveCurrentUserLog(model);
 
+                // 🔹 Desativar os que não vieram no parâmetro
+                var idsAtivos = model.lEpresaAspnetUsersModel.Select(e => e.idEmpresa_aspnetUsers).ToList();
+                var listaBanco = App.Data.Connection.Table<EmpresaAspnetUsersModel>()
+                    .Where(c => c.idEmpresa_aspnetUsers == model.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers)
+                    .ToList();
+
+                foreach (var itemBanco in listaBanco)
+                {
+                    itemBanco.stAtivo = false;
+                    App.Data.Connection.Update(itemBanco);
+                }
+
                 foreach (var empresa in model.lEpresaAspnetUsersModel)
                 {
 
@@ -305,7 +317,44 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         }
 
+        public static bool StatusBloqueio()
+        {
+            try
+            {
+                var icount = App.Data.Connection.ExecuteScalar<int>(
+                    $"SELECT COUNT(*) FROM {TableMobile.CurrentUserLogin} WHERE AND bBloqueado = 1");
 
+                return icount > 0;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public static void BloquearUser()
+        {
+            try
+            {
+                App.Data.Connection.Execute($@"UPDATE {TableMobile.CurrentUserLogin} set bBloqueado = 1");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void DesbloquearUser()
+        {
+            try
+            {
+                App.Data.Connection.Execute($@"UPDATE {TableMobile.CurrentUserLogin} set bBloqueado = 0");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public static void Loggout()
         {

@@ -46,6 +46,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao
             set { _LAlertaSincronizacao = value; NotifyPropertyChanged(); }
         }
 
-
+        private List<AlertaSincronizacao> _LAlertaBloqueio= new List<AlertaSincronizacao>();
+        public List<AlertaSincronizacao> LAlertaBloqueio
+        {
+            get { return _LAlertaBloqueio; }
+            set { _LAlertaBloqueio = value; NotifyPropertyChanged(); }
+        }
     }
 }

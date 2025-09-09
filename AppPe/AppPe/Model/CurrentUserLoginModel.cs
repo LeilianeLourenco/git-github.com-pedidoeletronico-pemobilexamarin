@@ -43,6 +43,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
 
         public bool bLogado { get; set; } = true;
 
+        public bool bBloqueado { get; set; }
+
         public bool bUltimoUserLogado { get; set; } = false;
 
         public int idEmpresaLogada { get; set; }
