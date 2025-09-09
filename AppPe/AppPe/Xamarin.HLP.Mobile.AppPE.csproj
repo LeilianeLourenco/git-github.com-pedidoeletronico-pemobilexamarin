@@ -180,6 +180,9 @@
     <Compile Update="Controls\xaml\VariacaoEditItemPedido.xaml.cs">
       <DependentUpon>VariacaoEditItemPedido.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\Agenda\PageAnexosEvento.xaml.cs">
+      <DependentUpon>PageAnexosEvento.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\DashBoard\PageListagemClientes.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>PageListagemClientes.xaml</DependentUpon>
@@ -197,6 +200,9 @@
     </Compile>
     <Compile Update="View\Pedido\Popup\PagePopupTabelaPreco.xaml.cs">
       <DependentUpon>PagePopupTabelaPreco.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\Sincronizacao\PageLogBloqueioSync.xaml.cs">
+      <DependentUpon>PageLogBloqueioSync.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using Rg.Plugins.Popup.Extensions;
+﻿using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Pages;
+using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
@@ -98,6 +98,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var main = Application.Current.MainPage as MasterDetailPage;
                 if (main != null)
                     main.Detail = new NavigationPage(StaticModel.PageHome);
+                else
+                    Application.Current.MainPage = new RootPage();
             });
         }
         public static Type GetTypeCurrentPage()

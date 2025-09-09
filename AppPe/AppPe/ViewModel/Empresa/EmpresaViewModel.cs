@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -63,27 +64,39 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Empresa
 
         private async void EfetivarTrocaEmpresa()
         {
-            await Task.Run(() =>
+            try
             {
-                var email = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail;
-
-                foreach (var empresa in App.CurrentAspnetUserModel.lEpresaAspnetUsersModel.Where(c => c.xEmail.ToUpper() == email.ToUpper()))
+                await Task.Run(() =>
                 {
-                    empresa.isAtiva = empresa.idEmpresa == CurrentEmpresaBasicPickerModel.Id;
-                    if (empresa.idEmpresa == CurrentEmpresaBasicPickerModel.Id)
+                    var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+
+                    if (idEmpresa == CurrentEmpresaBasicPickerModel.Id)
+                        return;
+
+                    var email = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail;
+
+                    foreach (var empresa in App.CurrentAspnetUserModel.lEpresaAspnetUsersModel.Where(c => c.xEmail.ToUpper() == email.ToUpper()))
                     {
-                        currentModel = empresa.objEmpresaModel;
+                        empresa.isAtiva = empresa.idEmpresa == CurrentEmpresaBasicPickerModel.Id;
+                        if (empresa.idEmpresa == CurrentEmpresaBasicPickerModel.Id)
+                        {
+                            currentModel = empresa.objEmpresaModel;
+                        }
                     }
-                }
-                App.EnvironmentPE.idEmpresaLogada =
-                    App.CurrentAspnetUserModel.lEpresaAspnetUsersModel.FirstOrDefault(c => c.isAtiva).idEmpresa;
-                LoginRepository.UpdateUser();
+                    App.EnvironmentPE.idEmpresaLogada =
+                        App.CurrentAspnetUserModel.lEpresaAspnetUsersModel.FirstOrDefault(c => c.isAtiva).idEmpresa;
+                    LoginRepository.UpdateUser();
+                    LoginRepository.DesbloquearUser();
 
-                PageHomeNew.ViewModelStatic = null;
-                UtilNavidate.GoToHome();
-                //PageHome.HomeViewModel.AtualizaImagemHome();
-            });
-
+                    PageHomeNew.ViewModelStatic = null;
+                    UtilNavidate.GoToHome();
+                    //PageHome.HomeViewModel.AtualizaImagemHome();
+                });
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("", ex.ToString(), "pk");
+            }
         }
 
 
@@ -113,9 +126,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Empresa
             }
 
             CurrentEmpresaBasicPickerModel = LEmpresaBasicPickerModels.FirstOrDefault(c => c.Id == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
-
-
-
         }
 
         public bool Initialize()
