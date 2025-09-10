@@ -111,6 +111,7 @@ namespace Xamarin.HLP.Mobile.AppPE
                 try { this.Connection.CreateTable<SincronizacaoInicialEstoque>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_SINCRONIZACAOESTOQUE; }
                 try { this.Connection.CreateTable<EmailPedidoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + "EmailPedidoModel"; } 
                 try { this.Connection.CreateTable<AtividadeAgendaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_ATIVIDADES; } 
+                try { this.Connection.CreateTable<AnexosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_ANEXOS; } 
                 try { this.Connection.CreateTable<TipoAtividadeAgendaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_TIPOATIVIDADESCRM; }
                 try { this.Connection.CreateTable<JornadaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_JORNADA_TRABALHO; }
                 try { this.Connection.CreateTable<JornadaHorariosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_JORNADA_TRABALHO_HORARIOS; }

@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository.Anexos;
 using Xamarin.HLP.Mobile.AppPE.View.Agenda;
 using Xamarin.HLP.Mobile.AppPE.View.Pedido;
 using Xamarin.HLP.Mobile.AppPE.View.Pesquisas;
@@ -23,6 +27,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
 
         public ICommand GoToClientesCommand { get; set; }
         public ICommand GoToAtividadesCommand { get; set; }
+        public ICommand AnexosCommand { get; set; }
+        public ICommand CameraCommand { get; set; }
+        public ICommand ImagensCommand { get; set; }
         public ICommand CancelPedidoCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand ChangeTimeInicioCommand { get; set; }
@@ -65,6 +72,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
         {
             IsBusy = true;
             currentModel = new AtividadeAgendaModel();
+
+            AnexosCommand = new Command(AnexosPress);
+            CameraCommand = new Command(CameraPress);
+            ImagensCommand = new Command(ImagensPress);
 
             CancelPedidoCommand = new Command(CancelPress);
             SaveCommand = new Command(Save, CanSave);
@@ -138,6 +149,80 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
             IsBusy = false;
         }
 
+        private void AnexosPress()
+        {
+            UtilNavidate.PushAsync(new PageAnexosEvento(this));
+        }
+
+        private async void CameraPress()
+        {
+            if (currentModel.lAnexosAtividade.Count >= 10)
+                return;
+
+            var file = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
+            {
+                Title = "Tirar foto"
+            });
+
+            if (file == null)
+                return;
+
+            var filePath = Path.Combine(FileSystem.CacheDirectory, file.FileName);
+
+            using (var stream = await file.OpenReadAsync())
+            using (var fileStream = File.OpenWrite(filePath))
+            {
+                await stream.CopyToAsync(fileStream);
+            }
+
+            currentModel.lAnexosAtividade.Add(new AnexosModel
+            {
+                idEmpresa = currentModel.idEmpresa,
+                idAtividade = currentModel.idAtividade ?? currentModel.idAtividadeOffline,
+                xNomeArquivo = file.FileName,
+                xCaminhoArquivo = filePath,
+                dtUltimaAlteracao = DateTime.Now,
+            });
+        }
+
+        private async void ImagensPress()
+        {
+            try
+            {
+                if (currentModel.lAnexosAtividade.Count >= 10)
+                    return;
+
+                var file = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
+                {
+                    Title = "Selecione uma imagem"
+                });
+
+                if (file == null)
+                    return;
+
+                var filePath = Path.Combine(FileSystem.CacheDirectory, file.FileName);
+
+                using (var stream = await file.OpenReadAsync())
+                using (var fileStream = File.OpenWrite(filePath))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+
+                currentModel.lAnexosAtividade.Add(new AnexosModel
+                {
+                    idEmpresa = currentModel.idEmpresa,
+                    xNomeArquivo = file.FileName,
+                    xCaminhoArquivo = filePath,
+                    dtUltimaAlteracao = DateTime.Now,
+                    idAtividade = currentModel.idAtividade
+                });
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Erro", $"Falha ao anexar imagem: {ex.Message}", "OK");
+            }
+        }
+
         private async void CancelPress()
         {
             if (currentModel.idAtividadeOffline == 0)
@@ -152,6 +237,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                 UtilNavidate.PopAsync();
             }
         }
+
         public async void Save()
         {
             if (CanSave())
@@ -167,16 +253,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
             return IsBusy == false;
         }
 
-
         public async Task ValidateToSave()
         {
             try
             {
-                //if (ItemCliente.Id == 0)
-                //{
-                //    await App.Messages.ShowAsync("Antes disso, selecione um cliente");
-                //    return;
-                //}
                 if (ItemAtividade.Id == 0)
                 {
                     await App.Messages.ShowAsync("Antes disso, selecione uma atividade");
@@ -184,11 +264,20 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                 }
 
                 AgendaRepository.SaveAtividade(currentModel);
+
+                await App.Current.MainPage.DisplayAlert("teste", $"{currentModel.lAnexosAtividade.FirstOrDefault().idEmpresa}", "ok");
+
+                currentModel.lAnexosAtividade.ForEach(x => x.idAtividade = currentModel.idAtividadeOffline);
+                currentModel.lAnexosAtividade.ForEach(x => x.idEmpresa = currentModel.idEmpresa);
+                AnexosRepository.SaveAnexos(currentModel.lAnexosAtividade.ToList());
+
                 PageListagemEventos.ViewModelStatic.canExecuteInicial = true;
                 UtilNavidate.PopAsync();
             }
             catch (Exception ex)
             {
+                await App.Current.MainPage.DisplayAlert("erro", ex.Message, "ok");
+
                 GoogleInsightsReportingConstants.TrakException("EventocadastroViewModel.Save", ex.Message, true);
             }
         }

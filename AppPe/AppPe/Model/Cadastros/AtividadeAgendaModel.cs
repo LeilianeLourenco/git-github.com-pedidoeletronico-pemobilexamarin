@@ -1,5 +1,6 @@
 ﻿using SQLite;
 using System;
+using System.Collections.ObjectModel;
 using Xamarin.HLP.Mobile.AppPE.Common;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
@@ -21,7 +22,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             }
         }
 
-         
+
         private bool _bEventoCancelado;
         public bool bEventoCancelado
         {
@@ -51,7 +52,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
                 _xdtInicioEvento = value; NotifyPropertyChanged();
             }
         }
-        
+
         private string _idAspnetUsers;
         public string idAspnetUsers
         {
@@ -78,7 +79,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             get { return _xDescricaoAtividade; }
             set
             {
-                _xDescricaoAtividade = value; NotifyPropertyChanged(); 
+                _xDescricaoAtividade = value; NotifyPropertyChanged();
             }
         }
 
@@ -154,7 +155,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             }
         }
 
-         
+
 
         private DateTime? _dtInicioEvento = DateTime.Now.SqlMinDateTime();
         public DateTime? dtInicioEvento
@@ -163,7 +164,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             set
             {
                 _dtInicioEvento = value;
-                NotifyPropertyChanged(); 
+                NotifyPropertyChanged();
                 xDtInicioEvento = value?.ToLocalTime().ToString("dd/MM/yyyy");
             }
         }
@@ -202,5 +203,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         public TimeSpan? tsDuracaoCheck { get; set; }
         public string xLocalCheckIn { get; set; }
         public string xLocalCheckOut { get; set; }
-    }
+
+        private ObservableCollection<AnexosModel> _lAnexosAtividade = new ObservableCollection<AnexosModel>();
+
+        [Ignore]
+        public ObservableCollection<AnexosModel> lAnexosAtividade
+        {
+            get => _lAnexosAtividade;
+            set
+            {
+                _lAnexosAtividade = value;
+                NotifyPropertyChanged(); 
+            }
+        }
+    }    
 }
