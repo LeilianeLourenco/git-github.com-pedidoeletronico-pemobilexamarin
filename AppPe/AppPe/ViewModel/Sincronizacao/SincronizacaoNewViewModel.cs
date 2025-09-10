@@ -2320,7 +2320,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     UtilNavidate.PushAsync(new PageLogSync(currentModel.LAlertaSincronizacao));
                 else if (bloqueio)
                 {
+                    var user = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel;
+                    user.stAtivo = false;
+
                     LoginRepository.BloquearUser();
+                    EmpresaAspnetUsersRepository.AtualizaEmpresaAspnetUsersModel(teste);
+
                     App.Current.MainPage = new NavigationPage(new PageLogBloqueioSync());
                 }
             }

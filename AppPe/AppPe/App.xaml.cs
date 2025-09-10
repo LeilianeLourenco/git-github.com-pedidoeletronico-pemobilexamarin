@@ -1,6 +1,7 @@
 ﻿using Hlp.PedidoEletronico.Domain.Business.Bo;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -10,6 +11,7 @@ using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Home;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Services;
+using Xamarin.HLP.Mobile.AppPE.View.Home;
 using Xamarin.HLP.Mobile.AppPE.View.Login;
 using Xamarin.HLP.Mobile.AppPE.View.MainPage;
 using Xamarin.HLP.Mobile.AppPE.View.Sincronizacao;
@@ -216,12 +218,34 @@ namespace Xamarin.HLP.Mobile.AppPE
                 if (LoginRepository.HasLogin())
                     CurrentAspnetUserModel = LoginRepository.GetAspnetUsers();
 
+                if (!CurrentAspnetUserModel?.objEmpresaAspnetUsersModel?.stAtivo ?? false)
+                {
+                    var idEmpresa = CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+
+                    if (App.EnvironmentPE == null)
+                        App.EnvironmentPE = LoginRepository.GetUserLoginModel();
+
+                    var empresaAtiva = App.CurrentAspnetUserModel?.lEpresaAspnetUsersModel?
+                        .FirstOrDefault(c => c.stAtivo);
+
+                    if (empresaAtiva != null)
+                        App.EnvironmentPE.idEmpresaLogada = empresaAtiva.idEmpresa;
+                    else
+                        App.EnvironmentPE.idEmpresaLogada = idEmpresa; 
+
+                    LoginRepository.DesbloquearUser();
+                    LoginRepository.UpdateUser();
+
+                    CurrentAspnetUserModel = LoginRepository.GetAspnetUsers();
+
+                    MainPage = new RootPage();
+                    return;
+                }
+
                 if (CurrentAspnetUserModel == null)
                     MainPage = new NavigationPage(new PageBeforeLogin());
                 else
                     MainPage = new RootPage();
-
-                //MainPage = new NavigationPage(new PageListarPedidos());
 
             }
             catch (Exception ex) // catch all other errors
