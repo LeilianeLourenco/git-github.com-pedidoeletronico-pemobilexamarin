@@ -119,7 +119,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel
                                         App.CurrentAspnetUserModel = currentAspnetUserModel;
                                         this.currentModel.BProcessando = false;
 
-                                        if (!currentAspnetUserModel.objEmpresaAspnetUsersModel.stAtivo)
+                                        if (currentAspnetUserModel.objEmpresaAspnetUsersModel.stAtivo)
                                             Application.Current.MainPage = new RootPage();
                                         else
                                             Application.Current.MainPage = new NavigationPage(new PageLogBloqueioSync());
