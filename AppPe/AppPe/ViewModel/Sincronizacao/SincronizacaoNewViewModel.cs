@@ -2324,7 +2324,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     user.stAtivo = false;
 
                     LoginRepository.BloquearUser();
-                    EmpresaAspnetUsersRepository.AtualizaEmpresaAspnetUsersModel(teste);
+                    EmpresaAspnetUsersRepository.AtualizaEmpresaAspnetUsersModel(user);
 
                     App.Current.MainPage = new NavigationPage(new PageLogBloqueioSync());
                 }
