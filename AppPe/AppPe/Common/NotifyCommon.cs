@@ -35,7 +35,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public string ImageIconAdd => Device.OnPlatform("ApplicationBarAdd.png", "ApplicationBarAdd.png", "Assets/ApplicationBarAdd.png");
         public string ImageIconSync => Device.OnPlatform("ApplicationBarSync.png", "ApplicationBarSync.png", "Assets/ApplicationBarSync.png");
         public string ImageIconListarRepresentantes => Device.OnPlatform("ApplicationBarListarClientes.png", "ApplicationBarListarClientes.png", "Assets/ApplicationBarListarClientes.png");
-        
+
     }
 
     public class SearchCommom : NotifyCommon

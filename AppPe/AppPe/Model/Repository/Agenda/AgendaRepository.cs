@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model.Agenda;
@@ -399,10 +400,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
                 var xQuery =
-                    $"SELECT * FROM {TableMobile.TB_ATIVIDADES} WHERE  idAtividadeOffline = {idAtividadeOffline} and idEmpresa = {idEmpresa}";
+                    $"SELECT * FROM {TableMobile.TB_ATIVIDADES} WHERE idAtividadeOffline = {idAtividadeOffline} and idEmpresa = {idEmpresa}";
 
                 obj = (App.Data.Connection.Query<AtividadeAgendaModel>(xQuery)).FirstOrDefault();
 
+                var xQueryAnexo =
+                   $"SELECT * FROM {TableMobile.TB_ANEXOS} WHERE idAtividade = {idAtividadeOffline} and idEmpresa = {idEmpresa}";
+
+                var teste = (App.Data.Connection.Query<AnexosModel>(xQueryAnexo)).ToList();
+
+                obj.lAnexosAtividade = new ObservableCollection<AnexosModel>(teste);
             }
             catch (Exception ex)
             {
@@ -442,7 +449,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
             }
 
         }
-
 
         public static List<AtividadeAgendaModel> GetAtividadeAgendaParaUploadModel()
         {

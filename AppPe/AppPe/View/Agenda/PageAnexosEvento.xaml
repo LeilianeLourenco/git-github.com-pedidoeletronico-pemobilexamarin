@@ -1,0 +1,68 @@
+﻿<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Agenda.PageAnexosEvento"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:agenda="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    Title="Anexos"
+    BackgroundColor="White">
+
+    <StackLayout Padding="20" VerticalOptions="Start">
+        <CollectionView Margin="0,5,0,0" ItemsSource="{Binding currentModel.lAnexosAtividade}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame
+                        Margin="5"
+                        Padding="5"
+                        BorderColor="LightGray">
+                        <Grid
+                            Margin="0"
+                            ColumnDefinitions="Auto,*,Auto"
+                            VerticalOptions="Center">
+                            <Image
+                                Grid.Column="0"
+                                HeightRequest="60"
+                                Source="{Binding xCaminhoArquivo}"
+                                WidthRequest="60" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding xNomeArquivo}"
+                                VerticalOptions="Center" />
+                            <Button
+                                Grid.Column="2"
+                                Margin="0,0,10,0"
+                                Padding="2"
+                                BackgroundColor="Red"
+                                CornerRadius="20"
+                                FontSize="12"
+                                HeightRequest="34"
+                                Text="Remover"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <StackLayout
+            Margin="0,0,0,20"
+            HorizontalOptions="Center"
+            Orientation="Horizontal"
+            Spacing="10"
+            VerticalOptions="End">
+            <Button
+                Command="{Binding CameraCommand}"
+                Style="{StaticResource Success}"
+                Text="Câmera"
+                TextColor="White" />
+            <Button
+                BackgroundColor="{StaticResource AzulChart}"
+                Command="{Binding ImagensCommand}"
+                Text="Imagens"
+                TextColor="White" />
+        </StackLayout>
+
+    </StackLayout>
+</ContentPage>

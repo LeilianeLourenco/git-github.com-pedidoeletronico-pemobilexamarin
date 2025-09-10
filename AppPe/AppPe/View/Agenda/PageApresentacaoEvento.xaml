@@ -1,99 +1,163 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:agenda="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Agenda.PageApresentacaoEvento" Title="Detalhes do Evento">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Agenda.PageApresentacaoEvento"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:agenda="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda;assembly=Xamarin.HLP.Mobile.AppPE"
+    Title="Detalhes do Evento">
     <ContentPage.BindingContext>
-        <agenda:ApresentacaoEventoAgendaViewModel/>
+        <agenda:ApresentacaoEventoAgendaViewModel />
     </ContentPage.BindingContext>
 
 
-    <TableView HasUnevenRows="True" BackgroundColor="White">
+    <TableView BackgroundColor="White" HasUnevenRows="True">
         <TableRoot>
             <TableSection>
 
                 <ViewCell>
-                    <StackLayout Orientation="Vertical" HeightRequest="120">
-                        <Grid VerticalOptions="CenterAndExpand" >
+                    <StackLayout HeightRequest="120" Orientation="Vertical">
+                        <Grid VerticalOptions="CenterAndExpand">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <Label Grid.Row="0" LineBreakMode="NoWrap" Text="Status do evento" TextColor="{Binding currentModel.ColorPendencia}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
-                            <Label Grid.Row="1" LineBreakMode="NoWrap" Text="{Binding currentModel.xAtraso}" FontSize="Large" TextColor="{Binding currentModel.ColorPendencia}" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" />
+                            <Label
+                                Grid.Row="0"
+                                HorizontalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="NoWrap"
+                                Text="Status do evento"
+                                TextColor="{Binding currentModel.ColorPendencia}" />
+                            <Label
+                                Grid.Row="1"
+                                FontSize="Large"
+                                HorizontalOptions="CenterAndExpand"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="NoWrap"
+                                Text="{Binding currentModel.xAtraso}"
+                                TextColor="{Binding currentModel.ColorPendencia}" />
 
                         </Grid>
                     </StackLayout>
                 </ViewCell>
 
-                <SwitchCell On="{Binding currentModel.bRealizado, Mode=OneWay}"  Text="Atividade Realizada ?"   x:Name="bAtividadeRealizadaAction"  OnChanged="AtualizarEvento"/>
-                <SwitchCell On="{Binding currentModel.bEventoCancelado, Mode=OneWay}"  Text="Atividade Cancelada ?"   x:Name="bCancelamentoAction"  OnChanged="CancelarEvento"/>
-                <TextCell Detail="{Binding currentModel.xNomeAtividade}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Atividade" />
+                <SwitchCell
+                    x:Name="bAtividadeRealizadaAction"
+                    On="{Binding currentModel.bRealizado, Mode=OneWay}"
+                    OnChanged="AtualizarEvento"
+                    Text="Atividade Realizada ?" />
+                <SwitchCell
+                    x:Name="bCancelamentoAction"
+                    On="{Binding currentModel.bEventoCancelado, Mode=OneWay}"
+                    OnChanged="CancelarEvento"
+                    Text="Atividade Cancelada ?" />
+                <TextCell
+                    Detail="{Binding currentModel.xNomeAtividade}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Atividade"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
                 <ViewCell>
-                    <StackLayout  Orientation="Vertical">
+                    <StackLayout Orientation="Vertical">
                         <StackLayout.Margin>
-                            <OnPlatform x:TypeArguments="Thickness" Android="15,5,5,5" iOS="10,10,0,10"/>
+                            <OnPlatform
+                                x:TypeArguments="Thickness"
+                                Android="15,5,5,5"
+                                iOS="10,10,0,10" />
                         </StackLayout.Margin>
                         <StackLayout.Padding>
-                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,45"/>
+                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,45" />
                         </StackLayout.Padding>
-                        <Grid VerticalOptions="StartAndExpand"  >
+                        <Grid VerticalOptions="StartAndExpand">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="Descrição da atividade" TextColor="{StaticResource CinzaApresentacaoCliente}" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand"/>
-                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding currentModel.xDescricaoAtividade}" FontSize="Small" TextColor="{StaticResource CinzaMaisEscuro}" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Start"
+                                Text="Descrição da atividade"
+                                TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                FontSize="Small"
+                                HorizontalOptions="StartAndExpand"
+                                HorizontalTextAlignment="Start"
+                                Text="{Binding currentModel.xDescricaoAtividade}"
+                                TextColor="{StaticResource CinzaMaisEscuro}" />
 
                         </Grid>
                     </StackLayout>
                 </ViewCell>
 
-                <TextCell Detail="{Binding currentModel.xPeriodoEvento}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Período do evento" />
-                <TextCell Detail="{Binding currentModel.xNomeCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Cliente" />
-                <TextCell Detail="{Binding currentModel.xTelefoneCliente}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Telefone" />
+                <TextCell
+                    Detail="{Binding currentModel.xPeriodoEvento}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Período do evento"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.xNomeCliente}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Cliente"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.xTelefoneCliente}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Telefone"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
 
                 <ViewCell>
                     <StackLayout Orientation="Vertical">
                         <StackLayout.Margin>
-                            <OnPlatform x:TypeArguments="Thickness" Android="15,5,5,5" iOS="10,10,0,10"/>
+                            <OnPlatform
+                                x:TypeArguments="Thickness"
+                                Android="15,5,5,5"
+                                iOS="10,10,0,10" />
                         </StackLayout.Margin>
                         <StackLayout.Padding>
-                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,25"/>
+                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,25" />
                         </StackLayout.Padding>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="0"
-                                   Margin="0,13,0,0"
-                                   Grid.Column="0" 
-                                   LineBreakMode="NoWrap"
-                                   Text="{Binding currentModel.xEnderecoCompleto}" 
-                                   FontSize="Small"
-                                   TextColor="{StaticResource CinzaMaisEscuro}" 
-                                   HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="0,13,0,0"
+                                FontSize="Small"
+                                HorizontalOptions="StartAndExpand"
+                                HorizontalTextAlignment="Start"
+                                LineBreakMode="NoWrap"
+                                Text="{Binding currentModel.xEnderecoCompleto}"
+                                TextColor="{StaticResource CinzaMaisEscuro}" />
 
 
-                            <Grid Grid.Column="1" Grid.Row="0" MinimumHeightRequest="50" >
-                                <abstractions:SvgImage 
-                                    SvgPath="{StaticResource ImagemPesquisarLocation}"  
-                                    x:Name="SvgImagePinLocation" 
+                            <Grid
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                MinimumHeightRequest="50">
+                                <abstractions:SvgImage
+                                    x:Name="SvgImagePinLocation"
                                     HeightRequest="{StaticResource HeightandWidth}"
-                                    WidthRequest="{StaticResource HeightandWidth}" 
-                                    HorizontalOptions="Center" VerticalOptions="Center" >
+                                    HorizontalOptions="Center"
+                                    SvgPath="{StaticResource ImagemPesquisarLocation}"
+                                    VerticalOptions="Center"
+                                    WidthRequest="{StaticResource HeightandWidth}">
                                     <abstractions:SvgImage.Margin>
                                         <OnPlatform x:TypeArguments="Thickness">
                                             <OnPlatform.Android>0,0,0,4</OnPlatform.Android>
@@ -105,50 +169,103 @@
                     </StackLayout>
                 </ViewCell>
 
-                <TextCell Detail="{Binding currentModel.xListaVendedores}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Responsáveis" />
-              
+                <TextCell
+                    Detail="{Binding currentModel.xListaVendedores}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Responsáveis"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+
                 <ViewCell>
-                    <StackLayout Orientation="Vertical" MinimumHeightRequest="100" >
+                    <StackLayout MinimumHeightRequest="100" Orientation="Vertical">
                         <StackLayout.Margin>
-                            <OnPlatform x:TypeArguments="Thickness" Android="15,5,5,5" iOS="10,10,0,10"/>
+                            <OnPlatform
+                                x:TypeArguments="Thickness"
+                                Android="15,5,5,5"
+                                iOS="10,10,0,10" />
                         </StackLayout.Margin>
                         <StackLayout.Padding>
-                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,35"/>
+                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,35" />
                         </StackLayout.Padding>
-                        <Grid VerticalOptions="StartAndExpand"  >
+                        <Grid VerticalOptions="StartAndExpand">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="Anotação Privada" TextColor="{StaticResource CinzaApresentacaoCliente}" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand"/>
-                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding currentModel.xAnotacaoPrivada}" FontSize="Small" TextColor="{StaticResource CinzaMaisEscuro}" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Start"
+                                Text="Anotação Privada"
+                                TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                FontSize="Small"
+                                HorizontalOptions="StartAndExpand"
+                                HorizontalTextAlignment="Start"
+                                Text="{Binding currentModel.xAnotacaoPrivada}"
+                                TextColor="{StaticResource CinzaMaisEscuro}" />
 
                         </Grid>
                     </StackLayout>
                 </ViewCell>
-               
-                <TextCell Detail="{Binding currentModel.xLocalCheckIn}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Local do Check in" />
-                <TextCell Detail="{Binding currentModel.xLocalCheckOut}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Local do Check out" />
-                <TextCell Detail="{Binding currentModel.xDuracaoCheck}" DetailColor="{StaticResource CinzaMaisEscuro}" TextColor="{StaticResource CinzaApresentacaoCliente}" Text="Tempo na visita" />
+
+                <TextCell
+                    Detail="{Binding currentModel.xLocalCheckIn}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Local do Check in"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.xLocalCheckOut}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Local do Check out"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding currentModel.xDuracaoCheck}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Tempo na visita"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
 
                 <ViewCell>
-                    <StackLayout Orientation="Vertical" HeightRequest="120" IsVisible="{Binding currentModel.DeuCheckOut, Converter={StaticResource InvertBoolConvert}}">
+                    <StackLayout
+                        HeightRequest="120"
+                        IsVisible="{Binding currentModel.DeuCheckOut, Converter={StaticResource InvertBoolConvert}}"
+                        Orientation="Vertical">
                         <Grid HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Button Text="CHECK IN" BackgroundColor="#0e76c2"
-                                    TextColor="#fff" WidthRequest="90" HeightRequest="40" CornerRadius="10" Grid.Column="0"
-                                         IsVisible="{Binding currentModel.DeuCheckIn, Converter={StaticResource InvertBoolConvert}}" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding CheckInCommand}"/>
-                            <Button Text="CHECK OUT" BackgroundColor="#228b22"
-                                    TextColor="#fff" WidthRequest="120" HeightRequest="40" CornerRadius="10" Grid.Column="0"
-                                         IsVisible="{Binding currentModel.DeuCheckIn}" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding CheckOutCommand}"/>
+                            <Button
+                                Grid.Column="0"
+                                BackgroundColor="#0e76c2"
+                                Command="{Binding CheckInCommand}"
+                                CornerRadius="10"
+                                HeightRequest="40"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding currentModel.DeuCheckIn, Converter={StaticResource InvertBoolConvert}}"
+                                Text="CHECK IN"
+                                TextColor="#fff"
+                                VerticalOptions="Center"
+                                WidthRequest="90" />
+                            <Button
+                                Grid.Column="0"
+                                BackgroundColor="#228b22"
+                                Command="{Binding CheckOutCommand}"
+                                CornerRadius="10"
+                                HeightRequest="40"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding currentModel.DeuCheckIn}"
+                                Text="CHECK OUT"
+                                TextColor="#fff"
+                                VerticalOptions="Center"
+                                WidthRequest="120" />
                         </Grid>
                     </StackLayout>
                 </ViewCell>
@@ -159,8 +276,14 @@
     </TableView>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Adiar" Icon="{Binding ImageIconAdiar}" Command="{Binding AdiarCommand}"/>
-        <ToolbarItem Text="Editar" Command="{Binding EditarEventoCommand}" Icon="{Binding ImageIconEdit}"/>
+        <ToolbarItem
+            Command="{Binding AdiarCommand}"
+            Icon="{Binding ImageIconAdiar}"
+            Text="Adiar" />
+        <ToolbarItem
+            Command="{Binding EditarEventoCommand}"
+            Icon="{Binding ImageIconEdit}"
+            Text="Editar" />
     </ContentPage.ToolbarItems>
 
 </ContentPage>

@@ -31,6 +31,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_JORNADA_TRABALHO = "TB_JORNADA_TRABALHO";
         public const string TB_JORNADA_TRABALHO_HORARIOS = "TB_JORNADA_TRABALHO_HORARIOS";
         public const string TB_FORMA_PAGAMENTO = "TB_FORMA_PAGAMENTO";
+        public const string TB_ANEXOS = "TB_ANEXOS";
 
         public const string TB_CATEGORIA = "TB_CATEGORIA";
         public const string TB_UNIDADEMEDIDA = "TB_UNIDADEMEDIDA";
@@ -77,7 +78,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_TABELAPRECO_REPRESENTACOES = "TB_TABELAPRECO_REPRESENTACOES";
         public const string TB_INTEGRACAO = "TB_INTEGRACAO";
         public const string AspNetUsers = "AspNetUsers";
-    
+
         public const string TB_REGRAS_COMERCIAIS = "TB_REGRAS_COMERCIAIS";
         public const string TB_REGRAS_COMERCIAIS_FAIXAS = "TB_REGRAS_COMERCIAIS_FAIXAS";
         public const string TB_REGRAS_COMERCIAIS_CRITERIOS = "TB_REGRAS_COMERCIAIS_CRITERIOS";
@@ -819,7 +820,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                         return "ApiRegrasComerciais";
                     default:
                         return TB_REGRAS_COMERCIAIS_CRITERIOS_UF;
-                }           
+                }
             if (classe == typeof(TabelaPrecoClienteUfModel))
             {
                 switch (tipoRetornoInfoClass)

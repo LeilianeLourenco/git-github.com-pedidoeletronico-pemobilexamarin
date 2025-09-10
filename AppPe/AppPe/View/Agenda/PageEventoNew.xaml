@@ -1,87 +1,130 @@
-﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:agenda="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda;assembly=Xamarin.HLP.Mobile.AppPE"  
-             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE" 
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Agenda.PageEventoNew" BackgroundColor="{StaticResource CinzaMedio}" Title="Novo Evento" IsBusy="{Binding IsBusy}">
+﻿<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Agenda.PageEventoNew"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:agenda="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    Title="Novo Evento"
+    BackgroundColor="White"
+    IsBusy="{Binding IsBusy}">
 
     <ContentPage.BindingContext>
-        <agenda:EventoCadastroViewModel/>
+        <agenda:EventoCadastroViewModel />
     </ContentPage.BindingContext>
 
+    <StackLayout>
+        <TableView BackgroundColor="White" HasUnevenRows="True">
+            <TableRoot>
+                <TableSection>
 
-    <TableView HasUnevenRows="True" BackgroundColor="White">
-        <TableRoot>
-            <TableSection>
+                    <SwitchCell On="{Binding currentModel.bRealizado}" Text="Atividade Realizada ?" />
+                    <TextCell
+                        Command="{Binding GoToAtividadesCommand}"
+                        Detail="{Binding ItemAtividade.Display}"
+                        DetailColor="{StaticResource CinzaMaisEscuro}"
+                        PropertyChanging="BindableAtividade_OnPropertyChanging"
+                        Text="Tipo da Atividade*"
+                        TextColor="{StaticResource AzulChart}" />
 
-                <SwitchCell On="{Binding currentModel.bRealizado}"  Text="Atividade Realizada ?"  />
-                <TextCell Command="{Binding GoToAtividadesCommand}" 
-                          Detail="{Binding ItemAtividade.Display}" 
-                          PropertyChanging="BindableAtividade_OnPropertyChanging"
-                          DetailColor="{StaticResource CinzaMaisEscuro}" 
-                          TextColor="{StaticResource AzulChart}"  Text="Tipo da Atividade*"/>
+                    <ViewCell>
+                        <StackLayout Orientation="Vertical">
+                            <StackLayout.Margin>
+                                <OnPlatform
+                                    x:TypeArguments="Thickness"
+                                    Android="10,15,0,0"
+                                    iOS="10,10,0,10" />
+                            </StackLayout.Margin>
+                            <StackLayout.Padding>
+                                <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,15" />
+                            </StackLayout.Padding>
+                            <Label
+                                LineBreakMode="NoWrap"
+                                Style="{StaticResource HeaderLabel}"
+                                Text="Descrição da atividade" />
+                            <custom:ExtendedEntry
+                                x:Name="EditorAtividade"
+                                MaxLength="500"
+                                Placeholder="Atividade"
+                                Text="{Binding currentModel.xDescricaoAtividade}" />
+                        </StackLayout>
+                    </ViewCell>
 
-                <ViewCell>
-                    <StackLayout Orientation="Vertical">
-                        <StackLayout.Margin>
-                            <OnPlatform x:TypeArguments="Thickness" Android="10,15,0,0" iOS="10,10,0,10"/>
-                        </StackLayout.Margin>
-                        <StackLayout.Padding>
-                            <OnPlatform x:TypeArguments="Thickness" iOS="0,0,0,15"/>
-                        </StackLayout.Padding>
-                        <Label Text="Descrição da atividade" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry  MaxLength="500" x:Name="EditorAtividade" Text="{Binding currentModel.xDescricaoAtividade}" Placeholder="Atividade"/>  
-                    </StackLayout>
-                </ViewCell>
-
-                <TextCell IsEnabled="{Binding IsBusy}" 
-                          Command="{Binding ChangeTimeInicioCommand}" 
-                          Detail="{Binding currentModel.dtInicioEvento, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
-                          DetailColor="{StaticResource CinzaMaisEscuro}"
-                          TextColor="{StaticResource AzulChart}" 
-                          Text="Início de Evento"/>
-
-
-                <TextCell IsEnabled="{Binding IsBusy}" 
-                          Command="{Binding ChangeTimeFimCommand}" 
-                          Detail="{Binding currentModel.dtFimEvento, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
-                          DetailColor="{StaticResource CinzaMaisEscuro}"
-                          TextColor="{StaticResource AzulChart}" 
-                          Text="Fim de Evento"/>
-
-
-                <TextCell Command="{Binding GoToClientesCommand}" 
-                          PropertyChanging="BindableObject_OnPropertyChanging"
-                          Detail="{Binding ItemCliente.Display}" 
-                          DetailColor="{StaticResource CinzaMaisEscuro}" 
-                          TextColor="{StaticResource AzulChart}"  Text="Cliente*"/>
+                    <TextCell
+                        Command="{Binding ChangeTimeInicioCommand}"
+                        Detail="{Binding currentModel.dtInicioEvento, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
+                        DetailColor="{StaticResource CinzaMaisEscuro}"
+                        IsEnabled="{Binding IsBusy}"
+                        Text="Início de Evento"
+                        TextColor="{StaticResource AzulChart}" />
 
 
-                <ViewCell>
-                    <StackLayout Orientation="Vertical" Margin="10,15,0,0" MinimumHeightRequest="50"> 
-                        <Label Text="Endereço" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <custom:ExtendedEntry  MaxLength="200" x:Name="EditorEndereco" Text="{Binding currentModel.xEnderecoCompleto}" Placeholder="Endereço"/> 
-
-                        <Label Text="Anotação privada" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                        <Editor x:Name="EditorAnotacaoPrivada" 
-                                Text="{Binding currentModel.xAnotacaoPrivada}"
-                                Keyboard="Chat"  
-                                HeightRequest="{StaticResource HeightEditor}" /> 
-                    </StackLayout>
-                </ViewCell>
-
-            </TableSection>
+                    <TextCell
+                        Command="{Binding ChangeTimeFimCommand}"
+                        Detail="{Binding currentModel.dtFimEvento, Converter={StaticResource DateTimeToExtenseFullDateConveter}}"
+                        DetailColor="{StaticResource CinzaMaisEscuro}"
+                        IsEnabled="{Binding IsBusy}"
+                        Text="Fim de Evento"
+                        TextColor="{StaticResource AzulChart}" />
 
 
-        </TableRoot>
-    </TableView>
+                    <TextCell
+                        Command="{Binding GoToClientesCommand}"
+                        Detail="{Binding ItemCliente.Display}"
+                        DetailColor="{StaticResource CinzaMaisEscuro}"
+                        PropertyChanging="BindableObject_OnPropertyChanging"
+                        Text="Cliente*"
+                        TextColor="{StaticResource AzulChart}" />
+
+
+                    <ViewCell>
+                        <StackLayout
+                            Margin="10,15,0,0"
+                            MinimumHeightRequest="50"
+                            Orientation="Vertical">
+                            <Label
+                                LineBreakMode="NoWrap"
+                                Style="{StaticResource HeaderLabel}"
+                                Text="Endereço" />
+                            <custom:ExtendedEntry
+                                x:Name="EditorEndereco"
+                                MaxLength="200"
+                                Placeholder="Endereço"
+                                Text="{Binding currentModel.xEnderecoCompleto}" />
+
+                            <Label
+                                LineBreakMode="NoWrap"
+                                Style="{StaticResource HeaderLabel}"
+                                Text="Anotação privada" />
+                            <Editor
+                                x:Name="EditorAnotacaoPrivada"
+                                HeightRequest="{StaticResource HeightEditor}"
+                                Keyboard="Chat"
+                                Text="{Binding currentModel.xAnotacaoPrivada}" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+    </StackLayout>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem  Icon="{Binding ImageIconCancel}" Text="Cancelar" Command="{Binding CancelPedidoCommand}" >
+        <ToolbarItem Command="{Binding AnexosCommand}" Text="Anexos">
             <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
             </ToolbarItem.Order>
         </ToolbarItem>
-        <ToolbarItem Command="{Binding SaveCommand}"  Icon="{Binding ImageIconSave}" Text="Salvar" />
+        <ToolbarItem
+            Command="{Binding CancelPedidoCommand}"
+            Icon="{Binding ImageIconCancel}"
+            Text="Cancelar">
+            <ToolbarItem.Order>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
+            </ToolbarItem.Order>
+        </ToolbarItem>
+        <ToolbarItem
+            Command="{Binding SaveCommand}"
+            Icon="{Binding ImageIconSave}"
+            Text="Salvar" />
     </ContentPage.ToolbarItems>
 </ContentPage>
