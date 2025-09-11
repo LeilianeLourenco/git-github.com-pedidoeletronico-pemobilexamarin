@@ -35,14 +35,6 @@
                         Text="Vendedor inativo para a empresa corrente. Entre em contato com seu administrador!"
                         TextColor="{StaticResource CinzaClaro}" />
                 </StackLayout>
-
-                <Button
-                    Margin="0,15"
-                    BackgroundColor="{StaticResource AzulChart}"
-                    Clicked="BtnEmpresas_Clicked"
-                    HorizontalOptions="Center"
-                    Text="Empresas"
-                    TextColor="White" />
             </StackLayout>
         </ScrollView>
 
@@ -52,6 +44,13 @@
             HorizontalOptions="Center"
             Orientation="Vertical"
             Spacing="5">
+            <Button
+                BackgroundColor="{StaticResource AzulChart}"
+                Clicked="BtnEmpresas_Clicked"
+                HorizontalOptions="Center"
+                Text="Empresas"
+                TextColor="White" />
+
             <Button
                 BackgroundColor="Transparent"
                 Clicked="BtnSair_Clicked"
