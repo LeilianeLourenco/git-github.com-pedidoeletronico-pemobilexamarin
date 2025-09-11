@@ -23,7 +23,6 @@ using Xamarin.HLP.Mobile.AppPE.Model.PagSeguro;
 using Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda;
-using Xamarin.HLP.Mobile.AppPE.Model.Repository.Anexos;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Integracao;
 using Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao;
 using Xamarin.HLP.Mobile.AppPE.View.Cliente;
