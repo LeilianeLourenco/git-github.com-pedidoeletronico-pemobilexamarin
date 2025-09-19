@@ -1,28 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.VariacaoEditItemPedido"
-             Padding="5,5,5,5">
+<StackLayout
+    x:Class="Xamarin.HLP.Mobile.AppPE.Controls.xaml.VariacaoEditItemPedido"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Padding="5,5,5,5">
 
     <StackLayout Orientation="Vertical" Spacing="10">
-        <Label Text="{Binding xNomeVariacao}" TextColor="#000" FontSize="15"/>
-        <ScrollView Orientation="Horizontal" Padding="0,0,0,20">
-            <StackLayout Orientation="Horizontal" Spacing="10" x:Name="ScrollButtonsVariacoes"
-                         BindableLayout.ItemsSource="{Binding lTiposVariacoes}">
+        <Label
+            FontSize="15"
+            Text="{Binding xNomeVariacao}"
+            TextColor="#000" />
+        <ScrollView Padding="0,0,0,20" Orientation="Horizontal">
+            <StackLayout
+                x:Name="ScrollButtonsVariacoes"
+                BindableLayout.ItemsSource="{Binding lTiposVariacoes}"
+                Orientation="Horizontal"
+                Spacing="10">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
-                        <Button Text="{Binding NomeVariacao}" 
-                                FontSize="13"             
-                                FontAttributes="Bold"
-                                BackgroundColor="LightGray"
-                                BorderColor="LightGray"                           
-                                BorderWidth="2" 
-                                CornerRadius="10" 
-                                WidthRequest="100" 
-                                HeightRequest="50"
-                                Clicked="btnFiltroVariacao"
-                                Command="{Binding CurrentLocalEstoque, Mode=TwoWay}"
-                                CommandParameter="{Binding idProdutoLista}" />
+                        <Button
+                            BackgroundColor="LightGray"
+                            BorderColor="LightGray"
+                            BorderWidth="2"
+                            Clicked="btnFiltroVariacao"
+                            Command="{Binding CurrentLocalEstoque, Mode=TwoWay}"
+                            CommandParameter="{Binding idProdutoLista}"
+                            CornerRadius="10"
+                            FontAttributes="Bold"
+                            FontSize="13"
+                            HeightRequest="50"
+                            Text="{Binding NomeVariacao}"
+                            WidthRequest="100" />
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </StackLayout>

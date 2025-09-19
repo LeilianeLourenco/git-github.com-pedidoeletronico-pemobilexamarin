@@ -402,7 +402,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         var _image = UtilMethods.GetLocalProdutoImageSource("");
 
                         lproduto.ListaImagens.Add(_image);
-                    }                
+                    }
                 }
 
                 return objReturn;
@@ -745,7 +745,153 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static List<ProdutoModel> GetVariacoesProduto(int idProduto)
+        {
+            string xQuery = $"select * from tb_produto where idProdutoPai = {idProduto}";
+            var produto = App.Data.Connection.Query<ProdutoModel>(xQuery).ToList();
+
+            return produto;
+        }
+
         public static List<PedidoVendaItensModel> GetVariacaoItem(PedidoVendaItensModel produto)
+        {
+            var lItens = new List<PedidoVendaItensModel>();
+            try
+            {
+                string xQuery = $"select idProduto from tb_produto where idProdutoPai = {produto.idProduto} and idEmpresa = {produto.idEmpresa}";
+                var idsProduto = App.Data.Connection.Query<ProdutoModel>(xQuery).ToList();
+
+                var variacaoDict = new Dictionary<string, PedidoVendaItensModel>();
+
+                foreach (var prod in idsProduto)
+                {
+                    xQuery = $"select idGradeProduto from tb_produto_grades where idProduto = {prod.idProduto}";
+                    var produtoGrade = App.Data.Connection.Query<GradeVariacaoProdutoModel>(xQuery).ToList();
+
+                    var listaIdsGradeProduto = string.Join(",", produtoGrade.Select(p => p.idGradeProduto));
+                    xQuery = $"select idGradeComposicao from tb_produto_grades_composicao where idGradeProduto in ({listaIdsGradeProduto})";
+                    var produtoGradeComposicao = App.Data.Connection.Query<GradeVariacaoProdutoComposicaoModel>(xQuery).ToList();
+
+                    var listaIdsGradeComposicao = string.Join(",", produtoGradeComposicao.Select(p => p.idGradeComposicao));
+                    xQuery = $"select idGrade, xNomeGrade from tb_grades_composicao where idGradeComposicao in ({listaIdsGradeComposicao})";
+                    var gradeComposicao = App.Data.Connection.Query<GradesComposicaoModel>(xQuery).ToList();
+
+                    var listaIdsGrade = string.Join(",", gradeComposicao.Select(p => p.idGrade));
+                    xQuery = $"select idGrade, xGrade from tb_grades where idGrade in ({listaIdsGrade})";
+                    var grade = App.Data.Connection.Query<GradesModel>(xQuery).ToList();
+
+                    foreach (var lin in grade)
+                    {
+                        var tipoVariacao = lin.xGrade.ToUpper();
+                        var variacoes = gradeComposicao.Where(x => x.idGrade == lin.idGrade)
+                                                       .Select(x => new VariacaoModel
+                                                       {
+                                                           NomeVariacao = x.xNomeGrade,
+                                                           idProduto = prod.idProduto ?? 0
+                                                       }).ToList();
+
+                        if (!variacaoDict.ContainsKey(tipoVariacao))
+                        {
+                            variacaoDict[tipoVariacao] = new PedidoVendaItensModel
+                            {
+                                xNomeVariacao = tipoVariacao,
+                                lTiposVariacoes = new List<VariacaoModel>()
+                            };
+                        }
+
+                        variacaoDict[tipoVariacao].lTiposVariacoes.AddRange(variacoes);
+                    }
+                }
+
+                foreach (var item in variacaoDict.Values)
+                {
+                    var agrupado = item.lTiposVariacoes
+                                       .GroupBy(v => v.NomeVariacao)
+                                       .Select(g => new VariacaoModel
+                                       {
+                                           NomeVariacao = g.Key,
+                                           idProdutoLista = g.Select(v => v.idProduto).ToList()
+                                       }).ToList();
+
+                    item.lTiposVariacoes = agrupado;
+                }
+
+                lItens = variacaoDict.Values.ToList();
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+            return lItens;
+        }
+
+        public static List<PedidoVendaItensModel> GetVariacaoProduto(PedidoVendaItensModel produto)
+        {
+            var lItens = new List<PedidoVendaItensModel>();
+            try
+            {
+                var variacaoDict = new Dictionary<string, PedidoVendaItensModel>();
+
+                var xQuery = $"select idGradeProduto from tb_produto_grades where idProduto = {produto.idProduto}";
+                var produtoGrade = App.Data.Connection.Query<GradeVariacaoProdutoModel>(xQuery).ToList();
+
+                var listaIdsGradeProduto = string.Join(",", produtoGrade.Select(p => p.idGradeProduto));
+                xQuery = $"select idGradeComposicao from tb_produto_grades_composicao where idGradeProduto in ({listaIdsGradeProduto})";
+                var produtoGradeComposicao = App.Data.Connection.Query<GradeVariacaoProdutoComposicaoModel>(xQuery).ToList();
+
+                var listaIdsGradeComposicao = string.Join(",", produtoGradeComposicao.Select(p => p.idGradeComposicao));
+                xQuery = $"select idGrade, xNomeGrade from tb_grades_composicao where idGradeComposicao in ({listaIdsGradeComposicao})";
+                var gradeComposicao = App.Data.Connection.Query<GradesComposicaoModel>(xQuery).ToList();
+
+                var listaIdsGrade = string.Join(",", gradeComposicao.Select(p => p.idGrade));
+                xQuery = $"select idGrade, xGrade from tb_grades where idGrade in ({listaIdsGrade})";
+                var grade = App.Data.Connection.Query<GradesModel>(xQuery).ToList();
+
+                foreach (var lin in grade)
+                {
+                    var tipoVariacao = lin.xGrade.ToUpper();
+                    var variacoes = gradeComposicao.Where(x => x.idGrade == lin.idGrade)
+                                                   .Select(x => new VariacaoModel
+                                                   {
+                                                       NomeVariacao = x.xNomeGrade,
+                                                       idProduto = produto.idProduto ?? 0
+                                                   }).ToList();
+
+                    if (!variacaoDict.ContainsKey(tipoVariacao))
+                    {
+                        variacaoDict[tipoVariacao] = new PedidoVendaItensModel
+                        {
+                            xNomeVariacao = tipoVariacao,
+                            lTiposVariacoes = new List<VariacaoModel>()
+                        };
+                    }
+
+                    variacaoDict[tipoVariacao].lTiposVariacoes.AddRange(variacoes);
+                }
+
+                foreach (var item in variacaoDict.Values)
+                {
+                    var agrupado = item.lTiposVariacoes
+                                       .GroupBy(v => v.NomeVariacao)
+                                       .Select(g => new VariacaoModel
+                                       {
+                                           NomeVariacao = g.Key,
+                                           idProdutoLista = g.Select(v => v.idProduto).ToList()
+                                       }).ToList();
+
+                    item.lTiposVariacoes = agrupado;
+                }
+
+                lItens = variacaoDict.Values.ToList();
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+            return lItens;
+        }
+
+        public static List<PedidoVendaItensModel> GetVariacaoItem(ProdutoModel produto)
         {
             var lItens = new List<PedidoVendaItensModel>();
             try

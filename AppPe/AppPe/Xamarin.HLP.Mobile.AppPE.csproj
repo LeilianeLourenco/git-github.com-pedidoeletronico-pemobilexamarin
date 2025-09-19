@@ -191,6 +191,9 @@
       <SubType>Code</SubType>
       <DependentUpon>PageInfoCliente.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\Pedido\PageSelecionarVariacao.xaml.cs">
+      <DependentUpon>PageSelecionarVariacao.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\Pedido\PageTabelaFaturas.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>PageTabelaFaturas.xaml</DependentUpon>

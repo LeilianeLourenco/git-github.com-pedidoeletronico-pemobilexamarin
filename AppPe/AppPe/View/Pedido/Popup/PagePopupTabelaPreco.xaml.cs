@@ -27,10 +27,11 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Popup
             InitializeComponent();
             BindingContext = editarViewModel;
 
-            _listaOriginal = new List<TabelaPrecoSimplificada>(PagePedidoNew.CurrentViewModel.currentModel
-                .CurrentItemModel.lTabelaPreco.ToList());
+            _listaOriginal = new List<TabelaPrecoSimplificada>(
+                PagePedidoNew.CurrentViewModel?.currentModel?.CurrentItemModel?.lTabelaPreco?.ToList()
+                ?? new List<TabelaPrecoSimplificada>());
 
-            _lista = new ObservableCollection<BasicPickerModel>(editarViewModel.ListaTabelaPreco);
+            _lista = new ObservableCollection<BasicPickerModel>(editarViewModel?.ListaTabelaPreco ?? new List<BasicPickerModel>());
             listaTabelaPreco.ItemsSource = _lista;
 
             //InicializarTabelas();
@@ -47,7 +48,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Popup
 
             if (!_listaOriginal.Any(x => x.idTabelaPreco == viewmodel.tabelaPrecoSelecionada.idTabelaPreco))
                 _listaOriginal.Add(viewmodel.tabelaPrecoSelecionada);
-            
+
             viewmodel.lTabelaPreco = _listaOriginal;
             //var item = viewmodel.tabelaPrecoSelecionada;
 
