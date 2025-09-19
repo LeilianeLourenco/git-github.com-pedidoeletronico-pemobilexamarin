@@ -230,7 +230,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         {
             get
             {            
-              
                 double valorPorPeso = 0;
 
                 if (vUnitarioVendaComImpostos > 0 && dPesoBruto > 0)
@@ -517,6 +516,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 _vUnitarioVendaComImpostos = value;
                 NotifyTotalizadores();
                 NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(xValorPorPeso)); 
             }
         }
 
