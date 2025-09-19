@@ -28,6 +28,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             this.bLocaisCarregados = false;
         }
 
+        public string xVariacoes { get; set; }
         public string xNomeVariacao { get; set; }
 
         public List<VariacaoModel> _lTiposVariacoes;
@@ -229,7 +230,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         public string xValorPorPeso
         {
             get
-            {            
+            {                          
                 double valorPorPeso = 0;
 
                 if (vUnitarioVendaComImpostos > 0 && dPesoBruto > 0)

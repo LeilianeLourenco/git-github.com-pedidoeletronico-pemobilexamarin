@@ -17,12 +17,9 @@ using Xamarin.HLP.Mobile.AppPE.View.Pedido;
 
 namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 {
-    public class ListarProdutosNewViewModel : SearchCommom
+    public class ListarVariacoesPedidoViewModel : SearchCommom
     {
         BuscaPreco _buscaPreco;
-
-        public string ImageConfig => Device.OnPlatform("Editar_Produto.png", "configuracoes.png", "Assets/configuracoes.png");
-
         public SearchPE controlSearchPE { get; set; }
 
         public ConfiguracaoPesquisaProdutoModel Config { get; set; }
@@ -284,19 +281,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
-        public ListarProdutosNewViewModel()
+        public ListarVariacoesPedidoViewModel()
         {
             CurrentTabelaPreco = ListaTabelaPreco.FirstOrDefault();
             CurrentLocalEstoque = ListaLocalEstoque.FirstOrDefault();
             bFiltroBotaoItens = true; // coloco isso pra que quando abra a tela o botão de itens seja o marcado inicial.
             Config = new ConfiguracaoPesquisaProdutoModel();
             Produtos = new ObservableCollection<PedidoVendaItensModel>();
-            LoadItensCommand = new Command(LoadItens);
-            SearchCommand = new Command(Search);
-            AplicaFiltroItensCommand = new Command(AplicaFiltroItens);
-            AplicaFiltroRecorrenciaCommand = new Command(AplicaFiltroRecorrencia);
-            AplicaFiltroCampanhaCommand = new Command(AplicaFiltroCampanhas);
-            AplicaFiltroDestaquesCommand = new Command(AplicaFiltroDestaques);
 
             HabiliteToSearchCommand = new Command(() =>
             {
@@ -322,11 +313,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 UtilNavidate.PushAsync(new PageConfigurarPesquisaProduto(Config));
             });
 
-
             this._buscaPreco = new BuscaPreco();
         }
 
-        public bool Initialize()
+        public bool Initialize(int idProduto)
         {
             if (canExecuteInicial && !IsBusy)
             {
@@ -336,139 +326,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 VerificaLocaisEstoque();
                 VerificaMostraVariacoes();
                 PreparaInformacoesConfigs();
-                LoadItens();
+                LoadItens(idProduto);
             }
             return canExecuteInicial;
         }
 
-        private async void LoadItens()
-        {
-            try
-            {
-                if (IsBusy)
-                    return;
-
-
-                await Task.Run(() =>
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        IsBusy = true;
-                        this.bListaItensHabilitada = false;
-
-                        var idClientesOffLine = currentPedidoViewModel.ItemCliente.Id;
-                        var idClientes = ClienteRepository.GetIdClienteNuvem(idClientesOffLine);
-                        var idRepresentante = (currentPedidoViewModel.currentModel.idRepresentantePedido ?? App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers) ?? 0;
-
-
-                        var iCountToFind = 30;
-
-                        if (App.EnvironmentPE.TipoPageProdutos == 0)
-                        {
-                            iCountToFind = 15;
-                        }
-                        else if (App.EnvironmentPE.TipoPageProdutos == 1)
-                        {
-                            iCountToFind = 15;
-                        }
-
-                        IBuscaProdutosParaVenda _buscaProdutos = new BuscaProdutosExistentesEmTabelaPreco(
-                            idCliente: idClientes, idClienteOffLine: idClientesOffLine, idRepresentante: idRepresentante, idRepresentacao: 0
-                            );
-
-
-                        List<int> _idProdutos = new List<int>();
-
-
-                        if (bFiltroBotaoCampanhas)
-                        {
-                            _idProdutos = _buscaProdutos.BuscarProdutosCampanha(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
-                    currentPedidoViewModel.ItemCondicaoPgto.Id);
-
-                            if (_idProdutos?.Count() == 0)
-                                _idProdutos.Add(0);
-                        }
-                        else
-                            _idProdutos = _buscaProdutos.BuscarProdutos(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
-                         currentPedidoViewModel.ItemCondicaoPgto.Id);
-
-                        var lItens = ProdutoRepository.Get(
-                            Produtos.Count,
-                            iCountToFind,
-                            (IsUsingSearch ? xFiltro : ""),
-                            Config,
-                            idClientesOffLine,
-                            idClientes,
-                            idRepresentante,
-                            _idProdutos,
-                            bUsaLocaisEstoque,
-                            false,
-                            bFiltroBotaoRecorrencia,
-                            bBotaoFiltroDestaques
-                            );
-
-                        this._buscaPreco.Buscar(itens: lItens,
-                            idClienteOff: idClientesOffLine, idCliente: idClientes,
-                            idRepresentante: idRepresentante,
-                            idEmpresa: App.EnvironmentPE.idEmpresaLogada,
-                            idTabelaPrecoCondicao: currentPedidoViewModel.idTabelaPrecoCondicao
-                            );
-
-                        AplicaRegrasComerciaisProduto(lItens);
-
-                        bool bAplicaBloquearVisualizacaoEstoque = false;
-                        if (currentPedidoViewModel.currentModel.bBloquearVisualizacaoEstoqueVendedor && App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
-                        {
-                            bAplicaBloquearVisualizacaoEstoque = true;
-                        }
-
-                        foreach (var item in lItens)
-                        {
-                            item.bBloquearVisualizacaoEstoqueVendedor = bAplicaBloquearVisualizacaoEstoque;
-                            item.bExibirValorPorPeso = currentPedidoViewModel.bExibirValorPorPeso;
-                            if (ItensSelecionados != null)
-                            {
-                                Produtos.Add(ItensSelecionados.Any(c => c.idProduto == item.idProduto)
-                                    ? ItensSelecionados.FirstOrDefault(c => c.idProduto == item.idProduto)
-                                    : item);
-                            }
-                        }
-
-                        if (Produtos.Any() && currentPedidoViewModel.currentModel.lItens.Any())
-                        {
-                            foreach (var itemIncluso in currentPedidoViewModel.currentModel.lItens)
-                            {
-                                if (Produtos.Any(c => c.idProduto == itemIncluso.idProduto))
-                                {
-                                    var item = Produtos.FirstOrDefault(c => c.idProduto == itemIncluso.idProduto);
-                                    item.ItemJaIncluso = true;
-                                }
-                            }
-                        }
-
-                        IsBusy = false;
-                        this.bListaItensHabilitada = true;
-                    });
-                    //isLoading = false;
-                });
-
-                //Device.BeginInvokeOnMainThread(() =>
-                //{
-                //    IsBusy = false;
-                //    this.bListaItensHabilitada = true;
-                //});
-            }
-            catch (Exception ex)
-            {
-                ex.TrakException("desculpe por isso =/", true);
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    IsBusy = false;
-                });
-            }
-        }
-
-        public async void LoadVariacoes()
+        private async void LoadItens(int idProduto)
         {
             try
             {
@@ -501,7 +364,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             idCliente: idClientes, idClienteOffLine: idClientesOffLine, idRepresentante: idRepresentante, idRepresentacao: 0
                             );
 
-                        var produtosVariacao = ProdutoRepository.GetVariacoesProduto(2074743);
+                        var produtosVariacao = ProdutoRepository.GetVariacoesProduto(idProduto);
                         var _idProdutos = produtosVariacao.Select(x => x.idProduto ?? 0).ToList();
 
                         var lItens = ProdutoRepository.Get(
@@ -515,8 +378,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             _idProdutos,
                             bUsaLocaisEstoque,
                             bMostraVariacoes: true,
-                            false,
-                            false
+                            bFiltroBotaoRecorrencia,
+                            bBotaoFiltroDestaques
                             );
 
                         this._buscaPreco.Buscar(itens: lItens,
@@ -539,7 +402,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                             var produtoVariacao = ProdutoRepository.GetVariacaoProduto(item);
                             string variacoes = "";
 
-                            produtoVariacao.ForEach(x => variacoes = $"{x.xNomeVariacao}: {x.lTiposVariacoes.FirstOrDefault().NomeVariacao} \n");
+                            produtoVariacao.ForEach(x => variacoes += $"{x.xNomeVariacao}: {x.lTiposVariacoes.FirstOrDefault().NomeVariacao} \n");
                             item.xVariacoes = variacoes;
 
                             item.bBloquearVisualizacaoEstoqueVendedor = bAplicaBloquearVisualizacaoEstoque;
@@ -579,29 +442,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             }
         }
 
-        public async void Search()
-        {
-
-            try
-            {
-                await Task.Run(() =>
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        IsUsingSearch = true;
-                        if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
-                            Produtos.Clear();
-                        else
-                            Produtos = new ObservableCollection<PedidoVendaItensModel>();
-                        LoadItens();
-                    });
-                });
-            }
-            catch (Exception ex)
-            {
-                ex.TrakException();
-            }
-        }
 
         public void AplicaRegrasComerciaisProduto(List<PedidoVendaItensModel> lItens)
         {
@@ -656,127 +496,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     break;
             }
         }
-
-        public async void AplicaFiltroItens()
-        {
-            try
-            {
-                await Task.Run(() =>
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        bFiltroBotaoItens = true;
-                        bFiltroBotaoCampanhas = false;
-                        bBotaoFiltroDestaques = false;
-                        bFiltroBotaoRecorrencia = false;
-
-                        if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
-                            Produtos.Clear();
-                        else
-                            Produtos = new ObservableCollection<PedidoVendaItensModel>();
-
-
-                        LoadItens();
-                    });
-                });
-            }
-            catch (Exception ex)
-            {
-                ex.TrakException();
-            }
-        }
-
-        public async void AplicaFiltroCampanhas()
-        {
-            try
-            {
-                await Task.Run(() =>
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        bFiltroBotaoItens = false;
-                        bFiltroBotaoCampanhas = true;
-                        bBotaoFiltroDestaques = false;
-                        bFiltroBotaoRecorrencia = false;
-
-                        if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
-                            Produtos.Clear();
-                        else
-                            Produtos = new ObservableCollection<PedidoVendaItensModel>();
-
-
-                        LoadItens();
-                    });
-                });
-
-            }
-            catch (Exception ex)
-            {
-                ex.TrakException();
-            }
-        }
-
-        public async void AplicaFiltroRecorrencia()
-        {
-            try
-            {
-                await Task.Run(() =>
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        bFiltroBotaoItens = false;
-                        bFiltroBotaoCampanhas = false;
-                        bBotaoFiltroDestaques = false;
-                        bFiltroBotaoRecorrencia = true;
-
-                        if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
-                            Produtos.Clear();
-                        else
-                            Produtos = new ObservableCollection<PedidoVendaItensModel>();
-
-
-                        LoadItens();
-                    });
-                });
-
-            }
-            catch (Exception ex)
-            {
-                ex.TrakException();
-            }
-
-        }
-
-        public async void AplicaFiltroDestaques()
-        {
-            try
-            {
-                await Task.Run(() =>
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        bFiltroBotaoItens = false;
-                        bFiltroBotaoCampanhas = false;
-                        bBotaoFiltroDestaques = true;
-                        bFiltroBotaoRecorrencia = false;
-
-                        if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
-                            Produtos.Clear();
-                        else
-                            Produtos = new ObservableCollection<PedidoVendaItensModel>();
-
-
-                        LoadItens();
-                    });
-                });
-
-            }
-            catch (Exception ex)
-            {
-                ex.TrakException();
-            }
-        }
-
 
         public async void VerificaLocaisEstoque()
         {

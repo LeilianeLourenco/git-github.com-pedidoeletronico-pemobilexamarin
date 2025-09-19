@@ -375,8 +375,6 @@
     </Grid>
 
     <ContentPage.ToolbarItems>
-
-
         <ToolbarItem Clicked="MenuItem_OnClicked">
             <ToolbarItem.Order>
                 <OnPlatform
@@ -433,9 +431,6 @@
             x:Name="ToolbarItemSave"
             Icon="{Binding ImageIconSave}"
             Order="Primary" />
-
-
-
     </ContentPage.ToolbarItems>
 
 </ContentPage>

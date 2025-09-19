@@ -1,9 +1,7 @@
 ﻿using Rg.Plugins.Popup.Services;
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Controls.custom;
@@ -19,8 +17,6 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 {
     public partial class PageListarProdutosNew : ContentPage
     {
-
-
         public static ListarProdutosNewViewModel currentViewModel { get; set; }
 
         public PageListarProdutosNew(PedidoNewViewModel pedido)
@@ -438,12 +434,22 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
 
         private async void PopupTabelaPreco(object sender, EventArgs e)
         {
-            var popup = new PagePopupTabelaPreco(ViewModel.editarItemViewModel);
-            popup.ItemSelecionado += item =>
+            try
             {
-                ViewModel.CurrentTabelaPreco = item;
-            };
-            await PopupNavigation.Instance.PushAsync(popup);
+                if (ViewModel.editarItemViewModel == null)
+                    return;
+
+                var popup = new PagePopupTabelaPreco(ViewModel.editarItemViewModel);
+                popup.ItemSelecionado += item =>
+                {
+                    ViewModel.CurrentTabelaPreco = item;
+                };
+                await PopupNavigation.Instance.PushAsync(popup);
+            }
+            catch
+            {
+
+            }
         }
     }
 }

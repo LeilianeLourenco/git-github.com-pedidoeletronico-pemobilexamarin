@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.View.Pedido;
+using Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;
 
 namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
 {
@@ -114,5 +116,20 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
             }
 
         }
+
+        private void BtnVisualizarVariacoes_Clicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var idProduto = (int)button.CommandParameter;
+
+            UtilNavidate.PushAsync(
+                new PageSelecionarVariacao(
+                    new ListarVariacoesPedidoViewModel(),
+                    PageListarProdutosNew.currentViewModel,
+                    idProduto
+                )
+            );
+        }
+
     }
 }

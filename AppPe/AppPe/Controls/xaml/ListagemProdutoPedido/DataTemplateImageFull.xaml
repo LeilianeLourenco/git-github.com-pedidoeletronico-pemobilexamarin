@@ -148,6 +148,7 @@
                     Text="{Binding xValorSubTotal}"
                     TextColor="{StaticResource VerdePedido}"
                     VerticalOptions="End" />
+
                 <Stepper
                     HorizontalOptions="EndAndExpand"
                     Increment="1"
@@ -156,9 +157,19 @@
                     Minimum="0"
                     ValueChanged="StepperValor_OnValueChanged"
                     Value="{Binding vQtdItem}" />
+
+                <Button
+                    Margin="0,0,10,10"
+                    BackgroundColor="{StaticResource AzulClaro}"
+                    Clicked="BtnVisualizarVariacoes_Clicked"
+                    CommandParameter="{Binding idProduto}"
+                    HeightRequest="35"
+                    HorizontalOptions="EndAndExpand"
+                    IsVisible="{Binding bProdutoVariacao}"
+                    Text="..."
+                    TextColor="White"
+                    WidthRequest="45" />
             </StackLayout>
-
-
             <StackLayout Grid.Row="2" Orientation="Horizontal">
                 <Label
                     FontAttributes="Bold"

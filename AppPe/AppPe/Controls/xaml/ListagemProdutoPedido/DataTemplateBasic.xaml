@@ -10,6 +10,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition Width="85*"/>
@@ -48,6 +49,19 @@
                 Margin="10,0,0,5"
                 Text="{Binding xDetalheItem}"
                 TextColor="{StaticResource VerdePrincipal}" />
+
+            <Button
+                Grid.Row="3"
+                Margin="0,0,10,10"
+                BackgroundColor="{StaticResource AzulClaro}"
+                Clicked="BtnVisualizarVariacoes_Clicked"
+                CommandParameter="{Binding idProduto}"
+                HeightRequest="35"
+                HorizontalOptions="EndAndExpand"
+                IsVisible="{Binding bProdutoVariacao}"
+                Text="..."
+                TextColor="White"
+                WidthRequest="45" />
         </Grid>
 
     </ViewCell>
