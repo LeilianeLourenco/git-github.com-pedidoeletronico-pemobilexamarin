@@ -26,6 +26,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _bPedidoComErro = value; NotifyPropertyChanged(); }
         }
 
+        public bool _bPedidoJaExiste { get; set; }
+
+        public bool bPedidoJaExiste
+        {
+            get { return idPedidoVendaOriginal != null; }
+            set { _bPedidoJaExiste = value; NotifyPropertyChanged(); }
+        }
+
         private string _xErroIntegracao;
 
         public string xErroIntegracao
@@ -70,6 +78,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         {
             get { return _idPedidoVendaOffLine; }
             set { _idPedidoVendaOffLine = value; NotifyPropertyChanged(); }
+        }
+
+        private int? _idPedidoVendaOriginal;
+        public int? idPedidoVendaOriginal
+        {
+            get { return _idPedidoVendaOriginal; }
+            set { _idPedidoVendaOriginal = value; NotifyPropertyChanged(); }
         }
 
         private bool _estoqueInvalido;
@@ -233,6 +248,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                     return "Estoque inválido";
                 }
 
+                if (bPedidoJaExiste)
+                    return "Pedido já encontrado na web";
+
                 if (!bPedidoComAlteracao)
                     return idPedidoVenda != null ? "Sincronizado com sucesso" : "Não sincronizado";
                 else
@@ -285,7 +303,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 if (bPedidoComErro)
                     return ColorStaticModel.VermelhoPrincipal;
 
-                if (bIntegracaoComErro)
+                if (bIntegracaoComErro || bPedidoJaExiste)
                     return ColorStaticModel.Amarelo;
 
                 return ColorStaticModel.Pedido;

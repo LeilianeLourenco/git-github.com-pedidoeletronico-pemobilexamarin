@@ -24,12 +24,15 @@
     /// </summary>
     public enum RetornoSalvar
     {
-        Sucesso,
-        EstoqueInsuficiente,
-        DescontoInvalido,
-        Excecao,
-        SucessoMasAtencao,
-        StatusBaseSendoUsado,
+        Sucesso = 0,
+        EstoqueInsuficiente = 1,
+        DescontoInvalido = 2,
+        Excecao = 3,
+        SucessoMasAtencao = 4,
+        StatusBaseSendoUsado = 5,
+        NaoPodeMudarTabela = 6,
+        CondicaoVazia = 7,
+        PedidoJaSincronizado = 8,
     }
 
     public class RetornoSalvar<T> where T : class
