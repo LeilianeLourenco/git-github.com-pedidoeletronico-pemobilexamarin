@@ -29,6 +29,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         /// PK NUVEM
         /// </summary>
         public int? idPedidoVenda { get; set; }
+        public int? idPedidoVendaOriginal { get; set; }
 
         public int? idPedidoDisplay { get; set; }
 

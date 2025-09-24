@@ -31,6 +31,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     $@"select distinct
 		                    tb_pedidovenda.idPedidoVenda, 
                             tb_pedidovenda.idPedidoVendaOffLine,
+                            tb_pedidovenda.idPedidoVendaOriginal,
                             tb_pedidovenda.stPedidoVenda,
                             tb_pedidovenda.idPedidoDisplay,
                             tb_pedidovenda.xDisplayIntegracao,
@@ -184,10 +185,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             {
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
-                var xQuery = $@"Select idPedidoVendaOffLine Id from {TableMobile.TB_PEDIDOVENDA} 
-                                    where idEmpresa = {idEmpresa} AND idAspnetUsers = '{App.CurrentAspnetUserModel.Id}' 
-                                    and idPedidoVenda is null or bPedidoComAlteracao
-                                    order by idPedidoVendaOffLine";
+                var xQuery = $@"SELECT idPedidoVendaOffLine Id 
+                                FROM {TableMobile.TB_PEDIDOVENDA} 
+                                WHERE idEmpresa = {idEmpresa} 
+                                    AND idAspnetUsers = '{App.CurrentAspnetUserModel.Id}' 
+                                    AND (idPedidoVenda IS NULL OR bPedidoComAlteracao = 1)
+                                    AND (idPedidoVendaOriginal IS NULL OR idPedidoVendaOriginal <= 0)
+                                ORDER BY idPedidoVendaOffLine";
 
                 var dados = App.Data.Connection.Query<BasicPickerModel>(xQuery);
                 List<int> ids = dados.Select(c => c.Id).ToList();

@@ -273,7 +273,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                         Table = "REPRESENTANTEINATIVO",
                                         Display = "Vendedor inativo.",
                                         Detail = "Vendedor inativo para a empresa corrente. Entre em contato com seu administrador!"
-                                    });                                    
+                                    });
                                     AnaliseFinalSincronizacao();
                                 }
                             }
@@ -1204,8 +1204,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                             if (objPedidoSync != null)
                             {
-                                if (objPedidoSync?.resulStruct.stRetorno == RetornoSalvar.Sucesso)
+                                if (objPedidoSync?.resulStruct.stRetorno == RetornoSalvar.Sucesso
+                                || objPedidoSync?.objModel?.idPedidoVenda > 0)
                                 {
+                                    if (objPedidoSync?.resulStruct.stRetorno == RetornoSalvar.PedidoJaSincronizado)
+                                    {
+                                        pedido.idPedidoVendaOriginal = objPedidoSync.objModel.idPedidoVenda;
+                                        App.Data.Connection.Update(pedido);
+
+                                        EstoqueRepository.RemoveEstoquePedido(idPedidoOffLine);
+                                        continue;
+                                    }
+
                                     if ((objPedidoSync.objModel.stEnviadoCliente ||
                                             objPedidoSync.objModel.stEnviadoRepresentacao))
                                     {
@@ -1542,7 +1552,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 GoogleInsightsReportingConstants.TrakException("SincronizacaoViewModel.PostUploadAgenda", ex.Message, true);
             }
 
-        }     
+        }
 
         #endregion
 
