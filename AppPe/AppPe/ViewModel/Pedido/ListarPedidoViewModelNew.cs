@@ -23,8 +23,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
     {
         public ICommand HabiliteToSearchCommand { get; set; }
         public ICommand NovoCommand { get; set; }
-        public ICommand SincronizarCommand { get; set; }  
-        public ICommand SincronizarCommandAssinatura { get; set; }  
+        public ICommand SincronizarCommand { get; set; }
+        public ICommand SincronizarCommandAssinatura { get; set; }
         public ICommand GoToRepresentantesCommand { get; set; }
 
         public bool bUsaClienteEspecifico { get; set; }
@@ -87,7 +87,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public ListarPedidoViewModelNew()
         {
             SincronizarCommand = new Command(() =>
-            {
+            { 
                 var pageSync = new PageSyncNew("Total");
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(PesquisaInicial);
                 UtilNavidate.Sincronizar(pageSync);
@@ -99,7 +99,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 pageSync.ViewModel.AcaoAfterSyncCommand = new Command(PesquisaInicial);
                 UtilNavidate.Sincronizar(pageSync);
             });
-            
+
             ItemRepresentante = new ListItemModel
             {
                 Id = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0,
@@ -154,7 +154,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
             NovoCommand = new Command(() =>
             {
-                if(!PedidoRepository.bPermiteJornada(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers.GetValueOrDefault()))
+                if (!PedidoRepository.bPermiteJornada(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers.GetValueOrDefault()))
                 {
                     App.Messages.ShowAsync("Horário fora do expediente, operação não permitida!");
                     return;
@@ -202,7 +202,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             });
         }
         private void PesquisaInicial()
-        { 
+        {
             if (!IsBusy)
             {
                 Device.BeginInvokeOnMainThread(() =>
@@ -211,7 +211,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     LoadItens();
                 });
             }
-             
+
         }
 
         public bool Initialize()
@@ -229,11 +229,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         {
             if (IsBusy)
                 return;
-             
+
             await Task.Run(() =>
             {
                 Device.BeginInvokeOnMainThread(() =>
-                { 
+                {
                     IsBusy = true;
 
                     xFooter1 = "Pesquisando...";
@@ -242,13 +242,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     if (bUsaClienteEspecifico && PageApresentacaoClienteNew.ViewModelStatic != null)
                         idCliente = PageApresentacaoClienteNew.ViewModelStatic?.idClientesOffLine;
 
-                    else if(bUsaClienteEspecifico)
+                    else if (bUsaClienteEspecifico)
                         idCliente = PageInfoCliente._dados?.idClientesOffLine;
 
                     int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
                     bool bGeraOrcamento = ExtensaoEmpresaRepository.GetbGeraOrcamento(idEmpresa);
-                    var registros = PedidoRepository.GetInfinit(pedidos.Count, 20, (IsUsingSearch ? xFiltro : ""), ItemRepresentante.Id.ToString(), idCliente, 
+                    var registros = PedidoRepository.GetInfinit(pedidos.Count, 20, (IsUsingSearch ? xFiltro : ""), ItemRepresentante.Id.ToString(), idCliente,
                         bGeraOrcamento: bGeraOrcamento);
 
                     foreach (var registro in registros)

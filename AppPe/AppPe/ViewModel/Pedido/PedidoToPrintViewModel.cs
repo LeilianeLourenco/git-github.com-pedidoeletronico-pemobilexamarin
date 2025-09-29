@@ -895,6 +895,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             App.BluetoothLe.Write((totais + Environment.NewLine).RemoverAcentos(), "left");
             App.BluetoothLe.Write((agradecimento.RemoverAcentos() + Environment.NewLine + Environment.NewLine), "right");
             UtilNavidate.PopPopupNew();
-        }     
+        }
     }
 }

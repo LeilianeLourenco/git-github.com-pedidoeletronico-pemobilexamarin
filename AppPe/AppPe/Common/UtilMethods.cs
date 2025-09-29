@@ -30,11 +30,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 xNameImage.ToUpper().Contains("/IMG-REPRESENTANTE-PADRAO"))
                 return "ProdutoDefaultImage".ToImagemJPG();
 
-                xNameImage = xNameImage.Replace("/produtos/img/", "").Replace("/imgs/", "").Replace(".png", "").Replace(".jpg", "");
+            xNameImage = xNameImage.Replace("/produtos/img/", "").Replace("/imgs/", "").Replace(".png", "").Replace(".jpg", "");
             Forms.ImageSource image = null;
             if (!xNameImage.ToUpper().Equals("PRODUTODEFAULT"))
                 image = App.Picture.GetImageFromDisk(xNameImage);
-            
+
             if (image == null && tipo == "P")
                 image = "ProdutoDefaultImage".ToImagemJPG();
             if (image == null && tipo == "E")
@@ -158,9 +158,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public static async Task<PermissionStatus> PermissionLoc()
         {
             var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
-            if (status != PermissionStatus.Granted)                       
+            if (status != PermissionStatus.Granted)
                 status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
-            
+
             return status;
         }
 

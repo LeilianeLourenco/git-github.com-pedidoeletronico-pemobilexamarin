@@ -235,6 +235,31 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static PedidoVendaModel PedidoJaSincronziado(PedidoVendaModel ped)
+        {
+            try
+            {
+                var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+
+                var xQuery = $@"SELECT * FROM {TableMobile.TB_PEDIDOVENDA}
+                                WHERE idPedidoVendaOffLine = {ped.idPedidoVendaOffLine}
+                                    AND idClientes = {ped.idClientes}
+                                    AND idCondicaoPagamento = {ped.idCondicaoPagamento}
+                                    AND idEmpresa = {idEmpresa}
+                                    AND idRepresentantePedido = {ped.idRepresentantePedido}
+                                    AND idPedidoVendaOriginal = {ped.idPedidoVenda}
+                                    AND (idPedidoVenda = 0 OR idPedidoVenda IS NULL)
+                                    LIMIT 1";
+
+                return App.Data.Connection.Query<PedidoVendaModel>(xQuery).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                // logar se quiser
+                return null;
+            }
+        }
+
         public static byte? GetDataRelatorio(int idEmpresa)
         {
             var xQuery =
@@ -1394,7 +1419,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
 
                 //xQuery = $@"SELECT vMetaCorrente FROM {TableMobile.CurrentUserLogin} where idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa} and Email = '{App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail}'";              
-               
+
 
                 var registro = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.vMetaCorrente;
                 retorno.dMeta = registro;

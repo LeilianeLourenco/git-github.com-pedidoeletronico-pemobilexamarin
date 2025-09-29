@@ -42,7 +42,8 @@
     <MtouchI18n>west</MtouchI18n>
     <CodesignKey>Apple Distribution: H.L.P. MOBILE SERVICE LTDA - ME (B79L5K3424)</CodesignKey>
     <MtouchSdkVersion>17.5</MtouchSdkVersion>
-    <CodesignProvision></CodesignProvision>
+    <CodesignProvision>
+    </CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>

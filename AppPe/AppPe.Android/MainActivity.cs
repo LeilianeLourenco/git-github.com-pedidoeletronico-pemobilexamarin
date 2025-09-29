@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Android;
+﻿using Android;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -10,6 +7,11 @@ using Android.Support.V4.App;
 using Android.Views;
 using FFImageLoading.Forms.Platform;
 using ImageCircle.Forms.Plugin.Droid;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using TEditor.Droid;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Droid.Services;
@@ -22,6 +24,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
     {
         private const int RequestBluetoothPermissionCode = 1001;
         private const int RequestLocationPermissionCode = 1002;
+        private const int RequestNotificationPermissionCode = 1003;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -42,16 +45,42 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             TEditorDroid.Initialize();
             DisplayCrashReport();
-            CheckAndRequestBluetoothPermission();        
-            LoadApplication(new App());
+            CheckAndRequestPermissions();
 
+            LoadApplication(new App());
             Window.SetStatusBarColor(Color.ParseColor("#28B6F6"));
         }
 
+        private void CheckAndRequestPermissions()
+        {
+            var permissionsToRequest = new List<string>();
+
+            if (CheckSelfPermission(Manifest.Permission.BluetoothConnect) != Permission.Granted)
+                permissionsToRequest.Add(Manifest.Permission.BluetoothConnect);
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
+            {
+                if (CheckSelfPermission(Manifest.Permission.PostNotifications) != Permission.Granted)
+                    permissionsToRequest.Add(Manifest.Permission.PostNotifications);
+            }
+
+            if (permissionsToRequest.Any())
+                RequestPermissions(permissionsToRequest.ToArray(), 1000); 
+        }
+
         private void CheckAndRequestBluetoothPermission()
-        {          
-            if (CheckSelfPermission(Manifest.Permission.BluetoothConnect) != Permission.Granted)                          
-                RequestPermissions(new string[] { Manifest.Permission.BluetoothConnect }, RequestBluetoothPermissionCode);            
+        {
+            if (CheckSelfPermission(Manifest.Permission.BluetoothConnect) != Permission.Granted)
+                RequestPermissions(new string[] { Manifest.Permission.BluetoothConnect }, RequestBluetoothPermissionCode);
+        }
+
+        private void CheckAndRequestNotificationPermission()
+        {
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
+            {
+                if (CheckSelfPermission(Manifest.Permission.PostNotifications) != Permission.Granted)
+                    RequestPermissions(new string[] { Manifest.Permission.PostNotifications }, RequestNotificationPermissionCode); 
+            }
         }
 
         private void CheckAndRequestLocationPermission()
