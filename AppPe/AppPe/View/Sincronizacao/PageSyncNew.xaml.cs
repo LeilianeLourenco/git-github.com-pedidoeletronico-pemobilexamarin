@@ -31,12 +31,19 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
         {
             base.OnAppearing();
 
-            MessagingCenter.Subscribe<SincronizacaoNewModel>(this, "SyncAtt", (sync) =>
+            MessagingCenter.Subscribe<object, string>(this, "SyncAttMensagem", (obj, mensagem) =>
             {
-                if (ViewModel?.currentModel != null)
+                if (ViewModel?.currentModel != null && ViewModel.currentModel.xDetail != mensagem)
                 {
-                    ViewModel.currentModel.xDetail = sync.xDetail;
-                    ViewModel.currentModel.iCount = sync.iCount;
+                    ViewModel.currentModel.xDetail = mensagem;
+                }
+            });
+
+            MessagingCenter.Subscribe<object, int>(this, "SyncAttCount", (obj, count) =>
+            {
+                if (ViewModel?.currentModel != null && ViewModel.currentModel.iCount != count)
+                {
+                    ViewModel.currentModel.iCount = Convert.ToInt32(count);
                 }
             });
 

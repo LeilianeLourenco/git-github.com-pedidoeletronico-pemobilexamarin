@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 
 namespace Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao
@@ -16,17 +18,23 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao
             }
         }
 
-
+        public event Action<string> OnMensagemChanged;
 
         private string _xDetail;
 
         public string xDetail
         {
             get { return _xDetail; }
-            set { _xDetail = value; NotifyPropertyChanged(); }
+            set
+            {
+                _xDetail = value;
+                NotifyPropertyChanged();
+
+                OnMensagemChanged?.Invoke(_xDetail.ToLower());
+            }
         }
 
-
+        public event Action<int> OnCountChanged;
 
         private int _iCount;
 
@@ -35,7 +43,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao
             get { return _iCount; }
             set
             {
-                _iCount = value; NotifyPropertyChanged();
+                _iCount = value;
+                NotifyPropertyChanged();
+
+                OnCountChanged?.Invoke(_iCount);
             }
         }
 
@@ -46,7 +57,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao
             set { _LAlertaSincronizacao = value; NotifyPropertyChanged(); }
         }
 
-        private List<AlertaSincronizacao> _LAlertaBloqueio= new List<AlertaSincronizacao>();
+        private List<AlertaSincronizacao> _LAlertaBloqueio = new List<AlertaSincronizacao>();
         public List<AlertaSincronizacao> LAlertaBloqueio
         {
             get { return _LAlertaBloqueio; }
