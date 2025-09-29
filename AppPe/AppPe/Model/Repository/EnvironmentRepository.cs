@@ -250,6 +250,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         public static void ExcluirRegistrosNecessarios(string nomeApi, object idEmpresa)
         {
+            if (nomeApi == "APItransportadora")
+            {
+                string xQuery = $@"DELETE FROM TB_TRANSPORTADORAS WHERE idEmpresa = {idEmpresa}";
+
+                App.Data.Connection.Execute(xQuery);
+            }
             if (nomeApi == "APIequiperepresentantes")
             {
                 string xQuery = $@"DELETE FROM TB_EQUIPE_REPRESENTANTES WHERE idEmpresa = {idEmpresa}";

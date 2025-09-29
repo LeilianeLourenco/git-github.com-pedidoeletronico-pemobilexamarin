@@ -36,6 +36,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 {
     public class SincronizacaoNewViewModel : SearchCommom
     {
+        private readonly SincronizacaoHelper _helper = new SincronizacaoHelper();
+
         public ICommand AcaoAfterSyncCommand { get; set; } = null;
 
         private SincronizacaoNewModel _currentModel;
@@ -113,6 +115,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
         }
 
+        public event Action<string, int> OnStatusChanged;
+
+        private void UpdateStatus(string message)
+        {
+            message = message.ToLower();
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                OnStatusChanged?.Invoke(message, currentModel.iCount);
+            });
+        }
 
         public SincronizacaoNewViewModel()
         {
@@ -165,7 +177,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
         }
 
-        public async void InitSyncComplete()
+        public async Task InitSyncComplete()
         {
             try
             {
@@ -176,10 +188,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                         IsBusy = true;
                         ocorreuErro = bFalhaConexao = false;
-                        currentModel.Display = "iniciando...";
+                        UpdateStatus("iniciando...");
                         currentModel.LAlertaSincronizacao = new List<AlertaSincronizacao>();
 
-                        currentModel.Display = "verificando seu plano...";
+                        UpdateStatus("verificando seu plano...");
                         var acesso = await
                             UtilHttp.AcessoPermitido(
                                 App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
@@ -463,11 +475,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             if (xTableName == "TB_RECEBIMENTOTITULOS_MOVIMENTACOES")
             {
-                currentModel.Display = $"lote movimentacoes";
+                UpdateStatus("lote movimentacoes");
             }
             else
             {
-                currentModel.Display = $"lote " + xTableName;
+                UpdateStatus($"lote {xTableName}");
             }
 
             try
@@ -607,7 +619,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             var listaID = new List<PedidosToSyncModel>();
             var xapi = TableMobile.GetApiRegistroByModel<PedidoVendaModel>();
             var xTableName = TableMobile.GetTableNameByModel<PedidoVendaModel>();
-            currentModel.Display = xTableName;
+            UpdateStatus(xTableName);
 
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
             var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
@@ -669,7 +681,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             int listaID = 0;
             var xTableName = TableMobile.GetTableNameByModel<LocalEstoqueModel>();
-            currentModel.Display = xTableName;
+            UpdateStatus(xTableName);
 
             IntegracaoRepository integ = new IntegracaoRepository();
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
@@ -740,7 +752,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             else
                 _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
-            currentModel.Display = xTableName;
+            UpdateStatus(xTableName);
             currentModel.iCount = await
                                   UtilHttp.GetCountAtividades(
                                       idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
@@ -791,7 +803,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             var xapi = TableMobile.GetApiRegistroByModel<TipoAtividadeAgendaModel>();
             var xTableName = TableMobile.GetTableNameByModel<TipoAtividadeAgendaModel>();
-            currentModel.Display = xTableName;
+            UpdateStatus(xTableName);
 
             IntegracaoRepository integ = new IntegracaoRepository();
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
@@ -854,7 +866,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (lRepresentantesToAnalise.Count() == 0)
                     lRepresentantesToAnalise = App.CurrentAspnetUserModel.lEpresaAspnetUsersModel;
 
-                currentModel.Display = "Analise de usuarios...";
+                UpdateStatus("Analise de usuarios...");
+
                 foreach (var representante in lRepresentantesToAnalise)
                 {
                     var user = await UtilHttp.GetRegistroSync<AspNetUsersModel>(representante.idEmpresa_aspnetUsers);
@@ -945,7 +958,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 if (!ocorreuErro && !bFalhaConexao)
                 {
-                    currentModel.Display = xTableName;
+                    UpdateStatus(xTableName);
 
                     var lsync = new List<T>();
                     if (xTableName == TableMobile.GetTableNameByModel<RepresentadaAspnetUsersModel>())
@@ -1054,7 +1067,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             {
                 if (!ocorreuErro && !bFalhaConexao)
                 {
-                    currentModel.Display = xTableName;
+                    UpdateStatus(xTableName);
 
                     var lsync = new List<T>();
 
@@ -1101,7 +1114,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             {
                 if (!ocorreuErro && !bFalhaConexao)
                 {
-                    currentModel.Display = xTableName;
+                    UpdateStatus(xTableName);
+
                     int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
                     var lsync = await UtilHttp.GetListRegistroSync<T>(
@@ -1175,139 +1189,140 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 var bMudouStatusPedido = false;
                 var dtServerToChangeStatus = await UtilHttp.GetDateServer();
 
-                await Task.Run(async () =>
+                //await Task.Run(async () =>
+                //{
+                var lidPedidos = PedidoRepository.GetPedidosToSync(lastDateSync.ToDateTimeSync());
+
+                UpdateStatus("UPLOAD PEDIDOS/ORÇAMENTOS");
+
+                currentModel.iCount = lidPedidos.Count;
+
+                foreach (var idPedidoOffLine in lidPedidos.Where(idPedidoOffLine => idPedidoOffLine.ToString().IsNumber()))
                 {
-                    var lidPedidos = PedidoRepository.GetPedidosToSync(lastDateSync.ToDateTimeSync());
-
-                    currentModel.Display = "UPLOAD PEDIDOS/ORÇAMENTOS";
-                    currentModel.iCount = lidPedidos.Count;
-
-                    foreach (var idPedidoOffLine in lidPedidos.Where(idPedidoOffLine => idPedidoOffLine.ToString().IsNumber()))
+                    try
                     {
-                        try
+                        currentModel.iCount--;
+                        var pedido = PedidoRepository.GetPedidoVendaModelToSync(Convert.ToInt32(idPedidoOffLine));
+
+                        if (pedido == null) continue;
+
+                        if (pedido.idClientes == 0)
+                            pedido.idClientes = ClienteRepository.GetIdClienteNuvem(pedido.idClientesOffLine);
+                        //pedido.dEmissao = pedido.dEmissao;
+                        pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
+                        pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
+                        pedido.bPedidoComAlteracao = false;
+
+                        pedido.dEmissao = pedido.dEmissao.AddHours(-3);
+
+                        var objPedidoSync = await UtilHttp.PostRegistroToCloud(pedido);
+
+                        if (objPedidoSync != null)
                         {
-                            currentModel.iCount--;
-                            var pedido = PedidoRepository.GetPedidoVendaModelToSync(Convert.ToInt32(idPedidoOffLine));
-
-                            if (pedido == null) continue;
-
-                            if (pedido.idClientes == 0)
-                                pedido.idClientes = ClienteRepository.GetIdClienteNuvem(pedido.idClientesOffLine);
-                            //pedido.dEmissao = pedido.dEmissao;
-                            pedido.dtUltimaAlteracao = lastDateSync.ToDateTimeSync();
-                            pedido.bControlaEstoque = currentPlano.bControlaEstoqueGrade;
-                            pedido.bPedidoComAlteracao = false;
-
-                            pedido.dEmissao = pedido.dEmissao.AddHours(-3);
-
-                            var objPedidoSync = await UtilHttp.PostRegistroToCloud(pedido);
-
-                            if (objPedidoSync != null)
+                            if (objPedidoSync?.resulStruct.stRetorno == RetornoSalvar.Sucesso
+                            || objPedidoSync?.objModel?.idPedidoVenda > 0)
                             {
-                                if (objPedidoSync?.resulStruct.stRetorno == RetornoSalvar.Sucesso
-                                || objPedidoSync?.objModel?.idPedidoVenda > 0)
+                                if (objPedidoSync?.resulStruct.stRetorno == RetornoSalvar.PedidoJaSincronizado)
                                 {
-                                    if (objPedidoSync?.resulStruct.stRetorno == RetornoSalvar.PedidoJaSincronizado)
-                                    {
-                                        pedido.idPedidoVendaOriginal = objPedidoSync.objModel.idPedidoVenda;
-                                        App.Data.Connection.Update(pedido);
-
-                                        EstoqueRepository.RemoveEstoquePedido(idPedidoOffLine);
-                                        continue;
-                                    }
-
-                                    if ((objPedidoSync.objModel.stEnviadoCliente ||
-                                            objPedidoSync.objModel.stEnviadoRepresentacao))
-                                    {
-                                        SentEmail(pedido.idPedidoVendaOffLine ?? 0,
-                                            objPedidoSync.objModel.idPedidoVenda ?? 0, objPedidoSync.objModel.idEmpresa,
-                                            pedido.stEnviadoCliente, pedido.stEnviadoRepresentacao, pedido.idRepresentadaPdf);
-                                    }
-                                    pedido.idPedidoVenda = objPedidoSync.objModel.idPedidoVenda;
-                                    pedido.idPedidoDisplay = objPedidoSync.objModel.idPedidoDisplay;
-                                    pedido.idCondicaoPagamento = objPedidoSync.objModel.idCondicaoPagamento;
-                                    pedido.xErroIntegracao = objPedidoSync.resulStruct.erroIntegracao;
-
-                                    pedido.dtUltimaAlteracao =
-                                        (objPedidoSync.objModel.dtUltimaAlteracao ?? DateTime.Now).ToDateTimeSync();
+                                    pedido.idPedidoVendaOriginal = objPedidoSync.objModel.idPedidoVenda;
                                     App.Data.Connection.Update(pedido);
 
                                     EstoqueRepository.RemoveEstoquePedido(idPedidoOffLine);
-
-                                    if (pedido.stLancamento == 0)
-                                        PedidoRepository.UpdateAfterUpload(idPedidoOffLine, pedido.idPedidoVenda ?? 0);
+                                    continue;
                                 }
-                                else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.EstoqueInsuficiente)
+
+                                if ((objPedidoSync.objModel.stEnviadoCliente ||
+                                        objPedidoSync.objModel.stEnviadoRepresentacao))
                                 {
-                                    var dadosEstoque =
-                                        JsonConvert.DeserializeObject<List<EstoqueInsuficienteModel>>(
-                                            objPedidoSync.resulStruct.retorno.ToString());
-
-                                    var _estoqueValidado = EstoqueRepository.SaveEstoqueInsuficiente(dadosEstoque,
-                                        pedido.idPedidoVendaOffLine ?? 0);
-
-                                    currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
-                                    {
-                                        idOffLine = pedido.idPedidoVendaOffLine,
-                                        Table = TableMobile.TB_PEDIDOVENDA,
-                                        Display = "Problemas com estoque",
-                                        Detail = $"Cliente: {ClienteRepository.GetDisplayByIdOffLine(pedido.idClientesOffLine)}",
-                                        DetailEstoque = _estoqueValidado
-                                    });
+                                    SentEmail(pedido.idPedidoVendaOffLine ?? 0,
+                                        objPedidoSync.objModel.idPedidoVenda ?? 0, objPedidoSync.objModel.idEmpresa,
+                                        pedido.stEnviadoCliente, pedido.stEnviadoRepresentacao, pedido.idRepresentadaPdf);
                                 }
-                                else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.Excecao)
-                                {
-                                    pedido.xErroPedido = objPedidoSync?.resulStruct.retorno?.ToString() ?? "";
-                                    App.Data.Connection.Update(pedido);
+                                pedido.idPedidoVenda = objPedidoSync.objModel.idPedidoVenda;
+                                pedido.idPedidoDisplay = objPedidoSync.objModel.idPedidoDisplay;
+                                pedido.idCondicaoPagamento = objPedidoSync.objModel.idCondicaoPagamento;
+                                pedido.xErroIntegracao = objPedidoSync.resulStruct.erroIntegracao;
 
-                                    currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
-                                    {
-                                        idOffLine = pedido.idPedidoVendaOffLine,
-                                        Table = TableMobile.TB_PEDIDOVENDA,
-                                        Display = "Erro ao subir Pedido",
-                                        Detail = $"{objPedidoSync?.resulStruct.retorno}"
-                                    });
-                                }
+                                pedido.dtUltimaAlteracao =
+                                    (objPedidoSync.objModel.dtUltimaAlteracao ?? DateTime.Now).ToDateTimeSync();
+                                App.Data.Connection.Update(pedido);
+
+                                EstoqueRepository.RemoveEstoquePedido(idPedidoOffLine);
+
+                                if (pedido.stLancamento == 0)
+                                    PedidoRepository.UpdateAfterUpload(idPedidoOffLine, pedido.idPedidoVenda ?? 0);
                             }
-                        }
-                        catch
-                        {
-                            continue;
-                        }
-                    }
-
-                    var pedidosComStatusAlterados = PedidoRepository.GetPedidosAlteradosStatus();
-
-                    foreach (var pedidoComStatusAlterado in pedidosComStatusAlterados)
-                    {
-                        bMudouStatusPedido = true;
-                        // quando for necessário mudar apenas os status dos pedidos
-                        var objRetorno = UtilHttp.PostRegistroToCloud(pedidoComStatusAlterado, "Post2").Result;
-
-                        if (objRetorno.resulStruct.stRetorno != RetornoSalvar.Sucesso)
-                            if ((pedidoComStatusAlterado.idStatusOld ?? 0) > 0)
+                            else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.EstoqueInsuficiente)
                             {
-                                var statusOld = StatusRepository.GetRegistro(pedidoComStatusAlterado.idStatusOld ?? 0);
-                                var statusNew = StatusRepository.GetRegistro(pedidoComStatusAlterado.idStatus ?? 0);
+                                var dadosEstoque =
+                                    JsonConvert.DeserializeObject<List<EstoqueInsuficienteModel>>(
+                                        objPedidoSync.resulStruct.retorno.ToString());
 
-                                PedidoRepository.VoltarParaStatusAnterior(
-                                    pedidoComStatusAlterado.idPedidoVendaOffLine ?? 0,
-                                    statusOld);
+                                var _estoqueValidado = EstoqueRepository.SaveEstoqueInsuficiente(dadosEstoque,
+                                    pedido.idPedidoVendaOffLine ?? 0);
 
                                 currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
                                 {
-                                    Table = TableMobile.tb_produto_codigocliente,
-                                    Display =
-                                        $"Pedido: {pedidoComStatusAlterado.idPedidoDisplay}, não foi possível alterar o status '{statusOld.xNome}' para '{statusNew.xNome}'",
-                                    Detail = objRetorno.resulStruct.retorno.ToString(),
-                                    bErro = false
+                                    idOffLine = pedido.idPedidoVendaOffLine,
+                                    Table = TableMobile.TB_PEDIDOVENDA,
+                                    Display = "Problemas com estoque",
+                                    Detail = $"Cliente: {ClienteRepository.GetDisplayByIdOffLine(pedido.idClientesOffLine)}",
+                                    DetailEstoque = _estoqueValidado
                                 });
                             }
+                            else if (objPedidoSync.resulStruct.stRetorno == RetornoSalvar.Excecao)
+                            {
+                                pedido.xErroPedido = objPedidoSync?.resulStruct.retorno?.ToString() ?? "";
+                                App.Data.Connection.Update(pedido);
 
-                        PedidoRepository.UpdateStatusParaNaoAlterado(pedidoComStatusAlterado.idPedidoVenda ?? 0);
+                                currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
+                                {
+                                    idOffLine = pedido.idPedidoVendaOffLine,
+                                    Table = TableMobile.TB_PEDIDOVENDA,
+                                    Display = "Erro ao subir Pedido",
+                                    Detail = $"{objPedidoSync?.resulStruct.retorno}"
+                                });
+                            }
+                        }
                     }
+                    catch
+                    {
+                        continue;
+                    }
+                }
 
-                });
+                var pedidosComStatusAlterados = PedidoRepository.GetPedidosAlteradosStatus();
+
+                foreach (var pedidoComStatusAlterado in pedidosComStatusAlterados)
+                {
+                    bMudouStatusPedido = true;
+                    // quando for necessário mudar apenas os status dos pedidos
+                    var objRetorno = UtilHttp.PostRegistroToCloud(pedidoComStatusAlterado, "Post2").Result;
+
+                    if (objRetorno.resulStruct.stRetorno != RetornoSalvar.Sucesso)
+                        if ((pedidoComStatusAlterado.idStatusOld ?? 0) > 0)
+                        {
+                            var statusOld = StatusRepository.GetRegistro(pedidoComStatusAlterado.idStatusOld ?? 0);
+                            var statusNew = StatusRepository.GetRegistro(pedidoComStatusAlterado.idStatus ?? 0);
+
+                            PedidoRepository.VoltarParaStatusAnterior(
+                                pedidoComStatusAlterado.idPedidoVendaOffLine ?? 0,
+                                statusOld);
+
+                            currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
+                            {
+                                Table = TableMobile.tb_produto_codigocliente,
+                                Display =
+                                    $"Pedido: {pedidoComStatusAlterado.idPedidoDisplay}, não foi possível alterar o status '{statusOld.xNome}' para '{statusNew.xNome}'",
+                                Detail = objRetorno.resulStruct.retorno.ToString(),
+                                bErro = false
+                            });
+                        }
+
+                    PedidoRepository.UpdateStatusParaNaoAlterado(pedidoComStatusAlterado.idPedidoVenda ?? 0);
+                }
+
+                //});
 
                 if (bMudouStatusPedido)
                     await InitExclusoesDownload(dtServerToChangeStatus ?? DateTime.Now.AddMinutes(-2).ToUniversalTime());
@@ -1328,7 +1343,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 var registros = lista as IList<T> ?? lista.ToList();
                 var xTable = TableMobile.GetInfoModel<T>();
                 var xPKonline = TableMobile.GetPrimaryKeyNameByModel<T>();
-                currentModel.Display = "UPLOAD";
+                UpdateStatus("UPLOAD");
+
                 currentModel.iCount = registros.Count;
 
                 var xBlingApiKey = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.xBlingApiKey;
@@ -1479,7 +1495,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 var registros = lista as IList<AtividadeAgendaModel>;
                 var xTable = TableMobile.GetInfoModel<T>();
                 var xPKonline = TableMobile.GetPrimaryKeyNameByModel<T>();
-                currentModel.Display = "UPLOAD";
+                UpdateStatus("UPLOAD");
+
                 currentModel.iCount = registros.Count;
 
 
@@ -1562,7 +1579,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             if (logs == null) return;
 
-            currentModel.Display = logs.FirstOrDefault().xTable;
+            UpdateStatus(logs.FirstOrDefault().xTable);
+
             try
             {
                 var xPrimaryKey = TableMobile.GetPrimaryKeyNameByModel<T>();
@@ -1594,17 +1612,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                                 var dateserver = lastDateServerSync;
 
-                                var registro =
-                                await
-                                UtilHttp.GetRegistroSyncEstoque<EstoqueModel>(
+                                var registro = await UtilHttp.GetRegistroSyncEstoque<EstoqueModel>(
                                     idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
                                     idPK: p.idProduto,
-                                    data: dateserver);
+                                    data: dateserver
+                                );
 
-                                _listagemEstoque.AddRange(registro as List<EstoqueModel>);
+                                _listagemEstoque.AddRange(registro?.ToList() ?? new List<EstoqueModel>());
+
                                 PedidoRepository.Delete(pedidoVendaModel.idPedidoVendaOffLine ?? 0);
 
-                                if (_listagemEstoque?.Count() > 0)
+                                if (_listagemEstoque.Count > 0)
                                     await SavePrivate(_listagemEstoque, TableMobile.GetTableNameByModel<EstoqueModel>());
                             }
                         }
@@ -1633,7 +1651,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     $"SELECT * FROM {TableMobile.TB_LOGEXCLUSAO} WHERE idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}");
 
                 if (!dados.Any()) return;
-                currentModel.Display = "UPLOAD EXCLUSÕES";
+                UpdateStatus("UPLOAD EXCLUSÕES");
                 currentModel.iCount = dados.Count;
                 foreach (var log in dados)
                 {
@@ -1673,7 +1691,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             try
             {
                 var lnaotratado = new List<string>();
-                currentModel.Display = "ANALISE DE EXCLUSÃO";
+                UpdateStatus("ANALISE DE EXCLUSÃO");
+
                 //var date = currentModel.lastDateServerSync.AddHours(-2);
                 //var lregistros = await UtilHttp.GetRegistroToRemoveSync<LogExclusaoModel>(date);
                 var lregistros = await UtilHttp.GetRegistroToRemoveSync<LogExclusaoModel>(dtUltimaSincronizacaoServidor);
@@ -1898,7 +1917,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     if (registro.GetType() == typeof(PedidoVendaModel))
                     {
                         insertgeneric = false;
-                        SavePedidoSync(registro);
+                        var pedido = PedidoRepository.PedidoJaSincronziado(registro as PedidoVendaModel);
+
+                        if (pedido != null)
+                        {
+                            if (pedido?.idPedidoVendaOffLine > 0)
+                                if (PedidoRepository.Delete(pedido.idPedidoVendaOffLine ?? 0))
+                                    SavePedidoSync(registro);
+                        }
+                        else
+                        {
+                            SavePedidoSync(registro);
+                        }
                     }
 
                     if (registro.GetType() == typeof(LocalEstoqueModel))
@@ -2218,7 +2248,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             if (!IsBusy)
             {
-                currentModel.Display = ". . .";
+                UpdateStatus(". . .");
+
                 currentModel.iCount = 0;
                 if (App.CurrentAspnetUserModel != null && App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel != null)
                 {
