@@ -551,7 +551,6 @@
     <AndroidResource Include="Resources\drawable\ic_ab_back_holo_dark.png" />
     <AndroidResource Include="Resources\drawable\configuracoes.png" />
     <AndroidResource Include="Resources\drawable\nuvem.png" />
-    <AndroidResource Include="Resources\drawable\nuvem2.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppPe\Xamarin.HLP.Mobile.AppPE.csproj">

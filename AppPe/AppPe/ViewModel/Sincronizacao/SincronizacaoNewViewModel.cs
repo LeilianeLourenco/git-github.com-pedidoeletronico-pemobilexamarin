@@ -115,17 +115,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
         }
 
-        public event Action<string, int> OnStatusChanged;
-
-        private void UpdateStatus(string message)
-        {
-            message = message.ToLower();
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                OnStatusChanged?.Invoke(message, currentModel.iCount);
-            });
-        }
-
         public SincronizacaoNewViewModel()
         {
             currentModel = new SincronizacaoNewModel();
@@ -188,10 +177,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                         IsBusy = true;
                         ocorreuErro = bFalhaConexao = false;
-                        UpdateStatus("iniciando...");
+                        currentModel.Display = "iniciando...";
                         currentModel.LAlertaSincronizacao = new List<AlertaSincronizacao>();
 
-                        UpdateStatus("verificando seu plano...");
+                        currentModel.Display = "verificando seu plano...";
                         var acesso = await
                             UtilHttp.AcessoPermitido(
                                 App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
@@ -475,11 +464,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
             if (xTableName == "TB_RECEBIMENTOTITULOS_MOVIMENTACOES")
             {
-                UpdateStatus("lote movimentacoes");
+                currentModel.Display = "lote movimentacoes";
             }
             else
             {
-                UpdateStatus($"lote {xTableName}");
+                currentModel.Display = $"lote {xTableName}";
             }
 
             try
@@ -619,7 +608,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             var listaID = new List<PedidosToSyncModel>();
             var xapi = TableMobile.GetApiRegistroByModel<PedidoVendaModel>();
             var xTableName = TableMobile.GetTableNameByModel<PedidoVendaModel>();
-            UpdateStatus(xTableName);
+            currentModel.Display = xTableName;
 
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
             var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
@@ -681,7 +670,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             int listaID = 0;
             var xTableName = TableMobile.GetTableNameByModel<LocalEstoqueModel>();
-            UpdateStatus(xTableName);
+            currentModel.Display = xTableName;
 
             IntegracaoRepository integ = new IntegracaoRepository();
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
@@ -752,7 +741,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             else
                 _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
-            UpdateStatus(xTableName);
+            currentModel.Display = xTableName;
             currentModel.iCount = await
                                   UtilHttp.GetCountAtividades(
                                       idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
@@ -803,7 +792,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             var xapi = TableMobile.GetApiRegistroByModel<TipoAtividadeAgendaModel>();
             var xTableName = TableMobile.GetTableNameByModel<TipoAtividadeAgendaModel>();
-            UpdateStatus(xTableName);
+            currentModel.Display = xTableName;
 
             IntegracaoRepository integ = new IntegracaoRepository();
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
@@ -866,7 +855,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (lRepresentantesToAnalise.Count() == 0)
                     lRepresentantesToAnalise = App.CurrentAspnetUserModel.lEpresaAspnetUsersModel;
 
-                UpdateStatus("Analise de usuarios...");
+                currentModel.Display = "Analise de usuarios...";
 
                 foreach (var representante in lRepresentantesToAnalise)
                 {
@@ -958,7 +947,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 if (!ocorreuErro && !bFalhaConexao)
                 {
-                    UpdateStatus(xTableName);
+                    currentModel.Display = xTableName;
 
                     var lsync = new List<T>();
                     if (xTableName == TableMobile.GetTableNameByModel<RepresentadaAspnetUsersModel>())
@@ -1067,7 +1056,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             {
                 if (!ocorreuErro && !bFalhaConexao)
                 {
-                    UpdateStatus(xTableName);
+                    currentModel.Display = xTableName;
 
                     var lsync = new List<T>();
 
@@ -1114,7 +1103,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             {
                 if (!ocorreuErro && !bFalhaConexao)
                 {
-                    UpdateStatus(xTableName);
+                    currentModel.Display = xTableName;
 
                     int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
@@ -1193,7 +1182,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 //{
                 var lidPedidos = PedidoRepository.GetPedidosToSync(lastDateSync.ToDateTimeSync());
 
-                UpdateStatus("UPLOAD PEDIDOS/ORÇAMENTOS");
+                currentModel.Display = "UPLOAD PEDIDOS/ORÇAMENTOS";
 
                 currentModel.iCount = lidPedidos.Count;
 
@@ -1343,7 +1332,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 var registros = lista as IList<T> ?? lista.ToList();
                 var xTable = TableMobile.GetInfoModel<T>();
                 var xPKonline = TableMobile.GetPrimaryKeyNameByModel<T>();
-                UpdateStatus("UPLOAD");
+                currentModel.Display = "UPLOAD";
 
                 currentModel.iCount = registros.Count;
 
@@ -1495,7 +1484,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 var registros = lista as IList<AtividadeAgendaModel>;
                 var xTable = TableMobile.GetInfoModel<T>();
                 var xPKonline = TableMobile.GetPrimaryKeyNameByModel<T>();
-                UpdateStatus("UPLOAD");
+                currentModel.Display = "UPLOAD";
 
                 currentModel.iCount = registros.Count;
 
@@ -1579,7 +1568,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             if (logs == null) return;
 
-            UpdateStatus(logs.FirstOrDefault().xTable);
+            currentModel.Display = logs.FirstOrDefault().xTable;
 
             try
             {
@@ -1651,7 +1640,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     $"SELECT * FROM {TableMobile.TB_LOGEXCLUSAO} WHERE idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}");
 
                 if (!dados.Any()) return;
-                UpdateStatus("UPLOAD EXCLUSÕES");
+                currentModel.Display = "UPLOAD EXCLUSÕES";
                 currentModel.iCount = dados.Count;
                 foreach (var log in dados)
                 {
@@ -1691,7 +1680,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             try
             {
                 var lnaotratado = new List<string>();
-                UpdateStatus("ANALISE DE EXCLUSÃO");
+                currentModel.Display = "ANALISE DE EXCLUSÃO";
 
                 //var date = currentModel.lastDateServerSync.AddHours(-2);
                 //var lregistros = await UtilHttp.GetRegistroToRemoveSync<LogExclusaoModel>(date);
@@ -2248,7 +2237,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             if (!IsBusy)
             {
-                UpdateStatus(". . .");
+                currentModel.Display = ". . .";
 
                 currentModel.iCount = 0;
                 if (App.CurrentAspnetUserModel != null && App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel != null)

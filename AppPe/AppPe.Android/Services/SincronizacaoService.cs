@@ -50,7 +50,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
             Task.Run(async () =>
             {
                 vm = new SincronizacaoNewViewModel();
-                vm.OnStatusChanged += (message, count) =>
+                vm.currentModel.OnMensagemChanged += (message) =>
                 {
                     var builder = new NotificationCompat.Builder(this, "sync_channel")
                         .SetContentTitle("Sincronizando...")
@@ -62,11 +62,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        MessagingCenter.Send<SincronizacaoNewModel>(new SincronizacaoNewModel
-                        {
-                            Display = message,
-                            iCount = count
-                        }, "SyncAtt");
+                        MessagingCenter.Send<object, string>(this, "SyncAttMensagem", message);
+
+                    });
+                };
+
+                vm.currentModel.OnCountChanged += (count) =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        MessagingCenter.Send<object, int>(this, "SyncAttCount", count);
                     });
                 };
 
