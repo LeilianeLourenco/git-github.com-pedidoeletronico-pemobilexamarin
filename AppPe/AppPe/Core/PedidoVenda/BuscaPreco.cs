@@ -70,7 +70,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
             if (_lEscalonadasAtivas?.Count() > 0)
             {
                 //primeiro busco se a tabela de preço que veio é especifica da tabela escalonada
-                _tbEscalonada = _lEscalonadasAtivas.Where(t => t.idTabelaPrecoVinculo == _tblDef.idTabelaPreco).FirstOrDefault();
+                _tbEscalonada = _lEscalonadasAtivas.Where(t => t.idTabelaPrecoVinculo == _tblDef?.idTabelaPreco).FirstOrDefault();
 
                 //se for nulo, tento buscar a tabela escalonada que não tem nenhuma tabela de preço definida
                 if (_tbEscalonada == null || _tbEscalonada.idTabelaPrecoEscalonada == 0)

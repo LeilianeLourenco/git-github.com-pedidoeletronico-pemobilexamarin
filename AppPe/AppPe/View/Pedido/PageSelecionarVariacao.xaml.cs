@@ -203,7 +203,9 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                         itemPedido.pStVenda = itemPedido?.currentTabelaPreco?.pStVenda;
 
                     bool stVendaSemEstoque = itemPedido?.stVendaSemEstoque ?? false;
-                    if (item?.Value <= itemPedido?.vQtdEstoque || stVendaSemEstoque)
+                    bool stControlaEstoque = ProdutoRepository.ControlaEstoque(itemPedido.idEmpresa, itemPedido.idRepresentada);
+
+                    if (item?.Value <= itemPedido?.vQtdEstoque || stVendaSemEstoque || !stControlaEstoque)
                     {
                         itemPedido.vQtdItem = item.Value;
 

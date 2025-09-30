@@ -26,7 +26,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
                 var channel = new NotificationChannel(
                     "sync_channel",
                     "Sincronizando...",
-                    NotificationImportance.High
+                    NotificationImportance.Low
                 )
                 {
                     Description = "Sincronizando..."
@@ -63,7 +63,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         MessagingCenter.Send<object, string>(this, "SyncAttMensagem", message);
-
                     });
                 };
 
