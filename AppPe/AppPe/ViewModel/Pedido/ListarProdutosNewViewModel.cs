@@ -907,7 +907,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 var vQtde = currentPedidoViewModel.currentModel.CurrentItemModel.vQtdItem;
 
-                if (vQtde > itemSelected.vQtdEstoque && !itemSelected.stVendaSemEstoque)
+                int idEmpresa = currentPedidoViewModel.currentModel.CurrentItemModel.idEmpresa;
+                int idRepresentada = currentPedidoViewModel.currentModel.CurrentItemModel.idRepresentada;
+
+                bool stControlaEstoque = ProdutoRepository.ControlaEstoque(idEmpresa, idRepresentada);
+
+                if (vQtde > itemSelected.vQtdEstoque && !itemSelected.stVendaSemEstoque && stControlaEstoque)
                 {
                     if (!verificouEstoque)
                     {
