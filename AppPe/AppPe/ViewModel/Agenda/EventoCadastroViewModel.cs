@@ -28,6 +28,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
         public ICommand GoToClientesCommand { get; set; }
         public ICommand GoToAtividadesCommand { get; set; }
         public ICommand AnexosCommand { get; set; }
+        public ICommand ExcluirAnexoCommand { get; set; }
         public ICommand CameraCommand { get; set; }
         public ICommand ImagensCommand { get; set; }
         public ICommand CancelPedidoCommand { get; set; }
@@ -74,6 +75,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
             currentModel = new AtividadeAgendaModel();
 
             AnexosCommand = new Command(AnexosPress);
+            ExcluirAnexoCommand = new Command<AnexosModel>(ExcluirAnexo);
             CameraCommand = new Command(CameraPress);
             ImagensCommand = new Command(ImagensPress);
 
@@ -154,6 +156,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
             UtilNavidate.PushAsync(new PageAnexosEvento(this));
         }
 
+        private void ExcluirAnexo(AnexosModel anexo)
+        {
+            currentModel.lAnexosAtividade.Remove(anexo);
+        }
+
         private async void CameraPress()
         {
             if (currentModel.lAnexosAtividade.Count >= 10)
@@ -180,7 +187,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                 idEmpresa = currentModel.idEmpresa,
                 idAtividade = currentModel.idAtividade ?? currentModel.idAtividadeOffline,
                 xNomeArquivo = file.FileName,
-                xCaminhoArquivo = filePath,
+                xCaminhoArquivo = $"/imagens/atividades/anexos/{file.FileName}",
                 dtUltimaAlteracao = DateTime.Now,
             });
         }
@@ -211,10 +218,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                 currentModel.lAnexosAtividade.Add(new AnexosModel
                 {
                     idEmpresa = currentModel.idEmpresa,
+                    idAtividade = currentModel.idAtividade ?? currentModel.idAtividadeOffline,
                     xNomeArquivo = file.FileName,
-                    xCaminhoArquivo = filePath,
+                    xCaminhoArquivo = $"/imagens/atividades/anexos/",
                     dtUltimaAlteracao = DateTime.Now,
-                    idAtividade = currentModel.idAtividade
                 });
             }
             catch (Exception ex)
@@ -264,8 +271,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                 }
 
                 AgendaRepository.SaveAtividade(currentModel);
-
-                await App.Current.MainPage.DisplayAlert("teste", $"{currentModel.lAnexosAtividade.FirstOrDefault().idEmpresa}", "ok");
 
                 currentModel.lAnexosAtividade.ForEach(x => x.idAtividade = currentModel.idAtividadeOffline);
                 currentModel.lAnexosAtividade.ForEach(x => x.idEmpresa = currentModel.idEmpresa);

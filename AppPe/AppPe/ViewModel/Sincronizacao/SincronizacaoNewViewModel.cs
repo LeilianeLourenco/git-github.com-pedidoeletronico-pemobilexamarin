@@ -23,6 +23,7 @@ using Xamarin.HLP.Mobile.AppPE.Model.PagSeguro;
 using Xamarin.HLP.Mobile.AppPE.Model.RegrasComerciais;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository.Anexos;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Integracao;
 using Xamarin.HLP.Mobile.AppPE.Model.Sincronizacao;
 using Xamarin.HLP.Mobile.AppPE.View.Cliente;
@@ -1165,6 +1166,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 await PostUploadAgenda(AgendaRepository.GetAtividadeAgendaParaUploadModel());
 
+                await PostUploadAnexos(AnexosRepository.GetAnexosParaUploadModel());
+
                 await PostUpload(ProdutoRepository.GetAllToSync());
 
                 await PostUploadPedido();
@@ -1551,6 +1554,89 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     registroModel.idAtividadeOffline = model.idAtividadeOffline;
                     App.Data.Connection.Update(registroModel);
                 }
+            }
+            catch (Exception ex)
+            {
+                ocorreuErro = true;
+                GoogleInsightsReportingConstants.TrakException("SincronizacaoViewModel.PostUploadAgenda", ex.Message, true);
+            }
+
+        }
+
+        private async Task PostUploadAnexos<T>(IEnumerable<T> lista) where T : class
+        {
+            try
+            {
+                var dtUltimaAlteracaoLocal = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.UltimaSyncDateTime;
+                var registros = lista as IList<AnexosModel>;
+                var xTable = TableMobile.GetInfoModel<T>();
+                var xPKonline = TableMobile.GetPrimaryKeyNameByModel<T>();
+                currentModel.Display = "UPLOAD";
+
+                currentModel.iCount = registros.Count;
+
+                foreach (var registro in registros.Where(c => Convert.ToInt32(c.GetPropValue(xPKonline) ?? 0) != 0))
+                {
+                    var dtUltimaAlteracaoNuvem =
+                        await UtilHttp.GetValueSync<DateTime>(controller: "APIverificaUltimaAlteracao",
+                            param1: xTable,
+                            param2: registro.GetPropValue(xPKonline),
+                            param3: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
+
+                    // verifico qual é a alteração mais recente.
+                    // se for a offline, subo as informações para a nuvem.
+                    // se for a da nuvem, eu não faço nada pois o próximo processo é o processo de Download.
+                    if (dtUltimaAlteracaoNuvem < dtUltimaAlteracaoLocal ||
+                        dtUltimaAlteracaoNuvem == dtUltimaAlteracaoLocal)
+                    {
+                        //if (registro.dtInicioEvento != null)
+                        //    if ((registro.dtInicioEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
+                        //        registro.dtInicioEvento = (registro.dtInicioEvento ?? DateTime.Now).ToLocalTime();
+
+
+                        //if (registro.dtFimEvento != null)
+                        //    if ((registro.dtFimEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
+                        //        registro.dtFimEvento = (registro.dtFimEvento ?? DateTime.Now).ToLocalTime();
+
+                        await UtilHttp.PostAgendaToCloud(registro); // mantem registro da Local   
+                    }
+                }
+
+
+           //     foreach (var newregistro in registros.Where(c => Convert.ToInt32(c.GetPropValue(xPKonline) ?? 0) == 0))
+           //     {
+           //         currentModel.iCount--;
+           //         //if (newregistro.dtInicioEvento != null)
+           //         //    if ((newregistro.dtInicioEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
+           //         //        newregistro.dtInicioEvento = (newregistro.dtInicioEvento ?? DateTime.Now).ToLocalTime();
+
+
+           //         //if (newregistro.dtFimEvento != null)
+           //         //    if ((newregistro.dtFimEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
+           //         //        newregistro.dtFimEvento = (newregistro.dtFimEvento ?? DateTime.Now).ToLocalTime();
+
+           //         var item = (newregistro as AtividadeAgendaModel);
+           //         if (item.idCliente.GetValueOrDefault() == 0 && item.idClienteOffline.GetValueOrDefault() > 0)
+           //         {
+           //             var xQuery =
+           //$@"SELECT idClientes from tb_clientes where idClientesOffLine = {item.idClienteOffline} and idEmpresa = {App
+           //    .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
+
+           //             item.idCliente = App.Data.Connection.ExecuteScalar<int>(xQuery);
+           //         }
+
+
+           //         var registroSync = await UtilHttp.PostAgendaToCloud(newregistro);
+           //         if (registroSync == null) continue;
+
+           //         var registroModel = registroSync as AtividadeAgendaModel;
+           //         if (registroModel == null || registroModel.idAtividade == null) continue;
+           //         var model = newregistro as AtividadeAgendaModel;
+           //         if (model == null) continue;
+           //         registroModel.idClienteOffline = model.idClienteOffline;
+           //         registroModel.idAtividadeOffline = model.idAtividadeOffline;
+           //         App.Data.Connection.Update(registroModel);
+           //     }
             }
             catch (Exception ex)
             {

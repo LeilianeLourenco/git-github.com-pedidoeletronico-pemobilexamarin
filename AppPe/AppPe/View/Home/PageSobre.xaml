@@ -1,11 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModel="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Home.PageSobre" Title="Sobre" BackgroundColor="{StaticResource CinzaMedio}">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Home.PageSobre"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModel="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    Title="Sobre"
+    BackgroundColor="{StaticResource CinzaMedio}">
     <ContentPage.BindingContext>
-        <viewModel:SobreViewModel/>
+        <viewModel:SobreViewModel />
     </ContentPage.BindingContext>
 
     <Grid>
@@ -15,19 +18,49 @@
         </Grid.RowDefinitions>
 
         <!--<pages:CardView ImageSource="{Binding currentModel.imagePe}" Detail="{Binding currentModel.versao}" Text="Versão Pedido Eletrônico" />-->
-        <xaml:MyCardView IsCardView="True" CardImage="{Binding currentModel.imagePe}" Title="Versão" Display="{Binding currentModel.versao}" />
+        <xaml:MyCardView
+            Title="Versão"
+            CardImage="{Binding currentModel.imagePe}"
+            Display="{Binding currentModel.versao}"
+            IsCardView="True" />
 
-        <Frame HasShadow="True" Padding="0,0,0,0" Grid.Row="1">
-            <StackLayout Orientation="Vertical" Spacing="5" BackgroundColor="{StaticResource Branco}" Padding="6,15,6,0" >
+        <Frame
+            Grid.Row="1"
+            Padding="0,0,0,0"
+            HasShadow="True">
+            <StackLayout
+                Padding="6,15,6,0"
+                BackgroundColor="{StaticResource Branco}"
+                Orientation="Vertical"
+                Spacing="5">
 
-                <Button HorizontalOptions="FillAndExpand" Style="{StaticResource Info}" Margin="0,5,0,5" Text="Política de privacidade" Command="{Binding TermosEpoliticaCommand}"/>
-                <Button HorizontalOptions="FillAndExpand" Style="{StaticResource Success}" Margin="0,5,0,5" Text="Suporte remoto" Command="{Binding SuporteRemotoDownloadCommand}">
+                <Button
+                    Margin="0,5,0,5"
+                    Command="{Binding TermosEpoliticaCommand}"
+                    HorizontalOptions="FillAndExpand"
+                    Style="{StaticResource Info}"
+                    Text="Política de privacidade" />
+                <Button
+                    Margin="0,5,0,5"
+                    Command="{Binding SuporteRemotoDownloadCommand}"
+                    HorizontalOptions="FillAndExpand"
+                    Style="{StaticResource Success}"
+                    Text="Suporte remoto">
                     <Button.IsVisible>
-                        <OnPlatform x:TypeArguments="x:Boolean"  Android="True" WinPhone="False" iOS="True"/>
+                        <OnPlatform
+                            x:TypeArguments="x:Boolean"
+                            Android="True"
+                            WinPhone="False"
+                            iOS="True" />
                     </Button.IsVisible>
                 </Button>
 
-                <Button HorizontalOptions="FillAndExpand" Style="{StaticResource Danger}" Margin="0,5,0,5" Text="Forçar sincronização inicial" Command="{Binding ForcarSyncInitCommand}"/>
+                <Button
+                    Margin="0,5,0,5"
+                    Command="{Binding ForcarSyncInitCommand}"
+                    HorizontalOptions="FillAndExpand"
+                    Style="{StaticResource Danger}"
+                    Text="Forçar sincronização inicial" />
             </StackLayout>
         </Frame>
     </Grid>

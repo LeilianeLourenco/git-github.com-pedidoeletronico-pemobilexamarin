@@ -407,9 +407,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
                 var xQueryAnexo =
                    $"SELECT * FROM {TableMobile.TB_ANEXOS} WHERE idAtividade = {idAtividadeOffline} and idEmpresa = {idEmpresa}";
 
-                var teste = (App.Data.Connection.Query<AnexosModel>(xQueryAnexo)).ToList();
-
-                obj.lAnexosAtividade = new ObservableCollection<AnexosModel>(teste);
+                var anexos = (App.Data.Connection.Query<AnexosModel>(xQueryAnexo)).ToList();
+                obj.lAnexosAtividade = new ObservableCollection<AnexosModel>(anexos);
             }
             catch (Exception ex)
             {

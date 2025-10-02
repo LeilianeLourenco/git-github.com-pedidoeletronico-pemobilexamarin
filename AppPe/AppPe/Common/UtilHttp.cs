@@ -134,6 +134,37 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             return retistroSync;
         }
 
+        public static async Task<AnexosModel> PostAnexosToCloud<T>(T classe, string xNamePost = "Post")
+ where T : class
+        {
+            var retistroSync = new AnexosModel();
+            try
+            {
+                var xJson = JsonConvert.SerializeObject(classe);
+
+                var requestUri = App.UrlWebApiMobile + $"api/Imagem/SalvarAtividade";
+
+                var wcfResponse = await CurrentHttpClient.PostAsync(
+                    requestUri,
+                    new StringContent(xJson, Encoding.UTF8, "application/json")
+                );
+
+                if (wcfResponse == null) return null;
+                if (!wcfResponse.IsSuccessStatusCode) return null;
+
+                var responJsonText = await wcfResponse.Content.ReadAsStringAsync();
+                retistroSync = JsonConvert.DeserializeObject<AnexosModel>(responJsonText);
+            }
+            catch (System.Net.WebException)
+            {
+                SincronizacaoNewViewModel.bFalhaConexao = true;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("PostRegistroToCloud", false);
+            }
+            return retistroSync;
+        }
 
         //public static async void PostSyncOmie(List<ClientesModel> lClientes )
         //{
@@ -382,12 +413,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
                 }
                 if (TableMobile.GetApiRegistroByModel<T>() == "ApiProdutosComposicaoGrade")
-                {             
+                {
                     lIdsProduto = ProdutoRepository.GetIdsProduto(param1);
                     var idsProduto = string.Join(",", lIdsProduto);
 
                     var lIdsProdutoGrades = GradesRepository.GetProdutosGrade(idsProduto);
-                   
+
                     var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}";
 
@@ -430,7 +461,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             {
                 var requestUri =
                     $"api/{TableMobile.GetApiRegistroByModel<T>()}/{Page}/{param1}/{(param2 != null ? "/" + ((DateTime)param2).ToString("yyyy-MM-ddTHH:mm:ss") : null)}/{(param3 != null ? "/" + param3.ToString() : "")}";
-                               
+
                 var _apiClient = CurrentHttpClient;
 
                 var jsonResponse = await CurrentApiMobileHttpClient.GetStringAsync(requestUri);
@@ -1139,11 +1170,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public static HttpClient CurrentApiMobileHttpClient
         {
             get
-            {               
+            {
                 if (_currentApiMobileHttpClient != null)
                 {
-                return _currentApiMobileHttpClient;
-            }
+                    return _currentApiMobileHttpClient;
+                }
                 _currentApiMobileHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlWebApiMobile) };
                 _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Clear();
                 _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
