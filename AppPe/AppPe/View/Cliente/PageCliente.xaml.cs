@@ -286,25 +286,25 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Cliente
 
             }
 
-            if (ViewModel.tabelaPreco.Id == 0)
+            if (ViewModel?.tabelaPreco?.Id == 0)
             {
                 CurrentPage = PageAdicionais;
                 await App.Messages.ShowAsync("Tabela de preço é obrigatório");
                 return;
             }
-            if (ViewModel.Transportadora.Id == 0)
+            if (ViewModel?.Transportadora?.Id == 0)
             {
                 CurrentPage = PageAdicionais;
                 await App.Messages.ShowAsync("Transportadora é obrigatório");
                 return;
             }
-            if (ViewModel.CondicaoPgto.Id == 0)
+            if (ViewModel?.CondicaoPgto?.Id == 0)
             {
                 CurrentPage = PageAdicionais;
                 await App.Messages.ShowAsync("Condição de pagamento é obrigatório");
                 return;
             }
-            if (ViewModel.ramoAtividade.Id == 0)
+            if (ViewModel?.ramoAtividade?.Id == 0)
             {
                 CurrentPage = PageAdicionais;
                 await App.Messages.ShowAsync("Ramo de atividade é obrigatório");

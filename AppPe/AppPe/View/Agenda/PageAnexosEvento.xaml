@@ -35,9 +35,9 @@
                                 Padding="2"
                                 BackgroundColor="Red"
                                 CornerRadius="20"
-                                FontSize="12"
+                                FontSize="11"
                                 HeightRequest="34"
-                                Text="Remover"
+                                Text="excluir"
                                 TextColor="White"
                                 VerticalOptions="Center" />
                         </Grid>

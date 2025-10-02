@@ -219,6 +219,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     default:
                         return TB_TIPOATIVIDADESCRM;
                 }
+            if (classe == typeof(AnexosModel))
+                switch (tipoRetornoInfoClass)
+                {
+                    case UtilHttp.TipoRetornoInfoClass.PrimaryKey:
+                        return "idAnexo";
+                    default:
+                        return TB_ANEXOS;
+                }
             if (classe == typeof(CategoriaProdutoModel))
                 switch (tipoRetornoInfoClass)
                 {

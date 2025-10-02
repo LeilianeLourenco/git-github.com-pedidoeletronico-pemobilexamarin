@@ -126,6 +126,25 @@ namespace Xamarin.HLP.Mobile.AppPE
             }
         }
 
+        public static string UrlApiImage
+        {
+            get
+            {
+                switch (AmbienteApp)
+                {
+                    case Ambiente.Homologacao:
+                        return "http://apidataimage.pedidoeletronico.com/";
+                    case Ambiente.Producao:
+                        return "http://apidataimage.pedidoeletronico.com/";
+                    case Ambiente.HomologacaoProducao:
+                        return "http://apidataimage.pedidoeletronico.com/";
+                    default:
+                        return "http://apidataimage.pedidoeletronico.com/";
+                }
+
+            }
+        }
+
         public static string UrlReport
         {
             get

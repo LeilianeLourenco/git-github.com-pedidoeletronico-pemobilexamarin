@@ -106,14 +106,68 @@
                 </TableSection>
             </TableRoot>
         </TableView>
+
+        <StackLayout Padding="20" VerticalOptions="Start">
+            <CollectionView Margin="0,5,0,0" ItemsSource="{Binding currentModel.lAnexosAtividade}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame
+                            Margin="5"
+                            Padding="5"
+                            BorderColor="LightGray">
+                            <Grid
+                                Margin="0"
+                                ColumnDefinitions="Auto,*,Auto"
+                                VerticalOptions="Center">
+                                <Image
+                                    Grid.Column="0"
+                                    HeightRequest="60"
+                                    Source="{Binding xCaminhoArquivo}"
+                                    WidthRequest="60" />
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding xNomeArquivo}"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Grid.Column="2"
+                                    Margin="5,0,10,0"
+                                    Padding="2"
+                                    BackgroundColor="Red"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ExcluirAnexoCommand}"
+                                    CommandParameter="{Binding .}"
+                                    CornerRadius="20"
+                                    FontSize="11"
+                                    HeightRequest="30"
+                                    Text="excluir"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+        <StackLayout
+            Margin="0,0,0,20"
+            HorizontalOptions="Center"
+            Orientation="Horizontal"
+            Spacing="10"
+            VerticalOptions="End">
+            <Button
+                Command="{Binding CameraCommand}"
+                Style="{StaticResource Success}"
+                Text="Câmera"
+                TextColor="White" />
+            <Button
+                BackgroundColor="{StaticResource AzulChart}"
+                Command="{Binding ImagensCommand}"
+                Text="Galeria"
+                TextColor="White" />
+        </StackLayout>
     </StackLayout>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding AnexosCommand}" Text="Anexos">
-            <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
-            </ToolbarItem.Order>
-        </ToolbarItem>
         <ToolbarItem
             Command="{Binding CancelPedidoCommand}"
             Icon="{Binding ImageIconCancel}"

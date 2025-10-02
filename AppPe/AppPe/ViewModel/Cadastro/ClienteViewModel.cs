@@ -373,18 +373,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                     return;
                 }
 
-                if (ramoAtividade.Id == 0)
+                if (ramoAtividade?.Id == 0)
                 {
                     await App.Messages.ShowAsync("Ramo de atividade é obrigatório");
                     return;
                 }
 
-                if (tabelaPreco.Id == 0)
+                if (tabelaPreco?.Id == 0)
                 {
                     await App.Messages.ShowAsync("Tabela de preço é obrigatório");
                     return;
                 }
-                if (Transportadora.Id == 0)
+                if (Transportadora?.Id == 0)
                 {
                     await App.Messages.ShowAsync("Transportadora é obrigatório");
                     return;
@@ -397,7 +397,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                 currentModel.idTabelaPreco = tabelaPreco.Id;
                 currentModel.idCondicaoPagamento = CondicaoPgto.Id;
                 currentModel.idRamoAtividade = ramoAtividade.Id;
-                currentModel.idTransportadora = Transportadora.Id;
+                currentModel.idTransportadora = Transportadora?.Id;
                 currentModel.idRedespacho = Redespacho.Id;
 
                 if (bUsaLimite == false)
