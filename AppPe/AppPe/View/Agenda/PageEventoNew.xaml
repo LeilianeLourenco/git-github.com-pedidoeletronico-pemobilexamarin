@@ -126,7 +126,7 @@
                                     WidthRequest="60" />
                                 <Label
                                     Grid.Column="1"
-                                    Text="{Binding xNomeArquivo}"
+                                    Text="{Binding xPathArquivo}"
                                     VerticalOptions="Center" />
                                 <Button
                                     Grid.Column="2"

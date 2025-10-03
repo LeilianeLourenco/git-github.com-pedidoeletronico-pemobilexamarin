@@ -134,26 +134,24 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             return retistroSync;
         }
 
-        public static async Task<AnexosModel> PostAnexosToCloud<T>(T classe, string xNamePost = "Post")
- where T : class
+        public static async Task PostAnexosToCloud(AnexosModel model, string xNamePost = "Post")
         {
             var retistroSync = new AnexosModel();
             try
             {
-                var xJson = JsonConvert.SerializeObject(classe);
+                var xJson = JsonConvert.SerializeObject(model);
 
-                var requestUri = App.UrlWebApiMobile + $"api/Imagem/SalvarAtividade";
+                var requestUri = App.UrlApiImage + $"/api/Imagem/PostImgGenerica?xCaminho={model.xCaminhoServidor}";
 
-                var wcfResponse = await CurrentHttpClient.PostAsync(
+                var wcfResponse = await CurrentApiImageHttpClient.PostAsync(
                     requestUri,
                     new StringContent(xJson, Encoding.UTF8, "application/json")
                 );
 
-                if (wcfResponse == null) return null;
-                if (!wcfResponse.IsSuccessStatusCode) return null;
+                if (wcfResponse == null) return;
+                if (!wcfResponse.IsSuccessStatusCode) return;
 
                 var responJsonText = await wcfResponse.Content.ReadAsStringAsync();
-                retistroSync = JsonConvert.DeserializeObject<AnexosModel>(responJsonText);
             }
             catch (System.Net.WebException)
             {
@@ -163,7 +161,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             {
                 ex.TrakException("PostRegistroToCloud", false);
             }
-            return retistroSync;
         }
 
         //public static async void PostSyncOmie(List<ClientesModel> lClientes )
@@ -1182,6 +1179,24 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 return _currentApiMobileHttpClient;
             }
             set { _currentApiMobileHttpClient = value; }
+        }
+
+        private static HttpClient _currentApiImageHttpClient = null;
+        public static HttpClient CurrentApiImageHttpClient
+        {
+            get
+            {
+                if (_currentApiImageHttpClient != null)
+                {
+                    return _currentApiImageHttpClient;
+                }
+                _currentApiMobileHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlApiImage) };
+                _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Clear();
+                _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                _currentApiMobileHttpClient.Timeout = TimeSpan.FromSeconds(100);
+                return _currentApiMobileHttpClient;
+            }
+            set { _currentApiImageHttpClient = value; }
         }
 
         #endregion

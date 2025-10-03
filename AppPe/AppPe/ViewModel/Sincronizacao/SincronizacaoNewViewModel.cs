@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Hlp.PedidoEletronico.Domain.Business.Bo;
+﻿using Hlp.PedidoEletronico.Domain.Business.Bo;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
 using Rg.Plugins.Popup.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.HLP.Mobile.AppPE.Common;
@@ -1515,6 +1516,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         //    if ((registro.dtFimEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
                         //        registro.dtFimEvento = (registro.dtFimEvento ?? DateTime.Now).ToLocalTime();
 
+                        var lAnexos = AnexosRepository.GetAnexosAtividade(registro.idAtividadeOffline);
+                        registro.lAnexosAtividade =  new ObservableCollection<AnexosModel>(lAnexos);
                         await UtilHttp.PostAgendaToCloud(registro); // mantem registro da Local   
                     }
                 }
@@ -1542,6 +1545,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         item.idCliente = App.Data.Connection.ExecuteScalar<int>(xQuery);
                     }
 
+                    var lAnexos = AnexosRepository.GetAnexosAtividade(newregistro.idAtividadeOffline);
+                    newregistro.lAnexosAtividade = new ObservableCollection<AnexosModel>(lAnexos);
 
                     var registroSync = await UtilHttp.PostAgendaToCloud(newregistro);
                     if (registroSync == null) continue;
@@ -1583,67 +1588,45 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             param2: registro.GetPropValue(xPKonline),
                             param3: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
 
-                    // verifico qual é a alteração mais recente.
-                    // se for a offline, subo as informações para a nuvem.
-                    // se for a da nuvem, eu não faço nada pois o próximo processo é o processo de Download.
                     if (dtUltimaAlteracaoNuvem < dtUltimaAlteracaoLocal ||
                         dtUltimaAlteracaoNuvem == dtUltimaAlteracaoLocal)
                     {
-                        //if (registro.dtInicioEvento != null)
-                        //    if ((registro.dtInicioEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
-                        //        registro.dtInicioEvento = (registro.dtInicioEvento ?? DateTime.Now).ToLocalTime();
+                        string base64 = ConvertFileToBase64(registro.xCaminhoArquivo);
 
+                        registro.base64Image = base64;
+                        registro.xPathArquivo = Path.ChangeExtension(registro.xPathArquivo, "");
+                        registro.xPathArquivo = registro.xPathArquivo.Replace(".", "");
 
-                        //if (registro.dtFimEvento != null)
-                        //    if ((registro.dtFimEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
-                        //        registro.dtFimEvento = (registro.dtFimEvento ?? DateTime.Now).ToLocalTime();
-
-                        await UtilHttp.PostAgendaToCloud(registro); // mantem registro da Local   
+                        await UtilHttp.PostAnexosToCloud(registro);
+                        AnexosRepository.AnexoSincronizado(registro.idAnexo);
                     }
                 }
-
-
-           //     foreach (var newregistro in registros.Where(c => Convert.ToInt32(c.GetPropValue(xPKonline) ?? 0) == 0))
-           //     {
-           //         currentModel.iCount--;
-           //         //if (newregistro.dtInicioEvento != null)
-           //         //    if ((newregistro.dtInicioEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
-           //         //        newregistro.dtInicioEvento = (newregistro.dtInicioEvento ?? DateTime.Now).ToLocalTime();
-
-
-           //         //if (newregistro.dtFimEvento != null)
-           //         //    if ((newregistro.dtFimEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
-           //         //        newregistro.dtFimEvento = (newregistro.dtFimEvento ?? DateTime.Now).ToLocalTime();
-
-           //         var item = (newregistro as AtividadeAgendaModel);
-           //         if (item.idCliente.GetValueOrDefault() == 0 && item.idClienteOffline.GetValueOrDefault() > 0)
-           //         {
-           //             var xQuery =
-           //$@"SELECT idClientes from tb_clientes where idClientesOffLine = {item.idClienteOffline} and idEmpresa = {App
-           //    .CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
-
-           //             item.idCliente = App.Data.Connection.ExecuteScalar<int>(xQuery);
-           //         }
-
-
-           //         var registroSync = await UtilHttp.PostAgendaToCloud(newregistro);
-           //         if (registroSync == null) continue;
-
-           //         var registroModel = registroSync as AtividadeAgendaModel;
-           //         if (registroModel == null || registroModel.idAtividade == null) continue;
-           //         var model = newregistro as AtividadeAgendaModel;
-           //         if (model == null) continue;
-           //         registroModel.idClienteOffline = model.idClienteOffline;
-           //         registroModel.idAtividadeOffline = model.idAtividadeOffline;
-           //         App.Data.Connection.Update(registroModel);
-           //     }
             }
             catch (Exception ex)
             {
                 ocorreuErro = true;
                 GoogleInsightsReportingConstants.TrakException("SincronizacaoViewModel.PostUploadAgenda", ex.Message, true);
             }
+        }
 
+
+        public static string ConvertFileToBase64(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                return null;
+
+            if (!File.Exists(filePath))
+                return null;
+
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                using (var memory = new MemoryStream())
+                {
+                    stream.CopyTo(memory);
+                    byte[] fileBytes = memory.ToArray();
+                    return Convert.ToBase64String(fileBytes);
+                }
+            }
         }
 
         #endregion

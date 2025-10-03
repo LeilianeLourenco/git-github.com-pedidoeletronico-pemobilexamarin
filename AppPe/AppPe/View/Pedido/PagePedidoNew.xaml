@@ -364,7 +364,7 @@
                             </ViewCell.View>
                         </ViewCell>
 
-                        <TextCell
+                        <!--<TextCell
                             Height="60"
                             Command="{Binding GoToFormaPgtoCommand}"
                             Detail="{Binding ItemFormaPgto.Display}"
@@ -393,7 +393,7 @@
                                     TextColor="{StaticResource CinzaEscuro}"
                                     VerticalTextAlignment="Center" />
                             </Grid>
-                        </ViewCell>
+                        </ViewCell>-->
 
                         <TextCell
                             Command="{Binding GoToTransportadoraCommand}"

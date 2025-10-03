@@ -8,26 +8,27 @@ using Xamarin.Forms.Xaml;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model.Agenda;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda;
+using Xamarin.HLP.Mobile.AppPE.Model.Repository.Anexos;
 using Xamarin.HLP.Mobile.AppPE.View.Service;
 using Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda;
 
 namespace Xamarin.HLP.Mobile.AppPE.View.Agenda
-{ 
+{
     public partial class PageListagemEventos : ContentPage
-    { 
+    {
         public static ListarEventosViewModel ViewModelStatic { get; set; }
 
 
         public PageListagemEventos()
         {
             InitializeComponent();
-            Inicial(); 
+            Inicial();
         }
 
 
         public PageListagemEventos(bool bUsaClienteEspecifico)
         {
-            InitializeComponent(); 
+            InitializeComponent();
             Inicial();
             viewModel.bUsaClienteEspecifico = bUsaClienteEspecifico;
         }
@@ -35,7 +36,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Agenda
         private void Inicial()
         {
             PageListagemEventos.ViewModelStatic = viewModel;
-            viewModel.controlSearchPE = SearchBarPesquisa; 
+            viewModel.controlSearchPE = SearchBarPesquisa;
         }
 
         public ListarEventosViewModel viewModel => BindingContext as ListarEventosViewModel;
@@ -50,7 +51,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Agenda
             }
 
 
-            viewModel.ExecuttingAnyCommand = false; 
+            viewModel.ExecuttingAnyCommand = false;
             //if (viewModel.canExecuteInicial)
             //{
             //    if (Device.RuntimePlatform == Device.iOS)
@@ -121,6 +122,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Agenda
                     if (AgendaRepository.ExcluirEvento(agenda.idAtividadeOffline))
                     {
                         viewModel.atividades.Remove(agenda);
+                        AnexosRepository.DeleteAnexos(agenda.idAtividadeOffline);
                     }
                     else
                         await App.Messages.ShowAsync("Não foi possível excluir esse lançamento");
