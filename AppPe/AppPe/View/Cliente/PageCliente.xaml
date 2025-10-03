@@ -1,19 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModel="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro;assembly=Xamarin.HLP.Mobile.AppPE"
-            xmlns:generic="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;assembly=Xamarin.HLP.Mobile.AppPE"
-            xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
-            xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
-            xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
-            x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageCliente" >
+<TabbedPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageCliente"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:generic="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:viewModel="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE">
     <TabbedPage.Title>
-        <OnPlatform x:TypeArguments="x:String"  WinPhone="Cliente" Android="Cliente"/>
+        <OnPlatform
+            x:TypeArguments="x:String"
+            Android="Cliente"
+            WinPhone="Cliente" />
     </TabbedPage.Title>
     <TabbedPage.Resources>
         <ResourceDictionary>
-            <generic:CpfMaskConverter x:Key="CpfMaskConverter"/>
-            <generic:CNPJMaskConverter x:Key="CnpjMaskConverter"/>
+            <generic:CpfMaskConverter x:Key="CpfMaskConverter" />
+            <generic:CNPJMaskConverter x:Key="CnpjMaskConverter" />
         </ResourceDictionary>
     </TabbedPage.Resources>
     <TabbedPage.BindingContext>
@@ -22,136 +26,271 @@
 
 
 
-    <ContentPage x:Name="PagePrincipal" Title="Informações" Icon="{StaticResource IconCliente}" Padding="{StaticResource PaddingContentPageComHeader2}">
+    <ContentPage
+        x:Name="PagePrincipal"
+        Title="Informações"
+        Padding="{StaticResource PaddingContentPageComHeader2}"
+        Icon="{StaticResource IconCliente}">
         <ScrollView>
 
-            <StackLayout Orientation="Vertical" Padding="20,10,20,0">
+            <StackLayout Padding="20,10,20,0" Orientation="Vertical">
 
-                <xaml:GridSeparador Text="DADOS DO CLIENTE"/>
+                <xaml:GridSeparador Text="DADOS DO CLIENTE" />
 
-                <!--Nome-->
+                <!--  Nome  -->
 
-                <Label Text="Razão Social / Nome *" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry  MaxLength="200" x:Name="EntryNome" Text="{Binding currentModel.xRazaoSocial}" Placeholder="Nome"/>
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Razão Social / Nome *" />
+                <custom:ExtendedEntry
+                    x:Name="EntryNome"
+                    MaxLength="200"
+                    Placeholder="Nome"
+                    Text="{Binding currentModel.xRazaoSocial}" />
 
-                <!--Apelido-->
+                <!--  Apelido  -->
 
-                <Label Text="Nome Fantasia / Apelido *" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry MaxLength="200" x:Name="EntryFantasia" Text="{Binding currentModel.xFantasia}" Placeholder="Apelido/Nome Fantasia"/>
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Nome Fantasia / Apelido *" />
+                <custom:ExtendedEntry
+                    x:Name="EntryFantasia"
+                    MaxLength="200"
+                    Placeholder="Apelido/Nome Fantasia"
+                    Text="{Binding currentModel.xFantasia}" />
 
-                <!--Código Alternativo-->
+                <!--  Código Alternativo  -->
 
-                <Label Text="Código Alternativo*" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry MaxLength="50" x:Name="EntryAlternativo" Text="{Binding currentModel.cAlternativo}" Placeholder="Código Alternativo" />
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Código Alternativo*" />
+                <custom:ExtendedEntry
+                    x:Name="EntryAlternativo"
+                    MaxLength="50"
+                    Placeholder="Código Alternativo"
+                    Text="{Binding currentModel.cAlternativo}" />
 
-                <!--Registro Ativo-->
+                <!--  Registro Ativo  -->
 
-                <Label Text="Cliente ativo ?" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <Switch IsToggled="{Binding currentModel.stAtivo}" HorizontalOptions="Start"/>
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Cliente ativo ?" />
+                <Switch HorizontalOptions="Start" IsToggled="{Binding currentModel.stAtivo}" />
 
 
-                <xaml:GridSeparador Text="DOCUMENTOS"/>
+                <xaml:GridSeparador Text="DOCUMENTOS" />
 
-                <!--Tipo de Pessoa-->
+                <!--  Tipo de Pessoa  -->
 
-                <Label Text="Pessoa jurídica / física" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <Picker SelectedIndexChanged="BindableTipoPessoa_OnSelectedIndexChanged" SelectedIndex="{Binding currentModel.stJuridico}" x:Name="BindableTipoPessoa">
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Pessoa jurídica / física" />
+                <Picker
+                    x:Name="BindableTipoPessoa"
+                    SelectedIndex="{Binding currentModel.stJuridico}"
+                    SelectedIndexChanged="BindableTipoPessoa_OnSelectedIndexChanged">
                     <Picker.Items>
                         <x:String>FÍSICA</x:String>
                         <x:String>JURÍDICA</x:String>
                     </Picker.Items>
                 </Picker>
 
-                <!--CPF-->
+                <!--  CPF  -->
 
-                <Label IsVisible="{Binding currentModel.bMostraCPF}" Text="CPF" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry IsVisible="{Binding currentModel.bMostraCPF}" MaxLength="18" Placeholder="Digite um valor válido" x:Name="EntryCpf"
-                           Text="{Binding currentModel.xCpfCnpj, Converter={StaticResource CpfMaskConverter}}" TextChanged="EntryCpfCnpj_OnTextChanged" Keyboard="Numeric" />
+                <Label
+                    IsVisible="{Binding currentModel.bMostraCPF}"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="CPF" />
+                <custom:ExtendedEntry
+                    x:Name="EntryCpf"
+                    IsVisible="{Binding currentModel.bMostraCPF}"
+                    Keyboard="Numeric"
+                    MaxLength="18"
+                    Placeholder="Digite um valor válido"
+                    Text="{Binding currentModel.xCpfCnpj, Converter={StaticResource CpfMaskConverter}}"
+                    TextChanged="EntryCpfCnpj_OnTextChanged" />
 
-                <!--RG-->
+                <!--  RG  -->
 
-                <Label Text="RG" IsVisible="{Binding currentModel.bMostraCPF}" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry x:Name="EntryRG" IsVisible="{Binding currentModel.bMostraCPF}" MaxLength="25" Placeholder="Digite um valor válido" Keyboard="Numeric"  Text="{Binding currentModel.xRgIe}" />
+                <Label
+                    IsVisible="{Binding currentModel.bMostraCPF}"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="RG" />
+                <custom:ExtendedEntry
+                    x:Name="EntryRG"
+                    IsVisible="{Binding currentModel.bMostraCPF}"
+                    Keyboard="Numeric"
+                    MaxLength="25"
+                    Placeholder="Digite um valor válido"
+                    Text="{Binding currentModel.xRgIe}" />
 
-                <!--CNPJ-->
+                <!--  CNPJ  -->
 
-                <Label  IsVisible="{Binding currentModel.bMostraCNPJ}" Text="CNPJ" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+                <Label
+                    IsVisible="{Binding currentModel.bMostraCNPJ}"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="CNPJ" />
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <custom:ExtendedEntry IsVisible="{Binding currentModel.bMostraCNPJ}" MaxLength="18" Placeholder="Digite um valor válido" x:Name="EntryCnpj"
-                           Text="{Binding currentModel.xCpfCnpj, Converter={StaticResource CnpjMaskConverter}}" TextChanged="EntryCpfCnpj_OnTextChanged" Keyboard="Numeric" />
-                    
+                    <custom:ExtendedEntry
+                        x:Name="EntryCnpj"
+                        IsVisible="{Binding currentModel.bMostraCNPJ}"
+                        Keyboard="Numeric"
+                        MaxLength="18"
+                        Placeholder="Digite um valor válido"
+                        Text="{Binding currentModel.xCpfCnpj, Converter={StaticResource CnpjMaskConverter}}"
+                        TextChanged="EntryCpfCnpj_OnTextChanged" />
+
                     <Grid Grid.Column="1">
-                        <abstractions:SvgImage  x:Name="btnExecutePesquisa" HorizontalOptions="Center" VerticalOptions="Center" >
+                        <abstractions:SvgImage
+                            x:Name="btnExecutePesquisa"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
                             <abstractions:SvgImage.SvgPath>
-                                <OnPlatform x:TypeArguments="x:String" WinPhone="{StaticResource ImagemPesquisarListaProdutoAndroid}" Android="{StaticResource ImagemPesquisarListaProdutoAndroidNovo}" iOS="{StaticResource ImagemPesquisarListaProdutoAndroidNovo}"/>
+                                <OnPlatform
+                                    x:TypeArguments="x:String"
+                                    Android="{StaticResource ImagemPesquisarListaProdutoAndroidNovo}"
+                                    WinPhone="{StaticResource ImagemPesquisarListaProdutoAndroid}"
+                                    iOS="{StaticResource ImagemPesquisarListaProdutoAndroidNovo}" />
                             </abstractions:SvgImage.SvgPath>
                             <abstractions:SvgImage.HeightRequest>
-                                <OnPlatform x:TypeArguments="x:Double" WinPhone="40" Android="34" iOS="32"/>
+                                <OnPlatform
+                                    x:TypeArguments="x:Double"
+                                    Android="34"
+                                    WinPhone="40"
+                                    iOS="32" />
                             </abstractions:SvgImage.HeightRequest>
                             <abstractions:SvgImage.WidthRequest>
-                                <OnPlatform x:TypeArguments="x:Double" WinPhone="40" Android="34" iOS="32"/>
+                                <OnPlatform
+                                    x:TypeArguments="x:Double"
+                                    Android="34"
+                                    WinPhone="40"
+                                    iOS="32" />
                             </abstractions:SvgImage.WidthRequest>
                         </abstractions:SvgImage>
                     </Grid>
                 </Grid>
 
-                
-
-                <!--Inscrição Estadual-->
-
-                <Label Text="Inscrição Estadual" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry x:Name="EntryIE" IsVisible="{Binding currentModel.bMostraCNPJ}" MaxLength="25" Placeholder="Digite um valor válido" Keyboard="Numeric"  Text="{Binding currentModel.xRgIe}" />
-
-                <!--Linkedin-->
-
-                <Label Text="Linkedin"  LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry x:Name="EntryUrlLinkedin"  MaxLength="150" Placeholder="URL"    Text="{Binding currentModel.xUrlLinkedin}" />
 
 
-                <!--Instagram-->
+                <!--  Inscrição Estadual  -->
 
-                <Label Text="Instagram" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry x:Name="EntryUrlInstagram"  MaxLength="150" Placeholder="URL"  Text="{Binding currentModel.xUrlInstagram}" />
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Inscrição Estadual" />
+                <custom:ExtendedEntry
+                    x:Name="EntryIE"
+                    IsVisible="{Binding currentModel.bMostraCNPJ}"
+                    Keyboard="Numeric"
+                    MaxLength="25"
+                    Placeholder="Digite um valor válido"
+                    Text="{Binding currentModel.xRgIe}" />
 
-                <!--Facebook-->
+                <!--  Linkedin  -->
 
-                <Label Text="Facebook" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry x:Name="EntryUrlFacebook"  MaxLength="150" Placeholder="URL"    Text="{Binding currentModel.xUrlFacebook}" />
-
-                
-                
-                <xaml:GridSeparador Text="EMAIL / TELEFONE"/>
-
-                <xaml:FoneEmailControl x:Name="EmailControl" tipoCompoenent="EMAIL" InputField="{Binding currentModel.xEmails, Mode=TwoWay}"/>
-
-                <xaml:FoneEmailControl x:Name="FoneControl" tipoCompoenent="TELEFONE" InputField="{Binding currentModel.xTelefones, Mode=TwoWay}"/>
-
-                <!--Separador-->
-
-                <xaml:GridSeparador Text="INFORMAÇÕES ADICIONAIS"/>
-
-
-                <!--Usa Limite de Crédito-->
-
-                <Label IsVisible="{Binding bAdmin}" Text="Usa Limite de Crédito" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <Switch IsVisible="{Binding bAdmin}" IsToggled="{Binding bUsaLimite}" HorizontalOptions="Start" />
-
-                <!--Usa Limite de Crédito-->
-
-                <Label IsVisible="{Binding bUsaLimite}" Text="Limite de Crédito" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <custom:ExtendedEntry IsEnabled="{Binding bAdmin}" IsVisible="{Binding bUsaLimite}" x:Name="EntryLimiteCredito" MaxLength="13" Keyboard="Numeric" Placeholder="Limite de crédito"
-                          Text="{Binding currentModel.vLimiteCredito, Converter={StaticResource FormatPermiteNullSimboloDecimalConverter}} " />
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Linkedin" />
+                <custom:ExtendedEntry
+                    x:Name="EntryUrlLinkedin"
+                    MaxLength="150"
+                    Placeholder="URL"
+                    Text="{Binding currentModel.xUrlLinkedin}" />
 
 
-                <!--Situação da Prospecção-->
+                <!--  Instagram  -->
 
-                <Label Text="Situação da Prospecção" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <Picker SelectedIndex="{Binding indexStCliente}" x:Name="BindableSituacaoCliente">
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Instagram" />
+                <custom:ExtendedEntry
+                    x:Name="EntryUrlInstagram"
+                    MaxLength="150"
+                    Placeholder="URL"
+                    Text="{Binding currentModel.xUrlInstagram}" />
+
+                <!--  Facebook  -->
+
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Facebook" />
+                <custom:ExtendedEntry
+                    x:Name="EntryUrlFacebook"
+                    MaxLength="150"
+                    Placeholder="URL"
+                    Text="{Binding currentModel.xUrlFacebook}" />
+
+
+
+                <xaml:GridSeparador Text="EMAIL / TELEFONE" />
+
+                <xaml:FoneEmailControl
+                    x:Name="EmailControl"
+                    InputField="{Binding currentModel.xEmails, Mode=TwoWay}"
+                    tipoCompoenent="EMAIL" />
+
+                <xaml:FoneEmailControl
+                    x:Name="FoneControl"
+                    InputField="{Binding currentModel.xTelefones, Mode=TwoWay}"
+                    tipoCompoenent="TELEFONE" />
+
+                <!--  Separador  -->
+
+                <xaml:GridSeparador Text="INFORMAÇÕES ADICIONAIS" />
+
+
+                <!--  Usa Limite de Crédito  -->
+
+                <Label
+                    IsVisible="{Binding bAdmin}"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Usa Limite de Crédito" />
+                <Switch
+                    HorizontalOptions="Start"
+                    IsToggled="{Binding bUsaLimite}"
+                    IsVisible="{Binding bAdmin}" />
+
+                <!--  Usa Limite de Crédito  -->
+
+                <Label
+                    IsVisible="{Binding bUsaLimite}"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Limite de Crédito" />
+                <custom:ExtendedEntry
+                    x:Name="EntryLimiteCredito"
+                    IsEnabled="{Binding bAdmin}"
+                    IsVisible="{Binding bUsaLimite}"
+                    Keyboard="Numeric"
+                    MaxLength="13"
+                    Placeholder="Limite de crédito"
+                    Text="{Binding currentModel.vLimiteCredito, Converter={StaticResource FormatPermiteNullSimboloDecimalConverter}}" />
+
+
+                <!--  Situação da Prospecção  -->
+
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Situação da Prospecção" />
+                <Picker x:Name="BindableSituacaoCliente" SelectedIndex="{Binding indexStCliente}">
                     <Picker.Items>
                         <x:String>EFETIVADO</x:String>
                         <x:String>EM PROSPECÇÃO</x:String>
@@ -159,47 +298,110 @@
                 </Picker>
 
 
-                <!--Data de Efetivação-->
+                <!--  Data de Efetivação  -->
 
-                <Label IsVisible="{Binding enableDateEfetivacao}" Text="Data Efetivação" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <DatePicker IsVisible="{Binding enableDateEfetivacao}" x:Name="DatePickerEfetivacao" Date="{Binding currentModel.dEfetivacao}" />
+                <Label
+                    IsVisible="{Binding enableDateEfetivacao}"
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Data Efetivação" />
+                <DatePicker
+                    x:Name="DatePickerEfetivacao"
+                    Date="{Binding currentModel.dEfetivacao}"
+                    IsVisible="{Binding enableDateEfetivacao}" />
 
-                <Label  Text="Anotações" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                <Editor  x:Name="EditorAnotacao" Keyboard="Chat" HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand" HeightRequest="{StaticResource HeightEditor}" Text="{Binding currentModel.xAnotacao}" />
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Anotações" />
+                <Editor
+                    x:Name="EditorAnotacao"
+                    HeightRequest="{StaticResource HeightEditor}"
+                    HorizontalOptions="FillAndExpand"
+                    Keyboard="Chat"
+                    Text="{Binding currentModel.xAnotacao}"
+                    VerticalOptions="FillAndExpand" />
 
-              <Label Text="Mostrar anotações no pedido ?" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-              <Switch IsToggled="{Binding currentModel.bExibirAnotacaoNoPedido}" HorizontalOptions="Start"/>
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Mostrar anotações no pedido ?" />
+                <Switch HorizontalOptions="Start" IsToggled="{Binding currentModel.bExibirAnotacaoNoPedido}" />
 
             </StackLayout>
 
         </ScrollView>
     </ContentPage>
 
-    <ContentPage Icon="{StaticResource IconListagem}" Title="Configurações" x:Name="PageAdicionais">
+    <ContentPage
+        x:Name="PageAdicionais"
+        Title="Configurações"
+        Icon="{StaticResource IconListagem}">
         <TableView BackgroundColor="White">
             <TableRoot Title="">
                 <TableSection Title="ENDEREÇOS / CONTATOS">
-                    <TextCell Command="{Binding ContatosCommand}" TextColor="{StaticResource AzulClaro}" DetailColor="{StaticResource CinzaPrincipal}"  Text="{Binding labelContatos}" Detail="clique para visualizar"/>
-                    <TextCell Command="{Binding EnderecoCommand}" TextColor="{StaticResource AzulClaro}" DetailColor="{StaticResource CinzaPrincipal}"  Text="{Binding labelEnderecos}" Detail="clique para visualizar"/>
+                    <TextCell
+                        Command="{Binding ContatosCommand}"
+                        Detail="clique para visualizar"
+                        DetailColor="{StaticResource CinzaPrincipal}"
+                        Text="{Binding labelContatos}"
+                        TextColor="{StaticResource AzulClaro}" />
+                    <TextCell
+                        Command="{Binding EnderecoCommand}"
+                        Detail="clique para visualizar"
+                        DetailColor="{StaticResource CinzaPrincipal}"
+                        Text="{Binding labelEnderecos}"
+                        TextColor="{StaticResource AzulClaro}" />
                 </TableSection>
 
                 <TableSection Title="PARÂMETROS">
-                    <TextCell Command="{Binding SearchTabelaPrecoCommand}" Detail="{Binding tabelaPreco.Display}" DetailColor="{StaticResource CinzaPrincipal}" TextColor="{StaticResource AzulClaro}"  Text="Tabela de preço"/>
-                    <TextCell Command="{Binding SearchTransportadoraCommand}" Detail="{Binding Transportadora.Display}" DetailColor="{StaticResource CinzaPrincipal}" TextColor="{StaticResource AzulClaro}"  Text="Transportadora"/>
-                    <TextCell Command="{Binding SearchRedespachoCommand}" Detail="{Binding Redespacho.Display}" DetailColor="{StaticResource CinzaPrincipal}" TextColor="{StaticResource AzulClaro}"  Text="Redespacho"/>
-                    <TextCell Command="{Binding SearchCondicaoPagamentoCommand}" Detail="{Binding CondicaoPgto.Display}" DetailColor="{StaticResource CinzaPrincipal}" TextColor="{StaticResource AzulClaro}"  Text="Condição de pagamento"/>
-                    <TextCell Command="{Binding SearchRamoAtividadeCommand}" Detail="{Binding ramoAtividade.Display}" DetailColor="{StaticResource CinzaPrincipal}" TextColor="{StaticResource AzulClaro}"  Text="Ramo de atividade"/>
+                    <TextCell
+                        Command="{Binding SearchTabelaPrecoCommand}"
+                        Detail="{Binding tabelaPreco.Display}"
+                        DetailColor="{StaticResource CinzaPrincipal}"
+                        Text="Tabela de preço"
+                        TextColor="{StaticResource AzulClaro}" />
+                    <TextCell
+                        Command="{Binding SearchTransportadoraCommand}"
+                        Detail="{Binding Transportadora.Display}"
+                        DetailColor="{StaticResource CinzaPrincipal}"
+                        Text="Transportadora"
+                        TextColor="{StaticResource AzulClaro}" />
+                    <TextCell
+                        Command="{Binding SearchRedespachoCommand}"
+                        Detail="{Binding Redespacho.Display}"
+                        DetailColor="{StaticResource CinzaPrincipal}"
+                        Text="Redespacho"
+                        TextColor="{StaticResource AzulClaro}" />
+                    <TextCell
+                        Command="{Binding SearchCondicaoPagamentoCommand}"
+                        Detail="{Binding CondicaoPgto.Display}"
+                        DetailColor="{StaticResource CinzaPrincipal}"
+                        Text="Condição de pagamento"
+                        TextColor="{StaticResource AzulClaro}" />
+                    <TextCell
+                        Command="{Binding SearchRamoAtividadeCommand}"
+                        Detail="{Binding ramoAtividade.Display}"
+                        DetailColor="{StaticResource CinzaPrincipal}"
+                        Text="Ramo de atividade"
+                        TextColor="{StaticResource AzulClaro}" />
                 </TableSection>
             </TableRoot>
         </TableView>
     </ContentPage>
 
     <TabbedPage.ToolbarItems>
-        <ToolbarItem Icon="{Binding ImageIconCancel}" Text="Cancelar" Command="{Binding CancelCommand}">
+        <ToolbarItem
+            Command="{Binding CancelCommand}"
+            Icon="{Binding ImageIconCancel}"
+            Text="Cancelar">
             <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
             </ToolbarItem.Order>
         </ToolbarItem>
-        <ToolbarItem x:Name="ToolbarItemSalvar" Text="Salvar" Icon="{Binding ImageIconSave}" />
+        <ToolbarItem
+            x:Name="ToolbarItemSalvar"
+            Icon="{Binding ImageIconSave}"
+            Text="Salvar" />
     </TabbedPage.ToolbarItems>
 </TabbedPage>

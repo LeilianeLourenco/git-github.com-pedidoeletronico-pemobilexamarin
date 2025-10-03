@@ -186,8 +186,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
             {
                 idEmpresa = currentModel.idEmpresa,
                 idAtividade = currentModel.idAtividade ?? currentModel.idAtividadeOffline,
-                xNomeArquivo = file.FileName,
-                xCaminhoArquivo = $"/imagens/atividades/anexos/{file.FileName}",
+                xPathArquivo = file.FileName,
+                xCaminhoArquivo = file.FullPath,
+                xCaminhoServidor = @"C:\inetpub\wwwroot\PedidoEletronico\imagens\atividade\anexos",
                 dtUltimaAlteracao = DateTime.Now,
             });
         }
@@ -219,8 +220,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Agenda
                 {
                     idEmpresa = currentModel.idEmpresa,
                     idAtividade = currentModel.idAtividade ?? currentModel.idAtividadeOffline,
-                    xNomeArquivo = file.FileName,
-                    xCaminhoArquivo = $"/imagens/atividades/anexos/",
+                    xPathArquivo = file.FileName,
+                    xCaminhoArquivo = file.FullPath,
+                    xCaminhoServidor = @"C:\inetpub\wwwroot\PedidoEletronico\imagens\atividade\anexos",
                     dtUltimaAlteracao = DateTime.Now,
                 });
             }

@@ -23,7 +23,7 @@
                             <Image
                                 Grid.Column="0"
                                 HeightRequest="60"
-                                Source="{Binding xCaminhoArquivo}"
+                                Source="{Binding xPathArquivo}"
                                 WidthRequest="60" />
                             <Label
                                 Grid.Column="1"
