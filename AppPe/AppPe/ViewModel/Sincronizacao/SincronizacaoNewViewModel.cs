@@ -1591,7 +1591,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     if (dtUltimaAlteracaoNuvem < dtUltimaAlteracaoLocal ||
                         dtUltimaAlteracaoNuvem == dtUltimaAlteracaoLocal)
                     {
-                        string base64 = ConvertFileToBase64(registro.xCaminhoArquivo);
+                        string base64 = ConvertFileToBase64(registro.xCaminhoArquivoMobile);
 
                         registro.base64Image = base64;
                         registro.xPathArquivo = Path.ChangeExtension(registro.xPathArquivo, "");

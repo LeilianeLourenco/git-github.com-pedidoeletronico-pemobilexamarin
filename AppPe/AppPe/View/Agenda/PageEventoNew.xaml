@@ -122,7 +122,7 @@
                                 <Image
                                     Grid.Column="0"
                                     HeightRequest="60"
-                                    Source="{Binding xCaminhoArquivo}"
+                                    Source="{Binding xCaminhoArquivoMobile}"
                                     WidthRequest="60" />
                                 <Label
                                     Grid.Column="1"
