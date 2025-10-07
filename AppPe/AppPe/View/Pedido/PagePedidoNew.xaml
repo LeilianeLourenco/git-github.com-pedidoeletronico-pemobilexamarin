@@ -472,7 +472,7 @@
                                     Text="Pedido de compra" />
                                 <custom:ExtendedEntry
                                     x:Name="EntryPedidoCompra"
-                                    MaxLength="50"
+                                    MaxLength="30"
                                     Text="{Binding currentModel.xPedidoCompra}" />
 
                                 <!--  Info NF  -->
