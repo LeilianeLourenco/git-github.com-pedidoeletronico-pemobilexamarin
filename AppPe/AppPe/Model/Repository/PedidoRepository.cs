@@ -1065,24 +1065,24 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 registro.xDisplayIntegracao = null;
                 registro.xMeuID = null;
                 registro.dEmissao = DateTime.UtcNow.ToDateTimeSync();
+                registro.xCodigoCategoria = null;
+                registro.stVindoDeIntegracao = null;
+
+                int idStatus = 0;
+                if (registro.stLancamento == 0)
+                    idStatus = App.Data.Connection.Table<ConfiguracaoGeralModel>()
+                         .Where(x => x.idEmpresa == registro.idEmpresa)
+                         .Select(x => x.idStatusOrcamentoDefault)
+                         ?.FirstOrDefault() ?? 0;
+                else
+                    idStatus = App.Data.Connection.Table<ConfiguracaoGeralModel>()
+                      .Where(x => x.idEmpresa == registro.idEmpresa)
+                      .Select(x => x.idStatusVendaDefault)
+                      ?.FirstOrDefault() ?? 0;
 
                 var status =
-                    App.Data.Connection.Table<StatusModel>()
-                        .FirstOrDefault(c => c.idStatus == registro.idStatus && c.idEmpresa == registro.idEmpresa);
-
-                var idStatus = 0;
-
-                if (status?.stVenda == 1)
-                {
-                    status = App.Data.Connection.Table<StatusModel>()
-                          .FirstOrDefault(c => c.stVenda == 2 && c.idEmpresa == registro.idEmpresa);
-
-                    if (status != null)
-                        idStatus = status.idStatus;
-                }
-
-                if (status?.stAparecerStatus == 2)
-                    idStatus = status.idStatus;
+                        App.Data.Connection.Table<StatusModel>()
+                            .FirstOrDefault(c => c.idStatus == idStatus && c.idEmpresa == registro.idEmpresa);
 
                 if (idStatus == 0)
                 {
