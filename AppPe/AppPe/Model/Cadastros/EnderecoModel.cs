@@ -243,7 +243,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             }
         }
 
-
+        private BasicPickerModel _cidadeBasicPickerModel;
+        [Ignore]
+        [IgnoreDataMember]
+        public BasicPickerModel CidadeBasicPickerModel
+        {
+            get { return _cidadeBasicPickerModel; }
+            set
+            {
+                _cidadeBasicPickerModel = value; NotifyPropertyChanged();
+                if (value != null)
+                {
+                    xCidade = value.Display;
+                }
+            }
+        }
 
         private bool _isSearching = false;
         [Ignore]

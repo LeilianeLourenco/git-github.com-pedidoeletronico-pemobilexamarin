@@ -1,60 +1,96 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:cadastro="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:generic="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:controls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageEndereco" IsBusy="{Binding currentModel.isSearching}" Padding="{StaticResource PaddingContentPageComHeader}">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageEndereco"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:cadastro="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:controls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:generic="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Generic;assembly=Xamarin.HLP.Mobile.AppPE"
+    Padding="{StaticResource PaddingContentPageComHeader}"
+    IsBusy="{Binding currentModel.isSearching}">
     <ContentPage.Title>
-        <OnPlatform x:TypeArguments="x:String" Android="Endereço" WinPhone="Endereço" />
+        <OnPlatform
+            x:TypeArguments="x:String"
+            Android="Endereço"
+            WinPhone="Endereço" />
     </ContentPage.Title>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <generic:TextToIntNullableConverter x:Key="TextToIntNullableConverter"/>
+            <generic:TextToIntNullableConverter x:Key="TextToIntNullableConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.BindingContext>
-        <cadastro:EnderecoViewModel/>
+        <cadastro:EnderecoViewModel />
     </ContentPage.BindingContext>
 
 
     <ScrollView>
         <StackLayout Orientation="Vertical">
             <StackLayout.Padding>
-                <OnPlatform x:TypeArguments="Thickness" Android="20,10,20,0" iOS="20,10,20,0" WinPhone="30,10,30,0"/>
+                <OnPlatform
+                    x:TypeArguments="Thickness"
+                    Android="20,10,20,0"
+                    WinPhone="30,10,30,0"
+                    iOS="20,10,20,0" />
             </StackLayout.Padding>
 
             <controls:GridSeparador Text="DADOS DO ENDEREÇO" />
 
-            <!--Endereço Principal ?-->
+            <!--  Endereço Principal ?  -->
 
-            <Label Text="Principal ?" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-            <Switch x:Name="switchPrincipal"  HorizontalOptions="Start"  IsToggled="{Binding currentModel.stPrincipal}" />
+            <Label
+                LineBreakMode="NoWrap"
+                Style="{StaticResource HeaderLabel}"
+                Text="Principal ?" />
+            <Switch
+                x:Name="switchPrincipal"
+                HorizontalOptions="Start"
+                IsToggled="{Binding currentModel.stPrincipal}" />
 
-            <!--Tipo de Endereço-->
+            <!--  Tipo de Endereço  -->
 
-            <Label Text="Tipo de Endereço *" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-            <custom:BindablePicker x:Name="BindableTipoEndereco" ItemsSource="{Binding currentModel.LtipoEnderecoBasicPickerModels, Mode=TwoWay}"  SelectedItem="{Binding TipoEnderecoBasicPickerModel, Mode=TwoWay}" />
+            <Label
+                LineBreakMode="NoWrap"
+                Style="{StaticResource HeaderLabel}"
+                Text="Tipo de Endereço *" />
+            <custom:BindablePicker
+                x:Name="BindableTipoEndereco"
+                ItemsSource="{Binding currentModel.LtipoEnderecoBasicPickerModels, Mode=TwoWay}"
+                SelectedItem="{Binding TipoEnderecoBasicPickerModel, Mode=TwoWay}" />
 
-            <!--CEP-->
+            <!--  CEP  -->
 
-            <Label Text="CEP" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
+            <Label
+                LineBreakMode="NoWrap"
+                Style="{StaticResource HeaderLabel}"
+                Text="CEP" />
             <Grid Margin="0,0,0,5">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <custom:ExtendedEntry MaxLength="9" Placeholder="Digite um CEP válido"  x:Name="EntryCep" Keyboard="Numeric" Text="{Binding currentModel.xCep }" Margin="0,0,0,0" />
+                <custom:ExtendedEntry
+                    x:Name="EntryCep"
+                    Margin="0,0,0,0"
+                    Keyboard="Numeric"
+                    MaxLength="9"
+                    Placeholder="Digite um CEP válido"
+                    Text="{Binding currentModel.xCep}" />
 
-                <Grid Grid.Column="1"  >
-                    <abstractions:SvgImage SvgPath="{StaticResource ImagemPesquisarListaProdutoAndroid}"  x:Name="SvgImageCep"
-           HeightRequest="{StaticResource HeightandWidth}" WidthRequest="{StaticResource HeightandWidth}" HorizontalOptions="Center" VerticalOptions="Center" >
+                <Grid Grid.Column="1">
+                    <abstractions:SvgImage
+                        x:Name="SvgImageCep"
+                        HeightRequest="{StaticResource HeightandWidth}"
+                        HorizontalOptions="Center"
+                        SvgPath="{StaticResource ImagemPesquisarListaProdutoAndroid}"
+                        VerticalOptions="Center"
+                        WidthRequest="{StaticResource HeightandWidth}">
                         <abstractions:SvgImage.Margin>
                             <OnPlatform x:TypeArguments="Thickness">
                                 <OnPlatform.Android>0,0,0,4</OnPlatform.Android>
@@ -65,49 +101,99 @@
 
             </Grid>
 
-            <!--Endereço-->
+            <!--  Endereço  -->
 
-            <Label Text="Endereço *" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-            <custom:ExtendedEntry MaxLength="75" x:Name="EntryName" Placeholder="Digite um Endereço" Text="{Binding currentModel.xEndereco}"/>
+            <Label
+                LineBreakMode="NoWrap"
+                Style="{StaticResource HeaderLabel}"
+                Text="Endereço *" />
+            <custom:ExtendedEntry
+                x:Name="EntryName"
+                MaxLength="75"
+                Placeholder="Digite um Endereço"
+                Text="{Binding currentModel.xEndereco}" />
 
-            <!--Número-->
+            <!--  Número  -->
 
-            <Label Text="Número *" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-            <custom:ExtendedEntry MaxLength="8" x:Name="EntryNumero" Placeholder="Digite o Número" Text="{Binding currentModel.cNumero, Converter={StaticResource TextToIntNullableConverter} , Mode=TwoWay}" Keyboard="Numeric" />
+            <Label
+                LineBreakMode="NoWrap"
+                Style="{StaticResource HeaderLabel}"
+                Text="Número *" />
+            <custom:ExtendedEntry
+                x:Name="EntryNumero"
+                Keyboard="Numeric"
+                MaxLength="8"
+                Placeholder="Digite o Número"
+                Text="{Binding currentModel.cNumero, Converter={StaticResource TextToIntNullableConverter}, Mode=TwoWay}" />
 
-            <!--Complemento-->
+            <!--  Complemento  -->
 
-            <Label Text="Complemento" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-            <custom:ExtendedEntry MaxLength="45" x:Name="EntryComplemento" Placeholder="Digite o Complemento" Text="{Binding currentModel.xComplemento , Mode=TwoWay}" />
+            <Label
+                LineBreakMode="NoWrap"
+                Style="{StaticResource HeaderLabel}"
+                Text="Complemento" />
+            <custom:ExtendedEntry
+                x:Name="EntryComplemento"
+                MaxLength="45"
+                Placeholder="Digite o Complemento"
+                Text="{Binding currentModel.xComplemento, Mode=TwoWay}" />
 
-            <!--Bairro-->
+            <!--  Bairro  -->
 
-            <Label Text="Bairro *" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-            <custom:ExtendedEntry MaxLength="45" x:Name="EntryBairro" Placeholder="Digite o Bairro " Text="{Binding currentModel.xBairro}"/>
+            <Label
+                LineBreakMode="NoWrap"
+                Style="{StaticResource HeaderLabel}"
+                Text="Bairro *" />
+            <custom:ExtendedEntry
+                x:Name="EntryBairro"
+                MaxLength="45"
+                Placeholder="Digite o Bairro "
+                Text="{Binding currentModel.xBairro}" />
 
-            <!--Cidade-->
+            <!--  Cidade  -->
 
-            <Label Text="Cidade" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-            <custom:ExtendedEntry MaxLength="45" x:Name="EntryCidade" Placeholder="Digite a Cidade" Text="{Binding currentModel.xCidade}" />
+            <Label
+                LineBreakMode="NoWrap"
+                Style="{StaticResource HeaderLabel}"
+                Text="Cidade" />
+            <custom:BindablePicker x:Name="PickerCidade" SelectedItem="{Binding currentModel.CidadeBasicPickerModel, Mode=TwoWay}" />
 
-            <!--Estado-->
+            <!--  Estado  -->
 
-            <Label Text="Estado" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-            <custom:BindablePicker x:Name="PickerEstado" ItemsSource="{Binding LEstadosBasicPickerModels}"
-                                 SelectedItem="{Binding currentModel.EstadoBasicPickerModel, Mode=TwoWay}" />
+            <Label
+                LineBreakMode="NoWrap"
+                Style="{StaticResource HeaderLabel}"
+                Text="Estado" />
+            <custom:BindablePicker
+                x:Name="PickerEstado"
+                ItemsSource="{Binding LEstadosBasicPickerModels}"
+                SelectedIndexChanged="PickerEstado_SelectedIndexChanged"
+                SelectedItem="{Binding currentModel.EstadoBasicPickerModel, Mode=TwoWay}" />
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50*"/>
-                    <ColumnDefinition Width="50*"/>
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
                 </Grid.ColumnDefinitions>
                 <StackLayout Orientation="Vertical">
-                    <Label Text="Latitude" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <custom:ExtendedEntry IsEnabled="False"  Placeholder="Latitude" Text="{Binding currentModel.xLatitude}" />
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Latitude" />
+                    <custom:ExtendedEntry
+                        IsEnabled="False"
+                        Placeholder="Latitude"
+                        Text="{Binding currentModel.xLatitude}" />
                 </StackLayout>
                 <StackLayout Grid.Column="1" Orientation="Vertical">
-                    <Label Text="Longitude" LineBreakMode="NoWrap" Style="{StaticResource HeaderLabel}"/>
-                    <custom:ExtendedEntry IsEnabled="False"  Placeholder="Latitude" Text="{Binding currentModel.xLongitude}" />
+                    <Label
+                        LineBreakMode="NoWrap"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Longitude" />
+                    <custom:ExtendedEntry
+                        IsEnabled="False"
+                        Placeholder="Latitude"
+                        Text="{Binding currentModel.xLongitude}" />
                 </StackLayout>
             </Grid>
 
@@ -115,17 +201,26 @@
     </ScrollView>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="{Binding ImageIconCancel}" Text="Cancelar" Command="{Binding CancelCommand}">
+        <ToolbarItem
+            Command="{Binding CancelCommand}"
+            Icon="{Binding ImageIconCancel}"
+            Text="Cancelar">
             <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
             </ToolbarItem.Order>
         </ToolbarItem>
-        <ToolbarItem Icon="{Binding ImageIconDelete}" Text="Deletar" Command="{Binding currentModel.DeleteCommand}">
+        <ToolbarItem
+            Command="{Binding currentModel.DeleteCommand}"
+            Icon="{Binding ImageIconDelete}"
+            Text="Deletar">
             <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
             </ToolbarItem.Order>
         </ToolbarItem>
-        <ToolbarItem Icon="{Binding ImageIconSave}" Text="Salvar" Clicked="MenuSaveItem_OnClicked"/>
+        <ToolbarItem
+            Clicked="MenuSaveItem_OnClicked"
+            Icon="{Binding ImageIconSave}"
+            Text="Salvar" />
     </ContentPage.ToolbarItems>
 
 </ContentPage>

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -16,6 +18,7 @@ using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Agenda;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros.Escalonada;
+using Xamarin.HLP.Mobile.AppPE.Model.Cidades;
 using Xamarin.HLP.Mobile.AppPE.Model.Empresa;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
@@ -431,6 +434,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownloadLocalEstoque();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPaginado<JornadaModel>();
+
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadCidades();
 
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadGrades<GradesComposicaoModel>();
@@ -1151,6 +1157,64 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
         }
 
+        private const string URL = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios";
+
+        private async Task SincronizacaoDownloadCidades()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    currentModel.Display = "buscando cidades";
+
+                    var existeCidades = App.Data.Connection.Table<CidadesModel>().Any();
+                    
+                    if (existeCidades || App.ForcarAtualizacao)
+                        return;
+
+                    var response = await client.GetAsync(URL);
+                    var bytes = await response.Content.ReadAsByteArrayAsync();
+
+                    Stream contentStream = new MemoryStream(bytes);
+
+                    if (response.Content.Headers.ContentEncoding.Contains("gzip"))
+                        contentStream = new System.IO.Compression.GZipStream(contentStream, System.IO.Compression.CompressionMode.Decompress);
+                    else if (response.Content.Headers.ContentEncoding.Contains("deflate"))
+                        contentStream = new System.IO.Compression.DeflateStream(contentStream, System.IO.Compression.CompressionMode.Decompress);
+
+                    using (var reader = new StreamReader(contentStream, Encoding.UTF8))
+                    {
+                        var json = await reader.ReadToEndAsync();
+
+                        var data = JsonConvert.DeserializeObject<List<CidadeIBGE>>(json);
+
+                        var lista = new List<CidadesModel>();
+
+                        currentModel.iCount = data.Count;
+
+                        foreach (var item in data)
+                        {
+                            lista.Add(new CidadesModel
+                            {
+                                codigoIBGE = item.id,
+                                nome = item.nome,
+                                uf = item?.microrregiao?.mesorregiao?.UF?.sigla
+                            });
+
+                            await Task.Delay(10);
+                            currentModel.iCount--;
+                        }
+
+                        App.Data.Connection.InsertAll(lista);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao buscar cidades - {ex.Message}");
+            }
+        }
+
         #endregion
 
         #region UPLOAD
@@ -1517,7 +1581,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         //        registro.dtFimEvento = (registro.dtFimEvento ?? DateTime.Now).ToLocalTime();
 
                         var lAnexos = AnexosRepository.GetAnexosAtividade(registro.idAtividadeOffline);
-                        registro.lAnexosAtividade =  new ObservableCollection<AnexosModel>(lAnexos);
+                        registro.lAnexosAtividade = new ObservableCollection<AnexosModel>(lAnexos);
                         await UtilHttp.PostAgendaToCloud(registro); // mantem registro da Local   
                     }
                 }
@@ -2112,9 +2176,22 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         var objPedido = registro as PedidoVendaModel;
                         if (objPedido != null)
                         {
-                            var idPedidoVendaOffLine = PedidoRepository.GetIdOffLine(objPedido.idPedidoVenda);
-                            if (PedidoRepository.Delete(idPedidoVendaOffLine))
+                            //var idPedidoVendaOffLine = PedidoRepository.GetIdOffLine(objPedido.idPedidoVenda);
+                            //if (PedidoRepository.Delete(idPedidoVendaOffLine))
+                            //    SavePedidoSync(registro);
+
+                            var pedido = PedidoRepository.PedidoJaSincronziado(registro as PedidoVendaModel);
+
+                            if (pedido != null)
+                            {
+                                if (pedido?.idPedidoVendaOffLine > 0)
+                                    if (PedidoRepository.Delete(pedido.idPedidoVendaOffLine ?? 0))
+                                        SavePedidoSync(registro);
+                            }
+                            else
+                            {
                                 SavePedidoSync(registro);
+                            }
                         }
                     }
                     else if (registro.GetType() == typeof(ProdutoModel))
