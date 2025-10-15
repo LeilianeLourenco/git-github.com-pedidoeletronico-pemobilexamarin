@@ -79,6 +79,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         public const string TB_INTEGRACAO = "TB_INTEGRACAO";
         public const string AspNetUsers = "AspNetUsers";
 
+        public const string TB_CIDADES = "TB_CIDADES";
+
         public const string TB_REGRAS_COMERCIAIS = "TB_REGRAS_COMERCIAIS";
         public const string TB_REGRAS_COMERCIAIS_FAIXAS = "TB_REGRAS_COMERCIAIS_FAIXAS";
         public const string TB_REGRAS_COMERCIAIS_CRITERIOS = "TB_REGRAS_COMERCIAIS_CRITERIOS";

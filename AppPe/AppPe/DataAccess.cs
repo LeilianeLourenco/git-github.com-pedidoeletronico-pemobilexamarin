@@ -1,13 +1,14 @@
 ﻿using SQLite;
 using System;
 using System.IO;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Agenda;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros.Escalonada;
+using Xamarin.HLP.Mobile.AppPE.Model.Cidades;
 using Xamarin.HLP.Mobile.AppPE.Model.Empresa;
 using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
@@ -25,10 +26,10 @@ namespace Xamarin.HLP.Mobile.AppPE
         public DataAccess()
         {
             try
-            {                
+            {
                 App.xErrorDataBase = "";
                 config = DependencyService.Get<IConfig>();
-                Connection = new SQLiteConnection(Path.Combine(config.DirectoryDB, "DB_PEDIDOELETRONICO.db3"), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true);               
+                Connection = new SQLiteConnection(Path.Combine(config.DirectoryDB, "DB_PEDIDOELETRONICO.db3"), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true);
             }
             catch (Exception ex)
             {
@@ -41,7 +42,7 @@ namespace Xamarin.HLP.Mobile.AppPE
             try
             {
                 try
-                { 
+                {
                     this.Connection.CreateTable<CurrentUserLoginModel>();
                 }
                 catch (Exception ex)
@@ -109,16 +110,18 @@ namespace Xamarin.HLP.Mobile.AppPE
                 try { this.Connection.CreateTable<PedidoVendaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_PEDIDOVENDA; }
                 try { this.Connection.CreateTable<PedidoVendaItensModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_PEDIDOVENDAITENS; }
                 try { this.Connection.CreateTable<SincronizacaoInicialEstoque>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_SINCRONIZACAOESTOQUE; }
-                try { this.Connection.CreateTable<EmailPedidoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + "EmailPedidoModel"; } 
-                try { this.Connection.CreateTable<AtividadeAgendaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_ATIVIDADES; } 
-                try { this.Connection.CreateTable<AnexosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_ANEXOS; } 
+                try { this.Connection.CreateTable<EmailPedidoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + "EmailPedidoModel"; }
+                try { this.Connection.CreateTable<AtividadeAgendaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_ATIVIDADES; }
+                try { this.Connection.CreateTable<AnexosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_ANEXOS; }
                 try { this.Connection.CreateTable<TipoAtividadeAgendaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_TIPOATIVIDADESCRM; }
                 try { this.Connection.CreateTable<JornadaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_JORNADA_TRABALHO; }
                 try { this.Connection.CreateTable<JornadaHorariosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_JORNADA_TRABALHO_HORARIOS; }
                 try { this.Connection.CreateTable<FormaPagamentoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_FORMA_PAGAMENTO; }
                 try { this.Connection.CreateTable<StatusRepresentanteProibido>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_STATUS_PROIBIDO; }
-                try { this.Connection.CreateTable<PermissoesRepresentantesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_PERMISSOES_REPRESENTANTES; }              
+                try { this.Connection.CreateTable<PermissoesRepresentantesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_PERMISSOES_REPRESENTANTES; }
                 try { this.Connection.CreateTable<EquipeRepresentantesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_EQUIPE_REPRESENTANTES; }
+
+                try { this.Connection.CreateTable<CidadesModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_CIDADES; }
 
                 try { this.Connection.CreateTable<RegrasComerciaisModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS; }
                 try { this.Connection.CreateTable<RcFaixasModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_REGRAS_COMERCIAIS_FAIXAS; }
