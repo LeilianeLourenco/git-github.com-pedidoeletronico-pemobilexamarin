@@ -2176,22 +2176,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         var objPedido = registro as PedidoVendaModel;
                         if (objPedido != null)
                         {
-                            //var idPedidoVendaOffLine = PedidoRepository.GetIdOffLine(objPedido.idPedidoVenda);
-                            //if (PedidoRepository.Delete(idPedidoVendaOffLine))
-                            //    SavePedidoSync(registro);
-
-                            var pedido = PedidoRepository.PedidoJaSincronziado(registro as PedidoVendaModel);
-
-                            if (pedido != null)
-                            {
-                                if (pedido?.idPedidoVendaOffLine > 0)
-                                    if (PedidoRepository.Delete(pedido.idPedidoVendaOffLine ?? 0))
-                                        SavePedidoSync(registro);
-                            }
-                            else
-                            {
+                            var idPedidoVendaOffLine = PedidoRepository.GetIdOffLine(objPedido.idPedidoVenda);
+                            if (PedidoRepository.Delete(idPedidoVendaOffLine))
                                 SavePedidoSync(registro);
-                            }
                         }
                     }
                     else if (registro.GetType() == typeof(ProdutoModel))
