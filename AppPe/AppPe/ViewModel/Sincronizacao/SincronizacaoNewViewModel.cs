@@ -1168,7 +1168,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     currentModel.Display = "buscando cidades";
 
                     var existeCidades = App.Data.Connection.Table<CidadesModel>().Any();
-                    
+
                     if (existeCidades || App.ForcarAtualizacao)
                         return;
 
@@ -1568,8 +1568,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     // verifico qual é a alteração mais recente.
                     // se for a offline, subo as informações para a nuvem.
                     // se for a da nuvem, eu não faço nada pois o próximo processo é o processo de Download.
-                    if (dtUltimaAlteracaoNuvem < dtUltimaAlteracaoLocal ||
-                        dtUltimaAlteracaoNuvem == dtUltimaAlteracaoLocal)
+                    if (dtUltimaAlteracaoNuvem.Value.AddMinutes(-10) <= dtUltimaAlteracaoLocal)
                     {
                         //if (registro.dtInicioEvento != null)
                         //    if ((registro.dtInicioEvento ?? DateTime.Now).Kind != DateTimeKind.Local)
