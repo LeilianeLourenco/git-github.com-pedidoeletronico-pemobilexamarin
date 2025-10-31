@@ -28,7 +28,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
 
         public string GetNameDevice()
         {
-           return bluetoothManager.currentDevice.Name;
+            return bluetoothManager.currentDevice.Name;
         }
 
         public bool Connect()
@@ -36,7 +36,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
             try
             {
                 var retorno = bluetoothManager.opneDeviceConnection();
-                
+
                 return retorno;
             }
             catch (Exception ex)
@@ -45,6 +45,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
             }
 
         }
+
+        public bool EnsureConnected()
+        {
+            return bluetoothManager.EnsureConnected();
+        }
+
         public void Write(string valor, string position)
         {
             bluetoothManager.Write(valor, position);

@@ -144,7 +144,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public PedidoToPrintViewModel()
         {
             xTextoPrint = "IMPRIMIR VIA BLUETOOTH";
-            PrintCommand = new Command(() =>
+            PrintCommand = new Command(async () =>
             {
                 if (Device.RuntimePlatform == Device.iOS)
                 {
@@ -152,7 +152,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 }
                 else
                 {
-                    SendToPrint();
+                   await SendToPrint();
                 }
             });
 
@@ -834,28 +834,30 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             return (x, y);
         }
 
-        public void SendToPrint()
+        public async Task SendToPrint()
         {
             if (App.BluetoothLe == null)
-            {
                 return;
-            }
 
             bool bOutraImpressora = false;
 
-            if (App.BluetoothLe.Connect() == false)
+            // tenta conectar
+            if (!App.BluetoothLe.EnsureConnected()) // método que garante reconexão
             {
-                App.Messages.ShowAsync("Nenhuma impressora bluetooth foi encontrada nos dispositivos pareados.");
+                await App.Messages.ShowAsync("Nenhuma impressora bluetooth foi encontrada nos dispositivos pareados.");
                 UtilNavidate.PopPopupNew();
                 return;
             }
+
             var separador = "=".PadLeft(32, '=');
 
-            if (App.BluetoothLe.GetNameDevice().ToUpper().Equals("MPT-II"))
+            string deviceName = App.BluetoothLe.GetNameDevice().ToUpper();
+
+            if (deviceName.Equals("MPT-II"))
             {
                 separador = "=".PadLeft(iColunasPrinterMenor, '=');
             }
-            else if (App.BluetoothLe.GetNameDevice().ToUpper().Equals("MPT-III") || App.BluetoothLe.GetNameDevice().ToUpper().Equals("DPP-350"))
+            else if (deviceName.Equals("MPT-III") || deviceName.Equals("DPP-350"))
             {
                 separador = "=".PadLeft(iColunas, '=');
             }
@@ -864,36 +866,45 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 bOutraImpressora = true;
             }
 
+            try
+            {
+                App.BluetoothLe.Write((xTitle + Environment.NewLine).RemoverAcentos(), "center");
+                App.BluetoothLe.Write(xEmpresa.RemoverAcentos(), "center");
+                App.BluetoothLe.Write(xEnderecoEmpresa.RemoverAcentos(), "left"); if (bOutraImpressora)
+                    App.BluetoothLe.Write(separador + Environment.NewLine, "center");
+                else
+                    App.BluetoothLe.Write(separador, "left");
 
-            App.BluetoothLe.Write((xTitle + Environment.NewLine).RemoverAcentos(), "center");
-            App.BluetoothLe.Write(xEmpresa.RemoverAcentos(), "center");
-            App.BluetoothLe.Write(xEnderecoEmpresa.RemoverAcentos(), "left");
-            if (bOutraImpressora)
-                App.BluetoothLe.Write(separador + Environment.NewLine, "center");
-            else
-                App.BluetoothLe.Write(separador, "left");
+                App.BluetoothLe.Write(xCliente.RemoverAcentos(), "left");
 
-            App.BluetoothLe.Write(xCliente.RemoverAcentos(), "left");
+                if (bOutraImpressora)
+                    App.BluetoothLe.Write(separador + Environment.NewLine, "center");
+                else
+                    App.BluetoothLe.Write(separador, "left");
 
-            if (bOutraImpressora)
-                App.BluetoothLe.Write(separador + Environment.NewLine, "center");
-            else
-                App.BluetoothLe.Write(separador, "left");
+                if (bOutraImpressora)
+                    App.BluetoothLe.Write(xheader_item.RemoverAcentos() + Environment.NewLine, "center");
+                else
+                    App.BluetoothLe.Write(xheader_item.RemoverAcentos(), "left");
 
+                if (bOutraImpressora)
+                    App.BluetoothLe.Write(separador + Environment.NewLine, "center");
+                else
+                    App.BluetoothLe.Write(separador, "left");
 
-            if (bOutraImpressora)
-                App.BluetoothLe.Write(xheader_item.RemoverAcentos() + Environment.NewLine, "center");
-            else
-                App.BluetoothLe.Write(xheader_item.RemoverAcentos(), "left");
+                App.BluetoothLe.Write(itens.RemoverAcentos(), "left");
+                App.BluetoothLe.Write((totais + Environment.NewLine).RemoverAcentos(), "left");
+                App.BluetoothLe.Write((agradecimento.RemoverAcentos() + Environment.NewLine + Environment.NewLine), "right");
+            }
+            catch (IOException ex)
+            {
+                // Broken pipe ou outro erro de escrita
+                App.BluetoothLe.Close();   // fecha a conexão
+                await App.Messages.ShowAsync("Erro ao imprimir: reconecte a impressora.");
+                return;
+            }
 
-            if (bOutraImpressora)
-                App.BluetoothLe.Write(separador + Environment.NewLine, "center");
-            else
-                App.BluetoothLe.Write(separador, "left");
-
-            App.BluetoothLe.Write(itens.RemoverAcentos(), "left");
-            App.BluetoothLe.Write((totais + Environment.NewLine).RemoverAcentos(), "left");
-            App.BluetoothLe.Write((agradecimento.RemoverAcentos() + Environment.NewLine + Environment.NewLine), "right");
+            await Task.Delay(300);
             UtilNavidate.PopPopupNew();
         }
     }
