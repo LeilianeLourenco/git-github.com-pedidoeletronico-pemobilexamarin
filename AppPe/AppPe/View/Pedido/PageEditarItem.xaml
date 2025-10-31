@@ -19,7 +19,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <AbsoluteLayout Grid.Row="0" BackgroundColor="#ffff">
+            <AbsoluteLayout Grid.Row="0">
                 <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
                     <Grid Padding="0,0,0,0">
                         <Grid.RowSpacing>
@@ -73,7 +73,6 @@
                                 VerticalTextAlignment="Center" />
                         </StackLayout>
 
-
                         <Frame
                             Grid.Row="2"
                             Padding="0,0,0,0"
@@ -116,7 +115,8 @@
                                     <custom:BindablePicker
                                         x:Name="BindableLocalEstoque"
                                         ItemsSource="{Binding ListaLocalEstoque, Mode=TwoWay}"
-                                        SelectedItem="{Binding CurrentLocalEstoque, Mode=TwoWay}" />
+                                        SelectedItem="{Binding CurrentLocalEstoque, Mode=TwoWay}"
+                                        TextColor="Black" />
                                 </Grid>
 
                                 <Grid
@@ -298,6 +298,7 @@
                                             LineBreakMode="NoWrap"
                                             Style="{StaticResource HeaderLabel}"
                                             Text="R$ Valor por Peso" />
+
                                         <custom:ExtendedEntry
                                             IsEnabled="False"
                                             IsVisible="{Binding bExibirValorPorPeso}"
@@ -312,6 +313,7 @@
                                             LineBreakMode="NoWrap"
                                             Style="{StaticResource HeaderLabel}"
                                             Text="% Ipi Venda" />
+
                                         <custom:ExtendedEntry
                                             x:Name="EntryIpiVenda"
                                             IsEnabled="False"
@@ -319,7 +321,8 @@
                                             MaxLength="6"
                                             Placeholder="% ipi"
                                             Text="{Binding pIpiVenda, Converter={StaticResource DecimalToStringConverter}}"
-                                            TextChanged="EntryImpostos_OnTextChanged" />
+                                            TextChanged="EntryImpostos_OnTextChanged"
+                                            TextColor="Black" />
 
                                         <!--  ST DE VENDA  -->
                                         <Label
@@ -327,6 +330,7 @@
                                             LineBreakMode="NoWrap"
                                             Style="{StaticResource HeaderLabel}"
                                             Text="% St Venda" />
+
                                         <custom:ExtendedEntry
                                             x:Name="EntryStVenda"
                                             IsEnabled="False"
@@ -334,13 +338,15 @@
                                             MaxLength="6"
                                             Placeholder="% st"
                                             Text="{Binding pStVenda, Converter={StaticResource DecimalToStringConverter}}"
-                                            TextChanged="EntryImpostos_OnTextChanged" />
+                                            TextChanged="EntryImpostos_OnTextChanged"
+                                            TextColor="Black" />
 
                                         <Label
                                             Margin="5,5,0,0"
                                             LineBreakMode="NoWrap"
                                             Style="{StaticResource HeaderLabel}"
                                             Text="Total s/impostos" />
+
                                         <Label
                                             Margin="5,5,0,0"
                                             Text="{Binding vSubTotalSemImpostos, Converter={StaticResource FormatDecimalConverter}}"

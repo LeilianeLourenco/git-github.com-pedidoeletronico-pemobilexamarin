@@ -2,9 +2,8 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Support.V4.App;
 using Android.Views;
+using AndroidX.Core.View;
 using FFImageLoading.Forms.Platform;
 using ImageCircle.Forms.Plugin.Droid;
 using System;
@@ -13,8 +12,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TEditor.Droid;
-using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Droid.Services;
+using AndroidResource = Android.Resource;
+using AndroidView = Android.Views.View;
 using Color = Android.Graphics.Color;
 
 namespace Xamarin.HLP.Mobile.AppPE.Droid
@@ -32,10 +32,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
+
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
 
             this.Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
+
+            // Inicializações de plugins
             ImageCircleRenderer.Init();
             CachedImageRenderer.Init(false);
             CachedImageRenderer.InitImageViewHandler();
@@ -47,8 +50,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             DisplayCrashReport();
             CheckAndRequestPermissions();
 
+            var content = FindViewById<AndroidView>(AndroidResource.Id.Content);
+            ViewCompat.SetOnApplyWindowInsetsListener(content, new Services.InsetsListener());
+
+            Window.SetStatusBarColor(Color.ParseColor("#1565C0"));
+
             LoadApplication(new App());
-            Window.SetStatusBarColor(Color.ParseColor("#28B6F6"));
         }
 
         private void CheckAndRequestPermissions()
@@ -65,7 +72,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             }
 
             if (permissionsToRequest.Any())
-                RequestPermissions(permissionsToRequest.ToArray(), 1000); 
+                RequestPermissions(permissionsToRequest.ToArray(), 1000);
         }
 
         private void CheckAndRequestBluetoothPermission()
@@ -79,7 +86,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
             {
                 if (CheckSelfPermission(Manifest.Permission.PostNotifications) != Permission.Granted)
-                    RequestPermissions(new string[] { Manifest.Permission.PostNotifications }, RequestNotificationPermissionCode); 
+                    RequestPermissions(new string[] { Manifest.Permission.PostNotifications }, RequestNotificationPermissionCode);
             }
         }
 
