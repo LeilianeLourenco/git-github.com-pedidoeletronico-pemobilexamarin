@@ -1,107 +1,198 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:chartControls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml.ChartControls;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:dashBoard="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.DashBoard.PageDashBoard"
-             Title="DashBoard">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.DashBoard.PageDashBoard"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:Xamarin.HLP.Mobile.AppPE.Abstractions;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:chartControls="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml.ChartControls;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:dashBoard="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard;assembly=Xamarin.HLP.Mobile.AppPE"
+    Title="DashBoard">
     <ContentPage.BindingContext>
-        <dashBoard:DashBoardViewModel/>
+        <dashBoard:DashBoardViewModel />
     </ContentPage.BindingContext>
 
-    <ScrollView BackgroundColor="{StaticResource CinzaMedio}" Margin="5,0,5,0">
-        <StackLayout Orientation="Vertical" Margin="0" Padding="0,5,0,0">
+    <ScrollView Margin="5,0,5,0" BackgroundColor="{StaticResource CinzaMedio}">
+        <StackLayout
+            Margin="0"
+            Padding="0,5,0,0"
+            Orientation="Vertical">
             <Frame Padding="0,0,0,0" HasShadow="True">
                 <StackLayout Orientation="Vertical" Spacing="5">
                     <Grid>
                         <Grid.Padding>
-                            <OnPlatform x:TypeArguments="Thickness" WinPhone="0,0,0,0" iOS="5,0,5,0" Android="0,0,0,0"/>
+                            <OnPlatform
+                                x:TypeArguments="Thickness"
+                                Android="0,0,0,0"
+                                WinPhone="0,0,0,0"
+                                iOS="5,0,5,0" />
                         </Grid.Padding>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50*"/>
-                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="50*" />
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="btnTotais" Margin="0" IsVisible="{Binding isAdm}" Text="{Binding labelTotal}" Style="{StaticResource Info}"/>
-                        <Button Grid.Column="1" x:Name="btntualizaChart" Margin="0" Text="Atualizar" Style="{StaticResource Primary}"  />
+                        <Button
+                            x:Name="btnTotais"
+                            Margin="0"
+                            IsVisible="{Binding isAdm}"
+                            Style="{StaticResource Info}"
+                            Text="{Binding labelTotal}" />
+                        <Button
+                            x:Name="btntualizaChart"
+                            Grid.Column="1"
+                            Margin="0"
+                            Style="{StaticResource Primary}"
+                            Text="Atualizar" />
                     </Grid>
 
-                    <chartControls:GridChartFaturamentoSemestral  x:Name="ChartFaturamento" />
+                    <chartControls:GridChartFaturamentoSemestral x:Name="ChartFaturamento" />
                 </StackLayout>
             </Frame>
 
-            <Frame HasShadow="True" Padding="0,0,0,0" >
+            <Frame Padding="0,0,0,0" HasShadow="True">
                 <StackLayout Orientation="Vertical" Spacing="0">
-                    <Grid BackgroundColor="#7DB043" Padding="7,7,7,7">
-                        <Label Text="Informações Adicionais" TextColor="White" HorizontalTextAlignment="Center" Style="{StaticResource Medium}" FontAttributes="Bold"/>
+                    <Grid Padding="7,7,7,7" BackgroundColor="#7DB043">
+                        <Label
+                            FontAttributes="Bold"
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource Medium}"
+                            Text="Informações Adicionais"
+                            TextColor="White" />
                     </Grid>
-                    <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Branco}" Spacing="10" Padding="7,7,7,7">
+                    <StackLayout
+                        Padding="7,7,7,7"
+                        BackgroundColor="{StaticResource Branco}"
+                        Orientation="Vertical"
+                        Spacing="10">
 
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <abstractions:SvgImage SvgPath="{StaticResource ImagemHomeValor}" VerticalOptions="Center" HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}" WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}"/>
+                            <abstractions:SvgImage
+                                HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}"
+                                SvgPath="{StaticResource ImagemHomeValor}"
+                                VerticalOptions="Center"
+                                WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}" />
 
                             <Grid Grid.Column="1">
-                                <Label Text="Vendas Hoje" TextColor="{StaticResource CinzaEscuro}" VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="Bold"/>
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Vendas Hoje"
+                                    TextColor="{StaticResource CinzaEscuro}"
+                                    VerticalOptions="Center"
+                                    VerticalTextAlignment="Center" />
                             </Grid>
 
-                            <Label Grid.Column="2" Text="{Binding VendasHoje, Converter={StaticResource FormatDecimalConverter}}" FontAttributes="Bold" TextColor="{StaticResource VerdePrincipal}" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                            <Label
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding VendasHoje, Converter={StaticResource FormatDecimalConverter}}"
+                                TextColor="{StaticResource VerdePrincipal}"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center" />
 
                         </Grid>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <abstractions:SvgImage SvgPath="{StaticResource ImagemHomeValor}" VerticalOptions="Center" HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}" WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}"/>
+                            <abstractions:SvgImage
+                                HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}"
+                                SvgPath="{StaticResource ImagemHomeValor}"
+                                VerticalOptions="Center"
+                                WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}" />
 
                             <Grid Grid.Column="1">
-                                <Label Text="Vendas Ontem" TextColor="{StaticResource CinzaEscuro}" VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="Bold"/>
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Vendas Ontem"
+                                    TextColor="{StaticResource CinzaEscuro}"
+                                    VerticalOptions="Center"
+                                    VerticalTextAlignment="Center" />
                             </Grid>
 
-                            <Label Grid.Column="2" Text="{Binding VendasOntem, Converter={StaticResource FormatDecimalConverter}}" FontAttributes="Bold" TextColor="{StaticResource VerdePrincipal}" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                            <Label
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding VendasOntem, Converter={StaticResource FormatDecimalConverter}}"
+                                TextColor="{StaticResource VerdePrincipal}"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center" />
 
                         </Grid>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <abstractions:SvgImage SvgPath="{StaticResource ImagemHomePedido}" VerticalOptions="Center" HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}" WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}"/>
+                            <abstractions:SvgImage
+                                HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}"
+                                SvgPath="{StaticResource ImagemHomePedido}"
+                                VerticalOptions="Center"
+                                WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}" />
 
                             <Grid Grid.Column="1">
-                                <Label Text="Orçamentos em Aberto" TextColor="{StaticResource CinzaEscuro}" VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="Bold"/>
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Orçamentos em Aberto"
+                                    TextColor="{StaticResource CinzaEscuro}"
+                                    VerticalOptions="Center"
+                                    VerticalTextAlignment="Center" />
                             </Grid>
 
-                            <Label Grid.Column="2" Text="{Binding OrcamentosAbertos}" FontAttributes="Bold" TextColor="{StaticResource VerdePrincipal}" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                            <Label
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding OrcamentosAbertos}"
+                                TextColor="{StaticResource VerdePrincipal}"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center" />
 
                         </Grid>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <abstractions:SvgImage SvgPath="{StaticResource ImagemHomeCliente}" VerticalOptions="Center" HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}" WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}"/>
+                            <abstractions:SvgImage
+                                HeightRequest="{StaticResource HeightHomeInformacoesAdicionais}"
+                                SvgPath="{StaticResource ImagemHomeCliente}"
+                                VerticalOptions="Center"
+                                WidthRequest="{StaticResource HeightHomeInformacoesAdicionais}" />
 
                             <Grid Grid.Column="1">
-                                <Label Text="Clientes em Prospecção" TextColor="{StaticResource CinzaEscuro}" VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="Bold"/>
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Clientes em Prospecção"
+                                    TextColor="{StaticResource CinzaEscuro}"
+                                    VerticalOptions="Center"
+                                    VerticalTextAlignment="Center" />
                             </Grid>
 
-                            <Label Grid.Column="2" Text="{Binding Clientesprospect}" FontAttributes="Bold" TextColor="{StaticResource VerdePrincipal}" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                            <Label
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding Clientesprospect}"
+                                TextColor="{StaticResource VerdePrincipal}"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center" />
 
                         </Grid>
                     </StackLayout>
@@ -109,39 +200,72 @@
             </Frame>
 
             <StackLayout Padding="0,10,0,0">
-                <Frame HasShadow="True" Padding="0,0,0,0" >
+                <Frame Padding="0,0,0,0" HasShadow="True">
                     <StackLayout Orientation="Vertical" Spacing="0">
-                        <Grid BackgroundColor="#cb2714" Padding="7,7,7,7">
-                            <Label Text="Clientes que não compram" TextColor="White" HorizontalTextAlignment="Center" Style="{StaticResource Medium}" FontAttributes="Bold"/>
+                        <Grid Padding="7,7,7,7" BackgroundColor="#cb2714">
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource Medium}"
+                                Text="Clientes que não compram"
+                                TextColor="White" />
                         </Grid>
-                        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Branco}" Spacing="10" Padding="7,7,7,7">
+                        <StackLayout
+                            Padding="7,7,7,7"
+                            BackgroundColor="{StaticResource Branco}"
+                            Orientation="Vertical"
+                            Spacing="10">
 
-                            <ScrollView Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                <StackLayout Orientation="Horizontal" Margin="10,10,10,10"  x:Name="ScrollButtonsFiltros">
-                                    <Button Text="MÊS+" WidthRequest="90" HeightRequest="40" CornerRadius="50"  
-                                        Command="{Binding AplicaFiltroCommand}" CommandParameter="mes" Clicked="ButtonFiltros_OnClicked">
+                            <ScrollView HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                <StackLayout
+                                    x:Name="ScrollButtonsFiltros"
+                                    Margin="10,10,10,10"
+                                    Orientation="Horizontal">
+                                    <Button
+                                        Clicked="ButtonFiltros_OnClicked"
+                                        Command="{Binding AplicaFiltroCommand}"
+                                        CommandParameter="mes"
+                                        CornerRadius="50"
+                                        HeightRequest="40"
+                                        Text="MÊS+"
+                                        WidthRequest="90">
                                         <Button.BackgroundColor>
-                                            <OnPlatform x:TypeArguments="Color" Android="{StaticResource CinzaEscuro}"/>
+                                            <OnPlatform x:TypeArguments="Color" Android="{StaticResource CinzaEscuro}" />
                                         </Button.BackgroundColor>
                                         <Button.TextColor>
-                                            <OnPlatform x:TypeArguments="Color" Android="{StaticResource Branco}" iOS="{StaticResource CinzaEscuro}" />
+                                            <OnPlatform
+                                                x:TypeArguments="Color"
+                                                Android="{StaticResource Branco}"
+                                                iOS="{StaticResource CinzaEscuro}" />
                                         </Button.TextColor>
                                     </Button>
 
-                                    <Button Text="SEMANA+"             
-                 Command="{Binding AplicaFiltroCommand}" CommandParameter="semana" Clicked="ButtonFiltros_OnClicked"
-                 CornerRadius="50" WidthRequest="100" HeightRequest="40">
-                                    </Button>
-                                    
-                                    <Button Text="TRIMESTRE+"               
-                 Command="{Binding AplicaFiltroCommand}" CommandParameter="3meses" Clicked="ButtonFiltros_OnClicked"
-                 CornerRadius="50" WidthRequest="120" HeightRequest="40">
-                                    </Button>
-                                    
-                                    <Button Text="SEMESTRE+"              
-                 Command="{Binding AplicaFiltroCommand}" CommandParameter="6meses" Clicked="ButtonFiltros_OnClicked"
-                 CornerRadius="50" WidthRequest="120" HeightRequest="40">
-                                    </Button>
+                                    <Button
+                                        Clicked="ButtonFiltros_OnClicked"
+                                        Command="{Binding AplicaFiltroCommand}"
+                                        CommandParameter="semana"
+                                        CornerRadius="50"
+                                        HeightRequest="40"
+                                        Text="SEMANA+"
+                                        WidthRequest="100" />
+
+                                    <Button
+                                        Clicked="ButtonFiltros_OnClicked"
+                                        Command="{Binding AplicaFiltroCommand}"
+                                        CommandParameter="3meses"
+                                        CornerRadius="50"
+                                        HeightRequest="40"
+                                        Text="TRIMESTRE+"
+                                        WidthRequest="120" />
+
+                                    <Button
+                                        Clicked="ButtonFiltros_OnClicked"
+                                        Command="{Binding AplicaFiltroCommand}"
+                                        CommandParameter="6meses"
+                                        CornerRadius="50"
+                                        HeightRequest="40"
+                                        Text="SEMESTRE+"
+                                        WidthRequest="120" />
                                 </StackLayout>
                             </ScrollView>
 
@@ -151,12 +275,15 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Button Text="Pesquisar" HeightRequest="40"                                       
-                                        CornerRadius="10" Grid.Row="0"
-                                            BackgroundColor="#cb2714" TextColor="White"
-                                                Command="{Binding PesquisarCommand}">
-                                    </Button>
-                                    
+                                    <Button
+                                        Grid.Row="0"
+                                        BackgroundColor="#cb2714"
+                                        Command="{Binding PesquisarCommand}"
+                                        CornerRadius="10"
+                                        HeightRequest="40"
+                                        Text="Pesquisar"
+                                        TextColor="White" />
+
                                 </Grid>
                             </StackLayout>
 

@@ -390,7 +390,10 @@
                             iOS="0,25,0,0" />
                     </Setter.Value>
                 </Setter>
+            </Style>
 
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarTextColor" Value="White" />
             </Style>
 
             <Style x:Key="Primary" TargetType="Button">

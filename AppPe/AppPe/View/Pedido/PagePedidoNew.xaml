@@ -562,6 +562,7 @@
         <ContentPage
             x:Name="PageItens"
             Title="Itens"
+            BackgroundColor="{StaticResource Branco}"
             Icon="{StaticResource IconEstoque}">
             <Grid>
                 <Grid.RowDefinitions>

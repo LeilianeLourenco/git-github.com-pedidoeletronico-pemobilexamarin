@@ -1,38 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:pesquisa="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Pesquisas.PagePesquisaPadrao" IsBusy="{Binding IsBusy}">
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Pesquisas.PagePesquisaPadrao"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:pesquisa="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    IsBusy="{Binding IsBusy}">
     <ContentPage.BindingContext>
-        <pesquisa:PesquisaPadraoViewModel/>
+        <pesquisa:PesquisaPadraoViewModel />
     </ContentPage.BindingContext>
-    <Grid>
+    <Grid BackgroundColor="{StaticResource Branco}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid IsVisible="{Binding bFind}" Padding="5,5,5,5">
-            <xaml:SearchPE x:Name="SearchBarPesquisa" SearchCommand="{Binding SearchCommand}" Placeholder="pesquisar..." Text="{Binding xFiltro, Mode=TwoWay}" />
+        <Grid Padding="5,5,5,5" IsVisible="{Binding bFind}">
+            <xaml:SearchPE
+                x:Name="SearchBarPesquisa"
+                Placeholder="pesquisar..."
+                SearchCommand="{Binding SearchCommand}"
+                Text="{Binding xFiltro, Mode=TwoWay}" />
         </Grid>
-        <custom:InfiniteSimpleListView x:Name="ListViewDados" Grid.Row="1" ItemsSource="{Binding LItens}"
-                                 SelectedItem="{Binding ItemSelected}"
-                                 LoadMoreCommand="{Binding LoadItensCommand}"
-                                 ItemSelected="ListView_OnItemSelected" >
+        <custom:InfiniteSimpleListView
+            x:Name="ListViewDados"
+            Grid.Row="1"
+            ItemSelected="ListView_OnItemSelected"
+            ItemsSource="{Binding LItens}"
+            LoadMoreCommand="{Binding LoadItensCommand}"
+            SelectedItem="{Binding ItemSelected}">
             <x:Arguments>
                 <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
             </x:Arguments>
             <!--<ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>-->
             <custom:InfiniteSimpleListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Display }" Detail="{Binding Detail}" TextColor="{StaticResource CinzaEscuro}" DetailColor="{StaticResource CinzaApresentacaoCliente}" />
+                    <TextCell
+                        Detail="{Binding Detail}"
+                        DetailColor="{StaticResource CinzaApresentacaoCliente}"
+                        Text="{Binding Display}"
+                        TextColor="{StaticResource CinzaEscuro}" />
                 </DataTemplate>
             </custom:InfiniteSimpleListView.ItemTemplate>
 
         </custom:InfiniteSimpleListView>
     </Grid>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="{Binding ImageIconSearch}" Command="{Binding HabiliteToSearchCommand}"/>
+        <ToolbarItem Command="{Binding HabiliteToSearchCommand}" Icon="{Binding ImageIconSearch}" />
     </ContentPage.ToolbarItems>
 </ContentPage>

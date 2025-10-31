@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="350" android:versionName="15.0.100" package="com.ptbr.pedidoeletronico" android:installLocation="preferExternal">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="352" android:versionName="15.0.102" package="com.ptbr.pedidoeletronico" android:installLocation="preferExternal">
 	<!-- Permissões -->
-	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="35" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

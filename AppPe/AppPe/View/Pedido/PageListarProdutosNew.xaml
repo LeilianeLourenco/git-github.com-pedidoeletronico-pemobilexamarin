@@ -9,6 +9,7 @@
     xmlns:pedido="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
     xmlns:pedido1="clr-namespace:Xamarin.HLP.Mobile.AppPE.View.Converter.Pedido;assembly=Xamarin.HLP.Mobile.AppPE"
     xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    BackgroundColor="{StaticResource Branco}"
     IsBusy="{Binding IsBusy}">
     <ContentPage.Title>
         <OnPlatform
