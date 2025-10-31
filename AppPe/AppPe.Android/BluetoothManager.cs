@@ -130,9 +130,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
             }
         }
 
-
-
-
         public void close(IDisposable aConnectedObject)
         {
             if (aConnectedObject == null) return;
@@ -150,62 +147,63 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid
 
         public void closeAll()
         {
-
             try
             {
-                currentDevice.Dispose();
-                close(mSocket);
-                close(mStream);
-                close(mReader);
+                mReader?.Close();
+                mStream?.Close();
+                mSocket?.Close();
             }
             catch (Exception ex)
             {
-                throw ex;
+            }
+            finally
+            {
+                mReader = null;
+                mStream = null;
+                mSocket = null;
             }
         }
+        public bool EnsureConnected()
+        {
+            if (mSocket == null || !mSocket.IsConnected)
+            {
+                return opneDeviceConnection(); // tenta abrir a conexão
+            }
+            return true;
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="xValor"></param>
-        /// <param name="position">left - right - center </param>
         public void Write(string xValor, string position)
         {
             try
             {
-
-                if (string.IsNullOrEmpty(position) || position.ToUpper().Equals("LEFT"))
+                if (!EnsureConnected())
                 {
-                    byte[] left = { 0x1b, 0x61, 0x00 }; // left-aligned
-
-                    mSocket.OutputStream.Write(left, 0, left.Length);
-                }
-                else if (position.ToUpper().Equals("RIGHT"))
-                {
-                    byte[] right = { 0x1b, 0x61, 0x02 }; // right-aligned
-                    mSocket.OutputStream.Write(right, 0, right.Length);
-                }
-                else if (position.ToUpper().Equals("CENTER"))
-                {
-                    byte[] center = { 0x1b, (byte)'a', 0x01 }; // center alignment
-                    mSocket.OutputStream.Write(center, 0, center.Length);
+                    throw new IOException("Não foi possível conectar à impressora");
                 }
 
-                var xprint = System.Text.Encoding.GetEncoding(Encoding.ASCII.CodePage).GetBytes(xValor);
+                // alinhamento
+                if (string.IsNullOrEmpty(position) || position.ToUpper() == "LEFT")
+                {
+                    mSocket.OutputStream.Write(new byte[] { 0x1b, 0x61, 0x00 }, 0, 3);
+                }
+                else if (position.ToUpper() == "RIGHT")
+                {
+                    mSocket.OutputStream.Write(new byte[] { 0x1b, 0x61, 0x02 }, 0, 3);
+                }
+                else if (position.ToUpper() == "CENTER")
+                {
+                    mSocket.OutputStream.Write(new byte[] { 0x1b, (byte)'a', 0x01 }, 0, 3);
+                }
+
+                var xprint = Encoding.ASCII.GetBytes(xValor);
                 mSocket.OutputStream.Write(xprint, 0, xprint.Length);
-
             }
-            catch (Exception ex)
+            catch (IOException ex)
             {
-                BluetoothLE.bluetoothManager = new BluetoothManager();
-                return;
-
+                // socket quebrado, fecha tudo para tentar reconectar na próxima impressão
+                closeAll();
+                throw;
             }
         }
     }
-
-
-
-
-
 }
