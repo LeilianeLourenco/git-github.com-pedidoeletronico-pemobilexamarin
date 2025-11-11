@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hlp.PedidoEletronico.Domain.Business.Calculos;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -1051,6 +1052,27 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     return null;
                 }
 
+                var validacaoProdutos = ValidarDescontoMaximo(registro);
+
+                if (!validacaoProdutos.ProdutosErrados.Any() && validacaoProdutos.ProdutosAlterados.Any())
+                {
+                    var nomes = string.Join(", ", validacaoProdutos.ProdutosAlterados.Select(p => p.xNome));
+                    var mensagem = $"O(s) produto(s): {nomes}, tiveram alteração no valor. Deseja continuar?";
+
+                    bool continuar = await App.Current.MainPage.DisplayAlert("Confirmação", mensagem, "Sim", "Não");
+
+                    if (!continuar)
+                        return null;
+                }
+
+                if (validacaoProdutos.ProdutosErrados.Any())
+                {
+                    var nomes = string.Join(", ", validacaoProdutos.ProdutosErrados.Select(p => p.xNome));
+                    var mensagem = $"O(s) produto(s): {nomes}, ultrapassaram o desconto máximo permitido.";
+
+                    await App.Messages.ShowAsync(mensagem);
+                    return null;
+                }
 
                 registro.idPedidoVendaOffLine =
                     registro.idPedidoVenda = registro.idOrcamentoOrigem = registro.idPedidoOrigem = null;
@@ -1109,6 +1131,48 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 //Insights.Report(ex, Insights.Severity.Error);
                 return new PedidoVendaModel();
             }
+        }
+
+        public static ResultadoValidacaoDesconto ValidarDescontoMaximo(PedidoVendaModel pedido)
+        {
+            var resultado = new ResultadoValidacaoDesconto();
+
+            try
+            {
+                foreach (var item in pedido.lItens)
+                {
+                    var tabelaPreco = TabelaPrecoRepository.GetTabelaPreco(item.idTabelaPreco);
+                    var produto = ProdutoRepository.GetProdutoOnline(item.idProduto ?? 0);
+
+                    var vPrecoTabela = TabelaPrecoRepository.GetValorProdutoTabelaPreco(
+                        tbl: tabelaPreco,
+                        idProduto: item.idProduto ?? 0,
+                        vVenda: produto.vVenda,
+                        pIpiVenda: item.pIpiVenda ?? 0,
+                        pStVenda: item.pStVenda ?? 0,
+                        embuteImpostos: true);
+
+                    if (vPrecoTabela <= 0 || (tabelaPreco.pDescontoMaximo ?? 0) == 0)
+                        continue;
+
+                    if (item.vVenda != vPrecoTabela)
+                    {
+                        resultado.ProdutosAlterados.Add(produto);
+                    }
+
+                    var percentualDesconto = ((vPrecoTabela - item.vVenda) / vPrecoTabela) * 100;
+
+                    if (percentualDesconto > (tabelaPreco.pDescontoMaximo ?? 0))
+                    {
+                        resultado.ProdutosErrados.Add(produto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return resultado;
         }
 
         public static async Task<PedidoVendaModel> GerarPedidoByOrcamentoNew(PedidoVendaListarModel pedido)

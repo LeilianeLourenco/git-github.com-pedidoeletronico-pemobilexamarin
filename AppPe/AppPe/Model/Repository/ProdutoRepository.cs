@@ -1176,6 +1176,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static ProdutoModel GetProdutoOnline(int idProduto)
+        {
+            return App.Data.Connection.Table<ProdutoModel>()
+                            .Where(x => x.idProduto == idProduto).FirstOrDefault();
+        }
 
         public static double? GetPorcIpi(int idProdutoOffLine)
         {
