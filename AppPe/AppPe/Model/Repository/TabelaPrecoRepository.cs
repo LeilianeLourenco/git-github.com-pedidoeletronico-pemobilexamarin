@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.Forms.Shapes;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros.Escalonada;
@@ -63,6 +64,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             {
                 throw ex;
             }
+        }
+
+        public static TabelaPrecoModel GetTabelaPreco(int idTabelaPreco)
+        {
+            return App.Data.Connection.Table<TabelaPrecoModel>()
+                             .Where(x => x.idTabelaPreco == idTabelaPreco).FirstOrDefault();
         }
 
         public static ListItemModel GetItem(int idTabelaPreco)

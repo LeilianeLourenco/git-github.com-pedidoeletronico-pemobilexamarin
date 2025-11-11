@@ -152,7 +152,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     ocorreuErro = bFalhaConexao = false;
                     currentModel.Display = "iniciando...";
                     currentModel.LAlertaSincronizacao = new List<AlertaSincronizacao>();
-                    currentModel.Display = "UPLOAD PEDIDOS";
+                    currentModel.Display = "UPLOAD ASSINATURAS";
                     var lPedidos = PedidoRepository.GetAllPedidosToSync();
                     currentModel.iCount = lPedidos.Count;
                     foreach (var pedido in lPedidos)
