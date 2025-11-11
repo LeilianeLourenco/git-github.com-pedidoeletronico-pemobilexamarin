@@ -471,16 +471,31 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
                 var filtroSemPontos = "";
 
-
                 var xQuery = "";
                 const string xFields =
                     "xRazaoSocial Display, (xFantasia || '  ' || xCpfCnpj) Detail, idClientesOffLine Id, idClientes IdOnline, xCpfCnpj";
-                xQuery = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAcessoTodosClientes == 1
-                    ? $"select {xFields} from {TableMobile.TB_CLIENTES} where idEmpresa = {idEmpresa} "
-                    : $"select {xFields} from {TableMobile.TB_CLIENTES} where idEmpresa = {idEmpresa} and (idEmpresa_aspnetUsers = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers} or idEmpresa_aspnetUsers is null)";
+
+                if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAcessoTodosClientes == 1)
+                {
+                    xQuery = $"select {xFields} from {TableMobile.TB_CLIENTES} " +
+                             $"where idEmpresa = {idEmpresa} ";
+                }
+                else
+                {
+                    xQuery = $"select {xFields} from {TableMobile.TB_CLIENTES} " +
+                             $"where idEmpresa = {idEmpresa} " +
+                             $"and (idEmpresa_aspnetUsers = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers} " +
+                             $"or idEmpresa_aspnetUsers is null) ";
+                }
 
                 if (tipoTela == TipoTela.pedido)
+                {
                     xQuery += $" and stAtivo = 1 ";
+                    var configEmpresa = ConfiguracaoGeralRepositorio.GetConfiguracaoEmpresa();
+
+                    if(configEmpresa.bBloquearPedidosClienteEmAprovacao)
+                        xQuery += $" and (stClienteAplicacao in (0,1) or stClienteAplicacao is null)";
+                }
 
                 if (!string.IsNullOrEmpty(xFiltro))
                 {

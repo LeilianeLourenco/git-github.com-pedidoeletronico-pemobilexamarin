@@ -363,7 +363,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         [IgnoreDataMember]
         public bool bProblemaSincronizacao { get; set; }
 
-
+        public byte stClienteAplicacao { get; set; }
 
 
         /// <summary>
