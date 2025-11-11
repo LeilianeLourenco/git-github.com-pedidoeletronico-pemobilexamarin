@@ -29,6 +29,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 "dValorLimiteMinimo, " +
                 "xInformacaoContrato, " +
                 "bBloqueiaValorProdutoApp," +
+                "bBloquearPedidosClienteEmAprovacao," +
                 "idEmpresa, " +
                 "bMostraFaixaTabelaEscalonada";
 
@@ -60,6 +61,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 _configsGerais.xInformacaoContrato = result.xInformacaoContrato;
                 _configsGerais.bBloqueiaValorProdutoApp = result.bBloqueiaValorProdutoApp;
                 _configsGerais.bExibirValorPorPeso = result.bExibirValorPorPeso;
+                _configsGerais.bBloquearPedidosClienteEmAprovacao = result.bBloquearPedidosClienteEmAprovacao;
             }
 
             return _configsGerais;

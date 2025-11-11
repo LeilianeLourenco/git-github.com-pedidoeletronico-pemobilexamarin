@@ -35,6 +35,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public DateTime? dtAvaliouApp { get; set; }
         public decimal dAcrescimoMensal { get; set; }
         public bool bExibirValorPorPeso { get; set; }
+        public bool bBloquearPedidosClienteEmAprovacao { get; set; }
     }
 
 
