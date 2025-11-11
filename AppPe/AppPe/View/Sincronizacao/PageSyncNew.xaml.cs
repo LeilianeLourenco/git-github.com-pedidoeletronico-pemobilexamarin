@@ -74,13 +74,8 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
 
             if (!ViewModel.IsBusy)
             {
-                if (_typeSync == "Assinatura")
-                    ViewModel.SyncAssnaturaPedido();
-                else
-                {
-                    var syncService = DependencyService.Get<IBackgroundSyncService>();
-                    syncService?.StartSync();
-                }
+                var syncService = DependencyService.Get<IBackgroundSyncService>();
+                syncService?.StartSync();
             }
         }
 
