@@ -142,7 +142,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
         #region METHODS
 
-        public async void SyncAssnaturaPedido()
+        public async Task SyncAssnaturaPedido()
         {
             if (!IsBusy)
             {
@@ -271,6 +271,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                     }
                                     // DOWNLOAD TABELAS
                                     await InitSincronizacaoDownload();
+                                    await SyncAssnaturaPedido();
                                 }
                                 else
                                 {
