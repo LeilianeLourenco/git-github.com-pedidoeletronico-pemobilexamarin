@@ -57,6 +57,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
                     if (itemPedido.pStVenda == 0)
                         itemPedido.pStVenda = itemPedido?.currentTabelaPreco?.pStVenda;
 
+                    if (itemPedido.pIpiVenda == 0)
+                        itemPedido.pIpiVenda = itemPedido?.currentTabelaPreco?.pIpiVenda;
+
                     bool stVendaSemEstoque = itemPedido?.stVendaSemEstoque ?? false;
                     bool stControlaEstoque = ProdutoRepository.ControlaEstoque(itemPedido.idEmpresa, itemPedido.idRepresentada);
 
