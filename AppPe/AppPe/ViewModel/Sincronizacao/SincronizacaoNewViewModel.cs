@@ -1319,6 +1319,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 var _estoqueValidado = EstoqueRepository.SaveEstoqueInsuficiente(dadosEstoque,
                                     pedido.idPedidoVendaOffLine ?? 0);
 
+                                pedido.xErroPedido = _estoqueValidado;
+                                App.Data.Connection.Update(pedido);
+
                                 currentModel.LAlertaSincronizacao.Add(new AlertaSincronizacao
                                 {
                                     idOffLine = pedido.idPedidoVendaOffLine,
