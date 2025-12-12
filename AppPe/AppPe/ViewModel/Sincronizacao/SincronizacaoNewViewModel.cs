@@ -2054,6 +2054,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         {
                             SavePedidoSync(registro);
                         }
+
+                        if (pedido?.stPedidoVenda == 1)
+                            FinanceiroRepository.RemoverTodosRecebimentosPedido(pedido?.idPedidoVenda ?? 0);
                     }
 
                     if (registro.GetType() == typeof(LocalEstoqueModel))
@@ -2182,6 +2185,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             var idPedidoVendaOffLine = PedidoRepository.GetIdOffLine(objPedido.idPedidoVenda);
                             if (PedidoRepository.Delete(idPedidoVendaOffLine))
                                 SavePedidoSync(registro);
+
+                            if (objPedido?.stPedidoVenda == 1)
+                                FinanceiroRepository.RemoverTodosRecebimentosPedido(objPedido?.idPedidoVenda ?? 0);
                         }
                     }
                     else if (registro.GetType() == typeof(ProdutoModel))

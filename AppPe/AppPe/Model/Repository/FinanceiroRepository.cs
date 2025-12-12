@@ -384,7 +384,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
         public static void RemoverTodosRecebimentosPedido(int idPedidoVenda)
         {
-            App.Data.Connection.Execute($"DELETE FROM {TableMobile.TB_RECEBIMENTOTITULOS} WHERE idPedidoVenda = '{idPedidoVenda}'");
+            try
+            {
+                App.Data.Connection.Execute($"DELETE FROM {TableMobile.TB_RECEBIMENTOTITULOS} WHERE idPedidoVenda = '{idPedidoVenda}'");
+            }
+            catch
+            {
+            }
         }
 
         public static async Task RemoverTodosRecebimentos<T>() where T : class
