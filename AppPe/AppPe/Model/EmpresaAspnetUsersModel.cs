@@ -57,6 +57,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
 
         public bool? bProibidoAlterarCadastroCliente { get; set; }
 
+        public bool? bProibidoCadastrarCliente { get; set; }
+
         public int? qVisitaNovosCliente { get; set; } = 0;
 
         public byte? stPeriodoNovosClientes { get; set; }

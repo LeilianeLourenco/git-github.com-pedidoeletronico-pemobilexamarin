@@ -12,7 +12,6 @@ using Xamarin.HLP.Mobile.AppPE.View.Sincronizacao;
 
 namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
 {
-
     public class ClienteInfinitListViewModel : SearchCommom
     {
         public SearchPE controlSearchPE { get; set; }
@@ -23,9 +22,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
         public ICommand NovoCommand { get; set; }
         public ICommand SincronizarCommand { get; set; }
         public bool IsUsingSearch { get; set; } = false;
-
-
-
 
         private async void LoadItens()
         {
@@ -55,8 +51,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
             });
         }
 
-
-
         public async void Search()
         {
             if (!IsBusy)
@@ -73,7 +67,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
                     });
                 });
             }
-
         }
 
         public ListItemModel ItemSelected
@@ -98,9 +91,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
             }
         }
 
-
-
-
         public ClienteInfinitListViewModel()
         {
             LItens = new ObservableCollection<ListItemModel>();
@@ -108,17 +98,27 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
             SearchCommand = new Command(Search);
             NovoCommand = new Command(async () =>
             {
-                bool permite = !(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel
-                                    .bProibidoAlterarCadastroCliente ?? false);
+                var empresaUser = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel;
 
-                if (permite)
+                if (empresaUser.stAdministrador)
+                {
                     UtilNavidate.PushAsync(new PageCliente(new ClientesModel()));
-                else
+                    return;
+                }
+
+                var permitidoCadastrar = !(empresaUser.bProibidoCadastrarCliente ?? false);
+
+                if (!permitidoCadastrar)
+                {
                     await App.Current.MainPage.DisplayAlert(
                         "Acesso negado",
-                        "Você não tem permissão para criar ou alterar clientes.",
+                        "Você não tem permissão para cadastrar clientes.",
                         "Ok"
                     );
+                    return;
+                }
+
+                UtilNavidate.PushAsync(new PageCliente(new ClientesModel()));
             });
             SincronizarCommand = new Command(() =>
             {
@@ -146,8 +146,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
             });
         }
 
-
-
         public bool Initialize()
         {
             if (canExecuteInicial)
@@ -162,7 +160,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem
             }
             return canExecuteInicial;
         }
-
 
         public async Task Remover(int idClienteOffLine)
         {
