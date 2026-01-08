@@ -1,36 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:listagem="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem;assembly=Xamarin.HLP.Mobile.AppPE"
-             xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
-             x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageInfinitListClientes" Title="Clientes" IsBusy="{Binding IsBusy}" >
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Cliente.PageInfinitListClientes"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:custom="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.custom;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:listagem="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Listagem;assembly=Xamarin.HLP.Mobile.AppPE"
+    xmlns:xaml="clr-namespace:Xamarin.HLP.Mobile.AppPE.Controls.xaml;assembly=Xamarin.HLP.Mobile.AppPE"
+    Title="Clientes"
+    IsBusy="{Binding IsBusy}">
     <ContentPage.BindingContext>
-        <listagem:ClienteInfinitListViewModel/>
+        <listagem:ClienteInfinitListViewModel />
     </ContentPage.BindingContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid IsVisible="{Binding bFind}" Padding="5,5,5,5">
-            <xaml:SearchPE x:Name="SearchBarPesquisa" SearchCommand="{Binding SearchCommand}" Placeholder="pesquisar..." Text="{Binding xFiltro, Mode=TwoWay}" />
+        <Grid Padding="5,5,5,5" IsVisible="{Binding bFind}">
+            <xaml:SearchPE
+                x:Name="SearchBarPesquisa"
+                Placeholder="pesquisar..."
+                SearchCommand="{Binding SearchCommand}"
+                Text="{Binding xFiltro, Mode=TwoWay}" />
         </Grid>
-        <custom:InfiniteSimpleListView x:Name="ListViewDados" Grid.Row="1"
-                                 ItemsSource="{Binding LItens}"
-                                 HasUnevenRows="True"
-                                 SelectedItem="{Binding ItemSelected}"
-                                 LoadMoreCommand="{Binding LoadItensCommand}"
-                                 ItemSelected="ListView_OnItemSelected">
+        <custom:InfiniteSimpleListView
+            x:Name="ListViewDados"
+            Grid.Row="1"
+            HasUnevenRows="True"
+            ItemSelected="ListView_OnItemSelected"
+            ItemsSource="{Binding LItens}"
+            LoadMoreCommand="{Binding LoadItensCommand}"
+            SelectedItem="{Binding ItemSelected}">
             <x:Arguments>
                 <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
             </x:Arguments>
             <!--<ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>-->
             <custom:InfiniteSimpleListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Display }" Detail="{Binding Detail}" TextColor="{StaticResource CinzaEscuro}" DetailColor="{StaticResource CinzaApresentacaoCliente}">
+                    <TextCell
+                        Detail="{Binding Detail}"
+                        DetailColor="{StaticResource CinzaApresentacaoCliente}"
+                        Text="{Binding Display}"
+                        TextColor="{StaticResource CinzaEscuro}">
                         <TextCell.ContextActions>
-                            <MenuItem Text="Excluir" Clicked="MenuItem_OnClicked" />
+                            <MenuItem Clicked="MenuItem_OnClicked" Text="Excluir" />
                         </TextCell.ContextActions>
                     </TextCell>
                 </DataTemplate>
@@ -40,11 +53,16 @@
     </Grid>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="{Binding ImageIconSearch}" Command="{Binding HabiliteToSearchCommand}"/>
-        
-        <ToolbarItem Text="Adicionar" Command="{Binding NovoCommand}" Icon="{Binding ImageIconAdd}">
-        </ToolbarItem>
-        <ToolbarItem Text="Sincronizar" Priority="2" Command="{Binding SincronizarCommand}" Icon="{Binding ImageIconSync}" >
+        <ToolbarItem Command="{Binding HabiliteToSearchCommand}" Icon="{Binding ImageIconSearch}" />
+        <ToolbarItem
+            Command="{Binding NovoCommand}"
+            Icon="{Binding ImageIconAdd}"
+            Text="Adicionar" />
+        <ToolbarItem
+            Command="{Binding SincronizarCommand}"
+            Icon="{Binding ImageIconSync}"
+            Priority="2"
+            Text="Sincronizar">
             <ToolbarItem.Order>
                 <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
             </ToolbarItem.Order>

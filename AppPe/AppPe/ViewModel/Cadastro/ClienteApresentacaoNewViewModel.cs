@@ -146,22 +146,31 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
             AtualizarCommand = new Command(async () =>
             {
                 if (pageCliente == null || currentModel == null)
-                    return; 
+                    return;
 
-                bool permite = !(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel
-                                 .bProibidoAlterarCadastroCliente ?? false);
+                var empresaUser = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel;
 
-                if (permite)
+                if (empresaUser.stAdministrador)
                 {
                     pageCliente.ViewModel.currentModel = currentModel;
                     UtilNavidate.PushAsync(pageCliente);
+                    return;
                 }
-                else
+
+                var permitidoAlterar = !(empresaUser.bProibidoAlterarCadastroCliente ?? false);
+
+                if (!permitidoAlterar)
+                {
                     await App.Current.MainPage.DisplayAlert(
                         "Acesso negado",
-                        "Você não tem permissão para criar ou alterar clientes.",
+                        "Você não tem permissão para alterar clientes.",
                         "Ok"
                     );
+                    return;
+                }
+
+                pageCliente.ViewModel.currentModel = currentModel;
+                UtilNavidate.PushAsync(pageCliente);
             });
 
         }
