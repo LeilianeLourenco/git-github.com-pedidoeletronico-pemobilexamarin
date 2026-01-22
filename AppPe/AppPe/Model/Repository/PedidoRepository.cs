@@ -89,6 +89,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         stPermissaoPedidoVenda = (byte)user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel.stPermissaoPedidoVenda;
 
                     if (!string.IsNullOrEmpty(idRepresentantePedido) && idRepresentantePedido != "0")
+                        xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
+                    else
                     {
                         switch (stPermissaoPedidoVenda)
                         {
