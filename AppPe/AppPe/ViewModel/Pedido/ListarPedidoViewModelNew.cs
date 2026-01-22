@@ -100,12 +100,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 UtilNavidate.Sincronizar(pageSync);
             });
 
-            ItemRepresentante = new ListItemModel
-            {
-                Id = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0,
-                Display = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xNome,
-                Detail = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail
-            };
+            //ItemRepresentante = new ListItemModel
+            //{
+            //    Id = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0,
+            //    Display = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xNome,
+            //    Detail = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.xEmail
+            //};
 
             LoadItensCommand = new Command(LoadItens);
             SearchCommand = new Command(Search);
@@ -248,6 +248,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
                     bool bGeraOrcamento = ExtensaoEmpresaRepository.GetbGeraOrcamento(idEmpresa);
+
                     var registros = PedidoRepository.GetInfinit(pedidos.Count, 20, (IsUsingSearch ? xFiltro : ""), ItemRepresentante.Id.ToString(), idCliente,
                         bGeraOrcamento: bGeraOrcamento);
 
