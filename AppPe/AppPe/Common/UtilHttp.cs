@@ -1,20 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
-using Xamarin.HLP.Mobile.AppPE.Model.Estoque;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.PagSeguro;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository.Grades;
 using Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Xamarin.HLP.Mobile.AppPE.Common
 {
@@ -1112,6 +1110,35 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 return null;
             }
         }
+
+        public static async Task<string> GetCidades()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetAsync("https://servicodados.ibge.gov.br/api/v1/localidades/municipios");
+                    var bytes = await response.Content.ReadAsByteArrayAsync();
+
+                    Stream contentStream = new MemoryStream(bytes);
+
+                    if (response.Content.Headers.ContentEncoding.Contains("gzip"))
+                        contentStream = new System.IO.Compression.GZipStream(contentStream, System.IO.Compression.CompressionMode.Decompress);
+                    else if (response.Content.Headers.ContentEncoding.Contains("deflate"))
+                        contentStream = new System.IO.Compression.DeflateStream(contentStream, System.IO.Compression.CompressionMode.Decompress);
+
+                    using (var reader = new StreamReader(contentStream, Encoding.UTF8))
+                    {
+                        return await reader.ReadToEndAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao buscar cidades - {ex.Message}");
+            }
+        }
+
         //FIM
 
         #endregion
