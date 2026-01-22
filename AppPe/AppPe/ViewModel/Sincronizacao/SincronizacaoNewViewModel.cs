@@ -1158,57 +1158,38 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
         }
 
-        private const string URL = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios";
-
         private async Task SincronizacaoDownloadCidades()
         {
             try
             {
-                using (var client = new HttpClient())
+                currentModel.Display = "buscando cidades";
+
+                var existeCidades = App.Data.Connection.Table<CidadesModel>().Any();
+
+                if (existeCidades && !App.ForcarAtualizacao)
+                    return;
+
+                var cidades = await UtilHttp.GetCidades();
+                var data = JsonConvert.DeserializeObject<List<CidadeIBGE>>(cidades);
+
+                var lista = new List<CidadesModel>();
+
+                currentModel.iCount = data.Count;
+
+                foreach (var item in data)
                 {
-                    currentModel.Display = "buscando cidades";
-
-                    var existeCidades = App.Data.Connection.Table<CidadesModel>().Any();
-
-                    if (existeCidades || App.ForcarAtualizacao)
-                        return;
-
-                    var response = await client.GetAsync(URL);
-                    var bytes = await response.Content.ReadAsByteArrayAsync();
-
-                    Stream contentStream = new MemoryStream(bytes);
-
-                    if (response.Content.Headers.ContentEncoding.Contains("gzip"))
-                        contentStream = new System.IO.Compression.GZipStream(contentStream, System.IO.Compression.CompressionMode.Decompress);
-                    else if (response.Content.Headers.ContentEncoding.Contains("deflate"))
-                        contentStream = new System.IO.Compression.DeflateStream(contentStream, System.IO.Compression.CompressionMode.Decompress);
-
-                    using (var reader = new StreamReader(contentStream, Encoding.UTF8))
+                    lista.Add(new CidadesModel
                     {
-                        var json = await reader.ReadToEndAsync();
+                        codigoIBGE = item.id,
+                        nome = item.nome,
+                        uf = item?.microrregiao?.mesorregiao?.UF?.sigla
+                    });
 
-                        var data = JsonConvert.DeserializeObject<List<CidadeIBGE>>(json);
-
-                        var lista = new List<CidadesModel>();
-
-                        currentModel.iCount = data.Count;
-
-                        foreach (var item in data)
-                        {
-                            lista.Add(new CidadesModel
-                            {
-                                codigoIBGE = item.id,
-                                nome = item.nome,
-                                uf = item?.microrregiao?.mesorregiao?.UF?.sigla
-                            });
-
-                            await Task.Delay(10);
-                            currentModel.iCount--;
-                        }
-
-                        App.Data.Connection.InsertAll(lista);
-                    }
+                    await Task.Delay(10);
+                    currentModel.iCount--;
                 }
+
+                App.Data.Connection.InsertAll(lista);
             }
             catch (Exception ex)
             {
