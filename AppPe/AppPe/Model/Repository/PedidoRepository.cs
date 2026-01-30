@@ -98,7 +98,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                 xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{0}'";
                                 break;
                             case 1:
-                                xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
+                                var idEmpresaAspnetUser = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers;
+                                xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idEmpresaAspnetUser}'";
                                 break;
                             case 2:
                                 var xQueryIdEquipe = $@"SELECT * FROM {TableMobile.TB_EQUIPE_REPRESENTANTES} WHERE idEmpresa_aspnetusers = {idRepresentantePedido}";

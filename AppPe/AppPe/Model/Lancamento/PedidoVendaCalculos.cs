@@ -559,11 +559,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                             PagePedidoNew.CurrentViewModel.currentModel.CurrentItemModel.ItensGrade.Sum(c => c.vQtdItem);
                     }
                 }
-
             }
         }
-
-
 
         public static void AtualizaValores(PedidoVendaItensModel item)
         {

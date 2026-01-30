@@ -230,7 +230,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         public string xValorPorPeso
         {
             get
-            {                          
+            {
                 double valorPorPeso = 0;
 
                 if (vUnitarioVendaComImpostos > 0 && dPesoBruto > 0)
@@ -517,7 +517,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 _vUnitarioVendaComImpostos = value;
                 NotifyTotalizadores();
                 NotifyPropertyChanged();
-                NotifyPropertyChanged(nameof(xValorPorPeso)); 
+                NotifyPropertyChanged(nameof(xValorPorPeso));
             }
         }
 
@@ -994,7 +994,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
                 try
                 {
                     if (ItensGrade != null && ItensGrade.Any())
-                        retorno = ItensGrade.Where(c => c.vQtdItem > 0).Sum(c => c.vSubTotal).ToCurrencyStringPtBr();
+                        retorno = ItensGrade.Where(c => c.vQtdItem > 0).Sum(c => c.vUnitarioVendaComImpostos * c.vQtdItem).ToCurrencyStringPtBr();
                     else
                         retorno = vSubTotal.ToCurrencyStringPtBr();
                 }
