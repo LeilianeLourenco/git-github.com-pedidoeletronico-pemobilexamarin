@@ -68,9 +68,6 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Cliente
                 UtilCorreios.BuscaCep(ViewModel.currentModel);
             }, canExecute: () => !ViewModel.currentModel.isSearching);
             GoogleInsightsReportingConstants.TrakPage(GoogleInsightsReportingConstants.InPage.PAGE_ENDERECO);
-
-            
-
         }
 
         private void MenuSaveItem_OnClicked(object sender, EventArgs e)
@@ -98,8 +95,6 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Cliente
                 }).ToList();
 
                 PickerCidade.ItemsSource = pickerItems;
-
-                PickerCidade.SelectedItem = null;
             }
         }
     }
