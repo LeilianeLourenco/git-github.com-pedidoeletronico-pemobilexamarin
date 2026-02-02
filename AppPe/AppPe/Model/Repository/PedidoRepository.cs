@@ -1158,12 +1158,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     if (vPrecoTabela <= 0 || (tabelaPreco.pDescontoMaximo ?? 0) == 0)
                         continue;
 
-                    if (item.vVenda != vPrecoTabela)
+                    if (item.vUnitarioVendaComImpostos != vPrecoTabela)
                     {
                         resultado.ProdutosAlterados.Add(produto);
                     }
 
-                    var percentualDesconto = ((vPrecoTabela - item.vVenda) / vPrecoTabela) * 100;
+                    var percentualDesconto = ((vPrecoTabela - item.vUnitarioVendaComImpostos) / vPrecoTabela) * 100;
 
                     if (percentualDesconto > (tabelaPreco.pDescontoMaximo ?? 0))
                     {
