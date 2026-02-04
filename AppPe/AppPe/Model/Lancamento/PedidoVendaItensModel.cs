@@ -244,17 +244,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _xValorPorPeso = value; NotifyPropertyChanged(); }
         }
 
-                if (vUnitarioVendaComImpostos > 0 && dPesoBruto > 0)
-                    valorPorPeso = vUnitarioVendaComImpostos / (double)(dPesoBruto ?? 0);
-                else
-                    valorPorPeso = vUnitarioVendaComImpostos;
-
-                _xValorPorPeso = $"Valor por peso: {valorPorPeso.ToCurrencyStringPtBr()}";
-                return _xValorPorPeso;
-            }
-            set { _xValorPorPeso = value; NotifyPropertyChanged(); }
-        }
-
         private string _xUltimaVendaInfo;
 
         public string xUltimaVendaInfo
@@ -353,22 +342,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         }
 
         private double _vVendaOriginal;
-
-        /// <summary>
-        /// Valor do cadastro do produto
-        /// </summary>
-
-        public double vVendaOriginal
-        {
-            get { return _vVendaOriginal; }
-            set
-            {
-                _vVendaOriginal = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private double _vCusto;
 
         /// <summary>
         /// Valor do cadastro do produto
