@@ -68,14 +68,34 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Cliente
                 UtilCorreios.BuscaCep(ViewModel.currentModel);
             }, canExecute: () => !ViewModel.currentModel.isSearching);
             GoogleInsightsReportingConstants.TrakPage(GoogleInsightsReportingConstants.InPage.PAGE_ENDERECO);
-
-            
-
         }
 
         private void MenuSaveItem_OnClicked(object sender, EventArgs e)
         {
             ViewModel.currentModel.SaveCommand.Execute(null);
+        }
+
+        private void PickerEstado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = (BindablePicker)sender;
+            var estado = picker.SelectedItem as BasicPickerModel;
+
+            if (estado != null)
+            {
+                var cidades = App.Data.Connection
+                 .Table<CidadesModel>()
+                 .Where(c => c.uf == estado.XId)
+                 .OrderBy(c => c.nome)
+                 .ToList();
+
+                var pickerItems = cidades.Select(c => new BasicPickerModel
+                {
+                    XId = c.codigoIBGE?.ToString(),
+                    Display = c.nome
+                }).ToList();
+
+                PickerCidade.ItemsSource = pickerItems;
+            }
         }
 
         private void PickerEstado_SelectedIndexChanged(object sender, EventArgs e)

@@ -98,7 +98,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                 xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{0}'";
                                 break;
                             case 1:
-                                xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
+                                var idEmpresaAspnetUser = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers;
+                                xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idEmpresaAspnetUser}'";
                                 break;
                             case 2:
                                 var xQueryIdEquipe = $@"SELECT * FROM {TableMobile.TB_EQUIPE_REPRESENTANTES} WHERE idEmpresa_aspnetusers = {idRepresentantePedido}";
@@ -1157,12 +1158,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     if (vPrecoTabela <= 0 || (tabelaPreco.pDescontoMaximo ?? 0) == 0)
                         continue;
 
-                    if (item.vVenda != vPrecoTabela)
+                    if (item.vUnitarioVendaComImpostos != vPrecoTabela)
                     {
                         resultado.ProdutosAlterados.Add(produto);
                     }
 
-                    var percentualDesconto = ((vPrecoTabela - item.vVenda) / vPrecoTabela) * 100;
+                    var percentualDesconto = ((vPrecoTabela - item.vUnitarioVendaComImpostos) / vPrecoTabela) * 100;
 
                     if (percentualDesconto > (tabelaPreco.pDescontoMaximo ?? 0))
                     {

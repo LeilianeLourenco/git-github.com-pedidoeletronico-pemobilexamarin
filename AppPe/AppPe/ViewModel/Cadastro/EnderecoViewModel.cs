@@ -93,6 +93,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
             set { _lEstatdosBasicPickerModels = value; NotifyPropertyChanged(); }
         }
 
+        private List<BasicPickerModel> _lCidadesBasicPickerModels = new List<BasicPickerModel>();
+        public List<BasicPickerModel> lCidadesBasicPickerModels
+        {
+            get { return _lCidadesBasicPickerModels; }
+            set { _lCidadesBasicPickerModels = value; NotifyPropertyChanged(); }
+        }
+
         void CarregaPicker()
         {
             LEstadosBasicPickerModels.Add(new BasicPickerModel { XId = "AC", Display = "ACRE" });

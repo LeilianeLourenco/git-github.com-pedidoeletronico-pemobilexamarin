@@ -6,7 +6,9 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Xamarin.HLP.Mobile.AppPE.Common;
+using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
+using Xamarin.HLP.Mobile.AppPE.Model.Cidades;
 
 namespace Xamarin.HLP.Mobile.AppPE
 {
@@ -64,21 +66,22 @@ namespace Xamarin.HLP.Mobile.AppPE
         {
             try
             {
-
                 var response = request.EndGetResponse(result);
                 var stream = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("UTF-8"));
                 var dados = stream.ReadToEnd();
                 EnderecoCepModel ender = JsonConvert.DeserializeObject<EnderecoCepModel>(dados);
 
-                if (!string.IsNullOrEmpty(ender.logradouro))
+                if (!string.IsNullOrEmpty(ender.localidade))
                 {
-                    objEnderecoModel.xEndereco = ender.logradouro;                    
+                    objEnderecoModel.xEndereco = ender.logradouro;
                     objEnderecoModel.xBairro = ender.bairro;
-                    objEnderecoModel.xCidade = ender.localidade;
+                    //objEnderecoModel.xCidade = ender.localidade;
 
                     var pickerUF =
                         objEnderecoModel.LEstadosBasicPickerModels.FirstOrDefault(c => c.XId.ToUpper() == ender.uf.ToUpper());
-                    objEnderecoModel.EstadoBasicPickerModel = pickerUF ?? objEnderecoModel.LEstadosBasicPickerModels.FirstOrDefault();                  
+                    objEnderecoModel.EstadoBasicPickerModel = pickerUF ?? objEnderecoModel.LEstadosBasicPickerModels.FirstOrDefault();
+
+                    SelecionarCidade(ender.localidade);
                 }
 
 
@@ -156,6 +159,26 @@ namespace Xamarin.HLP.Mobile.AppPE
 
         }
 
-    }
+        private static void SelecionarCidade(string cidade)
+        {
+            var estado = objEnderecoModel.EstadoBasicPickerModel;
 
+            if (estado != null)
+            {
+                var cidades = App.Data.Connection
+                 .Table<CidadesModel>()
+                 .Where(c => c.uf == estado.XId)
+                 .OrderBy(c => c.nome)
+                 .ToList();
+
+                var pickerItems = cidades.Select(c => new BasicPickerModel
+                {
+                    XId = c.codigoIBGE?.ToString(),
+                    Display = c.nome
+                }).ToList();
+
+                objEnderecoModel.CidadeBasicPickerModel = pickerItems.FirstOrDefault(x => x.Display.ToLower() == cidade.ToLower());
+            }
+        }
+    }
 }
