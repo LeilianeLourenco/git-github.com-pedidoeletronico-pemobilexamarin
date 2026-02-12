@@ -1178,7 +1178,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         resultado.ProdutosAlterados.Add(produto);
                     }
 
-                    var percentualDesconto = ((vPrecoTabela - item.vUnitarioVendaComImpostos) / vPrecoTabela) * 100;
+                    var percentualDesconto = Math.Round(
+                        ((vPrecoTabela - item.vUnitarioVendaComImpostos) / vPrecoTabela) * 100,
+                        2
+                    );
 
                     if (percentualDesconto > (tabelaPreco.pDescontoMaximo ?? 0))
                     {

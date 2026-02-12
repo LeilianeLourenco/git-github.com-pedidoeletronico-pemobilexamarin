@@ -27,10 +27,13 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
 
         private void BtnSair_Clicked(object sender, EventArgs e)
         {
-            App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAtivo = false;
-            LoginRepository.UpdateUser();
+            if (App.CurrentAspnetUserModel?.objEmpresaAspnetUsersModel != null)
+            {
+                App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAtivo = false;
+                LoginRepository.UpdateUser();
+            }
 
-            LoginRepository.DesbloquearUser();
+            //LoginRepository.DesbloquearUser();
             UtilNavidate.EfetivarLogoff();
         }
     }

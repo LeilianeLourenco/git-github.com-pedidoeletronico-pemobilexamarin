@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.HLP.Mobile.AppPE.Common;
@@ -178,8 +179,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!IsBusy)
                     if (await App.IsConected())
                     {
-                        LoginRepository.DesbloquearUser();
-
                         IsBusy = true;
                         ocorreuErro = bFalhaConexao = false;
                         currentModel.Display = "iniciando...";
@@ -248,6 +247,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                                 var _bPermiteSincronizacao = await UtilHttp.PermiteSincronizacao(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa,
                                     idRepresentante: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0);
+
+                                //_bPermiteSincronizacao = new KeyValuePair<bool, string>();
 
                                 if (_bPermiteSincronizacao.Key == true)
                                 {   //Fim ajuste;
@@ -2375,118 +2376,129 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
         private async void AnaliseFinalSincronizacao(string exMessage = "")
         {
-            if (!bFalhaTotalDeConexao)
+            await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                IsBusy = false;
-                await Task.Delay(100);
-                // set null, porque preciso que a próxima vez que entre no listar de clientes, produto faça a consulta novamente
-                if (bFalhaConexao == false)
+                if (!bFalhaTotalDeConexao)
                 {
-                    if (exMessage != "" && currentModel.LAlertaSincronizacao.Count(c => c.bErro) == 0)
-                    {
-                        await App.Messages.ShowAsync(exMessage);
-                        FecharPopup();
+                    IsBusy = false;
+                    await Task.Delay(100);
 
-                        if (exMessage.Contains("encontra-se inativo nessa empresa"))
-                            UtilNavidate.EfetivarLogoff();
-                    }
-                    else if (currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0)
+                    if (bFalhaConexao == false)
                     {
-                        ocorreuErro = true;
-                        await App.Messages.ShowAsync("Algumas inconsistências na sincronização foram encontradas.");
-                        FecharPopup(true);
-                    }
-                    else
-                    {
-                        StaticModel.StaticFindClienteModel = null;
-                        StaticModel.StaticFindProdutoModel = null;
-                        StaticModel.lTabelasPrecoCampanhas = null;
-
-                        bForcarSyncInit = false;
-                        lastDateSync =
-                            App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.UltimaSyncDateTime = DateTime.UtcNow;
-                        EmpresaAspnetUsersRepository.AtualizaEmpresaAspnetUsersModel(
-                            App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel);
-                        PageHomeNew.ViewModelStatic.AtualizaImagemApp();
-                        LoginRepository.RefreshTipoUsuario();
-                        AcaoAfterSyncCommand?.Execute(null);
-                        EstoqueRepository.RemoveAllEstoquePedido();
-                        if (currentModel.LAlertaSincronizacao.Count(c => c.bErro == false) > 0)
+                        if (exMessage != "" && currentModel.LAlertaSincronizacao.Count(c => c.bErro) == 0)
                         {
-                            FecharPopup(true);
+                            await App.Messages.ShowAsync(exMessage);
+                            await FecharPopup();
+
+                            if (exMessage.Contains("encontra-se inativo nessa empresa"))
+                                UtilNavidate.EfetivarLogoff();
+                        }
+                        else if (currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0)
+                        {
+                            ocorreuErro = true;
+                            await App.Messages.ShowAsync("Algumas inconsistências na sincronização foram encontradas.");
+                            await FecharPopup(true);
                         }
                         else
                         {
-                            FecharPopup();
-                        }
+                            StaticModel.StaticFindClienteModel = null;
+                            StaticModel.StaticFindProdutoModel = null;
+                            StaticModel.lTabelasPrecoCampanhas = null;
 
-                        var currentUser = EmpresaAspnetUsersRepository.GetUsuario();
-                        if (currentUser.stAtivo == false)
-                        {
-                            await
-                                App.Messages.ShowAsync(
+                            bForcarSyncInit = false;
+                            lastDateSync =
+                                App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.UltimaSyncDateTime = DateTime.UtcNow;
+
+                            EmpresaAspnetUsersRepository.AtualizaEmpresaAspnetUsersModel(
+                                App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel);
+
+                            PageHomeNew.ViewModelStatic.AtualizaImagemApp();
+                            LoginRepository.RefreshTipoUsuario();
+                            AcaoAfterSyncCommand?.Execute(null);
+                            EstoqueRepository.RemoveAllEstoquePedido();
+
+                            if (currentModel.LAlertaSincronizacao.Count(c => c.bErro == false) > 0)
+                                await FecharPopup(true);
+                            else
+                                await FecharPopup();
+
+                            var currentUser = EmpresaAspnetUsersRepository.GetUsuario();
+                            if (currentUser.stAtivo == false)
+                            {
+                                await App.Messages.ShowAsync(
                                     "Usuário encontra-se inativo na empresa corrente, será necessário o login novamente");
-                            UtilNavidate.EfetivarLogoff();
+
+                                UtilNavidate.EfetivarLogoff();
+                            }
                         }
+                    }
+                    else
+                    {
+                        await App.Messages.ShowAsync(
+                            $"O dispositivo ficou sem internet no decorrer da sincronização, alguns dados podem não ter sido sincronizados. {Environment.NewLine}Sincronize novamente.");
+
+                        await FecharPopup();
                     }
                 }
                 else
                 {
-                    await App.Messages.ShowAsync(bFalhaConexao
-                        ? $"O dispositivo ficou sem internet no decorrer da sincronização, alguns dados podem não ter sido sincronizados. {Environment.NewLine}Sincronize novamente."
-                        : exMessage);
-                    FecharPopup();
-
+                    await FecharPopup();
                 }
-            }
-            else
-            {
-                FecharPopup();
-            }
+            });
         }
 
         #endregion
 
-        private async void FecharPopup(bool viewError = false)
+        private async Task FecharPopup(bool viewError = false)
         {
             try
             {
                 bool bloqueio = currentModel.LAlertaBloqueio.Count > 0;
 
                 CrossConnectivity.Current.ConnectivityChanged -= Current_ConnectivityChanged;
-                await App.Navigation.PopPopupAsync();
-                var main = Application.Current.MainPage as RootPage;
-                if (main != null)
+
+                await MainThread.InvokeOnMainThreadAsync(async () =>
                 {
-                    main.Detail.Opacity = 1;
+                    await App.Navigation.PopPopupAsync();
 
-                    var navigationPage = main.Detail as NavigationPage;
-                    if (navigationPage != null)
+                    var main = Application.Current.MainPage as RootPage;
+                    if (main != null)
+                    {
+                        main.Detail.Opacity = 1;
 
-                        if ((navigationPage.CurrentPage.GetType() != typeof(PageListarPedidos)) && (navigationPage.CurrentPage.GetType() != typeof(PageInfinitListClientes)) && (navigationPage.CurrentPage.GetType() != typeof(PageInfinitListProdutos)))
+                        var navigationPage = main.Detail as NavigationPage;
+                        if (navigationPage != null)
                         {
-                            App.ParamBackButtonPressed?.SetParameter(true);
+                            if ((navigationPage.CurrentPage.GetType() != typeof(PageListarPedidos)) &&
+                                (navigationPage.CurrentPage.GetType() != typeof(PageInfinitListClientes)) &&
+                                (navigationPage.CurrentPage.GetType() != typeof(PageInfinitListProdutos)))
+                            {
+                                App.ParamBackButtonPressed?.SetParameter(true);
+                            }
                         }
-                }
-                if (viewError)
-                    UtilNavidate.PushAsync(new PageLogSync(currentModel.LAlertaSincronizacao));
-                else if (bloqueio)
-                {
-                    var user = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel;
-                    user.stAtivo = false;
+                    }
 
-                    LoginRepository.BloquearUser();
-                    EmpresaAspnetUsersRepository.AtualizaEmpresaAspnetUsersModel(user);
+                    if (viewError)
+                    {
+                        UtilNavidate.PushAsync(new PageLogSync(currentModel.LAlertaSincronizacao));
+                    }
+                    else if (bloqueio)
+                    {
+                        var user = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel;
+                        user.stAtivo = false;
 
-                    App.Current.MainPage = new NavigationPage(new PageLogBloqueioSync());
-                }
+                        LoginRepository.BloquearUser();
+                        EmpresaAspnetUsersRepository.AtualizaEmpresaAspnetUsersModel(user);
+
+                        App.Current.MainPage = new NavigationPage(new PageLogBloqueioSync());
+                    }
+                });
             }
             catch (Exception ex)
             {
                 ex.TrakException("", false);
             }
         }
-
 
         private async Task SavePrivate<T>(List<T> lsync, string xTableName) where T : class
         {

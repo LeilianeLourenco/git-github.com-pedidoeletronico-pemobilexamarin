@@ -113,16 +113,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel
                             {
                                 case SignInStatus.Success:
                                     {
+                                        LoginRepository.DesbloquearUser();
+
                                         var currentAspnetUserModel =
                                             LoginRepository.SaveAspnetUsers(model: objreturn.objModel);
 
                                         App.CurrentAspnetUserModel = currentAspnetUserModel;
                                         this.currentModel.BProcessando = false;
 
-                                        if (currentAspnetUserModel.objEmpresaAspnetUsersModel.stAtivo)
+                                        if (currentAspnetUserModel?.objEmpresaAspnetUsersModel?.stAtivo ?? false)
                                             Application.Current.MainPage = new RootPage();
                                         else
+                                        {
+                                            LoginRepository.BloquearUser();
                                             Application.Current.MainPage = new NavigationPage(new PageLogBloqueioSync());
+                                        }
                                     }
                                     break;
                                 case SignInStatus.LockedOut:
