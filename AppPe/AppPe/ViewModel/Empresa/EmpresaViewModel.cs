@@ -102,7 +102,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Empresa
 
         public EmpresaViewModel()
         {
-            currentModel = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel;
+            currentModel = App.CurrentAspnetUserModel?.objEmpresaAspnetUsersModel?.objEmpresaModel;
             LEmpresaBasicPickerModels = new List<BasicPickerModel>();
             EntrarCommand = new Command(EfetivarTrocaEmpresa);
             App.CurrentAspnetUserModel = LoginRepository.GetAspnetUsers();

@@ -310,7 +310,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             try
             {
                 var icount = App.Data.Connection.ExecuteScalar<int>(
-                    $"SELECT COUNT(*) FROM {TableMobile.CurrentUserLogin} WHERE bBloqueado = 1");
+                   $"SELECT COUNT(*) FROM {TableMobile.CurrentUserLogin} WHERE bBloqueado = 1");
 
                 return icount > 0;
             }
