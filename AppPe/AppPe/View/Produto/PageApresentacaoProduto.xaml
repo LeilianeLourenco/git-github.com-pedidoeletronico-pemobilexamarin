@@ -1,215 +1,338 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:produto="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Produto;assembly=Xamarin.HLP.Mobile.AppPE" 
-            x:Class="Xamarin.HLP.Mobile.AppPE.View.Produto.PageApresentacaoProduto" >
+<ContentPage
+    x:Class="Xamarin.HLP.Mobile.AppPE.View.Produto.PageApresentacaoProduto"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:produto="clr-namespace:Xamarin.HLP.Mobile.AppPE.ViewModel.Produto;assembly=Xamarin.HLP.Mobile.AppPE">
     <ContentPage.BindingContext>
         <produto:ProdutoAprosentacaoViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="LabelApresentacao" TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource CinzaApresentacaoCliente}"/>
-                <Setter Property="FontSize" Value="{StaticResource FontSizeContentApresentacao}"/>
+                <Setter Property="TextColor" Value="{StaticResource CinzaApresentacaoCliente}" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeContentApresentacao}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Title>
-        <OnPlatform x:TypeArguments="x:String" WinPhone="Apresentação" Android="Apresentação" iOS="Apresentação"/>
+        <OnPlatform
+            x:TypeArguments="x:String"
+            Android="Apresentação"
+            WinPhone="Apresentação"
+            iOS="Apresentação" />
     </ContentPage.Title>
 
-    <ScrollView Orientation="Vertical" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" BackgroundColor="{StaticResource CinzaMedio}">
+    <ScrollView
+        AbsoluteLayout.LayoutBounds="0,0,1,1"
+        AbsoluteLayout.LayoutFlags="All"
+        BackgroundColor="{StaticResource CinzaMedio}"
+        Orientation="Vertical">
         <StackLayout Orientation="Vertical">
             <!--<xaml:MyCardView ShowImage="True" IsCardView="True"  CardImage="{Binding currentModel.GetImageSource}" Title="{Binding currentModel.xNome}"
                              Display="{Binding xUN}" />-->
 
             <Grid RowSpacing="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <CarouselView x:Name="ImageCarouselView" 
-                                            Grid.Row="0"  
-                                            HorizontalOptions="FillAndExpand"  
-                                            VerticalOptions="FillAndExpand"
-                                            HeightRequest="250"
-                                            ItemsSource="{Binding ListaImagens}" >
+                <CarouselView
+                    x:Name="ImageCarouselView"
+                    Grid.Row="0"
+                    HeightRequest="250"
+                    HorizontalOptions="FillAndExpand"
+                    ItemsSource="{Binding ListaImagens}"
+                    VerticalOptions="FillAndExpand">
                     <CarouselView.ItemTemplate>
                         <DataTemplate>
-                            <Image Aspect="AspectFill"
-                                           HorizontalOptions="FillAndExpand" 
-                                           VerticalOptions="FillAndExpand"
-                                           Source="{Binding .}"/>
+                            <Image
+                                Aspect="AspectFill"
+                                HorizontalOptions="FillAndExpand"
+                                Source="{Binding .}"
+                                VerticalOptions="FillAndExpand" />
                         </DataTemplate>
                     </CarouselView.ItemTemplate>
                 </CarouselView>
 
-                <StackLayout BackgroundColor="{StaticResource Branco}"  Padding="18,8,0,10" Orientation="Vertical" Grid.Row="1">
-                    <Label Text="{Binding currentModel.cAlternativo}" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontSize="Medium"/>
-                    <Label Text="{Binding currentModel.xDescricao}"  VerticalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaApresentacaoCliente}" FontSize="Small"/>
+                <StackLayout
+                    Grid.Row="1"
+                    Padding="18,8,0,10"
+                    BackgroundColor="{StaticResource Branco}"
+                    Orientation="Vertical">
+                    <Label
+                        FontSize="Medium"
+                        LineBreakMode="TailTruncation"
+                        Text="{Binding currentModel.cAlternativo}"
+                        TextColor="{StaticResource CinzaEscuro}"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        FontSize="Small"
+                        LineBreakMode="TailTruncation"
+                        Text="{Binding currentModel.xDescricao}"
+                        TextColor="{StaticResource CinzaApresentacaoCliente}"
+                        VerticalTextAlignment="Center" />
                 </StackLayout>
 
-                <Frame Grid.Row="2" HasShadow="True" Padding="0,0,0,0">
+                <Frame
+                    Grid.Row="2"
+                    Padding="0,0,0,0"
+                    HasShadow="True">
                     <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Grid x:Name="GridHeader" BackgroundColor="{StaticResource Rosa}" Padding="5,5,5,5">
-                            <Label Text="DADOS PRINCIPAIS" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                        <Grid
+                            x:Name="GridHeader"
+                            Padding="5,5,5,5"
+                            BackgroundColor="{StaticResource Rosa}">
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                Text="DADOS PRINCIPAIS"
+                                TextColor="White" />
                         </Grid>
 
-                        <Grid x:Name="GridContent" Grid.Row="1" BackgroundColor="White">
+                        <Grid
+                            x:Name="GridContent"
+                            Grid.Row="1"
+                            BackgroundColor="White">
                             <Grid.Padding>
-                                <OnPlatform x:TypeArguments="Thickness" Android="5,5,5,5" WinPhone="5,5,5,5" iOS="12,5,12,5"/>
+                                <OnPlatform
+                                    x:TypeArguments="Thickness"
+                                    Android="5,5,5,5"
+                                    WinPhone="5,5,5,5"
+                                    iOS="12,5,12,5" />
                             </Grid.Padding>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <!--NOME / CÓDIGO-->
+                            <!--  NOME / CÓDIGO  -->
 
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="55*"/>
-                                    <ColumnDefinition Width="45*"/>
+                                    <ColumnDefinition Width="55*" />
+                                    <ColumnDefinition Width="45*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="NOME" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
-                                    <Label Grid.Row="1" Text="{Binding currentModel.xNome}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        LineBreakMode="TailTruncation"
+                                        Text="NOME"
+                                        TextColor="{StaticResource CinzaEscuro}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource LabelApresentacao}"
+                                        Text="{Binding currentModel.xNome}" />
                                 </Grid>
 
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="CÓDIGO" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
-                                    <Label Grid.Row="1" Text="{Binding currentModel.cAlternativo}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        LineBreakMode="TailTruncation"
+                                        Text="CÓDIGO"
+                                        TextColor="{StaticResource CinzaEscuro}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource LabelApresentacao}"
+                                        Text="{Binding currentModel.cAlternativo}" />
                                 </Grid>
 
 
                             </Grid>
 
-                            <!--UNIDADE / REPRESENTAÇÃO-->
+                            <!--  UNIDADE / REPRESENTAÇÃO  -->
 
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="55*"/>
-                                    <ColumnDefinition Width="45*"/>
+                                    <ColumnDefinition Width="55*" />
+                                    <ColumnDefinition Width="45*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="UNIDADE" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
-                                    <Label Grid.Row="1" Text="{Binding xUN}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        LineBreakMode="TailTruncation"
+                                        Text="UNIDADE"
+                                        TextColor="{StaticResource CinzaEscuro}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource LabelApresentacao}"
+                                        Text="{Binding xUN}" />
                                 </Grid>
 
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="REPRESENTAÇÃO" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
-                                    <Label Grid.Row="1" Text="{Binding xRepresentada}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        LineBreakMode="TailTruncation"
+                                        Text="REPRESENTAÇÃO"
+                                        TextColor="{StaticResource CinzaEscuro}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource LabelApresentacao}"
+                                        Text="{Binding xRepresentada}" />
                                 </Grid>
 
 
                             </Grid>
 
-                            <!--CATEGORIA / FABRICANTE-->
+                            <!--  CATEGORIA / FABRICANTE  -->
 
                             <Grid Grid.Row="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="55*"/>
-                                    <ColumnDefinition Width="45*"/>
+                                    <ColumnDefinition Width="55*" />
+                                    <ColumnDefinition Width="45*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="CATEGORIA" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
-                                    <Label Grid.Row="1" Text="{Binding xCategoria}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        LineBreakMode="TailTruncation"
+                                        Text="CATEGORIA"
+                                        TextColor="{StaticResource CinzaEscuro}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource LabelApresentacao}"
+                                        Text="{Binding xCategoria}" />
                                 </Grid>
 
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="FABRICANTE" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
-                                    <Label Grid.Row="1" Text="{Binding currentModel.xFabricante}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        LineBreakMode="TailTruncation"
+                                        Text="FABRICANTE"
+                                        TextColor="{StaticResource CinzaEscuro}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource LabelApresentacao}"
+                                        Text="{Binding currentModel.xFabricante}" />
                                 </Grid>
 
 
                             </Grid>
 
-                            <!--VENDA SEM ESTOQUE / ATIVO -->
+                            <!--  VENDA SEM ESTOQUE / ATIVO  -->
 
                             <Grid Grid.Row="3">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="55*"/>
-                                    <ColumnDefinition Width="45*"/>
+                                    <ColumnDefinition Width="55*" />
+                                    <ColumnDefinition Width="45*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="VENDA SEM ESTOQUE" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
-                                    <Label Grid.Row="1" Text="{Binding currentModel.stVendaSemEstoque, Converter={StaticResource BoolToStringConverter}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        LineBreakMode="TailTruncation"
+                                        Text="VENDA SEM ESTOQUE"
+                                        TextColor="{StaticResource CinzaEscuro}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource LabelApresentacao}"
+                                        Text="{Binding currentModel.stVendaSemEstoque, Converter={StaticResource BoolToStringConverter}}" />
                                 </Grid>
 
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="ATIVO" LineBreakMode="TailTruncation" FontAttributes="Bold" TextColor="{StaticResource CinzaEscuro}" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
-                                    <Label Grid.Row="1" Text="{Binding currentModel.stAtivo, Converter={StaticResource BoolToStringConverter}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        LineBreakMode="TailTruncation"
+                                        Text="ATIVO"
+                                        TextColor="{StaticResource CinzaEscuro}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource LabelApresentacao}"
+                                        Text="{Binding currentModel.stAtivo, Converter={StaticResource BoolToStringConverter}}" />
                                 </Grid>
 
 
                             </Grid>
 
-                            <!--OBSERVAÇÃO-->
+                            <!--  OBSERVAÇÃO  -->
 
                             <Grid Grid.Row="4">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <Label Text="OBSERVAÇÃO" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
-                                <Label Grid.Row="1" Text="{Binding currentModel.xAnotacao}" LineBreakMode="WordWrap" Style="{StaticResource LabelApresentacao}"/>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                    LineBreakMode="TailTruncation"
+                                    Text="OBSERVAÇÃO"
+                                    TextColor="{StaticResource CinzaEscuro}" />
+                                <Label
+                                    Grid.Row="1"
+                                    LineBreakMode="WordWrap"
+                                    Style="{StaticResource LabelApresentacao}"
+                                    Text="{Binding currentModel.xAnotacao}" />
 
                             </Grid>
 
@@ -218,159 +341,262 @@
                     </Grid>
                 </Frame>
 
-                <Frame Grid.Row="1" HasShadow="True" Padding="0,0,0,0">
+                <Frame
+                    Grid.Row="1"
+                    Padding="0,0,0,0"
+                    HasShadow="True">
                     <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Grid x:Name="GridHeaderValores" BackgroundColor="{StaticResource VerdePedido}" Padding="5,5,5,5">
-                            <Label Text="VALORES" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                        <Grid
+                            x:Name="GridHeaderValores"
+                            Padding="5,5,5,5"
+                            BackgroundColor="{StaticResource VerdePedido}">
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                Text="VALORES"
+                                TextColor="White" />
                         </Grid>
 
-                        <Grid x:Name="GridContentValores" Grid.Row="1" BackgroundColor="White">
+                        <Grid
+                            x:Name="GridContentValores"
+                            Grid.Row="1"
+                            BackgroundColor="White">
                             <Grid.Padding>
-                                <OnPlatform x:TypeArguments="Thickness" Android="5,5,5,5" WinPhone="5,5,5,5" iOS="12,5,12,5"/>
+                                <OnPlatform
+                                    x:TypeArguments="Thickness"
+                                    Android="5,5,5,5"
+                                    WinPhone="5,5,5,5"
+                                    iOS="12,5,12,5" />
                             </Grid.Padding>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <!--CUSTO DO PRODUTO-->
+                            <!--  CUSTO DO PRODUTO  -->
 
-                            <Grid IsVisible="{Binding isAdm }">
+                            <Grid IsVisible="{Binding isAdm}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid Padding="0,2,0,0">
-                                    <Label Text="CUSTO DO PRODUTO" LineBreakMode="TailTruncation" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        LineBreakMode="TailTruncation"
+                                        Text="CUSTO DO PRODUTO"
+                                        TextColor="{StaticResource CinzaEscuro}" />
                                 </Grid>
-                                <Label Grid.Column="1" LineBreakMode="NoWrap" Text="{Binding xDot}" Style="{StaticResource LabelApresentacao}"></Label>
-                                <Label Grid.Column="2" Text="{Binding currentModel.vCusto , Converter={StaticResource FormatDecimalConverter}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                <Label
+                                    Grid.Column="1"
+                                    LineBreakMode="NoWrap"
+                                    Style="{StaticResource LabelApresentacao}"
+                                    Text="{Binding xDot}" />
+                                <Label
+                                    Grid.Column="2"
+                                    LineBreakMode="TailTruncation"
+                                    Style="{StaticResource LabelApresentacao}"
+                                    Text="{Binding currentModel.vCusto, Converter={StaticResource FormatDecimalConverter}}" />
 
                             </Grid>
 
-                            <!--LUCRO-->
+                            <!--  LUCRO  -->
 
-                            <Grid Grid.Row="1" IsVisible="{Binding isAdm }">
+                            <Grid Grid.Row="1" IsVisible="{Binding isAdm}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid Padding="0,2,0,0">
-                                    <Label Text="LUCRO" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        HorizontalTextAlignment="Center"
+                                        LineBreakMode="TailTruncation"
+                                        Text="LUCRO"
+                                        TextColor="{StaticResource CinzaEscuro}" />
                                 </Grid>
-                                <Label Grid.Column="1" LineBreakMode="NoWrap" Text="{Binding xDot}" Style="{StaticResource LabelApresentacao}"></Label>
-                                <Label Grid.Column="2" Text="{Binding currentModel.pLucro , Converter={StaticResource FormatToPorcentConvert}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                <Label
+                                    Grid.Column="1"
+                                    LineBreakMode="NoWrap"
+                                    Style="{StaticResource LabelApresentacao}"
+                                    Text="{Binding xDot}" />
+                                <Label
+                                    Grid.Column="2"
+                                    LineBreakMode="TailTruncation"
+                                    Style="{StaticResource LabelApresentacao}"
+                                    Text="{Binding currentModel.pLucro, Converter={StaticResource FormatToPorcentConvert}}" />
 
 
                             </Grid>
 
-                            <!--IPI SOBRE VENDA-->
+                            <!--  IPI SOBRE VENDA  -->
 
                             <Grid Grid.Row="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid Padding="0,2,0,0">
-                                    <Label Text="IPI SOBRE VENDA" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        HorizontalTextAlignment="Center"
+                                        LineBreakMode="TailTruncation"
+                                        Text="IPI SOBRE VENDA"
+                                        TextColor="{StaticResource CinzaEscuro}" />
                                 </Grid>
-                                <Label Grid.Column="1" LineBreakMode="NoWrap" Text="{Binding xDot}" Style="{StaticResource LabelApresentacao}"></Label>
-                                <Label Grid.Column="2" Text="{Binding currentModel.pIpiVenda , Converter={StaticResource FormatToPorcentConvert}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                <Label
+                                    Grid.Column="1"
+                                    LineBreakMode="NoWrap"
+                                    Style="{StaticResource LabelApresentacao}"
+                                    Text="{Binding xDot}" />
+                                <Label
+                                    Grid.Column="2"
+                                    LineBreakMode="TailTruncation"
+                                    Style="{StaticResource LabelApresentacao}"
+                                    Text="{Binding currentModel.pIpiVenda, Converter={StaticResource FormatToPorcentConvert}}" />
 
 
                             </Grid>
 
-                            <!--IPI SOBRE VENDA-->
+                            <!--  IPI SOBRE VENDA  -->
 
                             <Grid Grid.Row="3">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid Padding="0,2,0,0">
-                                    <Label Text="ST SOBRE VENDA" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" TextColor="{StaticResource CinzaEscuro}" FontAttributes="Bold" FontSize="{StaticResource FontSizePedidoApresentacao}"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="{StaticResource FontSizePedidoApresentacao}"
+                                        HorizontalTextAlignment="Center"
+                                        LineBreakMode="TailTruncation"
+                                        Text="ST SOBRE VENDA"
+                                        TextColor="{StaticResource CinzaEscuro}" />
                                 </Grid>
-                                <Label Grid.Column="1" LineBreakMode="NoWrap" Text="{Binding xDot}" Style="{StaticResource LabelApresentacao}"></Label>
-                                <Label Grid.Column="2" Text="{Binding currentModel.pStVenda , Converter={StaticResource FormatToPorcentConvert}}" LineBreakMode="TailTruncation" Style="{StaticResource LabelApresentacao}"/>
+                                <Label
+                                    Grid.Column="1"
+                                    LineBreakMode="NoWrap"
+                                    Style="{StaticResource LabelApresentacao}"
+                                    Text="{Binding xDot}" />
+                                <Label
+                                    Grid.Column="2"
+                                    LineBreakMode="TailTruncation"
+                                    Style="{StaticResource LabelApresentacao}"
+                                    Text="{Binding currentModel.pStVenda, Converter={StaticResource FormatToPorcentConvert}}" />
 
 
                             </Grid>
 
-                            <!--SEPARADOR-->
+                            <!--  SEPARADOR  -->
 
                             <Grid Grid.Row="4" Padding="-5,10,-5,0">
-                                <BoxView HeightRequest="1" BackgroundColor="{StaticResource Rosa}"></BoxView>
+                                <BoxView BackgroundColor="{StaticResource Rosa}" HeightRequest="1" />
                             </Grid>
 
-                            <!--VALO DE VENDA-->
+                            <!--  VALO DE VENDA  -->
 
                             <Grid Grid.Row="5">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid Padding="0,2,0,0">
-                                    <Label Text="VALOR DE VENDA" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" TextColor="{StaticResource VerdePedido}" FontAttributes="Bold" FontSize="14"/>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        HorizontalTextAlignment="Center"
+                                        LineBreakMode="TailTruncation"
+                                        Text="VALOR DE VENDA"
+                                        TextColor="{StaticResource VerdePedido}" />
                                 </Grid>
 
-                                <Label Grid.Column="2" Text="{Binding currentModel.vVenda ,Converter={StaticResource FormatDecimalConverter}}" LineBreakMode="TailTruncation" FontSize="14" TextColor="{StaticResource VerdePedido}" FontAttributes="Bold"/>
+                                <Label
+                                    Grid.Column="2"
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    LineBreakMode="TailTruncation"
+                                    Text="{Binding currentModel.vVenda, Converter={StaticResource FormatDecimalConverter}}"
+                                    TextColor="{StaticResource VerdePedido}" />
                             </Grid>
                         </Grid>
                     </Grid>
                 </Frame>
 
-                <Frame Grid.Row="3" IsVisible="{Binding currentModel.stControleEstoque}" HasShadow="True" Padding="0,0,0,0">
+                <Frame
+                    Grid.Row="3"
+                    Padding="0,0,0,0"
+                    HasShadow="True"
+                    IsVisible="{Binding currentModel.stControleEstoque}">
                     <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Grid x:Name="GridHeaderEstoque" BackgroundColor="{StaticResource AzulClaro}" Padding="5,5,5,5">
-                            <Label Text="ESTOQUE" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-                            <Label Text="{Binding currentModel.dtUltimaSincronizacaoEstoque}"
-                                   FontSize="Micro"
-                                   TextColor="White"
-                                   FontAttributes="None" 
-                                   HorizontalTextAlignment="End"/>
+                        <Grid
+                            x:Name="GridHeaderEstoque"
+                            Padding="5,5,5,5"
+                            BackgroundColor="{StaticResource AzulClaro}">
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                Text="ESTOQUE"
+                                TextColor="White" />
+                            <Label
+                                FontAttributes="None"
+                                FontSize="Micro"
+                                HorizontalTextAlignment="End"
+                                Text="{Binding currentModel.dtUltimaSincronizacaoEstoque}"
+                                TextColor="White" />
                         </Grid>
 
-                        <Grid x:Name="GridContentEstoque" Grid.Row="1" BackgroundColor="White">
+                        <Grid
+                            x:Name="GridContentEstoque"
+                            Grid.Row="1"
+                            BackgroundColor="White">
                             <!--<Grid.Padding>
         <OnPlatform x:TypeArguments="Thickness" Android="5,5,5,5" WinPhone="5,5,5,5" iOS="12,5,12,5"/>
     </Grid.Padding>-->
 
-                            <ListView ItemsSource="{Binding currentModel.lEstoqueProduto}"
-              MinimumHeightRequest="5"
-              HasUnevenRows="True"
-              SeparatorVisibility="None">
+                            <ListView
+                                HasUnevenRows="True"
+                                ItemsSource="{Binding currentModel.lEstoqueProduto}"
+                                MinimumHeightRequest="5"
+                                SeparatorVisibility="None">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
-                                            <Grid Padding="5" RowSpacing="5" ColumnSpacing="2">
+                                            <Grid
+                                                Padding="5"
+                                                ColumnSpacing="2"
+                                                RowSpacing="5">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
 
                                                 <!--<Image Source="box.png"
@@ -379,21 +605,23 @@
                                Aspect="AspectFill"
                                WidthRequest="33"/>-->
 
-                                                <Label Grid.Column="0"
-                               Text="{Binding xNomeGrade}"
-                               TextColor="Gray"
-                               FontAttributes="Bold"
-                               FontSize="Small"
-                               Opacity="0.8"
-                               HorizontalOptions="Start"/>
+                                                <Label
+                                                    Grid.Column="0"
+                                                    FontAttributes="Bold"
+                                                    FontSize="Small"
+                                                    HorizontalOptions="Start"
+                                                    Opacity="0.8"
+                                                    Text="{Binding xNomeGrade}"
+                                                    TextColor="Gray" />
 
-                                                <Label Grid.Column="1"
-                               Text="{Binding vEstoque}"                            
-                               FontAttributes="Bold"
-                               FontSize="Small"
-                               Opacity="1"
-                               HorizontalOptions="Start"/>
-                                  
+                                                <Label
+                                                    Grid.Column="1"
+                                                    FontAttributes="Bold"
+                                                    FontSize="Small"
+                                                    HorizontalOptions="Start"
+                                                    Opacity="1"
+                                                    Text="{Binding vEstoque}" />
+
                                             </Grid>
                                         </ViewCell>
                                     </DataTemplate>
@@ -410,10 +638,16 @@
     </ScrollView>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Alterar" Command="{Binding AtualizarCommand}" Icon="{Binding ImageIconEdit}" />
-        <ToolbarItem  Text="Deletar" Command="{Binding DeleteCommand}" Icon="{Binding ImageIconDelete}">
+        <ToolbarItem
+            Command="{Binding AtualizarCommand}"
+            Icon="{Binding ImageIconEdit}"
+            Text="Alterar" />
+        <ToolbarItem
+            Command="{Binding DeleteCommand}"
+            Icon="{Binding ImageIconDelete}"
+            Text="Deletar">
             <ToolbarItem.Order>
-                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary"/>
+                <OnPlatform x:TypeArguments="ToolbarItemOrder" Android="Secondary" />
             </ToolbarItem.Order>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

@@ -311,6 +311,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             List<int> _listaLocaisPorRamo = App.Data.Connection.Table<LocalEstoqueClienteRamoAtividadesDataModel>().Where(c => c.idRamoAtividade == _idRamoAtividade && lIdsLocais.Contains(c.idLocalEstoque)).Select(t => t.idLocalEstoque).Distinct().ToList();
             List<int> _listaLocaisPorRepresentante = App.Data.Connection.Table<LocalEstoqueRepresentantesModel>().Where(c => c.idEmpresa_aspnetUsers == idRepresentante && lIdsLocais.Contains(c.idLocalEstoque)).Select(t => t.idLocalEstoque).Distinct().ToList();
 
+            var locaisDeOutrosRepresentantes = App.Data.Connection
+                .Table<LocalEstoqueRepresentantesModel>()
+                .Where(c => lIdsLocais.Contains(c.idLocalEstoque)
+                         && c.idEmpresa_aspnetUsers != idRepresentante)
+                .Select(c => c.idLocalEstoque)
+                .Distinct()
+                .ToList();
+
+            var isAdm = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
+
+            if (!isAdm)
+            {
+                _listaLocais.RemoveAll(id => locaisDeOutrosRepresentantes.Contains(id));
+            }
+
             int cont = 0;
             if (_listaLocaisPorCliente?.Count() > 0)
             {
