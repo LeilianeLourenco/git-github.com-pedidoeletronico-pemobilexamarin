@@ -1167,13 +1167,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 var existeCidades = App.Data.Connection.Table<CidadesModel>().Any();
 
-                if (existeCidades && !App.ForcarAtualizacao)
+                if (existeCidades)
                     return;
 
                 var cidades = await UtilHttp.GetCidades();
                 var data = JsonConvert.DeserializeObject<List<CidadeIBGE>>(cidades);
 
                 var lista = new List<CidadesModel>();
+
+                if (data == null)
+                    return;
 
                 currentModel.iCount = data.Count;
 

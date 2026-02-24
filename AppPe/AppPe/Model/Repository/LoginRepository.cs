@@ -236,7 +236,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 var xQuery = $@"SELECT * FROM {TableMobile.CurrentUserLogin} where bLogado = 1";
                 var currentUser = App.Data.Connection.Query<CurrentUserLoginModel>(xQuery).FirstOrDefault();
-                var idEmpresaLogada = App.EnvironmentPE.idEmpresaLogada;
+                int idEmpresaLogada = App.EnvironmentPE?.idEmpresaLogada ?? 0;
+
+                if (!(idEmpresaLogada > 0))
+                    idEmpresaLogada = currentUser.idEmpresaLogada;
 
                 xQuery = $@"SELECT * FROM {TableMobile.AspNetUsers} where Email = '{currentUser.Email}'";
                 var user = App.Data.Connection.Query<AspNetUsersModel>(xQuery).FirstOrDefault();
