@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -120,6 +121,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel
 
                                         App.CurrentAspnetUserModel = currentAspnetUserModel;
                                         this.currentModel.BProcessando = false;
+
+                                        var empresaAtiva = App.CurrentAspnetUserModel?.lEpresaAspnetUsersModel?
+                                            .FirstOrDefault(c => c.stAtivo);
+
+                                        if (empresaAtiva != null)
+                                            App.EnvironmentPE.idEmpresaLogada = empresaAtiva.idEmpresa;
 
                                         if (currentAspnetUserModel?.objEmpresaAspnetUsersModel?.stAtivo ?? false)
                                             Application.Current.MainPage = new RootPage();

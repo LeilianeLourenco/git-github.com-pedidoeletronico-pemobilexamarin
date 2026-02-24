@@ -102,7 +102,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Empresa
 
         public EmpresaViewModel()
         {
-            currentModel = App.CurrentAspnetUserModel?.objEmpresaAspnetUsersModel?.objEmpresaModel;
+            var empresa = App.CurrentAspnetUserModel?.objEmpresaAspnetUsersModel?.objEmpresaModel;
+
+            if (empresa != null)
+                currentModel = empresa;
+
             LEmpresaBasicPickerModels = new List<BasicPickerModel>();
             EntrarCommand = new Command(EfetivarTrocaEmpresa);
             App.CurrentAspnetUserModel = LoginRepository.GetAspnetUsers();
@@ -125,7 +129,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Empresa
                 });
             }
 
-            CurrentEmpresaBasicPickerModel = LEmpresaBasicPickerModels.FirstOrDefault(c => c.Id == App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
+            CurrentEmpresaBasicPickerModel = LEmpresaBasicPickerModels.FirstOrDefault(c => c.Id == empresa.idEmpresa);
         }
 
         public bool Initialize()

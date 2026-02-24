@@ -236,6 +236,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 var xQuery = $@"SELECT * FROM {TableMobile.CurrentUserLogin} where bLogado = 1";
                 var currentUser = App.Data.Connection.Query<CurrentUserLoginModel>(xQuery).FirstOrDefault();
+                var idEmpresaLogada = App.EnvironmentPE.idEmpresaLogada;
+
                 xQuery = $@"SELECT * FROM {TableMobile.AspNetUsers} where Email = '{currentUser.Email}'";
                 var user = App.Data.Connection.Query<AspNetUsersModel>(xQuery).FirstOrDefault();
 
@@ -271,7 +273,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 if (user.lEpresaAspnetUsersModel.Any())
                 {
                     if (currentUser.idEmpresaLogada > 0)
-                        userDefault = user.lEpresaAspnetUsersModel.FirstOrDefault(c => c.xEmail.ToUpper() == currentUser.Email.ToUpper() && c.idEmpresa == currentUser.idEmpresaLogada);
+                        userDefault = user.lEpresaAspnetUsersModel.FirstOrDefault(c => c.xEmail.ToUpper() == currentUser.Email.ToUpper() && c.idEmpresa == idEmpresaLogada);
 
 
                     if (userDefault == null)
