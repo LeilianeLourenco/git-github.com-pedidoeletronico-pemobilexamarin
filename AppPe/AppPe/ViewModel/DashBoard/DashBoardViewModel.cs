@@ -156,13 +156,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.DashBoard
                 {
                     isAdm = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador;
 
-                    if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.stDataRelatorios.GetValueOrDefault() == 0)
+                    var stDataRelatorios = PedidoRepository.GetDataRelatorio(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.idEmpresa.GetValueOrDefault());
+
+                    if (stDataRelatorios == 0)
                         VendasHoje = PedidoRepository.GetFaturamento(DateTime.Today, bShowTodos);
                     else
                         VendasHoje = PedidoRepository.GetFaturamentoPorDataFaturamento(DateTime.Today, bShowTodos);
 
                     var date = DateTime.Today.AddDays(-1);
-                    if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.objEmpresaModel.stDataRelatorios.GetValueOrDefault() == 0)
+                    if (stDataRelatorios == 0)
                         VendasOntem = PedidoRepository.GetFaturamento(date, bShowTodos);
                     else
                         VendasOntem = PedidoRepository.GetFaturamentoPorDataFaturamento(date, bShowTodos);
