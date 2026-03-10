@@ -277,6 +277,6 @@ namespace Xamarin.HLP.Mobile.AppPE
 
         public static INavigation Navigation;
 
-        public enum TipoUser { OMIE, BLING, TINY, NORMAL }
+        public enum TipoUser { OMIE, BLING, TINY, CAPOLI, NORMAL }
     }
 }

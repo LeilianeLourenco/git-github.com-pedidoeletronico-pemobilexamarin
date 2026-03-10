@@ -15,13 +15,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
             if (!string.IsNullOrEmpty(empresa?.xBlingApiKey))
                 App.tipouser = App.TipoUser.BLING;
-
             else if (!string.IsNullOrEmpty(empresa?.xOmieAppKey))
                 App.tipouser = App.TipoUser.OMIE;
-
             else if (empresa?.idEcommerceTiny > 0)
                 App.tipouser = App.TipoUser.TINY;
-
+            else if (empresa.idEmpresa == 76191) // caso for a empresa Capoli, isso para exibir xDisplayIntegracao na listagem do pedido #5452
+                App.tipouser = App.TipoUser.CAPOLI;
             else
                 App.tipouser = App.TipoUser.NORMAL;
         }
