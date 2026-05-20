@@ -72,6 +72,11 @@
                     DetailColor="{StaticResource CinzaMaisEscuro}"
                     Text="Inscrição estadual / RG"
                     TextColor="{StaticResource CinzaApresentacaoCliente}" />
+                <TextCell
+                    Detail="{Binding xDiaFavoravel}"
+                    DetailColor="{StaticResource CinzaMaisEscuro}"
+                    Text="Melhor dia para visita"
+                    TextColor="{StaticResource CinzaApresentacaoCliente}" />
             </TableSection>
 
             <TableSection>

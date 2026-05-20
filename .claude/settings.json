@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where msbuild *)",
+      "Read(//c/Program Files/Microsoft Visual Studio/**)"
+    ]
+  },
+  "skills": {
+    "xamarin": {
+      "description": "Agente para o app Xamarin.Forms AppPe, cobrindo dependencias com o backend Pedido Eletronico, sincronizacao offline e contratos de API",
+      "path": ".claude/skills/xamarin.md"
+    }
+  }
+}
