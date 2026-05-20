@@ -509,6 +509,29 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static RecebimentoTitulosModel GetPixDisponivel(int idPedidoVenda, int idEmpresa)
+        {
+            try
+            {
+                var xQuery = $@"SELECT * FROM {TableMobile.TB_RECEBIMENTOTITULOS}
+                                WHERE idPedidoVenda = ?
+                                  AND idEmpresa = ?
+                                  AND COALESCE(stPixPago, 0) = 0
+                                  AND ((cCopiaCola IS NOT NULL AND cCopiaCola <> '')
+                                       OR (cUrlPix IS NOT NULL AND cUrlPix <> ''))
+                                LIMIT 1";
+
+                return App.Data.Connection
+                    .Query<RecebimentoTitulosModel>(xQuery, idPedidoVenda, idEmpresa)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("FinanceiroRepository.GetPixDisponivel", false);
+                return null;
+            }
+        }
+
         public static void SalvarFaturas(List<RecebimentoTitulosPostModel> recebimentoTitulosModel)
         {
             try

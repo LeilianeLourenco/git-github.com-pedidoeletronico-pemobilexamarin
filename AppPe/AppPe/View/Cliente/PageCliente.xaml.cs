@@ -30,8 +30,7 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Cliente
 
                     StaticViewModel = ViewModel;
                     ViewModel.currentModel = objClientesModel;
-
-
+                    ViewModel.SincronizarIndexDiaFavoravel();
 
                     ToolbarItemSalvar.Command = new Command(AfterSave);
                     EntryNome.Completed += (sender, e) => { EntryFantasia.Focus(); };

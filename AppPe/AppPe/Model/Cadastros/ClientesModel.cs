@@ -246,6 +246,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
             }
         }
 
+        private int? _nDiaFavoravel;
+        public int? nDiaFavoravel
+        {
+            get { return _nDiaFavoravel; }
+            set
+            {
+                _nDiaFavoravel = value; NotifyPropertyChanged();
+            }
+        }
+
         private int? _idTransportadora;
         public int? idTransportadora
         {

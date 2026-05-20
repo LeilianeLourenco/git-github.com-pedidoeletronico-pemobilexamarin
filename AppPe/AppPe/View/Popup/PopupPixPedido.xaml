@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 x:Class="Xamarin.HLP.Mobile.AppPE.View.Popup.PopupPixPedido">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut="0.8"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True" />
+    </pages:PopupPage.Animation>
+
+    <Frame Padding="16"
+           BackgroundColor="White"
+           CornerRadius="10"
+           HasShadow="True"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"
+           WidthRequest="320">
+        <StackLayout Spacing="12">
+
+            <Label Text="PAGAMENTO PIX"
+                   FontAttributes="Bold"
+                   FontSize="16"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource AzulChart}" />
+
+            <StackLayout x:Name="layoutLink" IsVisible="False" Spacing="4">
+                <Label Text="Link de pagamento"
+                       FontAttributes="Bold"
+                       FontSize="13"
+                       TextColor="{StaticResource CinzaEscuro}" />
+                <Label x:Name="lblLink"
+                       FontSize="12"
+                       LineBreakMode="TailTruncation"
+                       TextColor="{StaticResource AzulChart}"
+                       TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLinkTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+
+            <StackLayout x:Name="layoutCopiaCola" IsVisible="False" Spacing="4">
+                <Label Text="Código copia e cola"
+                       FontAttributes="Bold"
+                       FontSize="13"
+                       TextColor="{StaticResource CinzaEscuro}" />
+                <Frame Padding="8"
+                       BackgroundColor="{StaticResource CinzaClarissimo}"
+                       CornerRadius="5"
+                       HasShadow="False">
+                    <Label x:Name="lblCopiaCola"
+                           FontSize="11"
+                           LineBreakMode="CharacterWrap"
+                           MaxLines="3"
+                           TextColor="{StaticResource CinzaEscuro}" />
+                </Frame>
+                <Button Text="COPIAR CÓDIGO"
+                        Clicked="OnCopiarClicked"
+                        Style="{StaticResource Info}" />
+            </StackLayout>
+
+            <Button Text="FECHAR"
+                    Clicked="OnFecharClicked"
+                    Style="{StaticResource Default}" />
+        </StackLayout>
+    </Frame>
+</pages:PopupPage>

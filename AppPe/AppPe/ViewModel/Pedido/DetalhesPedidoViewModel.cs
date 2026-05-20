@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Common;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Cadastros;
+using Xamarin.HLP.Mobile.AppPE.Model.Financeiro;
 using Xamarin.HLP.Mobile.AppPE.Model.Lancamento;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
 using Xamarin.HLP.Mobile.AppPE.Services;
@@ -36,6 +37,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
         public ICommand DuplicarPedidoCommand { get; set; }
         public ICommand MudarStatusCommand { get; set; }
         public ICommand AssinaturaPedido { get; set; }
+        public ICommand ShowPixCommand { get; set; }
         #endregion
 
         private PedidoVendaListarModel _currentModel;
@@ -136,6 +138,20 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             set { _imgAssinaturaPedido = value; NotifyPropertyChanged(); }
         }
 
+        private RecebimentoTitulosModel _pixDisponivel;
+        public RecebimentoTitulosModel pixDisponivel
+        {
+            get { return _pixDisponivel; }
+            set
+            {
+                _pixDisponivel = value;
+                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(ExibirBotaoPix));
+            }
+        }
+
+        public bool ExibirBotaoPix => pixDisponivel != null;
+
         public DetalhesPedidoViewModel()
         {
             ClosePopupCommand = new Command(() => { UtilNavidate.PopPopupNew(); });
@@ -182,6 +198,23 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             DuplicarPedidoCommand = new Command(DuplicarPedido);
             MudarStatusCommand = new Command(MudarStatus);
             AssinaturaPedido = new Command(AssinarPedido);
+            ShowPixCommand = new Command(() =>
+            {
+                if (pixDisponivel == null) return;
+                UtilNavidate.ShowPopupNew(new View.Popup.PopupPixPedido(pixDisponivel));
+            });
+        }
+
+        private void CarregarPixDisponivel()
+        {
+            if (currentModel?.idPedidoVenda == null || currentModel.idPedidoVenda <= 0)
+            {
+                pixDisponivel = null;
+                return;
+            }
+
+            var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+            pixDisponivel = FinanceiroRepository.GetPixDisponivel(currentModel.idPedidoVenda.Value, idEmpresa);
         }
         public void AssinarPedido()
         {
@@ -509,6 +542,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 vDescontoTotal = PedidoRepository.SumDescontoItens(currentModel.idPedidoVendaOffLine);
                 vTotalComissao = PedidoRepository.SumFieldItem(currentModel.idPedidoVendaOffLine, "vComissao");
                 bUtilizaMelhoriaEscolherRepresentadaPdf = ConfiguracaoGeralRepositorio.GetMelhoriaEspecificaRepresentacaoPdf(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
+                CarregarPixDisponivel();
             }
             imgAssinaturaPedido = _fileService?.GetImage(PedidoRepository.BuscarAssAtualizada(currentModel.idPedidoVendaOffLine)).Result;
 
@@ -656,6 +690,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 currentModel = resultado.FirstOrDefault();
                 PageListarPedidos.ViewModelStatic.canExecuteInicial = true;
+                CarregarPixDisponivel();
             }
         }
 
