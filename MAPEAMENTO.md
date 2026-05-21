@@ -229,6 +229,32 @@ Todo método trata 3 cenários:
 - `https://maps.googleapis.com/maps/api/geocode/json` — geocodificação de endereço (chave hardcoded em `UtilHttp.GetInfoEndereco`, **considerar movê-la**).
 - `https://servicodados.ibge.gov.br/api/v1/localidades/municipios` — lista de cidades.
 
+### Mapeamento ↔ backend relevante (`pe.backlog`)
+
+> **Escopo deste workspace:** dos ~65 projetos do `Hlp.PedidoEletronico.sln`, só interessam **`Hlp.PedidoEletronico.Mvc`** e **`Hlp.PedidoEletronico.Domain.Business`** (+ as deps internas referenciadas pelo Mvc). Demais projetos do backend (catálogo B2B, APIs mobile dedicadas, integrações ERP, console apps, etc.) ficam fora — não documentar nem investigar aqui salvo pedido explícito.
+
+| Peça externa consumida pelo mobile | Projeto-fonte em `pe.backlog` | Notas |
+|---|---|---|
+| `App.UrlWebApi` = `https://pedidoeletronico.com/` | `Hlp.PedidoEletronico.Mvc` (Areas/Sistema/...) | Portal principal — login, pagamentos, planos, rotas mobile-legadas que o `UtilHttp` chama via `CurrentHttpClient`. |
+| `App.UrlPortal` (validação de plano) | `Hlp.PedidoEletronico.Mvc` (Account/Plano) | Validado em `AcessoPermitido()` no início do sync. |
+| `dllExtern/Hlp.PedidoEletronico.Domain.Business.dll` | `Hlp.PedidoEletronico.Domain.Business` | **Compartilhada por DLL** — cálculos (`Calculos/Pedido.cs`, `Calculos/Produto.cs`), `Bo/PlanosBo.cs`, validações. Qualquer alteração no backend reflete no app na próxima build. |
+| `dllExtern/TEditor.dll` | (terceiro — não pertence ao monorepo) | Editor de texto rico. |
+
+#### Camada de domínio compartilhada (mesmas tabelas via DB → API → SQLite local)
+
+| Tabela no `DB_VENDASONLINE` (backend) | Model no mobile | Direção do dado |
+|---|---|---|
+| `tb_pedidovenda`, `tb_pedidovendaitens` | `PedidoVendaModel`, `PedidoVendaItensModel` | Mobile **escreve** (upload de pedido) e **lê** (sync delta) |
+| `tb_clientes`, `tb_endereco`, `tb_contatos` | `ClientesModel`, `EnderecoModel`, `ContatoModel` | Bidirecional |
+| `tb_produto`, `tb_categoria`, `tb_tabelapreco*` | `ProdutoModel`, `CategoriaProdutoModel`, `TabelaPrecoModel`, `TabelaPrecoItemModel` | Backend → mobile (catálogo) |
+| `tb_recebimento_titulos` | `RecebimentoTitulosModel` | **Backend → mobile** apenas. PIX (Omie Cash) é populado pelo `PedidoVendaRepositorio.AddPedidoRecebimentos` no backend e desce no `SincronizacaoDownload`. Ver §9.2. |
+| `tb_movimentoestoque`, `tb_local_estoque` | `EstoqueModel`, `LocalEstoqueModel` | Backend → mobile (planos pagos) |
+| `tb_regras_comerciais*` | `RegrasComerciaisModel` e satélites | Backend → mobile |
+| `tb_atividades` | `AtividadeAgendaModel` | Bidirecional |
+| `tb_empresa`, `tb_empresa_aspnetusers` | `EmpresaModel`, `EmpresaAspnetUsersModel` | Backend → mobile |
+
+> A âncora de delta é o `dtUltimaAlteracao` do registro no servidor. No mobile, esse mesmo campo serve como flag local de "alterado, precisa subir" — ver §9.
+
 ---
 
 ## 8. Sincronização
@@ -539,4 +565,6 @@ Padrão para acessar APIs nativas: definir interface no projeto compartilhado, i
 
 ---
 
-_Última atualização: 2026-05-01 — adicionada seção 9.2 (PIX Omie Cash)._
+_Última atualização: 2026-05-21 — §7 reduzida ao escopo do workspace: só `Hlp.PedidoEletronico.Mvc` + `Hlp.PedidoEletronico.Domain.Business` permanecem como alvos do backend; demais projetos do monorepo saíram do mapa._
+_Anterior: 2026-05-21 — §7 ganhou subseção "Mapeamento ↔ projetos no monorepo backend (`pe.backlog`)" amarrando cada URL/DLL externa ao projeto-fonte._
+_Anterior: 2026-05-01 — adicionada seção 9.2 (PIX Omie Cash)._

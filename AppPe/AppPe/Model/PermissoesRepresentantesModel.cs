@@ -20,11 +20,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public byte? stPermissaoPedidoVenda
         {
             get
-            {                
+            {
+                // Sem linha gravada em tb_permissoes_representantes = Restrito (só os próprios).
+                // Admin é tratado em PedidoRepository.GetInfinit com bypass explícito (não depende
+                // deste default). A web defaulta `?? 3` (Geral), mas no mobile a regra de negócio
+                // é "não-admin sem permissão registrada vê só os próprios".
                 return _stPermissaoPedidoVenda ?? 1;
             }
             set
-            {                
+            {
                 _stPermissaoPedidoVenda = value;
             }
         }

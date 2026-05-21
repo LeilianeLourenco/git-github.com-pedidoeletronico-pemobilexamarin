@@ -83,10 +83,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     user.lPermissoesRepresentantesModel.AddRange(App.Data.Connection.Query<PermissoesRepresentantesModel>(queryUser));
                     user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel = user.lPermissoesRepresentantesModel.FirstOrDefault(x => x.idEmpresa_aspnetusers == user.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers);
 
+                    // Sem linha em tb_permissoes_representantes = Restrito (só os próprios).
+                    // Regra de negócio: não-admin sem permissão explícita não tem acesso ampliado.
                     int stPermissaoPedidoVenda = 1;
 
                     if (user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel != null)
                         stPermissaoPedidoVenda = (byte)user.objEmpresaAspnetUsersModel.permissoesRepresentantesModel.stPermissaoPedidoVenda;
+
+                    // Administrador da empresa tem visão Geral por definição — ignora qualquer
+                    // restrição gravada em tb_permissoes_representantes. Sem isso, admin com
+                    // stPermissaoPedidoVenda=1 ou 2 no banco veria só os próprios pedidos mesmo
+                    // ao escolher "Todos" no filtro de Proprietário.
+                    if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
+                        stPermissaoPedidoVenda = 3;
 
                     if (!string.IsNullOrEmpty(idRepresentantePedido) && idRepresentantePedido != "0")
                         xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
@@ -102,10 +111,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                 xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idEmpresaAspnetUser}'";
                                 break;
                             case 2:
-                                var xQueryIdEquipe = $@"SELECT * FROM {TableMobile.TB_EQUIPE_REPRESENTANTES} WHERE idEmpresa_aspnetusers = {idRepresentantePedido}";
+                                // Equipe: vê os próprios + dos vendedores das mesmas equipes
+                                // (responsáveis na hierarquia).
+                                // BUG-FIX A: usar o ID do user LOGADO, não `idRepresentantePedido`
+                                // (que vem "0" quando o usuário escolhe "Todos" no picker, o que
+                                // fazia a query buscar equipes do user 0 e devolver lista vazia).
+                                var idEmpresaAspnetUserLogado = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers ?? 0;
+
+                                var xQueryIdEquipe = $@"SELECT * FROM {TableMobile.TB_EQUIPE_REPRESENTANTES} WHERE idEmpresa = {idEmpresa} AND idEmpresa_aspnetusers = {idEmpresaAspnetUserLogado}";
                                 var listaIdEquipe = App.Data.Connection.Query<EquipeRepresentantesModel>(xQueryIdEquipe).ToList();
 
-                                string xQueryEquipes = "SELECT * FROM " + TableMobile.TB_EQUIPE_REPRESENTANTES + " WHERE ";
+                                string xQueryEquipes = $"SELECT * FROM {TableMobile.TB_EQUIPE_REPRESENTANTES} WHERE idEmpresa = {idEmpresa} AND (";
 
                                 for (int i = 0; i < listaIdEquipe.Count; i++)
                                 {
@@ -113,21 +129,27 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                                         xQueryEquipes += " OR ";
 
                                     xQueryEquipes += $"idEquipe = {listaIdEquipe[i].idEquipe}";
-
                                 }
+
+                                xQueryEquipes += ")";
 
                                 List<EquipeRepresentantesModel> listaEquipe = new List<EquipeRepresentantesModel>();
 
                                 if (listaIdEquipe.Count > 0)
                                     listaEquipe = App.Data.Connection.Query<EquipeRepresentantesModel>(xQueryEquipes).ToList();
 
-                                xQuery += $" and TB_PEDIDOVENDA.idRepresentantePedido = '{idRepresentantePedido}'";
+                                // BUG-FIX B: envolver o conjunto de OR em parênteses pra não vazar
+                                // do AND idEmpresa (sem isso, o OR cancelava o filtro de empresa
+                                // e podia trazer pedidos de outras empresas).
+                                xQuery += $" and (TB_PEDIDOVENDA.idRepresentantePedido = '{idEmpresaAspnetUserLogado}'";
 
                                 foreach (var item in listaEquipe)
                                 {
-                                    if (item.idEmpresa_aspnetusers != Convert.ToInt32(idRepresentantePedido))
+                                    if (item.idEmpresa_aspnetusers != idEmpresaAspnetUserLogado)
                                         xQuery += $" or TB_PEDIDOVENDA.idRepresentantePedido = '{item.idEmpresa_aspnetusers}'";
                                 }
+
+                                xQuery += ")";
                                 break;
                         }
                     }
