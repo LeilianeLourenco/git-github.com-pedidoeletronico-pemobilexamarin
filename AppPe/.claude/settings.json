@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"d:/Xamarin/AppPe\" log --oneline -20)",
+      "Bash(find /d/Xamarin/AppPe -type f -name \"*.csproj\" -exec grep -l \"Bundle\\\\|Version\\\\|Store\\\\|Release\" {} \\\\;)"
+    ]
+  }
+}
