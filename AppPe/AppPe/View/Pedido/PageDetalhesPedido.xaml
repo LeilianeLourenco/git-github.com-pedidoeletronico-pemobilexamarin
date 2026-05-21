@@ -209,13 +209,20 @@
                             Command="{Binding AssinaturaPedido}"
                             Style="{StaticResource Danger}"
                             Text="ASSINATURA PEDIDO »" />
-                        <Image
-                            x:Name="imgAssinaturaPedido"
+                        <Grid
                             Grid.Row="1"
-                            Grid.Column="1"
-                            HorizontalOptions="CenterAndExpand"
-                            Source="{Binding imgAssinaturaPedido}"
-                            VerticalOptions="CenterAndExpand" />
+                            Grid.Column="1">
+                            <Image
+                                x:Name="imgAssinaturaPedido"
+                                HorizontalOptions="CenterAndExpand"
+                                Source="{Binding imgAssinaturaPedido}"
+                                VerticalOptions="CenterAndExpand" />
+                            <Button
+                                Command="{Binding ShowPixCommand}"
+                                IsVisible="{Binding ExibirBotaoPix}"
+                                Style="{StaticResource Success}"
+                                Text="PIX »" />
+                        </Grid>
                     </Grid>
 
                     <Button

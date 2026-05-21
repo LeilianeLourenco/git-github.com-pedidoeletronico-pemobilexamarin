@@ -98,5 +98,4 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Cliente
             }
         }
     }
-
 }

@@ -64,6 +64,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Financeiro
         public string idPedidoDisplay { get; set; }
         public int nParcela { get; set; }
 
+        public bool stPixPago { get; set; }
+        public string cCopiaCola { get; set; }
+        public string cQrCode { get; set; }
+        public string cUrlPix { get; set; }
+
         [Ignore]
         [IgnoreDataMember]
         public byte stDuplicata => vRecebido == 0 ? (byte)0 : (vRecebido >= vTitulo ? (byte)1 : (byte)2);

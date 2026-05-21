@@ -64,6 +64,41 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
             }
         }
 
+        private static readonly int?[] _diasFavoraveisMap =
+        {
+            null,
+            2,
+            3,
+            4,
+            5,
+            6,
+            0,
+            1
+        };
+
+        private int _indexDiaFavoravel;
+        public int indexDiaFavoravel
+        {
+            get { return _indexDiaFavoravel; }
+            set
+            {
+                _indexDiaFavoravel = value;
+                NotifyPropertyChanged();
+                if (value >= 0 && value < _diasFavoraveisMap.Length)
+                    currentModel.nDiaFavoravel = _diasFavoraveisMap[value];
+            }
+        }
+
+        public void SincronizarIndexDiaFavoravel()
+        {
+            var valor = currentModel?.nDiaFavoravel;
+            var idx = Array.IndexOf(_diasFavoraveisMap, valor);
+            var newIdx = idx >= 0 ? idx : 0;
+            if (_indexDiaFavoravel == newIdx) return;
+            _indexDiaFavoravel = newIdx;
+            NotifyPropertyChanged(nameof(indexDiaFavoravel));
+        }
+
         private bool _enableDateEfetivacao;
 
         public bool enableDateEfetivacao
@@ -319,6 +354,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                 }
 
                 indexStCliente = (byte)(currentModel.stProspeccao.Equals("CE") ? 0 : 1);
+
+                SincronizarIndexDiaFavoravel();
 
                 if (currentModel.dEfetivacao == null)
                     currentModel.dEfetivacao = DateTime.Now.SqlMinDateTime();

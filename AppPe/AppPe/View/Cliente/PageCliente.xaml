@@ -199,6 +199,25 @@
                     Placeholder="Digite um valor válido"
                     Text="{Binding currentModel.xRgIe}" />
 
+                <!--  Melhor dia para visita  -->
+
+                <Label
+                    LineBreakMode="NoWrap"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Melhor dia para visita" />
+                <Picker x:Name="PickerDiaFavoravel" SelectedIndex="{Binding indexDiaFavoravel}">
+                    <Picker.Items>
+                        <x:String>Nenhum</x:String>
+                        <x:String>Segunda-feira</x:String>
+                        <x:String>Terça-feira</x:String>
+                        <x:String>Quarta-feira</x:String>
+                        <x:String>Quinta-feira</x:String>
+                        <x:String>Sexta-feira</x:String>
+                        <x:String>Sábado</x:String>
+                        <x:String>Domingo</x:String>
+                    </Picker.Items>
+                </Picker>
+
                 <!--  Linkedin  -->
 
                 <Label

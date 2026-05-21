@@ -69,6 +69,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
             get { return _xCondPgto; }
             set { _xCondPgto = value; NotifyPropertyChanged(); }
         }
+
+        private string _xDiaFavoravel;
+
+        public string xDiaFavoravel
+        {
+            get { return _xDiaFavoravel; }
+            set { _xDiaFavoravel = value; NotifyPropertyChanged(); }
+        }
         #endregion
 
 
@@ -228,6 +236,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Cadastro
                         xProspeccao = "CLIENTE EM PROSPECÇÃO";
                     else
                         xProspeccao = "CLIENTE EFETIVADO";
+
+                    switch (currentModel.nDiaFavoravel)
+                    {
+                        case 2: xDiaFavoravel = "Segunda-feira"; break;
+                        case 3: xDiaFavoravel = "Terça-feira"; break;
+                        case 4: xDiaFavoravel = "Quarta-feira"; break;
+                        case 5: xDiaFavoravel = "Quinta-feira"; break;
+                        case 6: xDiaFavoravel = "Sexta-feira"; break;
+                        case 0: xDiaFavoravel = "Sábado"; break;
+                        case 1: xDiaFavoravel = "Domingo"; break;
+                        default: xDiaFavoravel = "Nenhum"; break;
+                    }
                 });
             }
             catch (Exception ex)
