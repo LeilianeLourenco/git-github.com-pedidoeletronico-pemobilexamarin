@@ -181,6 +181,77 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 _ItemCondicaoPgto = value;
                 NotifyPropertyChanged();
+                // bExibirGerarPix depende de nParcelas da condição atual — quando muda, o
+                // checkbox "Gerar pix" pode aparecer/desaparecer.
+                NotifyPropertyChanged(nameof(bExibirGerarPix));
+                // Se a condição nova NÃO permite PIX (nParcelas > 1), garante que bGerarPix
+                // não vá com true pra sincronização (usuário pode ter marcado antes de trocar).
+                try
+                {
+                    if (!bExibirGerarPix && currentModel != null && currentModel.bGerarPix)
+                        currentModel.bGerarPix = false;
+                }
+                catch (Exception ex)
+                {
+                    ex.TrakException("PedidoNewViewModel.ItemCondicaoPgto.set", false);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Cache da flag bUtilizaPixOmieCash da empresa atual — lido 1x da SQLite
+        /// (TB_OMIE_CONFIGURACOES_GERAIS) e reusado em todas as avaliações de bExibirGerarPix.
+        /// Como a empresa é fixa durante a sessão do pedido, não há risco de inconsistência.
+        /// </summary>
+        private bool? _bUtilizaPixOmieCashCache;
+
+        private bool ObterUtilizaPixOmieCashEmpresa()
+        {
+            if (_bUtilizaPixOmieCashCache.HasValue) return _bUtilizaPixOmieCashCache.Value;
+
+            try
+            {
+                var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+                _bUtilizaPixOmieCashCache = ConfiguracaoGeralRepositorio.GetUtilizaPixOmieCash(idEmpresa);
+            }
+            catch
+            {
+                _bUtilizaPixOmieCashCache = false;
+            }
+
+            return _bUtilizaPixOmieCashCache.Value;
+        }
+
+        /// <summary>
+        /// Controla a visibilidade do checkbox "Gerar pix" no XAML.
+        /// 4 condições (todas precisam ser true):
+        ///   1) Condição de pagamento selecionada (ItemCondicaoPgto.Id > 0)
+        ///   2) nParcelas == 1 OU xFormula == "0" (lidos direto do ListItemModel — populados pelo CondicaoPagamentoRepository)
+        ///   3) Empresa atual está em tb_omie_configuracoesgerais com bUtilizaPixOmieCash = true
+        ///      (cache: 1 query SQLite na 1ª avaliação, depois reusa)
+        ///   4) Pedido NÃO tem PIX já processado em tb_recebimentotitulos
+        ///      (stPixPago=1 OU cCopiaCola != null — PIX já gerado/pago, não permite re-marcar)
+        /// </summary>
+        public bool bExibirGerarPix
+        {
+            get
+            {
+                if (ItemCondicaoPgto == null || ItemCondicaoPgto.Id == 0)
+                    return false;
+
+                // À vista / parcela única (nParcelas == 1) OU condição com xFormula == "0".
+                if (ItemCondicaoPgto.nParcelas != 1 && ItemCondicaoPgto.xFormula?.Trim() != "0")
+                    return false;
+
+                if (!ObterUtilizaPixOmieCashEmpresa())
+                    return false;
+
+                // Se o pedido já tem PIX gerado (cCopiaCola preenchida) ou pago (stPixPago=1),
+                // oculta — não faz sentido marcar de novo.
+                if (FinanceiroRepository.PedidoJaTemPix(currentModel?.idPedidoVenda))
+                    return false;
+
+                return true;
             }
         }
 
@@ -839,6 +910,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     IsBusy = true;
                     ExecuttingAnyCommand = canExecuteInicial = false;
 
+                    // DEBUG PROVISÓRIO — exibir flags de tb_configuracoes_gerais (REMOVER depois)
+                    var _configDebug = ConfiguracaoGeralRepositorio.GetConfiguracaoEmpresa();
+                    App.Messages.ShowAsync(
+                        $"bUtilizaAprovacaoCreditoUltrapassado: {_configDebug.bUtilizaAprovacaoCreditoUltrapassado}\n" +
+                        $"bUtilizaLimiteMinimoVendas: {_configDebug.bUtilizaLimiteMinimoVendas}\n" +
+                        $"bBloquearPedidoClienteComTituloVencido: {_configDebug.bBloquearPedidoClienteComTituloVencido}");
+
                     ChangeLancamento();
 
                     //Novo método de checar configurações dentro do pedido;
@@ -991,7 +1069,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 var idRepresentante = ClienteRepository.GetIdRepresentanteDoCliente(ItemCliente.Id);
 
-
                 //checando se NÃO é administrador, caso não seja, vou forçar que o idEmpresa_aspnetuser do representante seja preenchido em vez do vinculado no cliente
                 if (idRepresentante == 0 ||
                 (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAcessoTodosClientes == 1 &&
@@ -1051,6 +1128,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 SetConfiguracoes(idRepresentante, idTransportadora, idUltimaCondicaoPgto, null, idRedespacho, currentModel.xFormaPagamento);
                 VerificarRegrasComerciais();
             });
+
+            bool podeProsseguir = await ValidaBloqueioPedidoClientesTitulosVencidos(vFinanceiroVencido);
+
+            if (!podeProsseguir)
+                LimparClienteSelecionado();
+        }
+
+        private void LimparClienteSelecionado()
+        {
+            ItemCliente = new ListItemModel { Display = "clique aqui para pesquisar" };
+            currentModel.idClientesOffLine = 0;
+            currentModel.idClientes = null;
+            vFinanceiroEmAberto = 0;
+            vFinanceiroVencido = 0;
+            idUltimoCliente = 0;
         }
 
         public void SetConfiguracoes(int idRepresentante, int idTransportadora, int idCondicaoPgto,
@@ -1350,6 +1442,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             {
                 ItemFormaPgto = CondicaoPagamentoRepository.BuscaFormasPagamentoPorCondicao(string.Empty, ItemCondicaoPgto.Id).OrderBy(t => t.Display).FirstOrDefault();
                 currentModel.xFormaPagamento = ItemFormaPgto.Display;
+
+                // Quando a condição é trocada via pesquisa, o setter de ItemCondicaoPgto não dispara
+                // (PesquisaPadraoViewModel muta o objeto in place). Refresh manual aqui garante que
+                // o checkbox "Gerar pix" some quando a nova condição tem nParcelas > 1.
+                NotifyPropertyChanged(nameof(bExibirGerarPix));
+                if (!bExibirGerarPix && currentModel != null && currentModel.bGerarPix)
+                    currentModel.bGerarPix = false;
             }
             catch (Exception ex)
             {
@@ -1451,6 +1550,49 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             catch (Exception ex)
             {
                 ex.TrakException("PedidoViewModel.ValidaConfiguracoesGerais");
+            }
+        }
+
+        public async Task<bool> ValidaBloqueioPedidoClientesTitulosVencidos(double totalVencido)
+        {
+            try
+            {
+                var _configuracoesGerais = ConfiguracaoGeralRepositorio.GetConfiguracaoEmpresa();
+
+                if (totalVencido <= 0)
+                    return true;
+
+                if (!_configuracoesGerais.bBloquearPedidoClienteComTituloVencido)
+                    return true;
+
+                var xValorVencido = Extensions.ToCurrencyStringPtBr(totalVencido);
+
+                if (_configuracoesGerais.bUtilizaAprovacaoCreditoUltrapassado)
+                {
+                    // Força UI thread: em Release builds, ShowAsync chamado fora da UI thread
+                    // silencia o diálogo sem erro (em Debug funciona pela lenidade do scheduler).
+                    await Device.InvokeOnMainThreadAsync(async () =>
+                    {
+                        await App.Messages.ShowAsync(
+                            $"O cliente possui títulos vencidos no valor de {xValorVencido}. O pedido será enviado para aprovação.");
+                    });
+
+                    currentModel.bAguardandoAprovacao = true;
+                    currentModel.idStatus = ConfiguracaoGeralRepositorio.ObterIdStatusAberto();
+                    return true;
+                }
+
+                await Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    await App.Messages.ShowAsync(
+                        $"O cliente possui títulos vencidos no valor de {xValorVencido}. Não é possível emitir o pedido.");
+                });
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("PedidoViewModel.ValidaBloqueioPedidoClientesTitulosVencidos");
+                return true;
             }
         }
 

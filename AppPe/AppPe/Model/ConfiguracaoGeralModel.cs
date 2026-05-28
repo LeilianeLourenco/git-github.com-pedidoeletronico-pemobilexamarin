@@ -36,6 +36,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         public decimal dAcrescimoMensal { get; set; }
         public bool bExibirValorPorPeso { get; set; }
         public bool bBloquearPedidosClienteEmAprovacao { get; set; }
+        public bool bPermitirRepresentanteAprovarLimiteExcedente { get; set; }
+        public bool bUtilizaAprovacaoCreditoUltrapassado { get; set; }
+        public bool bUtilizaAprovacaoDescontoUltrapassado { get; set; }
+        public bool bBloquearPedidoClienteComTituloVencido { get; set; }
+
     }
 
 

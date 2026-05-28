@@ -326,30 +326,62 @@
                             </Grid>
                         </ViewCell>
 
-                        <ViewCell Height="60">
+                        <ViewCell Height="70">
                             <ViewCell.View>
                                 <StackLayout Orientation="Horizontal">
+
+                                    <!-- Mantém o clique da célula -->
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GoToConficaoPgtoCommand}" />
                                     </StackLayout.GestureRecognizers>
+
+                                    <!-- Informações da condição -->
                                     <StackLayout
                                         HorizontalOptions="StartAndExpand"
                                         Orientation="Vertical"
                                         VerticalOptions="Center">
+                                        
                                         <Label
                                             Margin="15,3,0,0"
+                                            FontSize="Medium"
                                             HorizontalOptions="StartAndExpand"
                                             Text="Condição de Pagamento *"
                                             TextColor="{StaticResource AzulChart}"
                                             VerticalOptions="Center" />
-
+                                        
                                         <Label
                                             Margin="15,-3,0,0"
+                                            FontSize="Small"
                                             HorizontalOptions="StartAndExpand"
                                             Text="{Binding ItemCondicaoPgto.Display}"
                                             TextColor="{StaticResource CinzaMaisEscuro}"
                                             VerticalOptions="Center" />
                                     </StackLayout>
+                                    
+                                    <!-- Área do PIX -->
+                                    <StackLayout
+                                        Margin="0,6,10,0"
+                                        IsVisible="{Binding bExibirGerarPix}"
+                                        Orientation="Vertical"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center">
+                                        
+                                        <Label
+                                            Margin="0,2,0,-2"
+                                            FontSize="10"
+                                            HorizontalTextAlignment="Center"
+                                            Text="Gerar Pix"
+                                            TextColor="{StaticResource AzulChart}" />
+                                        
+                                        <CheckBox
+                                            Margin="0,-8,0,0"
+                                            HorizontalOptions="Center"
+                                            IsChecked="{Binding currentModel.bGerarPix, Mode=TwoWay}"
+                                            Scale="0.82"
+                                            VerticalOptions="Center" />
+                                    </StackLayout>
+                                    
+                                    <!-- Botão de configuração / Duplicatas Manual — abre PageTabelaFaturas -->
                                     <Button
                                         Margin="0,0,20,0"
                                         Command="{Binding GoToFaturasCommand}"

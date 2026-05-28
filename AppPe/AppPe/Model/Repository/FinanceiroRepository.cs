@@ -532,6 +532,27 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
         }
 
+        public static bool PedidoJaTemPix(int? idPedidoVenda)
+        {
+            if (idPedidoVenda == null || idPedidoVenda <= 0) return false;
+
+            try
+            {
+                var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+                var xQuery = $@"SELECT COUNT(*) FROM {TableMobile.TB_RECEBIMENTOTITULOS}
+                                WHERE idPedidoVenda = ?
+                                  AND idEmpresa = ?
+                                  AND (COALESCE(stPixPago, 0) = 1
+                                       OR (cCopiaCola IS NOT NULL AND cCopiaCola <> ''))";
+                return App.Data.Connection.ExecuteScalar<int>(xQuery, idPedidoVenda.Value, idEmpresa) > 0;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("FinanceiroRepository.PedidoJaTemPix", false);
+                return false;
+            }
+        }
+
         public static void SalvarFaturas(List<RecebimentoTitulosPostModel> recebimentoTitulosModel)
         {
             try

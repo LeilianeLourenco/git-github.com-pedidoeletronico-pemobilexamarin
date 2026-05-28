@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(where msbuild *)",
-      "Read(//c/Program Files/Microsoft Visual Studio/**)"
+      "Read(//c/Program Files/Microsoft Visual Studio/**)",
+      "Bash(awk '/public RetornoSalvar<PedidoVendaModel> SavePedidoVenda/,/^ }$/' /c/backlog/Hlp.PedidoEletronico.Mvc/Data/ImplementationRepository/Lancamentos/PedidoVendaRepository.cs)",
+      "Read(//c/Users/leili/Downloads/**)"
     ]
   },
   "skills": {

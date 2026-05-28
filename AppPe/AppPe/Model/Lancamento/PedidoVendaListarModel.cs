@@ -10,8 +10,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         public string xDisplayIntegracao { get; set; }
         public bool bPedidoComAlteracao { get; set; }
 
-        public bool _bIntegracaoComErro { get; set; }
+        public bool _bGerarPix { get; set; }
+        public bool bGerarPix
+        {
+            get { return xErroIntegracao != null; }
+            set { _bGerarPix = value; NotifyPropertyChanged(); }
+        }
 
+
+        public bool _bIntegracaoComErro { get; set; }
         public bool bIntegracaoComErro
         {
             get { return xErroIntegracao != null; }
@@ -135,6 +142,31 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             get { return _vSubTotal; }
             set { _vSubTotal = value; NotifyPropertyChanged(); }
         }
+
+        private double _dValorPagoTitulos;
+        public double dValorPagoTitulos
+        {
+            get { return _dValorPagoTitulos; }
+            set { _dValorPagoTitulos = value; NotifyPropertyChanged(); NotifyPropertyChanged(nameof(bPedidoTotalmentePago)); }
+        }
+
+        private double _dValorTitulos;
+        public double dValorTitulos
+        {
+            get { return _dValorTitulos; }
+            set { _dValorTitulos = value; NotifyPropertyChanged(); NotifyPropertyChanged(nameof(bPedidoTotalmentePago)); }
+        }
+
+        /// <summary>
+        /// Pedido totalmente pago: possui títulos e a soma do que foi recebido
+        /// é igual ou maior que a soma dos títulos.
+        /// </summary>
+        public bool bPedidoTotalmentePago => dValorTitulos > 0 && dValorPagoTitulos >= dValorTitulos;
+
+        /// <summary>
+        /// Cor do check "totalmente pago" — mesmo tom do background de PEDIDO.
+        /// </summary>
+        public Color ColorPedidoPago => ColorStaticModel.Pedido;
 
         private byte _stLancamento;
         /// <summary>

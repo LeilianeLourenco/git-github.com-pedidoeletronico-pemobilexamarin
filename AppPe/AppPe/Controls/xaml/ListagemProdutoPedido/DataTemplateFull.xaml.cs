@@ -57,6 +57,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.xaml.ListagemProdutoPedido
                     bool stVendaSemEstoque = itemPedido?.stVendaSemEstoque ?? false;
                     bool stControlaEstoque = ProdutoRepository.ControlaEstoque(itemPedido.idEmpresa, itemPedido.idRepresentada);
 
+                    // DEBUG PROVISÓRIO — diagnóstico do botão "+" (REMOVER depois)
+                    await App.Current.MainPage.DisplayAlert("DEBUG +",
+                        $"vUnitarioVendaComImpostos: {itemPedido.vUnitarioVendaComImpostos}\n" +
+                        $"currentTabelaPreco null? {itemPedido.currentTabelaPreco == null}\n" +
+                        $"vVenda: {itemPedido.vVenda}\n" +
+                        $"vQtdEstoque: {itemPedido.vQtdEstoque}\n" +
+                        $"stControlaEstoque: {stControlaEstoque}\n" +
+                        $"stVendaSemEstoque: {stVendaSemEstoque}\n" +
+                        $"stepper.Value: {item?.Value}\n" +
+                        $"page: {UtilNavidate.GetTypeCurrentPage()?.Name}", "OK");
+
                     if (item?.Value <= itemPedido?.vQtdEstoque || stVendaSemEstoque || !stControlaEstoque)
                     {
                         itemPedido.vQtdItem = item.Value;

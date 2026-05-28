@@ -163,6 +163,18 @@
                                 Text="{Binding DisplayCliente}"
                                 TextColor="{StaticResource CinzaPrincipal}" />
 
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Margin="1,2,1,0"
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                HorizontalOptions="End"
+                                HorizontalTextAlignment="End"
+                                IsVisible="{Binding bPedidoTotalmentePago}"
+                                Text="✔"
+                                TextColor="{Binding ColorPedidoPago}" />
+
 
                             <Label
                                 Grid.Row="4"

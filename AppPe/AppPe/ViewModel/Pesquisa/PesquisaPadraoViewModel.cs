@@ -187,6 +187,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pesquisa
                     itemCadastro.Display = value.Display;
                     itemCadastro.Detail = value.Detail;
                     itemCadastro.IdOnline = value.IdOnline;
+                    // Sem isso, bExibirGerarPix nunca enxerga nParcelas == 1 / xFormula == "0"
+                    // ao trocar a condição via pesquisa (o Get popula esses campos, mas a
+                    // mutação in-place não os copiava, deixando-os presos ao valor anterior).
+                    itemCadastro.nParcelas = value.nParcelas;
+                    itemCadastro.xFormula = value.xFormula;
                 }
                 NotifyPropertyChanged();
             }

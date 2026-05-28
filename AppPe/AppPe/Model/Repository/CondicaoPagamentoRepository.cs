@@ -74,7 +74,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             IdOnline = (int)item.idCondicaoPagamento,
                             Id = (int)item.idCondicaoPagamento,
                             Display = item.xCondicaoPagamento,
-                            Detail = item.xDisplay2
+                            Detail = item.xDisplay2,
+                            nParcelas = (item.nParcelas ?? 0),
+                            xFormula = item.xFormula
                         };
                     return null;
                 }).ToList();
@@ -105,7 +107,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                     IdOnline = (int)item.idCondicaoPagamento,
                     Id = (int)item.idCondicaoPagamento,
                     Display = item.xCondicaoPagamento,
-                    Detail = item.xDisplay2
+                    Detail = item.xDisplay2,
+                    nParcelas = (item.nParcelas ?? 0),
+                    xFormula = item.xFormula
                 };
             }
             catch (Exception ex)
@@ -177,7 +181,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                         Display = item.xCondicaoPagamento,
                         Detail = item.xDisplay2,
                         idTabelaPreco = item.idTabelaPreco,
-                        vDescCondicao = item.vDescCondicao //alterado
+                        vDescCondicao = item.vDescCondicao,
+                        // nParcelas e xFormula alimentam bExibirGerarPix (mostra checkbox "Gerar pix"
+                        // em condição à vista / parcela única OU quando xFormula == "0").
+                        nParcelas = (item.nParcelas ?? 0),
+                        xFormula = item.xFormula
                     };
                 }
                 else
@@ -279,6 +287,27 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 return "";
             }
 
+        }
+
+        /// <summary>
+        /// Retorna o nº de parcelas da condição de pagamento (0 se não encontrada).
+        /// Usado pra decidir se exibe o checkbox "Gerar Pix" na tela de pedido — só faz
+        /// sentido pra condição com 1 parcela.
+        /// </summary>
+        public static int GetNParcelas(int idCondicaoPagamento)
+        {
+            try
+            {
+                var xQuery = $@"select nParcelas from {TableMobile.TB_CONDICAOPAGAMENTO}
+                                where idCondicaoPagamento = {idCondicaoPagamento}
+                                  and idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
+                return App.Data.Connection.ExecuteScalar<int?>(xQuery) ?? 0;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("CondicaoPagamentoRepository.GetNParcelas", false);
+                return 0;
+            }
         }
 
         public static int GetIdTabelaPrecoCondicao(int idCondicaoPagamento)

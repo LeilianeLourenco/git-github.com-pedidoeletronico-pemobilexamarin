@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Pe.Cigam.Integration/src/Pe.Cigam.Integration.Application/Services/Commons/**)",
+      "Bash(grep -rn \"FiltrarPorPedido\" /c/Pe.Cigam.Integration --include=\"*.cs\" 2>/dev/null | head -5)",
+      "Read(//c/Pe.Cigam.Integration/**)"
+    ],
+    "additionalDirectories": [
+      "c:\\Pe.Cigam.Integration\\src\\Pe.Cigam.Integration.Application\\Services\\Commons"
+    ]
+  }
+}

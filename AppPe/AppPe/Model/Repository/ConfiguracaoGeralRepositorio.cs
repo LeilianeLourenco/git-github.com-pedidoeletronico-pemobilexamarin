@@ -30,8 +30,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 "xInformacaoContrato, " +
                 "bBloqueiaValorProdutoApp," +
                 "bBloquearPedidosClienteEmAprovacao," +
+                "bBloquearPedidoClienteComTituloVencido," +
                 "idEmpresa, " +
-                "bMostraFaixaTabelaEscalonada";
+                "bUtilizaAprovacaoCreditoUltrapassado, " +
+                "bUtilizaAprovacaoDescontoUltrapassado, " +
+                "bMostraFaixaTabelaEscalonada, " +
+                "dtUltimaAlteracao, " +
+                "idStatusVendaDefault, " +
+                "idStatusOrcamentoDefault, " +
+                "bMostraProdutosVariacoesNaVenda, " +
+                "bNaoAvaliarApp, " +
+                "dtAvaliouApp, " +
+                "bPermitirRepresentanteAprovarLimiteExcedente";
 
             if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
             {
@@ -52,6 +62,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 _configsGerais.dAcrescimoMensal = result.dAcrescimoMensal;
                 _configsGerais.bForcarMinimoVendas = result.bForcarMinimoVendas;
                 _configsGerais.bUtilizaLimiteMinimoVendas = result.bUtilizaLimiteMinimoVendas;
+                _configsGerais.bUtilizaAprovacaoCreditoUltrapassado = result.bUtilizaAprovacaoCreditoUltrapassado;
+                _configsGerais.bUtilizaAprovacaoDescontoUltrapassado = result.bUtilizaAprovacaoDescontoUltrapassado;
+                _configsGerais.bBloquearPedidoClienteComTituloVencido = result.bBloquearPedidoClienteComTituloVencido;
                 _configsGerais.dValorLimiteMinimo = result.dValorLimiteMinimo;
                 _configsGerais.stCadastroLimiteVendasEmpresa = result.stCadastroLimiteVendasEmpresa;
                 _configsGerais.stCalculoLimiteVendasEmpresa = result.stCalculoLimiteVendasEmpresa;
@@ -62,6 +75,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                 _configsGerais.bBloqueiaValorProdutoApp = result.bBloqueiaValorProdutoApp;
                 _configsGerais.bExibirValorPorPeso = result.bExibirValorPorPeso;
                 _configsGerais.bBloquearPedidosClienteEmAprovacao = result.bBloquearPedidosClienteEmAprovacao;
+                _configsGerais.dtUltimaAlteracao = result.dtUltimaAlteracao;
+                _configsGerais.idStatusVendaDefault = result.idStatusVendaDefault;
+                _configsGerais.idStatusOrcamentoDefault = result.idStatusOrcamentoDefault;
+                _configsGerais.bMostraProdutosVariacoesNaVenda = result.bMostraProdutosVariacoesNaVenda;
+                _configsGerais.bNaoAvaliarApp = result.bNaoAvaliarApp;
+                _configsGerais.dtAvaliouApp = result.dtAvaliouApp;
+                _configsGerais.bPermitirRepresentanteAprovarLimiteExcedente = result.bPermitirRepresentanteAprovarLimiteExcedente;
             }
 
             return _configsGerais;
@@ -75,6 +95,27 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             return App.Data.Connection.Table<OmieConfiguracaoGeralModel>()
                     .Where(c => c.idEmpresa == idEmpresa)
                     .Select(c => c.bEnviarInfoAdicionaisParaNf).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Indica se a empresa habilitou PIX OmieCash em tb_omie_configuracoesgerais.
+        /// Retorna false se não houver linha pra essa empresa (cobre ambos os casos do user:
+        /// "idEmpresa não está na tabela" e "está mas bUtilizaPixOmieCash = false").
+        /// Usado pelo checkbox "Gerar pix" do PagePedidoNew (issue #5609).
+        /// </summary>
+        public static bool GetUtilizaPixOmieCash(int idEmpresa)
+        {
+            try
+            {
+                return App.Data.Connection.Table<OmieConfiguracaoGeralModel>()
+                        .Where(c => c.idEmpresa == idEmpresa)
+                        .Select(c => c.bUtilizaPixOmieCash).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("ConfiguracaoGeralRepositorio.GetUtilizaPixOmieCash", false);
+                return false;
+            }
         }
 
         public static double ObterValorLimiteVendasProduto(int? idProduto)

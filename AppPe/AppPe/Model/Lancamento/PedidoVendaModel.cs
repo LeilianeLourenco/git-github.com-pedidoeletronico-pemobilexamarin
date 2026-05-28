@@ -34,7 +34,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         public int? idPedidoDisplay { get; set; }
 
         //OS 35349 - Jessica Barbieri
-        public bool bPedidoFechadoIncorretamente;
+        public bool bPedidoFechadoIncorretamente;       
 
         //public byte stPedidoVenda { get; set; } = 0;
 
@@ -485,6 +485,18 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
         {
             get { return _bAguardandoAprovacao; }
             set { _bAguardandoAprovacao = value; NotifyPropertyChanged(); }
+        }
+
+        /// <summary>
+        /// Flag setada pelo checkbox "Gerar pix" no PagePedidoNew (só visível quando a
+        /// condição de pagamento tem nParcelas == 1). Ao sincronizar, vai pro backend em
+        /// tb_pedidovenda.bGerarPix — sinaliza pra gerar título PIX no fluxo Omie Cash.
+        /// </summary>
+        private bool _bGerarPix = false;
+        public bool bGerarPix
+        {
+            get { return _bGerarPix; }
+            set { _bGerarPix = value; NotifyPropertyChanged(); }
         }
 
         private bool _bValidadoMinimoVendas = true;

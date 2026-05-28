@@ -353,101 +353,113 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        IsBusy = true;
-                        this.bListaItensHabilitada = false;
-
-                        var idClientesOffLine = currentPedidoViewModel.ItemCliente.Id;
-                        var idClientes = ClienteRepository.GetIdClienteNuvem(idClientesOffLine);
-                        var idRepresentante = (currentPedidoViewModel.currentModel.idRepresentantePedido ?? App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers) ?? 0;
-
-
-                        var iCountToFind = 30;
-
-                        if (App.EnvironmentPE.TipoPageProdutos == 0)
+                        try
                         {
-                            iCountToFind = 15;
-                        }
-                        else if (App.EnvironmentPE.TipoPageProdutos == 1)
-                        {
-                            iCountToFind = 15;
-                        }
+                            IsBusy = true;
+                            this.bListaItensHabilitada = false;
 
-                        IBuscaProdutosParaVenda _buscaProdutos = new BuscaProdutosExistentesEmTabelaPreco(
-                            idCliente: idClientes, idClienteOffLine: idClientesOffLine, idRepresentante: idRepresentante, idRepresentacao: 0
-                            );
+                            var idClientesOffLine = currentPedidoViewModel.ItemCliente.Id;
+                            var idClientes = ClienteRepository.GetIdClienteNuvem(idClientesOffLine);
+                            var idRepresentante = (currentPedidoViewModel.currentModel.idRepresentantePedido ?? App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa_aspnetUsers) ?? 0;
 
 
-                        List<int> _idProdutos = new List<int>();
+                            var iCountToFind = 30;
 
-
-                        if (bFiltroBotaoCampanhas)
-                        {
-                            _idProdutos = _buscaProdutos.BuscarProdutosCampanha(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
-                    currentPedidoViewModel.ItemCondicaoPgto.Id);
-
-                            if (_idProdutos?.Count() == 0)
-                                _idProdutos.Add(0);
-                        }
-                        else
-                            _idProdutos = _buscaProdutos.BuscarProdutos(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
-                         currentPedidoViewModel.ItemCondicaoPgto.Id);
-
-                        var lItens = ProdutoRepository.Get(
-                            Produtos.Count,
-                            iCountToFind,
-                            (IsUsingSearch ? xFiltro : ""),
-                            Config,
-                            idClientesOffLine,
-                            idClientes,
-                            idRepresentante,
-                            _idProdutos,
-                            bUsaLocaisEstoque,
-                            false,
-                            bFiltroBotaoRecorrencia,
-                            bBotaoFiltroDestaques
-                            );
-
-                        this._buscaPreco.Buscar(itens: lItens,
-                            idClienteOff: idClientesOffLine, idCliente: idClientes,
-                            idRepresentante: idRepresentante,
-                            idEmpresa: App.EnvironmentPE.idEmpresaLogada,
-                            idTabelaPrecoCondicao: currentPedidoViewModel.idTabelaPrecoCondicao
-                            );
-
-                        AplicaRegrasComerciaisProduto(lItens);
-
-                        bool bAplicaBloquearVisualizacaoEstoque = false;
-                        if (currentPedidoViewModel.currentModel.bBloquearVisualizacaoEstoqueVendedor && App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
-                        {
-                            bAplicaBloquearVisualizacaoEstoque = true;
-                        }
-
-                        foreach (var item in lItens)
-                        {
-                            item.bBloquearVisualizacaoEstoqueVendedor = bAplicaBloquearVisualizacaoEstoque;
-                            item.bExibirValorPorPeso = currentPedidoViewModel.bExibirValorPorPeso;
-                            if (ItensSelecionados != null)
+                            if (App.EnvironmentPE.TipoPageProdutos == 0)
                             {
-                                Produtos.Add(ItensSelecionados.Any(c => c.idProduto == item.idProduto)
-                                    ? ItensSelecionados.FirstOrDefault(c => c.idProduto == item.idProduto)
-                                    : item);
+                                iCountToFind = 15;
                             }
-                        }
-
-                        if (Produtos.Any() && currentPedidoViewModel.currentModel.lItens.Any())
-                        {
-                            foreach (var itemIncluso in currentPedidoViewModel.currentModel.lItens)
+                            else if (App.EnvironmentPE.TipoPageProdutos == 1)
                             {
-                                if (Produtos.Any(c => c.idProduto == itemIncluso.idProduto))
+                                iCountToFind = 15;
+                            }
+
+                            IBuscaProdutosParaVenda _buscaProdutos = new BuscaProdutosExistentesEmTabelaPreco(
+                                idCliente: idClientes, idClienteOffLine: idClientesOffLine, idRepresentante: idRepresentante, idRepresentacao: 0
+                                );
+
+
+                            List<int> _idProdutos = new List<int>();
+
+
+                            if (bFiltroBotaoCampanhas)
+                            {
+                                _idProdutos = _buscaProdutos.BuscarProdutosCampanha(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
+                        currentPedidoViewModel.ItemCondicaoPgto.Id);
+
+                                if (_idProdutos?.Count() == 0)
+                                    _idProdutos.Add(0);
+                            }
+                            else
+                                _idProdutos = _buscaProdutos.BuscarProdutos(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
+                             currentPedidoViewModel.ItemCondicaoPgto.Id);
+
+                            var lItens = ProdutoRepository.Get(
+                                Produtos.Count,
+                                iCountToFind,
+                                (IsUsingSearch ? xFiltro : ""),
+                                Config,
+                                idClientesOffLine,
+                                idClientes,
+                                idRepresentante,
+                                _idProdutos,
+                                bUsaLocaisEstoque,
+                                false,
+                                bFiltroBotaoRecorrencia,
+                                bBotaoFiltroDestaques
+                                );
+
+                            this._buscaPreco.Buscar(itens: lItens,
+                                idClienteOff: idClientesOffLine, idCliente: idClientes,
+                                idRepresentante: idRepresentante,
+                                idEmpresa: App.EnvironmentPE.idEmpresaLogada,
+                                idTabelaPrecoCondicao: currentPedidoViewModel.idTabelaPrecoCondicao
+                                );
+
+                            AplicaRegrasComerciaisProduto(lItens);
+
+                            bool bAplicaBloquearVisualizacaoEstoque = false;
+                            if (currentPedidoViewModel.currentModel.bBloquearVisualizacaoEstoqueVendedor && App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
+                            {
+                                bAplicaBloquearVisualizacaoEstoque = true;
+                            }
+
+                            foreach (var item in lItens)
+                            {
+                                item.bBloquearVisualizacaoEstoqueVendedor = bAplicaBloquearVisualizacaoEstoque;
+                                item.bExibirValorPorPeso = currentPedidoViewModel.bExibirValorPorPeso;
+                                if (ItensSelecionados != null)
                                 {
-                                    var item = Produtos.FirstOrDefault(c => c.idProduto == itemIncluso.idProduto);
-                                    item.ItemJaIncluso = true;
+                                    Produtos.Add(ItensSelecionados.Any(c => c.idProduto == item.idProduto)
+                                        ? ItensSelecionados.FirstOrDefault(c => c.idProduto == item.idProduto)
+                                        : item);
+                                }
+                            }
+
+                            if (Produtos.Any() && currentPedidoViewModel.currentModel.lItens.Any())
+                            {
+                                foreach (var itemIncluso in currentPedidoViewModel.currentModel.lItens)
+                                {
+                                    if (Produtos.Any(c => c.idProduto == itemIncluso.idProduto))
+                                    {
+                                        var item = Produtos.FirstOrDefault(c => c.idProduto == itemIncluso.idProduto);
+                                        item.ItemJaIncluso = true;
+                                    }
                                 }
                             }
                         }
-
-                        IsBusy = false;
-                        this.bListaItensHabilitada = true;
+                        catch (Exception exUi)
+                        {
+                            // Exceção dentro do lambda da UI não era capturada pelo catch externo
+                            // (roda em outra pilha), deixando IsBusy travado em true — o que fazia
+                            // o SaveItem("+"/adicionar item) abortar em "if (IsBusy) return;".
+                            exUi.TrakException("LoadItens.UIThread", true);
+                        }
+                        finally
+                        {
+                            IsBusy = false;
+                            this.bListaItensHabilitada = true;
+                        }
                     });
                     //isLoading = false;
                 });

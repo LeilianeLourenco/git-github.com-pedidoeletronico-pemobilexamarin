@@ -36,6 +36,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model
         //OS 35400 - Jessica Barbieri
         public double? vDescCondicao { get; set; }
         public int? idTabelaPreco { get; set; }
+        public int? nParcelas { get; set; }
+        public string xFormula { get; set; }
 
         public bool stCampanhaCliente { get; set; }
         public bool stCampanhaClienteRamoAtividade { get; set; }
