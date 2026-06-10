@@ -3,7 +3,15 @@
     "allow": [
       "Read(//c/Pe.Cigam.Integration/src/Pe.Cigam.Integration.Application/Services/Commons/**)",
       "Bash(grep -rn \"FiltrarPorPedido\" /c/Pe.Cigam.Integration --include=\"*.cs\" 2>/dev/null | head -5)",
-      "Read(//c/Pe.Cigam.Integration/**)"
+      "Read(//c/Pe.Cigam.Integration/**)",
+      "Bash(cd /c/backlog && grep -rn -E \"swal\\\\\\\\\\(\\\\\\\\{|swal\\\\\\\\\\(\\\\\"\" Hlp.PedidoEletronico.Mvc/Scripts/PedidoEletronicoScripts/ 2>/dev/null | head -10)",
+      "Read(//c/c/backlog/Hlp.PedidoEletronico.Mvc/Scripts/**)",
+      "Bash(sed -n '1,90p' Hlp.PedidoEletronico.Mvc/Controllers/HomeController.cs)",
+      "Bash(sed -n '130,145p' Hlp.PedidoEletronico.Mvc/Controllers/HomeController.cs)",
+      "Bash(grep -iE \"\\\\.\\(html|htm|aspx|asp\\)$\")",
+      "Bash(grep -iE 'html|htm|aspx|asp$')",
+      "Read(//c/c/backlog/**)",
+      "Bash(grep -iE '\\\\.\\(html|htm|aspx|asp\\)$')"
     ],
     "additionalDirectories": [
       "c:\\Pe.Cigam.Integration\\src\\Pe.Cigam.Integration.Application\\Services\\Commons"

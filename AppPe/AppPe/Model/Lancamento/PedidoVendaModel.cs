@@ -487,6 +487,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
             set { _bAguardandoAprovacao = value; NotifyPropertyChanged(); }
         }
 
+        private bool _bAguardandoAprovacaoLimiteCredito = false;
+
+        public bool bAguardandoAprovacaoLimiteCredito
+        {
+            get { return _bAguardandoAprovacaoLimiteCredito; }
+            set { _bAguardandoAprovacaoLimiteCredito = value; NotifyPropertyChanged(); }
+        }
+
         /// <summary>
         /// Flag setada pelo checkbox "Gerar pix" no PagePedidoNew (só visível quando a
         /// condição de pagamento tem nParcelas == 1). Ao sincronizar, vai pro backend em

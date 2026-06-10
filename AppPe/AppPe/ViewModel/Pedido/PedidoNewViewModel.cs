@@ -910,13 +910,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     IsBusy = true;
                     ExecuttingAnyCommand = canExecuteInicial = false;
 
-                    // DEBUG PROVISÓRIO — exibir flags de tb_configuracoes_gerais (REMOVER depois)
-                    var _configDebug = ConfiguracaoGeralRepositorio.GetConfiguracaoEmpresa();
-                    App.Messages.ShowAsync(
-                        $"bUtilizaAprovacaoCreditoUltrapassado: {_configDebug.bUtilizaAprovacaoCreditoUltrapassado}\n" +
-                        $"bUtilizaLimiteMinimoVendas: {_configDebug.bUtilizaLimiteMinimoVendas}\n" +
-                        $"bBloquearPedidoClienteComTituloVencido: {_configDebug.bBloquearPedidoClienteComTituloVencido}");
-
                     ChangeLancamento();
 
                     //Novo método de checar configurações dentro do pedido;
@@ -1130,6 +1123,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             });
 
             bool podeProsseguir = await ValidaBloqueioPedidoClientesTitulosVencidos(vFinanceiroVencido);
+
+            if (podeProsseguir)
+                podeProsseguir = await ValidaBloqueioPedidoClienteLimiteCreditoExcedido();
 
             if (!podeProsseguir)
                 LimparClienteSelecionado();
@@ -1567,6 +1563,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
 
                 var xValorVencido = Extensions.ToCurrencyStringPtBr(totalVencido);
 
+                // Administrador apenas é avisado sobre os títulos vencidos — não envia para
+                // aprovação nem bloqueia o pedido.
+                if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
+                {
+                    await Device.InvokeOnMainThreadAsync(async () =>
+                    {
+                        await App.Messages.ShowAsync(
+                            $"O cliente possui títulos vencidos no valor de {xValorVencido}.");
+                    });
+                    return true;
+                }
+
                 if (_configuracoesGerais.bUtilizaAprovacaoCreditoUltrapassado)
                 {
                     // Força UI thread: em Release builds, ShowAsync chamado fora da UI thread
@@ -1578,6 +1586,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                     });
 
                     currentModel.bAguardandoAprovacao = true;
+                    currentModel.bAguardandoAprovacaoLimiteCredito = true;
                     currentModel.idStatus = ConfiguracaoGeralRepositorio.ObterIdStatusAberto();
                     return true;
                 }
@@ -1592,6 +1601,69 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             catch (Exception ex)
             {
                 ex.TrakException("PedidoViewModel.ValidaBloqueioPedidoClientesTitulosVencidos");
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Valida se o cliente já excedeu o limite de crédito disponível (financeiro em aberto
+        /// maior que o limite cadastrado). Mesma regra da validação de títulos vencidos:
+        /// admin só recebe aviso; não-admin vai para aprovação (se bUtilizaAprovacaoCreditoUltrapassado)
+        /// ou é bloqueado.
+        /// </summary>
+        public async Task<bool> ValidaBloqueioPedidoClienteLimiteCreditoExcedido()
+        {
+            try
+            {
+                var _configuracoesGerais = ConfiguracaoGeralRepositorio.GetConfiguracaoEmpresa();
+
+                var vLimiteCredito = ClienteRepository.GetValorLimiteCredito(currentModel.idClientesOffLine);
+
+                // Sem limite cadastrado (null) ou limite zero não há o que validar.
+                if (vLimiteCredito == null || vLimiteCredito <= 0)
+                    return true;
+
+                // Cliente ainda dentro do limite disponível.
+                if (vFinanceiroEmAberto <= vLimiteCredito)
+                    return true;
+
+                var xLimite = Extensions.ToCurrencyStringPtBr(vLimiteCredito.Value);
+                var xUtilizado = Extensions.ToCurrencyStringPtBr(vFinanceiroEmAberto);
+
+                // Administrador apenas é avisado — não envia para aprovação nem bloqueia.
+                if (App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.stAdministrador)
+                {
+                    await Device.InvokeOnMainThreadAsync(async () =>
+                    {
+                        await App.Messages.ShowAsync(
+                            $"O cliente excedeu o limite de crédito (limite {xLimite}, utilizado {xUtilizado}).");
+                    });
+                    return true;
+                }
+
+                if (_configuracoesGerais.bUtilizaAprovacaoCreditoUltrapassado)
+                {
+                    await Device.InvokeOnMainThreadAsync(async () =>
+                    {
+                        await App.Messages.ShowAsync(
+                            $"O cliente excedeu o limite de crédito (limite {xLimite}, utilizado {xUtilizado}). O pedido será enviado para aprovação.");
+                    });
+
+                    currentModel.bAguardandoAprovacaoLimiteCredito = true;
+                    currentModel.idStatus = ConfiguracaoGeralRepositorio.ObterIdStatusAberto();
+                    return true;
+                }
+
+                await Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    await App.Messages.ShowAsync(
+                        $"O cliente excedeu o limite de crédito (limite {xLimite}, utilizado {xUtilizado}). Não é possível emitir o pedido.");
+                });
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("PedidoViewModel.ValidaBloqueioPedidoClienteLimiteCreditoExcedido");
                 return true;
             }
         }

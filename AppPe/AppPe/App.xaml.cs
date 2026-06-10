@@ -107,7 +107,7 @@ namespace Xamarin.HLP.Mobile.AppPE
 
             }
         }
-
+        
         public static string UrlWebApiMobile
         {
             get
