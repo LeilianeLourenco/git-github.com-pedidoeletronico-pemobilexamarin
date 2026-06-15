@@ -200,6 +200,22 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Agenda
             }
         }
 
+        /// <summary>
+        /// Remove do banco local as atividades marcadas como excluídas (bExcluido = true).
+        /// Usado ao final da sincronização da agenda para apagar do aparelho o que foi excluído (site ou app).
+        /// </summary>
+        public static void RemoverAtividadesExcluidasLocais(int idEmpresa)
+        {
+            try
+            {
+                App.Data.Connection.Execute($@"DELETE FROM {TableMobile.TB_ATIVIDADES} WHERE bExcluido = 1 and idEmpresa = {idEmpresa}");
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
+        }
+
         public static void RealizarEncerramento(int idAtividadeOffline)
         {
             try

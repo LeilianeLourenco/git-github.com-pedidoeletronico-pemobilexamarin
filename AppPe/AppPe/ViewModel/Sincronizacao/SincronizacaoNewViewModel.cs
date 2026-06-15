@@ -431,7 +431,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadTipoAtividadesAgenda();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadAgenda();
+                    await SincronizacaoDownloadAgenda();             
+                if (!ocorreuErro && !bFalhaConexao)
+                    AgendaRepository.RemoverAtividadesExcluidasLocais(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadLocalEstoque();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -1998,6 +2000,16 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         ocorreuErro = true;
                         ex.TrakException();
                     }
+                }
+
+                // Atividade marcada como excluída no servidor: NÃO persiste no SQLite.
+                // Se já existe local, apaga (delete físico); se não existe, ignora (não cria).
+                // Só cria/atualiza quando vier bExcluido = false (segue o fluxo normal abaixo).
+                if (registro is AtividadeAgendaModel _ativExcluida && _ativExcluida.bExcluido)
+                {
+                    if (icount > 0)
+                        App.Data.Connection.Execute($"DELETE FROM {xTableName} WHERE {xPrimaryKeyName} = '{idPk}'");
+                    return;
                 }
 
                 if (icount == 0) // registro ainda não sincronizado
