@@ -653,12 +653,33 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                     if (lRegistros?.Count() > 0 && !bFalhaConexao)
                     {
-                        foreach (var registro in lRegistros)
+                        // Grava a página inteira em UMA transação: 1 commit por página em vez de 1 por registro.
+                        // Seguro: não há transação aninhada em nenhum outro ponto do app, e os saves são awaited (sequenciais).
+                        var bEmTransacao = false;
+                        try
                         {
-                            if (registro != null)
-                                await SaveSincronizacao(registro, xPrimaryKeyName, xTableName);
+                            App.Data.Connection.BeginTransaction();
+                            bEmTransacao = true;
 
-                            currentModel.iCount--;
+                            foreach (var registro in lRegistros)
+                            {
+                                if (registro != null)
+                                    await SaveSincronizacao(registro, xPrimaryKeyName, xTableName);
+
+                                currentModel.iCount--;
+                            }
+
+                            App.Data.Connection.Commit();
+                            bEmTransacao = false;
+                        }
+                        catch (Exception exTran)
+                        {
+                            if (bEmTransacao)
+                            {
+                                try { App.Data.Connection.Rollback(); } catch { }
+                            }
+                            ocorreuErro = true;
+                            exTran.TrakException();
                         }
 
                         _pagina++;
