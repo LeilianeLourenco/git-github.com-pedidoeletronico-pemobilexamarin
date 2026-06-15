@@ -431,7 +431,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadTipoAtividadesAgenda();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadAgenda();
+                    await SincronizacaoDownloadAgenda();             
+                if (!ocorreuErro && !bFalhaConexao)
+                    AgendaRepository.RemoverAtividadesExcluidasLocais(App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa);
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadLocalEstoque();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -2010,15 +2012,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     return;
                 }
 
-                if (registro is AtividadeAgendaModel && icount > 0)
-                {
-                    var bExcluidoLocal = App.Data.Connection.ExecuteScalar<int>(
-                        $"SELECT bExcluido FROM {xTableName} WHERE {xPrimaryKeyName} = '{idPk}'");
-                    if (bExcluidoLocal == 1)
-                        return;
-                }
-
-                if (icount == 0) 
+                if (icount == 0) // registro ainda não sincronizado
                 {
                     #region Model Específico
 

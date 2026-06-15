@@ -80,6 +80,9 @@ namespace Xamarin.HLP.Mobile.AppPE
                 try { this.Connection.CreateTable<RecebimentoTitulosPostModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_RECEBIMENTOTITULOS_POST; }
                 try { this.Connection.CreateTable<RecebimentoTitulosModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_RECEBIMENTOTITULOS; }
                 try { this.Connection.CreateTable<RecebimentoTitulosMovimentacaoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_RECEBIMENTOTITULOS_MOVIMENTACOES; }
+                // PERFORMANCE: índice p/ acelerar as somas de títulos por pedido na listagem (PedidoRepository.GetInfinit).
+                // Sem ele, cada subquery de soma varre a tabela inteira, 1x por pedido -> listagem travava ~48s.
+                try { this.Connection.CreateIndex("IDX_RECTITULOS_PEDIDO_EMPRESA", TableMobile.TB_RECEBIMENTOTITULOS, new string[] { "idPedidoVenda", "idEmpresa" }); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - IDX_RECTITULOS_PEDIDO_EMPRESA"; }
                 try { this.Connection.CreateTable<ForceAtualizacaoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_FORCEATUALIZACAO; }
                 try { this.Connection.CreateTable<LogExclusaoModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_LOGEXCLUSAO; }
                 try { this.Connection.CreateTable<ConfiguracaoEspecificaModel>(); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - " + TableMobile.TB_CONFIGURACOES_ESPECIFICAS; }
