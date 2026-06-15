@@ -30,6 +30,15 @@ namespace Xamarin.HLP.Mobile.AppPE
                 App.xErrorDataBase = "";
                 config = DependencyService.Get<IConfig>();
                 Connection = new SQLiteConnection(Path.Combine(config.DirectoryDB, "DB_PEDIDOELETRONICO.db3"), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true);
+
+                // WAL + synchronous NORMAL: o fsync deixa de acontecer a cada insert (só em checkpoint),
+                // acelerando muito a sincronização em massa (ex.: 40 mil pedidos na carga inicial).
+                try
+                {
+                    Connection.ExecuteScalar<string>("PRAGMA journal_mode=WAL;");
+                    Connection.Execute("PRAGMA synchronous=NORMAL;");
+                }
+                catch (Exception exPragma) { App.xErrorDataBase += exPragma.Message + " - PRAGMA WAL"; }
             }
             catch (Exception ex)
             {
@@ -163,6 +172,11 @@ namespace Xamarin.HLP.Mobile.AppPE
                 {
                     App.xErrorDataBase += ex.Message + " - " + "Tabela Preco Cliente Ramo";
                 }
+
+                // Índices para acelerar a listagem de pedidos com volume alto (evita full scan/sort na tela "Pedidos")
+                try { this.Connection.Execute("CREATE INDEX IF NOT EXISTS ix_pv_listagem ON tb_pedidovenda (idEmpresa, idRepresentantePedido, idClientesOffLine)"); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - ix_pv_listagem"; }
+                try { this.Connection.Execute("CREATE INDEX IF NOT EXISTS ix_pv_idpedidodisplay ON tb_pedidovenda (idPedidoDisplay)"); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - ix_pv_idpedidodisplay"; }
+                try { this.Connection.Execute("CREATE INDEX IF NOT EXISTS ix_estoque_insuf_pv ON TB_ESTOQUE_INSUFICIENTE (idPedidoVendaOffLine)"); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - ix_estoque_insuf_pv"; }
             }
             catch (Exception ex)
             {

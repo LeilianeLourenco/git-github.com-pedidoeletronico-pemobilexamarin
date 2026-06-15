@@ -230,45 +230,53 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             if (IsBusy)
                 return;
 
-            await Task.Run(() =>
+            IsBusy = true;
+            xFooter1 = "Pesquisando...";
+
+            try
             {
-                Device.BeginInvokeOnMainThread(() =>
+                if (pedidos == null)
+                    pedidos = new ObservableCollection<PedidoVendaListarModel>();
+
+                // Parâmetros leves lidos na thread de UI
+                int skip = pedidos.Count;
+
+                int? idCliente = null;
+                if (bUsaClienteEspecifico && PageApresentacaoClienteNew.ViewModelStatic != null)
+                    idCliente = PageApresentacaoClienteNew.ViewModelStatic?.idClientesOffLine;
+                else if (bUsaClienteEspecifico)
+                    idCliente = PageInfoCliente._dados?.idClientesOffLine;
+
+                int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
+                string filtro = IsUsingSearch ? xFiltro : "";
+                string idRep = ItemRepresentante.Id.ToString();
+
+                // Consulta pesada FORA da thread de UI (conexão é FullMutex/serializada → seguro).
+                // Antes rodava na UI thread e congelava a tela em "Pesquisando..." com volume alto.
+                var registros = await Task.Run(() =>
                 {
-                    IsBusy = true;
-
-                    xFooter1 = "Pesquisando...";
-
-                    int? idCliente = null;
-                    if (bUsaClienteEspecifico && PageApresentacaoClienteNew.ViewModelStatic != null)
-                        idCliente = PageApresentacaoClienteNew.ViewModelStatic?.idClientesOffLine;
-
-                    else if (bUsaClienteEspecifico)
-                        idCliente = PageInfoCliente._dados?.idClientesOffLine;
-
-                    int idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
-
                     bool bGeraOrcamento = ExtensaoEmpresaRepository.GetbGeraOrcamento(idEmpresa);
-
-                    var registros = PedidoRepository.GetInfinit(pedidos.Count, 20, (IsUsingSearch ? xFiltro : ""), ItemRepresentante.Id.ToString(), idCliente,
-                        bGeraOrcamento: bGeraOrcamento);
-
-                    foreach (var registro in registros)
-                    {
-                        pedidos.Add(registro);
-                    }
-
-                    xFooter1 = string.Empty;
-                    xFooter2 = $"Registros ({pedidos.Count})";
-                    dOpacityLista = 1;
-
-                    IsBusy = false;
+                    return PedidoRepository.GetInfinit(skip, 20, filtro, idRep, idCliente, bGeraOrcamento: bGeraOrcamento);
                 });
-            });
 
-            Device.BeginInvokeOnMainThread(() =>
+                // Renderiza de cima pra baixo, de pouco em pouco, sem travar a interface
+                foreach (var registro in registros)
+                    pedidos.Add(registro);
+
+                xFooter2 = $"Registros ({pedidos.Count})";
+            }
+            catch (Exception ex)
             {
+                ex.TrakException();
+            }
+            finally
+            {
+                // Garante que nunca fique preso em "Pesquisando..." mesmo se a consulta lançar exceção
+                xFooter1 = string.Empty;
+                dOpacityLista = 1;
+                IsBusy = false;
                 Device.StartTimer(UtilMethods.GetStartTime, CloseIsBusy);
-            });
+            }
         }
 
         public async void Search()

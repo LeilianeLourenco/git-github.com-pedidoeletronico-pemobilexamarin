@@ -1174,9 +1174,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 return _currentHttpClient;
 
                 var _clientHandler = new System.Net.Http.HttpClientHandler();
-                _clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+                // GZIP: reduz drasticamente o payload de sincronização (JSON comprime ~80-90%) quando o IIS tem compressão dinâmica ligada.
+                if (_clientHandler.SupportsAutomaticDecompression)
+                    _clientHandler.AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate;
 
-                _currentHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlWebApi) };
+                _currentHttpClient = new HttpClient(_clientHandler) { BaseAddress = new Uri(App.UrlWebApi) };
                 _currentHttpClient.DefaultRequestHeaders.Accept.Clear();
                 _currentHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 _currentHttpClient.Timeout = TimeSpan.FromSeconds(100);
@@ -1194,7 +1196,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 {
                     return _currentApiMobileHttpClient;
                 }
-                _currentApiMobileHttpClient = new HttpClient { BaseAddress = new Uri(App.UrlWebApiMobile) };
+                var handlerMobile = new System.Net.Http.HttpClientHandler();
+                // GZIP no client de sincronização mobile (download de pedidos/estoque/etc.).
+                if (handlerMobile.SupportsAutomaticDecompression)
+                    handlerMobile.AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate;
+
+                _currentApiMobileHttpClient = new HttpClient(handlerMobile) { BaseAddress = new Uri(App.UrlWebApiMobile) };
                 _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Clear();
                 _currentApiMobileHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 _currentApiMobileHttpClient.Timeout = TimeSpan.FromSeconds(100);
