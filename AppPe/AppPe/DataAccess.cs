@@ -179,6 +179,10 @@ namespace Xamarin.HLP.Mobile.AppPE
                 // Índices para acelerar a listagem de pedidos com volume alto (evita full scan/sort na tela "Pedidos")
                 try { this.Connection.Execute("CREATE INDEX IF NOT EXISTS ix_pv_listagem ON tb_pedidovenda (idEmpresa, idRepresentantePedido, idClientesOffLine)"); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - ix_pv_listagem"; }
                 try { this.Connection.Execute("CREATE INDEX IF NOT EXISTS ix_pv_idpedidodisplay ON tb_pedidovenda (idPedidoDisplay)"); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - ix_pv_idpedidodisplay"; }
+                // Índice de EXPRESSÃO que casa exatamente com o ORDER BY da listagem (COALESCE(idPedidoDisplay, 99999999999) DESC).
+                // Como filtra idEmpresa por igualdade e ordena pela expressão, o SQLite serve a ordenação direto do índice
+                // e corta no LIMIT — sem ordenar todos os pedidos a cada página (principal ganho ao ABRIR a tela).
+                try { this.Connection.Execute("CREATE INDEX IF NOT EXISTS ix_pv_ordem ON tb_pedidovenda (idEmpresa, COALESCE(idPedidoDisplay, 99999999999) DESC)"); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - ix_pv_ordem"; }
                 try { this.Connection.Execute("CREATE INDEX IF NOT EXISTS ix_estoque_insuf_pv ON TB_ESTOQUE_INSUFICIENTE (idPedidoVendaOffLine)"); } catch (Exception ex) { App.xErrorDataBase += ex.Message + " - ix_estoque_insuf_pv"; }
             }
             catch (Exception ex)

@@ -28,9 +28,13 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 var idEmpresa = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
 
+                // PERFORMANCE: sem DISTINCT. A única fonte de duplicação era o LEFT JOIN em
+                // TB_ESTOQUE_INSUFICIENTE (N linhas por pedido); ele virou subconsulta correlacionada
+                // abaixo (iEstoqueInvalido). Os demais joins são 1:1 (PK única). Sem DISTINCT o SQLite
+                // não precisa materializar/deduplicar todo o conjunto antes do LIMIT.
                 var xQuery =
-                    $@"select distinct
-		                    tb_pedidovenda.idPedidoVenda, 
+                    $@"select
+		                    tb_pedidovenda.idPedidoVenda,
                             tb_pedidovenda.idPedidoVendaOffLine,
                             tb_pedidovenda.idPedidoVendaOriginal,
                             tb_pedidovenda.stPedidoVenda,
@@ -59,13 +63,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             TB_STATUS.xSigla ,
                             TB_STATUS.xCor,
                             TB_STATUS.xNome xNomeStatus,
-                            coalesce(TB_ESTOQUE_INSUFICIENTE.idPedidoVendaOffLine, 0) iEstoqueInvalido
+                            coalesce((select 1 from TB_ESTOQUE_INSUFICIENTE ei where ei.idPedidoVendaOffLine = tb_pedidovenda.idPedidoVendaOffLine limit 1), 0) iEstoqueInvalido
 		                from tb_pedidovenda
 				                 left join TB_EMPRESA_ASPNETUSERS on tb_pedidovenda.idRepresentantePedido = TB_EMPRESA_ASPNETUSERS.idEmpresa_aspnetUsers
                                  left join TB_STATUS on tb_pedidovenda.idStatus = TB_STATUS.idStatus
 				                 left join tb_condicaopagamento on tb_pedidovenda.idCondicaoPagamento = tb_condicaopagamento.idCondicaoPagamento
-				                 left join tb_clientes on tb_pedidovenda.idClientesOffLine = tb_clientes.idClientesOffLine 
-                                 left join TB_ESTOQUE_INSUFICIENTE on tb_pedidovenda.idPedidoVendaOffLine = TB_ESTOQUE_INSUFICIENTE.idPedidoVendaOffLine 
+				                 left join tb_clientes on tb_pedidovenda.idClientesOffLine = tb_clientes.idClientesOffLine
                          Where tb_pedidovenda.idEmpresa = {idEmpresa} ";
 
                 if (idPedidoVendaOffLine > 0)

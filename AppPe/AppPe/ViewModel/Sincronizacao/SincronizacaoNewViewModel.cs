@@ -2012,7 +2012,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     return;
                 }
 
-                if (icount == 0) // registro ainda não sincronizado
+                if (registro is AtividadeAgendaModel && icount > 0)
+                {
+                    var bExcluidoLocal = App.Data.Connection.ExecuteScalar<int>(
+                        $"SELECT bExcluido FROM {xTableName} WHERE {xPrimaryKeyName} = '{idPk}'");
+                    if (bExcluidoLocal == 1)
+                        return;
+                }
+
+                if (icount == 0) 
                 {
                     #region Model Específico
 
