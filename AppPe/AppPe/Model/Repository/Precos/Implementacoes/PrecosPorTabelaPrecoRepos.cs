@@ -111,7 +111,11 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Precos.Implementacoes
 
                 var _lIdProdutos = App.Data.Connection.Query<DisplayListaModel>(xQuery);
                 
-                var _xQueryTblItens = $@"SELECT it.vVendaComImpostos as vVenda, 
+                // Base manual = it.vVenda (igual ao backlog), somando os impostos do produto por cima.
+                // NÃO usar it.vVendaComImpostos: fica desatualizado quando o item tem 100% de desconto
+                // (vVenda = 0 mas vVendaComImpostos mantém o valor antigo), exibindo o preço cheio.
+                var _xQueryTblItens = $@"SELECT
+                    (it.vVenda + (it.vVenda * coalesce(p.pIpiVenda,0)/100.0) + (it.vVenda * coalesce(p.pStVenda,0)/100.0)) as vVenda,
                     (coalesce(p.cAlternativo,'') || ' - ' || p.xNome) as xDisplay
                     from {TableMobile.TB_TABELAPRECOITEM} as it
                     join {TableMobile.TB_PRODUTO} as p on it.idProduto = p.idProduto

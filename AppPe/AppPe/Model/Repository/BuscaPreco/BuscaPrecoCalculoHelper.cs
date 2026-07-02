@@ -33,22 +33,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
             tblAux.pDescontoMaximo = (double)(_itemManualAux.pDescontoMaximo ?? 0);
             tblAux.pIpiVenda = (double)_itemManualAux.pIpiVenda;
             tblAux.pStVenda = (double)_itemManualAux.pStVenda;
-            tblAux.vUnitario = _itemManualAux.vVenda.GetValueOrDefault();
 
-            if ((double)_itemManualAux.pIpiVenda > 0 || (double)_itemManualAux.pStVenda > 0)
-            {
-                var ipi = (double)_itemManualAux.vVenda * ((double)_itemManualAux.pIpiVenda / 100);
-                var st = (double)_itemManualAux.vVenda * ((double)_itemManualAux.pStVenda / 100);
+            // A base do preço manual é SEMPRE o vVenda do item, somando os impostos por cima
+            // (mesma regra da listagem de produtos do pedido no backlog - tb_tabelaprecoitem.vVenda).
+            // NÃO usar vVendaComImpostos: esse campo pode ficar desatualizado (ex.: item com 100% de
+            // desconto fica com vVenda = 0 mas vVendaComImpostos mantém o valor antigo), fazendo o app
+            // exibir o preço cheio enquanto o backlog mostra 0,00. Sem impostos, vVenda + 0 = vVenda.
+            var vBaseManual = (double)_itemManualAux.vVenda.GetValueOrDefault();
+            var ipi = vBaseManual * ((double)_itemManualAux.pIpiVenda / 100);
+            var st = vBaseManual * ((double)_itemManualAux.pStVenda / 100);
 
-                tblAux.vVendaSemArredondamento = (double)_itemManualAux.vVenda + ipi + st;
-                tblAux.vVenda = Extensions.ArredondarValorDecimal(((double)_itemManualAux.vVenda + ipi + st));  
-            }
-            else
-            {
-                tblAux.vUnitario = (double)_itemManualAux.vVendaComImpostos;
-                tblAux.vVenda = (double)_itemManualAux.vVendaComImpostos; 
-            }
-            
+            tblAux.vUnitario = vBaseManual;
+            tblAux.vVendaSemArredondamento = vBaseManual + ipi + st;
+            tblAux.vVenda = Extensions.ArredondarValorDecimal(vBaseManual + ipi + st);
+            tblAux.bValorCalculado = true; // 0,00 aqui (100% desconto) é legítimo, não trocar pelo preço base
+
             if(tblAux.bEscalonada == true)
             {
                 tblAux.pComissao = tblAux.lFaixaComissao.FirstOrDefault()?.pComissao ?? 0;
@@ -78,7 +77,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
             {
                 tblAux.vVenda = tblAux.vVenda + (_vTabela * (infProd.pStVenda.Value / 100));
             }
-            
+
+            tblAux.bValorCalculado = true; // 0,00 aqui (100% desconto) é legítimo, não trocar pelo preço base
 
             if(tblAux.bEscalonada == true)
             {

@@ -849,7 +849,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Lancamento
 
                 //linha adicionada pois caso a tabela de preço esteja zerada
                 //na tela de últimos produtos no cliente traz 0
-                if (value.vVenda <= 0)
+                //só cai no preço base quando a tabela NÃO foi calculada; um 0,00 calculado
+                //(ex.: 100% de desconto / item manual com vVenda = 0) é legítimo e deve ser mantido.
+                if (value.vVenda <= 0 && !value.bValorCalculado)
                     value.vVenda = vVenda;
 
 

@@ -183,6 +183,14 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
         [IgnoreDataMember]
         public double vVendaSemArredondamento { get; set; }
 
+        /// <summary>
+        /// Indica que o vVenda foi efetivamente calculado a partir da tabela (manual ou automática).
+        /// Usado para distinguir um preço legítimo de 0,00 (ex.: 100% de desconto) de uma tabela
+        /// apenas referenciada/não calculada, evitando que o 0,00 válido seja trocado pelo preço base.
+        /// </summary>
+        [IgnoreDataMember]
+        public bool bValorCalculado { get; set; }
+
         public List<TabelaEscalonadaFaixaComissaoModel> lFaixaComissao { get; set; }
 
         public double pIpiVenda { get; set; }

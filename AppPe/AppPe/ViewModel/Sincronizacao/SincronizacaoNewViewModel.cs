@@ -2000,7 +2000,25 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     }
                 }
 
-                if (icount == 0) // registro ainda não sincronizado
+                // Atividade marcada como excluída no servidor: NÃO persiste no SQLite.
+                // Se já existe local, apaga (delete físico); se não existe, ignora (não cria).
+                // Só cria/atualiza quando vier bExcluido = false (segue o fluxo normal abaixo).
+                if (registro is AtividadeAgendaModel _ativExcluida && _ativExcluida.bExcluido)
+                {
+                    if (icount > 0)
+                        App.Data.Connection.Execute($"DELETE FROM {xTableName} WHERE {xPrimaryKeyName} = '{idPk}'");
+                    return;
+                }
+
+                if (registro is AtividadeAgendaModel && icount > 0)
+                {
+                    var bExcluidoLocal = App.Data.Connection.ExecuteScalar<int>(
+                        $"SELECT bExcluido FROM {xTableName} WHERE {xPrimaryKeyName} = '{idPk}'");
+                    if (bExcluidoLocal == 1)
+                        return;
+                }
+
+                if (icount == 0) 
                 {
                     #region Model Específico
 
