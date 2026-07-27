@@ -666,7 +666,29 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             foreach (var registro in lRegistros)
                             {
                                 if (registro != null)
-                                    await SaveSincronizacao(registro, xPrimaryKeyName, xTableName);
+                                {
+                                    // Savepoint por registro: se UM pedido falhar ao salvar, desfaz só ELE e
+                                    // segue com o resto da página. Sem isso (regressão do #5719), um único pedido
+                                    // com problema derrubava a página INTEIRA no rollback — e, como o watermark de
+                                    // sync não avança quando ocorreuErro=true, aqueles pedidos nunca eram baixados
+                                    // de novo (só apareciam os novos criados localmente) e o sync ficava relendo tudo.
+                                    var sp = App.Data.Connection.SaveTransactionPoint();
+                                    try
+                                    {
+                                        await SaveSincronizacao(registro, xPrimaryKeyName, xTableName);
+                                        App.Data.Connection.Release(sp);
+                                    }
+                                    catch (Exception exReg)
+                                    {
+                                        try { App.Data.Connection.RollbackTo(sp); } catch { }
+                                        ocorreuErro = true;
+                                        exReg.TrakException($"Falha ao salvar registro de {xTableName} no download (registro pulado, página preservada)");
+                                        await UtilHttp.LogServidor(
+                                            $"Falha ao salvar registro de {xTableName} no download (registro pulado)",
+                                            exReg.Message,
+                                            "SincronizacaoNewViewModel.SincronizacaoDownloadPedido");
+                                    }
+                                }
 
                                 currentModel.iCount--;
                             }
@@ -682,6 +704,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             }
                             ocorreuErro = true;
                             exTran.TrakException();
+                            await UtilHttp.LogServidor(
+                                $"Falha na transação da página no download de {xTableName} (página descartada)",
+                                exTran.Message,
+                                "SincronizacaoNewViewModel.SincronizacaoDownloadPedido");
                         }
 
                         _pagina++;
@@ -1354,8 +1380,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             }
                         }
                     }
-                    catch
+                    catch (Exception exUp)
                     {
+                        // Antes era engolido em silêncio (catch { continue; }) — um pedido que falhava
+                        // ao subir nunca sincronizava e ninguém ficava sabendo. Agora loga (Google + tb_log_pe).
+                        exUp.TrakException($"upload pedido offline {idPedidoOffLine}");
+                        await UtilHttp.LogServidor(
+                            "Falha ao subir pedido do app para web (registro pulado no upload)",
+                            $"idPedidoVendaOffLine = {idPedidoOffLine} | {exUp.Message}",
+                            "SincronizacaoNewViewModel.PostUploadPedido");
                         continue;
                     }
                 }
@@ -2417,6 +2450,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 objPedido.idClientesOffLine = ClienteRepository.GetIdClienteOffLine(objPedido.idClientes);
                 objPedido.idPedidoVendaOffLine = null;
                 PedidoRepository.SavePedidoVenda(objPedido);
+            }
+            else if (objPedido != null)
+            {
+                // Pedido baixado SEM itens era descartado em silêncio (não salva → não aparece na
+                // listagem, e o watermark de sync avança passando por ele → some de vez). Loga pra
+                // diagnosticar a origem no backend (GetPedidosVendas retornando pedido sem itens).
+                new Exception($"Pedido idPedidoVenda={objPedido.idPedidoVenda} baixado SEM itens — não persistido no app").TrakException();
+                _ = UtilHttp.LogServidor(
+                    "Pedido baixado SEM itens — não persistido no app",
+                    $"idPedidoVenda = {objPedido.idPedidoVenda}",
+                    "SincronizacaoNewViewModel.SavePedidoSync", 2);
             }
         }
 

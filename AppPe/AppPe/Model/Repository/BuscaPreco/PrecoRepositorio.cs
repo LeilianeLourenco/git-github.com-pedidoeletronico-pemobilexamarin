@@ -153,10 +153,12 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                     if (tabela.stTabelaPrecoRepresentacao)
                         filtros++;
 
+                    // [#5831] Contar QUANTOS repositórios de escopo devolveram a tabela (1 linha por
+                    // repo que casou). O .GroupBy(id).Count() dava SEMPRE 1 (já filtrado por id acima),
+                    // então descartava TODA tabela com 2+ escopos mesmo casando 100% — ex.: tabela
+                    // vendedor+UF do Rogério / a 64443 (cliente+UF) sumiam do pedido e da edição.
                     var _contagemDeTabelas = _lRetorno
-                        .Where(t => t.idTabelaPreco == tabela.idTabelaPreco)
-                        .GroupBy(t => t.idTabelaPreco)
-                        .Count();
+                        .Count(t => t.idTabelaPreco == tabela.idTabelaPreco);
 
                     if (filtros > 0 && _contagemDeTabelas != filtros)
                     {
@@ -282,6 +284,50 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.BuscaPreco
                     tb.pDescontoMaximo = _pDescontoMax;
                     tb.tbEscalonada = _tbEscalonada;
                 }
+            }
+
+            // OS 35398 - Jessica Barbieri
+            // Mesma poda do Buscar(): uma tabela com N escopos (cliente/ramo/UF/representante/
+            // representacao) só "vale" se foi devolvida por exatamente N repositórios de escopo —
+            // senão bateu só em parte (ex.: tabela representante+UF que casou o UF mas NÃO o
+            // vendedor) e não é liberada para este vendedor/cliente. Estava só no Buscar (preço),
+            // faltava aqui (filtro da LISTA do pedido). Sem isso, a tabela restrita vazava como
+            // "disponível" e disparava o "mostrar todos os produtos" / caía na geral.
+            if (_lRetorno?.Count() > 0)
+            {
+                foreach (var tabela in _lRetorno)
+                {
+                    int filtros = 0;
+
+                    if (tabela.stCampanhaCliente)
+                        filtros++;
+
+                    if (tabela.stCampanhaClienteRamoAtividade && !tabela.stCampanhaClienteUF)
+                        filtros++;
+
+                    if (tabela.stCampanhaClienteUF && !tabela.stCampanhaClienteRamoAtividade)
+                        filtros++;
+
+                    if (tabela.stCampanhaClienteUF && tabela.stCampanhaClienteRamoAtividade)
+                        filtros++;
+
+                    if (tabela.stCampanhaRepresentante)
+                        filtros++;
+
+                    if (tabela.stTabelaPrecoRepresentacao)
+                        filtros++;
+
+                    // [#5831] Conta linhas (repos de escopo que casaram), não .GroupBy().Count() (=1). Ver Buscar().
+                    var _contagemDeTabelas = _lRetorno
+                        .Count(t => t.idTabelaPreco == tabela.idTabelaPreco);
+
+                    if (filtros > 0 && _contagemDeTabelas != filtros)
+                    {
+                        tabela.bRemoveTabela = true;
+                    }
+                }
+
+                _lRetorno.RemoveAll(t => t.bRemoveTabela == true);
             }
 
             return _lRetorno;

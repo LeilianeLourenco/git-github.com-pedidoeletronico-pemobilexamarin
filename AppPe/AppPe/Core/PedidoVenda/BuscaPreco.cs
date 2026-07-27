@@ -67,6 +67,25 @@ namespace Xamarin.HLP.Mobile.AppPE.Core.PedidoVenda
             //rotina nova
             _tblDef = _repCliente.RetornaPrecos(idEmpresa: idEmpresa,
             id: idClienteOff, stBusca: Model.Repository.Interfaces.TipoPrecoBusca.tbl)?.FirstOrDefault();
+
+            // [#5831] A tabela DEFAULT do cliente só precifica se o VENDEDOR tiver acesso a ela,
+            // respeitando TODOS os filtros da tabela (vendedor/cliente/UF/ramo — mesma composição de
+            // escopos do PrecoRepositorio.Buscar, já com a poda OS-35398). Antes o pedido usava o
+            // preço da default do cliente mesmo sem permissão do vendedor (ex.: cliente com default
+            // 64443, vendedor com acesso só à 64514). Fora do escopo → não usa a default; o item cai
+            // no SetTabelaPrecoByProduto, que precifica só pelas tabelas liberadas ao vendedor.
+            if (_tblDef != null)
+            {
+                var _idsTabelasDisponiveis = new HashSet<int>(
+                    new PrecoRepositorio().Buscar(idEmpresa: idEmpresa, idCliente: idCliente,
+                        idClienteOffLine: idClienteOff, idRepresentacao: 0, idRepresentante: idRepresentante,
+                        idProduto: 0, stBusca: Model.Repository.Interfaces.TipoPrecoBusca.tud)
+                    .Select(t => t.idTabelaPreco));
+
+                if (!_idsTabelasDisponiveis.Contains(_tblDef.idTabelaPreco))
+                    _tblDef = null;
+            }
+
             if (_lEscalonadasAtivas?.Count() > 0)
             {
                 //primeiro busco se a tabela de preço que veio é especifica da tabela escalonada

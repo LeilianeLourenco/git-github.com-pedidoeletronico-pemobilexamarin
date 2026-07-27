@@ -104,6 +104,41 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             return retistroSync;
         }
 
+        /// <summary>
+        /// Registra um diagnóstico do app direto no tb_log_pe do servidor (mesmo canal dos logs de
+        /// sincronização, consultável por idEmpresa/idRepresentante). Complementa o TrakException (Google).
+        /// Fire-and-forget: NUNCA lança nem bloqueia o fluxo — se falhar, cai só no Google e segue.
+        /// nNivel: 1 = Info, 2 = Aviso, 3 = Erro.
+        /// </summary>
+        public static async Task LogServidor(string xDescricao, string xMensageException, string xMetodo = null, int nNivel = 3)
+        {
+            try
+            {
+                var emp = App.CurrentAspnetUserModel?.objEmpresaAspnetUsersModel;
+                if (emp == null || emp.idEmpresa <= 0) return;
+
+                var dto = new
+                {
+                    idEmpresa = emp.idEmpresa,
+                    idEmpresaAspnetUser = emp.idEmpresa_aspnetUsers,
+                    dtCadastro = DateTime.UtcNow.AddHours(-3),
+                    xDescricao = xDescricao,
+                    xMensageException = xMensageException,
+                    xMetodo = xMetodo,
+                    nNivel = nNivel
+                };
+
+                var xJson = JsonConvert.SerializeObject(dto);
+                var requestUri = App.UrlWebApi + "api/APIlog/Post";
+                await CurrentHttpClient.PostAsync(requestUri, new StringContent(xJson, Encoding.UTF8, "application/json"));
+            }
+            catch (Exception ex)
+            {
+                // Log NUNCA pode quebrar o app. Cai só no Google.
+                try { ex.TrakException("UtilHttp.LogServidor", false); } catch { }
+            }
+        }
+
         public static async Task<AtividadeAgendaModel> PostAgendaToCloud<T>(T classe, string xNamePost = "Post")
     where T : class
         {

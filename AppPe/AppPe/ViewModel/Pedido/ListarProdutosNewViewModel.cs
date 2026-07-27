@@ -391,8 +391,17 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                                     _idProdutos.Add(0);
                             }
                             else
+                            {
                                 _idProdutos = _buscaProdutos.BuscarProdutos(idEmpresa: App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa, idCondicaoParaTabelaPreco:
                              currentPedidoViewModel.ItemCondicaoPgto.Id);
+
+                                // Regra: produto só aparece se existe tabela liberada p/ vendedor+cliente que o precifique.
+                                // BuscarProdutos devolve null quando há tabela AUTOMÁTICA usável (mostra tudo, como antes);
+                                // lista VAZIA = está restrito (só manual/representação) e nada qualifica → não exibe nada.
+                                // Mesmo sentinela do filtro de campanha acima (idProduto in (0) → zero linhas).
+                                if (_idProdutos != null && _idProdutos.Count == 0)
+                                    _idProdutos.Add(0);
+                            }
 
                             var lItens = ProdutoRepository.Get(
                                 Produtos.Count,
