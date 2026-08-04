@@ -85,7 +85,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
                 StopSelf();
             });
 
-            return StartCommandResult.Sticky;
+            // NotSticky: se o Android matar o serviço (ex.: timeout de foreground service),
+            // não relançar automaticamente do zero — isso causava um loop infinito de
+            // "mata -> reinicia a sincronização inteira -> mata de novo" que nunca progredia.
+            return StartCommandResult.NotSticky;
         }
 
         public override void OnTaskRemoved(Intent rootIntent)

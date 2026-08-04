@@ -354,6 +354,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownload<PermissoesRepresentantesModel>();
                 //if (!ocorreuErro && !bFalhaConexao)
                 //    await SincronizacaoDownload<EquipeRepresentantesModel>();
+
+                // Pedido sincroniza logo aqui (antes do catálogo/tabela de preço/produtos) —
+                // em empresas com base muito grande, essas tabelas sozinhas já não terminam
+                // dentro do tempo que o Android dá pro serviço em background (ver
+                // SincronizacaoService.cs), então pedido nunca tinha vez ficando no fim da lista.
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownloadPedido();
+
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<RamoAtividadeModel>();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -424,8 +432,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     await SincronizacaoDownload<TabelaPrecoClienteRamoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<ClienteRamosAtividade>();
-                if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownloadPedido();
                 if (!ocorreuErro && !bFalhaConexao)
                     await AnaliseDeRepresentantes();
                 if (!ocorreuErro && !bFalhaConexao)
@@ -626,7 +632,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
-                _ultimaDataSinc = lastDateServerSync;
+                // NÃO usar lastDateServerSync aqui: é um timestamp "agora" que avança a cada
+                // sessão de sincronização (é atualizado mesmo quando esta tabela específica nunca
+                // completou antes). Numa empresa grande, esta tabela pode só ganhar seu 1º
+                // checkpoint depois de várias sessões de sync — nesse ponto lastDateServerSync já
+                // é "hoje", e usar isso aqui faz a 1ª sincronização pular todo o histórico (busca
+                // fica "desde agora"), voltando 0 registros pra sempre. Usa uma data antiga fixa.
+                _ultimaDataSinc = DateTime.Today.AddYears(-50);
             else
                 _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
@@ -639,6 +651,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     param3: App.CurrentAspnetUserModel.Id);
 
             int _pagina = 1;
+
+            // Bases muito grandes (ex.: 70 mil+ pedidos) nunca terminavam de sincronizar — o
+            // serviço em background era matado pelo Android antes de completar, e como o
+            // checkpoint só avançava no final, a rodada seguinte reiniciava do zero (mesmo
+            // ponto antigo), num loop que nunca progredia. Limita cada rodada a um número de
+            // registros e avança o checkpoint só até onde realmente baixou: a próxima rodada
+            // continua de onde essa parou, em vez de recomeçar.
+            const int LIMITE_REGISTROS_POR_RODADA = 250;
+            int _totalBaixadoNaRodada = 0;
+            bool _atingiuLimiteRodada = false;
+            DateTime? _dtUltimoRegistroBaixado = null;
+
             if (listaID.Count > 0 && !bFalhaConexao)
             {
                 currentModel.iCount = listaID.Count();
@@ -710,7 +734,23 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                                 "SincronizacaoNewViewModel.SincronizacaoDownloadPedido");
                         }
 
+                        _totalBaixadoNaRodada += lRegistros.Count(r => r != null);
+
+                        var _dtMaxPagina = lRegistros.Where(r => r?.dtUltimaAlteracao != null)
+                            .Select(r => r.dtUltimaAlteracao.Value)
+                            .DefaultIfEmpty()
+                            .Max();
+                        if (_dtMaxPagina != default(DateTime)
+                            && (_dtUltimoRegistroBaixado == null || _dtMaxPagina > _dtUltimoRegistroBaixado))
+                            _dtUltimoRegistroBaixado = _dtMaxPagina;
+
                         _pagina++;
+
+                        if (_totalBaixadoNaRodada >= LIMITE_REGISTROS_POR_RODADA)
+                        {
+                            _atingiuLimiteRodada = true;
+                            break;
+                        }
                     }
                     else
                     {
@@ -719,8 +759,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 }
             }
 
+            // Rodada parcial: grava o checkpoint na data do último registro baixado (não "agora"),
+            // pra próxima sincronização continuar dali em vez de pular o que ainda falta.
+            if (_atingiuLimiteRodada && _dtUltimoRegistroBaixado.HasValue)
+                integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro, dtCheckpoint: _dtUltimoRegistroBaixado.Value);
+            else
+                integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
 
-            integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
             ocorreuErro = currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0;
         }
 
@@ -736,7 +781,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
-                _ultimaDataSinc = lastDateServerSync;
+                // NÃO usar lastDateServerSync aqui: é um timestamp "agora" que avança a cada
+                // sessão de sincronização (é atualizado mesmo quando esta tabela específica nunca
+                // completou antes). Numa empresa grande, esta tabela pode só ganhar seu 1º
+                // checkpoint depois de várias sessões de sync — nesse ponto lastDateServerSync já
+                // é "hoje", e usar isso aqui faz a 1ª sincronização pular todo o histórico (busca
+                // fica "desde agora"), voltando 0 registros pra sempre. Usa uma data antiga fixa.
+                _ultimaDataSinc = DateTime.Today.AddYears(-50);
             else
                 _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
@@ -796,7 +847,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
-                _ultimaDataSinc = lastDateServerSync;
+                // NÃO usar lastDateServerSync aqui: é um timestamp "agora" que avança a cada
+                // sessão de sincronização (é atualizado mesmo quando esta tabela específica nunca
+                // completou antes). Numa empresa grande, esta tabela pode só ganhar seu 1º
+                // checkpoint depois de várias sessões de sync — nesse ponto lastDateServerSync já
+                // é "hoje", e usar isso aqui faz a 1ª sincronização pular todo o histórico (busca
+                // fica "desde agora"), voltando 0 registros pra sempre. Usa uma data antiga fixa.
+                _ultimaDataSinc = DateTime.Today.AddYears(-50);
             else
                 _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
@@ -858,7 +915,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             var _ultimaDataSinc = integ.getDataUltimaIntegracao(idEmp, xTableName);
 
             if (_ultimaDataSinc == null || _ultimaDataSinc.Year < 2000 || bForcarSyncInit)
-                _ultimaDataSinc = lastDateServerSync;
+                // NÃO usar lastDateServerSync aqui: é um timestamp "agora" que avança a cada
+                // sessão de sincronização (é atualizado mesmo quando esta tabela específica nunca
+                // completou antes). Numa empresa grande, esta tabela pode só ganhar seu 1º
+                // checkpoint depois de várias sessões de sync — nesse ponto lastDateServerSync já
+                // é "hoje", e usar isso aqui faz a 1ª sincronização pular todo o histórico (busca
+                // fica "desde agora"), voltando 0 registros pra sempre. Usa uma data antiga fixa.
+                _ultimaDataSinc = DateTime.Today.AddYears(-50);
             else
                 _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 

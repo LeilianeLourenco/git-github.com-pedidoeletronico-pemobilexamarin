@@ -45,13 +45,17 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Integracao
             }
         }
 
-        public void AtualizarDataIntegracao(string xTabela, int idEmpresa, bool falhaConexao, bool falhaErro, string xLogIntegracao = "")
+        // dtCheckpoint: quando a rodada baixou só uma PARTE do que havia pendente (ex.: limite de
+        // registros por rodada, ver SincronizacaoDownloadPedido), grava o checkpoint na data do
+        // último registro realmente baixado em vez de "agora" — senão a próxima rodada pularia
+        // direto pra frente e nunca baixaria o que ficou faltando.
+        public void AtualizarDataIntegracao(string xTabela, int idEmpresa, bool falhaConexao, bool falhaErro, string xLogIntegracao = "", DateTime? dtCheckpoint = null)
         {
             bool Resultado = false;
             xLogIntegracao = xLogIntegracao.Replace("'", "");
 
-            if (falhaConexao || falhaErro) 
-                Resultado = true; 
+            if (falhaConexao || falhaErro)
+                Resultado = true;
 
             try
             {
@@ -62,8 +66,8 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository.Integracao
                 if (Resultado)
                     setQuery = $" xLogIntegracao = '{xLogIntegracao}' ";
                 else
-                    setQuery = $" dtUltimaSincronizacao = '{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}'";
-                
+                    setQuery = $" dtUltimaSincronizacao = '{(dtCheckpoint ?? DateTime.UtcNow).ToString("yyyy-MM-dd HH:mm:ss")}'";
+
 
                 App.Data.Connection.Execute($"update TB_INTEGRACAO set {setQuery} where idIntegracao = {idIntegracao}");                  
             }
