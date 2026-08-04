@@ -11,10 +11,17 @@
       "Bash(grep -iE \"\\\\.\\(html|htm|aspx|asp\\)$\")",
       "Bash(grep -iE 'html|htm|aspx|asp$')",
       "Read(//c/c/backlog/**)",
-      "Bash(grep -iE '\\\\.\\(html|htm|aspx|asp\\)$')"
+      "Bash(grep -iE '\\\\.\\(html|htm|aspx|asp\\)$')",
+      "PowerShell($msbuild = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\"; & $msbuild \"c:\\\\PeMobileXamarim\\\\AppPe\\\\AppPe\\\\Xamarin.HLP.Mobile.AppPE.csproj\" /t:Build /p:Configuration=Debug /v:minimal /nologo /clp:ErrorsOnly 2>&1 | Select-Object -Last 40)",
+      "PowerShell($msbuild = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\"; & $msbuild \"c:\\\\PeMobileXamarim\\\\AppPe\\\\AppPe\\\\Xamarin.HLP.Mobile.AppPE.csproj\" /t:Build /p:Configuration=Debug /v:minimal /nologo 2>&1 | Select-Object -Last 6; \"EXITCODE=$LASTEXITCODE\")",
+      "Bash([ -f \"$f\" ])",
+      "Read(//c/Users/leili/AppData/Local/Temp/**)",
+      "Bash(git check-ignore *)",
+      "Bash(exit 1)"
     ],
     "additionalDirectories": [
-      "c:\\Pe.Cigam.Integration\\src\\Pe.Cigam.Integration.Application\\Services\\Commons"
+      "c:\\Pe.Cigam.Integration\\src\\Pe.Cigam.Integration.Application\\Services\\Commons",
+      "C:\\Pe.backlog\\Hlp.PedidoEletronico.Data\\Repositories\\IonicMobilePeRep\\PedidoDeVenda"
     ]
   }
 }

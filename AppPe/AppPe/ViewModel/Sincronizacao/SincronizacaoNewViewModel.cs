@@ -1571,6 +1571,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 foreach (var registro in registros.Where(c => Convert.ToInt32(c.GetPropValue(xPKonline) ?? 0) != 0))
                 {
+                    // Tombstone: exclusão é estado terminal e SEMPRE vence. Sobe direto, sem comparar
+                    // data com a nuvem, senão uma edição mais recente na web descartaria a exclusão
+                    // feita no app. Se a nuvem não confirmar, marca erro para NÃO limpar o registro local
+                    // (RemoverAtividadesExcluidasLocais) e tentar de novo na próxima sincronização.
+                    if (registro.bExcluido)
+                    {
+                        var retornoExclusao = await UtilHttp.PostAgendaToCloud(registro);
+                        if (retornoExclusao == null)
+                            ocorreuErro = true;
+                        continue;
+                    }
+
                     var dtUltimaAlteracaoNuvem =
                         await UtilHttp.GetValueSync<DateTime>(controller: "APIverificaUltimaAlteracao",
                             param1: xTable,
@@ -1593,7 +1605,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                         var lAnexos = AnexosRepository.GetAnexosAtividade(registro.idAtividadeOffline);
                         registro.lAnexosAtividade = new ObservableCollection<AnexosModel>(lAnexos);
-                        await UtilHttp.PostAgendaToCloud(registro); // mantem registro da Local   
+                        await UtilHttp.PostAgendaToCloud(registro); // mantem registro da Local
                     }
                 }
 
@@ -1611,6 +1623,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     //        newregistro.dtFimEvento = (newregistro.dtFimEvento ?? DateTime.Now).ToLocalTime();
 
                     var item = (newregistro as AtividadeAgendaModel);
+
+                    // Tombstone: atividade criada e excluída localmente antes de sincronizar
+                    // (idAtividade == 0 e bExcluido). NÃO deve ser criada na web.
+                    // Será removida do aparelho por AgendaRepository.RemoverAtividadesExcluidasLocais.
+                    if (item != null && item.bExcluido)
+                        continue;
+
                     if (item.idCliente.GetValueOrDefault() == 0 && item.idClienteOffline.GetValueOrDefault() > 0)
                     {
                         var xQuery =
