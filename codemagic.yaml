@@ -63,12 +63,27 @@ workflows:
         script: |
           cd AppPe/AppPe.iOS
           TOOLCHAIN_BIN="/Applications/Xcode-16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin"
-          ls -la "$TOOLCHAIN_BIN" | grep -i strip
-          if [ ! -f "$TOOLCHAIN_BIN/strip" ]; then
-            echo "strip nao existe em $TOOLCHAIN_BIN, criando link para /usr/bin/strip"
-            sudo ln -sf /usr/bin/strip "$TOOLCHAIN_BIN/strip"
+
+          echo "Substituindo bitcode_strip por uma versao no-op (bitcode nao existe mais em apps modernos)..."
+          sudo cp "$TOOLCHAIN_BIN/bitcode_strip" "$TOOLCHAIN_BIN/bitcode_strip.real" || true
+          sudo tee "$TOOLCHAIN_BIN/bitcode_strip" > /dev/null << 'SCRIPT_EOF'
+          #!/bin/bash
+          input="$1"
+          output=""
+          prev=""
+          for arg in "$@"; do
+            if [ "$prev" = "-o" ]; then
+              output="$arg"
+            fi
+            prev="$arg"
+          done
+          if [ -n "$output" ] && [ -n "$input" ]; then
+            cp "$input" "$output"
           fi
-          ls -la "$TOOLCHAIN_BIN" | grep -i strip
+          exit 0
+          SCRIPT_EOF
+          sudo chmod +x "$TOOLCHAIN_BIN/bitcode_strip"
+
           MSBUILD="/Library/Frameworks/Mono.framework/Versions/Current/bin/msbuild"
           $MSBUILD Xamarin.HLP.Mobile.AppPE.iOS.csproj /t:Build /p:Configuration=Release /p:Platform=iPhone /p:BuildIpa=true /v:minimal
 
