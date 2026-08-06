@@ -26,14 +26,20 @@ workflows:
           curl -s -o /tmp/AppleWWDRCAG5.cer https://www.apple.com/certificateauthority/AppleWWDRCAG5.cer
           curl -s -o /tmp/AppleWWDRCAG6.cer https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer
           curl -s -o /tmp/AppleRootCA-G2.cer https://www.apple.com/certificateauthority/AppleRootCA-G2.cer
-          security import /tmp/AppleWWDRCAG3.cer -k ~/Library/Keychains/login.keychain-db || true
-          security import /tmp/AppleWWDRCAG4.cer -k ~/Library/Keychains/login.keychain-db || true
-          security import /tmp/AppleWWDRCAG5.cer -k ~/Library/Keychains/login.keychain-db || true
-          security import /tmp/AppleWWDRCAG6.cer -k ~/Library/Keychains/login.keychain-db || true
-          security import /tmp/AppleRootCA-G2.cer -k ~/Library/Keychains/login.keychain-db || true
-
           echo $CM_CERTIFICATE | base64 --decode > /tmp/AppDist.p12
           keychain add-certificates --certificate /tmp/AppDist.p12 --certificate-password $CM_CERTIFICATE_PASSWORD
+
+          echo "Chaveiros na lista de busca:"
+          security list-keychains
+
+          DEFAULT_KEYCHAIN=$(security default-keychain | tr -d '"' | xargs)
+          echo "Chaveiro padrao: $DEFAULT_KEYCHAIN"
+
+          security import /tmp/AppleWWDRCAG3.cer -k "$DEFAULT_KEYCHAIN" || true
+          security import /tmp/AppleWWDRCAG4.cer -k "$DEFAULT_KEYCHAIN" || true
+          security import /tmp/AppleWWDRCAG5.cer -k "$DEFAULT_KEYCHAIN" || true
+          security import /tmp/AppleWWDRCAG6.cer -k "$DEFAULT_KEYCHAIN" || true
+          security import /tmp/AppleRootCA-G2.cer -k "$DEFAULT_KEYCHAIN" || true
 
           echo "Identidades disponiveis apos configuracao:"
           security find-identity -v -p codesigning
