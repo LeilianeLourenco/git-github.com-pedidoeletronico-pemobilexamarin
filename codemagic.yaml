@@ -1,0 +1,49 @@
+workflows:
+  ios-legacy-xamarin:
+    name: iOS Legacy Xamarin Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      xcode: 15.4
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.ptbr.pedidoeletronico
+    scripts:
+      - name: Instalar Mono
+        script: |
+          brew install mono
+
+      - name: Instalar Xamarin.iOS SDK
+        script: |
+          curl -L -o /tmp/xamarin.ios.pkg "https://download.visualstudio.microsoft.com/download/pr/de7f727f-243c-4429-8773-eebd735eb1bb/da4a65f27ace7f805914ef63661e0efd/xamarin.ios-16.4.0.18.pkg"
+          sudo installer -pkg /tmp/xamarin.ios.pkg -target /
+
+      - name: Configurar assinatura
+        script: |
+          keychain initialize
+          keychain add-certificates
+          PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROFILES_HOME"
+          PROFILE_PATH="$PROFILES_HOME/$(uuidgen).mobileprovision"
+          echo $CM_PROVISIONING_PROFILE | base64 --decode > "$PROFILE_PATH"
+
+      - name: Restaurar pacotes NuGet
+        script: |
+          cd AppPe/AppPe.iOS
+          MSBUILD="/Library/Frameworks/Mono.framework/Versions/Current/bin/msbuild"
+          $MSBUILD Xamarin.HLP.Mobile.AppPE.iOS.csproj /t:Restore
+
+      - name: Build Release e gerar IPA
+        script: |
+          cd AppPe/AppPe.iOS
+          MSBUILD="/Library/Frameworks/Mono.framework/Versions/Current/bin/msbuild"
+          $MSBUILD Xamarin.HLP.Mobile.AppPE.iOS.csproj /t:Build /p:Configuration=Release /p:Platform=iPhone /p:BuildIpa=true /v:minimal
+
+    artifacts:
+      - AppPe/AppPe.iOS/bin/iPhone/Release/*.ipa
+      - AppPe/AppPe.iOS/bin/iPhone/Release/*.app.dSYM
+
+    publishing:
+      email:
+        recipients:
+          - leiliane.lourenco@pedidoeletronico.com
