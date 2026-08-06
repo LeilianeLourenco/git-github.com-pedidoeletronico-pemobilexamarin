@@ -18,15 +18,6 @@ workflows:
           curl -L -o /tmp/xamarin.ios.pkg "https://download.visualstudio.microsoft.com/download/pr/de7f727f-243c-4429-8773-eebd735eb1bb/da4a65f27ace7f805914ef63661e0efd/xamarin.ios-16.4.0.18.pkg"
           sudo installer -pkg /tmp/xamarin.ios.pkg -target /
 
-      - name: Configurar assinatura
-        script: |
-          keychain initialize
-          keychain add-certificates
-          PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
-          mkdir -p "$PROFILES_HOME"
-          PROFILE_PATH="$PROFILES_HOME/$(uuidgen).mobileprovision"
-          echo $CM_PROVISIONING_PROFILE | base64 --decode > "$PROFILE_PATH"
-
       - name: Restaurar pacotes NuGet
         script: |
           cd AppPe/AppPe.iOS
