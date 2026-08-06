@@ -62,6 +62,8 @@ workflows:
       - name: Build Release e gerar IPA
         script: |
           cd AppPe/AppPe.iOS
+          export PATH="/Applications/Xcode-16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$PATH"
+          which strip
           MSBUILD="/Library/Frameworks/Mono.framework/Versions/Current/bin/msbuild"
           $MSBUILD Xamarin.HLP.Mobile.AppPE.iOS.csproj /t:Build /p:Configuration=Release /p:Platform=iPhone /p:BuildIpa=true /v:minimal
 
