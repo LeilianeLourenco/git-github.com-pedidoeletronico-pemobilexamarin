@@ -6,7 +6,7 @@ workflows:
     environment:
       groups:
         - IOS
-      xcode: 16.4
+      xcode: latest
     scripts:
       - name: Instalar Mono
         script: |
@@ -62,7 +62,9 @@ workflows:
       - name: Build Release e gerar IPA
         script: |
           cd AppPe/AppPe.iOS
-          TOOLCHAIN_BIN="/Applications/Xcode-16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+          XCODE_DEV_DIR=$(xcode-select -p)
+          echo "Xcode ativo: $XCODE_DEV_DIR"
+          TOOLCHAIN_BIN="$XCODE_DEV_DIR/Toolchains/XcodeDefault.xctoolchain/usr/bin"
 
           echo "Substituindo bitcode_strip por uma versao no-op (bitcode nao existe mais em apps modernos)..."
           sudo cp "$TOOLCHAIN_BIN/bitcode_strip" "$TOOLCHAIN_BIN/bitcode_strip.real" || true
