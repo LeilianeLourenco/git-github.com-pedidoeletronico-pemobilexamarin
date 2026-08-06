@@ -19,8 +19,25 @@ workflows:
       - name: Configurar assinatura manualmente
         script: |
           keychain initialize
+
+          echo "Instalando certificados intermediarios da Apple (WWDR)..."
+          curl -s -o /tmp/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+          curl -s -o /tmp/AppleWWDRCAG4.cer https://www.apple.com/certificateauthority/AppleWWDRCAG4.cer
+          curl -s -o /tmp/AppleWWDRCAG5.cer https://www.apple.com/certificateauthority/AppleWWDRCAG5.cer
+          curl -s -o /tmp/AppleWWDRCAG6.cer https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer
+          curl -s -o /tmp/AppleRootCA-G2.cer https://www.apple.com/certificateauthority/AppleRootCA-G2.cer
+          security import /tmp/AppleWWDRCAG3.cer -k ~/Library/Keychains/login.keychain-db || true
+          security import /tmp/AppleWWDRCAG4.cer -k ~/Library/Keychains/login.keychain-db || true
+          security import /tmp/AppleWWDRCAG5.cer -k ~/Library/Keychains/login.keychain-db || true
+          security import /tmp/AppleWWDRCAG6.cer -k ~/Library/Keychains/login.keychain-db || true
+          security import /tmp/AppleRootCA-G2.cer -k ~/Library/Keychains/login.keychain-db || true
+
           echo $CM_CERTIFICATE | base64 --decode > /tmp/AppDist.p12
           keychain add-certificates --certificate /tmp/AppDist.p12 --certificate-password $CM_CERTIFICATE_PASSWORD
+
+          echo "Identidades disponiveis apos configuracao:"
+          security find-identity -v -p codesigning
+
           PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
           mkdir -p "$PROFILES_HOME"
           PROFILE_PATH="$PROFILES_HOME/AppDist.mobileprovision"
