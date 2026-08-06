@@ -62,8 +62,13 @@ workflows:
       - name: Build Release e gerar IPA
         script: |
           cd AppPe/AppPe.iOS
-          export PATH="/Applications/Xcode-16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$PATH"
-          which strip
+          TOOLCHAIN_BIN="/Applications/Xcode-16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+          ls -la "$TOOLCHAIN_BIN" | grep -i strip
+          if [ ! -f "$TOOLCHAIN_BIN/strip" ]; then
+            echo "strip nao existe em $TOOLCHAIN_BIN, criando link para /usr/bin/strip"
+            sudo ln -sf /usr/bin/strip "$TOOLCHAIN_BIN/strip"
+          fi
+          ls -la "$TOOLCHAIN_BIN" | grep -i strip
           MSBUILD="/Library/Frameworks/Mono.framework/Versions/Current/bin/msbuild"
           $MSBUILD Xamarin.HLP.Mobile.AppPE.iOS.csproj /t:Build /p:Configuration=Release /p:Platform=iPhone /p:BuildIpa=true /v:minimal
 
