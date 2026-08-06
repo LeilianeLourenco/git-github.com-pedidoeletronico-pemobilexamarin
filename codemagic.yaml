@@ -5,9 +5,6 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       xcode: 15.4
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.ptbr.pedidoeletronico
     scripts:
       - name: Instalar Mono
         script: |
@@ -17,6 +14,17 @@ workflows:
         script: |
           curl -L -o /tmp/xamarin.ios.pkg "https://download.visualstudio.microsoft.com/download/pr/de7f727f-243c-4429-8773-eebd735eb1bb/da4a65f27ace7f805914ef63661e0efd/xamarin.ios-16.4.0.18.pkg"
           sudo installer -pkg /tmp/xamarin.ios.pkg -target /
+
+      - name: Configurar assinatura manualmente
+        script: |
+          keychain initialize
+          keychain add-certificates
+          PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROFILES_HOME"
+          PROFILE_PATH="$PROFILES_HOME/AppDist.mobileprovision"
+          echo $CM_PROVISIONING_PROFILE | base64 --decode > "$PROFILE_PATH"
+          echo "Perfil instalado em: $PROFILE_PATH"
+          ls -la "$PROFILES_HOME"
 
       - name: Restaurar pacotes NuGet
         script: |
