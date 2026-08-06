@@ -19,7 +19,8 @@ workflows:
       - name: Configurar assinatura manualmente
         script: |
           keychain initialize
-          keychain add-certificates
+          echo $CM_CERTIFICATE | base64 --decode > /tmp/AppDist.p12
+          keychain add-certificates --certificate /tmp/AppDist.p12 --certificate-password $CM_CERTIFICATE_PASSWORD
           PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
           mkdir -p "$PROFILES_HOME"
           PROFILE_PATH="$PROFILES_HOME/AppDist.mobileprovision"
