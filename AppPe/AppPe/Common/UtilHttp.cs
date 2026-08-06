@@ -311,6 +311,33 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             return loginSync;
         }
 
+        public static async Task<SimpleResultPost> PostExcluirConta(ExcluirContaViewModel model)
+        {
+            var retorno = new SimpleResultPost { success = false };
+            try
+            {
+                var xJson = JsonConvert.SerializeObject(model);
+                var requestUri = App.UrlWebApi + "/api/APIaccount/ExcluirConta";
+                var wcfResponse =
+                    await
+                        CurrentHttpClient.PostAsync(requestUri,
+                            new StringContent(xJson, Encoding.UTF8, "application/json"));
+                if (wcfResponse == null) return retorno;
+                if (!wcfResponse.IsSuccessStatusCode) return retorno;
+                var responJsonText = await wcfResponse.Content.ReadAsStringAsync();
+                retorno = JsonConvert.DeserializeObject<SimpleResultPost>(responJsonText);
+            }
+            catch (System.Net.WebException)
+            {
+                SincronizacaoNewViewModel.bFalhaConexao = true;
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("PostExcluirConta", false);
+            }
+            return retorno;
+        }
+
         public static async void SendEmailPedido(EmailPedidoModel param)
         {
             try

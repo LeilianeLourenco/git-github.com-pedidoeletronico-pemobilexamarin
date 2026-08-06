@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:Xamarin.HLP.Mobile.AppPE.Model;assembly=Xamarin.HLP.Mobile.AppPE"
+             Title="Excluir Conta"
+             x:Class="Xamarin.HLP.Mobile.AppPE.View.PageExcluirConta" BackgroundColor="White" >
+  <ContentPage.BindingContext>
+    <model:ExcluirContaViewModel/>
+  </ContentPage.BindingContext>
+
+  <ScrollView>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="15*"/>
+      <RowDefinition Height="85*"/>
+    </Grid.RowDefinitions>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="8*" />
+      <ColumnDefinition Width="86*" />
+      <ColumnDefinition Width="8*" />
+    </Grid.ColumnDefinitions>
+
+    <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="1" Spacing="10">
+
+      <Label HorizontalTextAlignment="Center" Text="Excluir sua conta" TextColor="{StaticResource CinzaPrincipal}" Margin="0,0,0,20" FontAttributes="Bold" FontSize="18" />
+
+      <Label TextColor="{StaticResource CinzaPrincipal}" HorizontalTextAlignment="Center" Margin="0,0,0,10"
+             Text="Esta ação é irreversível. Ao excluir sua conta, o acesso ao sistema será encerrado para você e para os demais usuários da sua empresa. Pedidos e histórico financeiro já existentes são preservados, apenas desassociados da sua conta." />
+
+      <Label TextColor="{StaticResource CinzaPrincipal}" Margin="0,10,0,0" Text="{Binding Email}" HorizontalTextAlignment="Center" FontAttributes="Bold" />
+
+      <Entry IsPassword="True" Placeholder="Confirme sua senha" Text="{Binding Password}" />
+
+      <Frame HasShadow="True" Padding="0,0,0,0" Margin="0,20,0,0">
+        <Button Style="{StaticResource Danger}"
+                Command="{Binding ExcluirContaCommand}" Text="Excluir minha conta" />
+      </Frame>
+
+      <Button Style="{StaticResource Info}" Margin="0,10,0,0"
+              Command="{Binding VoltarCommand}" Text="Cancelar" />
+
+    </StackLayout>
+
+  </Grid>
+
+  </ScrollView>
+
+</ContentPage>

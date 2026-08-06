@@ -17,6 +17,8 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel
 
         public ICommand SuporteRemotoDownloadCommand { get; set; }
 
+        public ICommand ExcluirContaCommand { get; set; }
+
 
         public SobreViewModel()
         {
@@ -87,6 +89,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel
                 }
 
 
+            });
+
+            ExcluirContaCommand = new Command(() =>
+            {
+                UtilNavidate.PushAsync(new PageExcluirConta());
             });
         }
 
