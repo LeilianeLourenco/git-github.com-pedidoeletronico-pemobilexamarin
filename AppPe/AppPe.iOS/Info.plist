@@ -10,7 +10,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs access to the camera to read barcode of your product.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Precisamos acessar suas fotos para anexar imagens, como comprovantes ou registros, às atividades da sua agenda comercial.</string>
+	<string>Precisamos acessar suas fotos para anexar imagens à sua visita na agenda, como uma foto do local visitado ou do pedido realizado.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We would like to know your location to find places near you</string>
 	<key>UIDeviceFamily</key>
