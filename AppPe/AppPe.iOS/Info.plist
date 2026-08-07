@@ -8,13 +8,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs access to the camera to read barcode of your product.</string>
+	<string>Este aplicativo precisa acessar a câmera para ler o código de barras do produto.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs access to photos.</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>This app needs access to calendar.</string>
+	<string>Este aplicativo precisa acessar sua galeria de fotos para você selecionar e anexar imagens — como uma foto do estabelecimento visitado ou de um comprovante de entrega — às visitas e atividades da agenda registradas no aplicativo.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We would like to know your location to find places near you</string>
+	<string>Precisamos da sua localização para registrar onde o pedido ou a visita foi realizado.</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>

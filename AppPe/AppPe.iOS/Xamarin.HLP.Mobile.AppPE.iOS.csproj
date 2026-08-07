@@ -87,6 +87,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Picture_iOS.cs" />
     <Compile Include="Services\BluetoothLE.cs" />
+    <Compile Include="Services\BackgroundSyncService_iOS.cs" />
     <Compile Include="Services\GAService.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
@@ -219,6 +220,14 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
     <PackageReference Include="Xamarin.Google.iOS.Analytics">
       <Version>3.20.0.2</Version>
+    </PackageReference>
+    <!-- Fixa a versão explicitamente: o Xamarin.Google.iOS.Analytics traz essa dependência
+    de forma transitiva, e sem essa referência direta o NuGet pode misturar o .targets de
+    uma versão com a .dll de outra (erro "AndroidFixManifests não é compatível com a tarefa
+    XamarinDownloadArchives", porque o .targets da 0.11.0 passa esse parâmetro, mas a 0.11.4
+    não tem mais). Pinar aqui garante que .targets e .dll vêm sempre da mesma versão. -->
+    <PackageReference Include="Xamarin.Build.Download">
+      <Version>0.11.4</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

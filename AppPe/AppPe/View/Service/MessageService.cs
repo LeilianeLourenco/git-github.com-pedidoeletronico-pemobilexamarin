@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.Model;
 using Xamarin.HLP.Mobile.AppPE.Model.Repository;
@@ -12,18 +13,26 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Service
 
         public static string QuestionSair = "Deseja realmente excluir o lançamento?";
 
+        // DisplayAlert só pode rodar na thread principal — no Android isso derruba o app
+        // inteiro (Java.Lang.RuntimeException: "Can't create handler inside thread ... that
+        // has not called Looper.prepare()") quando chamado de dentro de uma Task em segundo
+        // plano sem passar por MainThread. Como ShowAsync/ShowConfirmAsync são chamados de
+        // muitos lugares (inclusive de dentro de Task.Run), garante aqui, na origem, que
+        // sempre executa na thread principal, não importa de onde foi chamado.
         public async Task ShowAsync(string message)
         {
-            await Application.Current.MainPage.DisplayAlert("AVISO", message, "OK");
+            await MainThread.InvokeOnMainThreadAsync(async () =>
+                await Application.Current.MainPage.DisplayAlert("AVISO", message, "OK"));
         }
 
         public async Task<bool> ShowConfirmAsync(string message, string accept = "SIM", string cancel = "NÃO", string title = "CONFIRMAÇÃO")
         {
-            return await Application.Current.MainPage.DisplayAlert(
+            return await MainThread.InvokeOnMainThreadAsync(async () =>
+                await Application.Current.MainPage.DisplayAlert(
                     title: title,
                     message: message,
                     accept: accept,
-                    cancel: cancel);
+                    cancel: cancel));
         }
 
 
