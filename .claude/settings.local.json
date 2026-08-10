@@ -38,11 +38,23 @@
       "Bash('/c/Program Files \\(x86\\)/Android/android-sdk/platform-tools/adb.exe' shell input swipe 500 1500 500 500)",
       "Bash('/c/Program Files \\(x86\\)/Android/android-sdk/platform-tools/adb.exe' exec-out screencap -p)",
       "Bash('/c/Program Files \\(x86\\)/Android/android-sdk/platform-tools/adb.exe' shell input tap 540 1474)",
-      "Bash('/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe' 'c:\\\\PeMobileXamarim\\\\AppPe\\\\AppPe.iOS\\\\Xamarin.HLP.Mobile.AppPE.iOS.csproj' //t:Restore //nologo //v:minimal)"
+      "Bash('/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe' 'c:\\\\PeMobileXamarim\\\\AppPe\\\\AppPe.iOS\\\\Xamarin.HLP.Mobile.AppPE.iOS.csproj' //t:Restore //nologo //v:minimal)",
+      "Bash('/c/Program Files \\(x86\\)/Android/android-sdk/platform-tools/adb.exe' shell pm list packages)",
+      "Bash(git log *)",
+      "Bash(grep -v \"^--$\")",
+      "Bash('/c/Program Files \\(x86\\)/Android/android-sdk/platform-tools/adb.exe' shell 'run-as com.ptbr.pedidoeletronico ls -la /data/data/com.ptbr.pedidoeletronico/files')",
+      "Bash(git apply *)",
+      "Bash(git diff -- AppPe/AppPe/ViewModel/Sincronizacao/SincronizacaoNewViewModel.cs > \"/c/Users/leili/AppData/Local/Temp/claude/c--PeMobileXamarim/585ff5f9-73bb-40f5-8a96-2fdbc6ff7280/scratchpad/full.patch\" *)",
+      "Bash(git fetch *)",
+      "Bash(git rev-list *)",
+      "Bash(git stash *)",
+      "Bash(git merge *)",
+      "Bash(echo \"exit code: $?\")"
     ],
     "additionalDirectories": [
       "c:\\Pe.Cigam.Integration\\src\\Pe.Cigam.Integration.Application\\Services\\Commons",
-      "C:\\Pe.backlog\\Hlp.PedidoEletronico.Data\\Repositories\\IonicMobilePeRep\\PedidoDeVenda"
+      "C:\\Pe.backlog\\Hlp.PedidoEletronico.Data\\Repositories\\IonicMobilePeRep\\PedidoDeVenda",
+      "C:\\Users\\leili\\AppData\\Local\\Temp\\claude\\c--PeMobileXamarim\\585ff5f9-73bb-40f5-8a96-2fdbc6ff7280\\scratchpad"
     ]
   }
 }

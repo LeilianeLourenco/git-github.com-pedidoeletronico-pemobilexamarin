@@ -2553,10 +2553,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
             else if (objPedido != null)
             {
-                // Pedido baixado SEM itens era descartado em silêncio (não salva → não aparece na
-                // listagem, e o watermark de sync avança passando por ele → some de vez). Loga pra
-                // diagnosticar a origem no backend (GetPedidosVendas retornando pedido sem itens).
-                new Exception($"Pedido idPedidoVenda={objPedido.idPedidoVenda} baixado SEM itens — não persistido no app").TrakException();
+                // Pedido baixado SEM itens é descartado em silêncio (não salva → não aparece na
+                // listagem, e o watermark de sync avança passando por ele → some de vez) — mesmo
+                // comportamento da v19.95 publicada. Loga só pro backend (diagnóstico), sem popup pro usuário.
+                new Exception($"Pedido idPedidoVenda={objPedido.idPedidoVenda} baixado SEM itens — não persistido no app").TrakException(bShowMessage: false);
                 _ = UtilHttp.LogServidor(
                     "Pedido baixado SEM itens — não persistido no app",
                     $"idPedidoVenda = {objPedido.idPedidoVenda}",
