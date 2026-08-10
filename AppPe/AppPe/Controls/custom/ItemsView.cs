@@ -55,7 +55,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.custom
             var leftArrow = new Image()
             {
                 // Replace with your own arrow image
-                Source = ImageSource.FromResource("Xamarin.HLP.Mobile.AppPE.Images.Carousel.arrow-left.png"),
+                Source = ImageSource.FromResource("Xamarin.HLP.Mobile.AppPE.Images.Carousel.arrow-left.png", System.Reflection.Assembly.GetExecutingAssembly()),
                 HorizontalOptions = LayoutOptions.Start,
                 VerticalOptions = LayoutOptions.Center,
                 WidthRequest = 50,
@@ -74,7 +74,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Controls.custom
             var rightArrow = new Image()
             {
                 // Replace with your own arrow image
-                Source = ImageSource.FromResource("Xamarin.HLP.Mobile.AppPE.Images.Carousel.arrow-right.png"),
+                Source = ImageSource.FromResource("Xamarin.HLP.Mobile.AppPE.Images.Carousel.arrow-right.png", System.Reflection.Assembly.GetExecutingAssembly()),
                 HorizontalOptions = LayoutOptions.End,
                 VerticalOptions = LayoutOptions.Center,
                 WidthRequest = 50

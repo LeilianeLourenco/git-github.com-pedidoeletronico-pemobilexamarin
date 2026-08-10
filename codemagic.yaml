@@ -1,0 +1,99 @@
+workflows:
+  ios-legacy-xamarin:
+    name: iOS Legacy Xamarin Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      groups:
+        - IOS
+      xcode: latest
+    scripts:
+      - name: Instalar Mono
+        script: |
+          curl -L -o /tmp/mono.pkg "https://download.mono-project.com/archive/6.12.0/macos-10-universal/MonoFramework-MDK-6.12.0.206.macos10.xamarin.universal.pkg"
+          sudo installer -pkg /tmp/mono.pkg -target /
+
+      - name: Instalar Xamarin.iOS SDK
+        script: |
+          curl -L -o /tmp/xamarin.ios.pkg "https://download.visualstudio.microsoft.com/download/pr/de7f727f-243c-4429-8773-eebd735eb1bb/da4a65f27ace7f805914ef63661e0efd/xamarin.ios-16.4.0.18.pkg"
+          sudo installer -pkg /tmp/xamarin.ios.pkg -target /
+
+      - name: Configurar assinatura manualmente
+        script: |
+          keychain initialize
+
+          echo "Instalando certificados intermediarios da Apple (WWDR)..."
+          curl -s -o /tmp/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+          curl -s -o /tmp/AppleWWDRCAG4.cer https://www.apple.com/certificateauthority/AppleWWDRCAG4.cer
+          curl -s -o /tmp/AppleWWDRCAG5.cer https://www.apple.com/certificateauthority/AppleWWDRCAG5.cer
+          curl -s -o /tmp/AppleWWDRCAG6.cer https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer
+          curl -s -o /tmp/AppleRootCA-G2.cer https://www.apple.com/certificateauthority/AppleRootCA-G2.cer
+          echo $CM_CERTIFICATE | base64 --decode > /tmp/AppDist.p12
+          keychain add-certificates --certificate /tmp/AppDist.p12 --certificate-password $CM_CERTIFICATE_PASSWORD
+
+          echo "Chaveiros na lista de busca:"
+          security list-keychains
+
+          DEFAULT_KEYCHAIN=$(security default-keychain | tr -d '"' | xargs)
+          echo "Chaveiro padrao: $DEFAULT_KEYCHAIN"
+
+          security import /tmp/AppleWWDRCAG3.cer -k "$DEFAULT_KEYCHAIN" || true
+          security import /tmp/AppleWWDRCAG4.cer -k "$DEFAULT_KEYCHAIN" || true
+          security import /tmp/AppleWWDRCAG5.cer -k "$DEFAULT_KEYCHAIN" || true
+          security import /tmp/AppleWWDRCAG6.cer -k "$DEFAULT_KEYCHAIN" || true
+          security import /tmp/AppleRootCA-G2.cer -k "$DEFAULT_KEYCHAIN" || true
+
+          echo "Identidades disponiveis apos configuracao:"
+          security find-identity -v -p codesigning
+
+          PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROFILES_HOME"
+          PROFILE_PATH="$PROFILES_HOME/AppDist.mobileprovision"
+          echo $CM_PROVISIONING_PROFILE | base64 --decode > "$PROFILE_PATH"
+          echo "Perfil instalado em: $PROFILE_PATH"
+          ls -la "$PROFILES_HOME"
+
+      - name: Restaurar pacotes NuGet
+        script: |
+          cd AppPe/AppPe.iOS
+          MSBUILD="/Library/Frameworks/Mono.framework/Versions/Current/bin/msbuild"
+          $MSBUILD Xamarin.HLP.Mobile.AppPE.iOS.csproj /t:Restore
+
+      - name: Build Release e gerar IPA
+        script: |
+          cd AppPe/AppPe.iOS
+          XCODE_DEV_DIR=$(xcode-select -p)
+          echo "Xcode ativo: $XCODE_DEV_DIR"
+          TOOLCHAIN_BIN="$XCODE_DEV_DIR/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+
+          echo "Substituindo bitcode_strip por uma versao no-op (bitcode nao existe mais em apps modernos)..."
+          sudo cp "$TOOLCHAIN_BIN/bitcode_strip" "$TOOLCHAIN_BIN/bitcode_strip.real" || true
+          sudo tee "$TOOLCHAIN_BIN/bitcode_strip" > /dev/null << 'SCRIPT_EOF'
+          #!/bin/bash
+          input="$1"
+          output=""
+          prev=""
+          for arg in "$@"; do
+            if [ "$prev" = "-o" ]; then
+              output="$arg"
+            fi
+            prev="$arg"
+          done
+          if [ -n "$output" ] && [ -n "$input" ]; then
+            cp "$input" "$output"
+          fi
+          exit 0
+          SCRIPT_EOF
+          sudo chmod +x "$TOOLCHAIN_BIN/bitcode_strip"
+
+          MSBUILD="/Library/Frameworks/Mono.framework/Versions/Current/bin/msbuild"
+          $MSBUILD Xamarin.HLP.Mobile.AppPE.iOS.csproj /t:Build /p:Configuration=Release /p:Platform=iPhone /p:BuildIpa=true /v:minimal
+
+    artifacts:
+      - AppPe/AppPe.iOS/bin/iPhone/Release/*.ipa
+      - AppPe/AppPe.iOS/bin/iPhone/Release/*.app.dSYM
+
+    publishing:
+      email:
+        recipients:
+          - leiliane.lourenco@pedidoeletronico.com

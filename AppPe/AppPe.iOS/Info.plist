@@ -13,6 +13,24 @@
 	<string>Este aplicativo precisa acessar sua galeria de fotos para você selecionar e anexar imagens — como uma foto do estabelecimento visitado ou de um comprovante de entrega — às visitas e atividades da agenda registradas no aplicativo.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Precisamos da sua localização para registrar onde o pedido ou a visita foi realizado.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Precisamos acessar seu calendário para permitir que você adicione suas visitas e atividades comerciais agendadas no aplicativo diretamente ao calendário do seu iPhone.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Precisamos acessar o Bluetooth para conectar com impressoras térmicas e imprimir seus pedidos diretamente pelo aplicativo.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Precisamos da sua localização para registrar onde o pedido ou a visita foi realizado, mesmo se o aplicativo estiver em segundo plano durante o registro.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Precisamos acessar o Bluetooth para conectar com impressoras térmicas e imprimir seus pedidos diretamente pelo aplicativo.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Precisamos acessar o microfone caso você queira gravar um áudio ou vídeo para anexar a uma visita ou atividade da agenda.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Precisamos acessar seus contatos para facilitar o preenchimento de dados de telefone ao cadastrar um novo cliente.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Precisamos acessar os sensores de movimento do aparelho para melhorar a precisão da localização registrada durante uma visita.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Precisamos acessar o reconhecimento de fala caso você queira ditar observações por voz em uma visita ou atividade da agenda.</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Precisamos acessar seus lembretes para permitir que você crie lembretes de visitas e atividades comerciais agendadas no aplicativo.</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
@@ -53,13 +71,13 @@
 		<string>Icon-83.5@2x.png</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>8.1</string>
+	<string>16.0</string>
 	<key>CFBundleDisplayName</key>
 	<string>pedidoeletronico.com</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.ptbr.pedidoeletronico</string>
 	<key>CFBundleVersion</key>
-	<string>19.79</string>
+	<string>20.00</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
@@ -67,7 +85,7 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleShortVersionString</key>
-	<string>19.79</string>
+	<string>20.00</string>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
 </dict>

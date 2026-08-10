@@ -355,12 +355,29 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 //if (!ocorreuErro && !bFalhaConexao)
                 //    await SincronizacaoDownload<EquipeRepresentantesModel>();
 
+                // Clientes precisa vir ANTES de Pedido: ao baixar cada pedido, o app resolve
+                // objPedido.idClientesOffLine buscando o idClientes (nuvem) na tb_clientes LOCAL
+                // (ClienteRepository.GetIdClienteOffLine). Se o cliente daquele pedido ainda não
+                // tiver sido sincronizado nesta rodada, a busca não acha nada e o pedido fica sem
+                // idClientesOffLine — o que faz a listagem (PedidoRepository.GetInfinit, join por
+                // idClientesOffLine) mostrar o nome do cliente em branco.
+                if (!ocorreuErro && !bFalhaConexao)
+                    await SincronizacaoDownload<ClientesModel>();
+
                 // Pedido sincroniza logo aqui (antes do catálogo/tabela de preço/produtos) —
                 // em empresas com base muito grande, essas tabelas sozinhas já não terminam
                 // dentro do tempo que o Android dá pro serviço em background (ver
                 // SincronizacaoService.cs), então pedido nunca tinha vez ficando no fim da lista.
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownloadPedido();
+
+                // Auto-reparo: alguns pedidos ficaram com idClientesOffLine = 0 gravado (o cliente
+                // ainda não existia localmente no momento em que foram baixados — regressão do #5719,
+                // já corrigida acima) e resincronizações normais não os alcançaram de volta a tempo.
+                // O idClientes (nuvem) do pedido está sempre correto; usa ele pra resolver de novo
+                // qualquer pedido órfão cujo cliente já esteja em tb_clientes.
+                if (!ocorreuErro && !bFalhaConexao)
+                    RepararIdClientesOffLinePedidosOrfaos();
 
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<RamoAtividadeModel>();
@@ -417,8 +434,6 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<tb_produto_codigocliente>();
                 if (!ocorreuErro && !bFalhaConexao)
-                    await SincronizacaoDownload<ClientesModel>();
-                if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<ContatoModel>();
                 if (!ocorreuErro && !bFalhaConexao)
                     await SincronizacaoDownload<EnderecoModel>();
@@ -473,7 +488,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         }
 
 
-        private async Task SincronizacaoDownloadPaginado<T>(bool bForceInicial = false) where T : class
+        private async Task SincronizacaoDownloadPaginado<T>(bool bForceInicial = false, int iTentativa = 0) where T : class
         {
             IntegracaoRepository integ = new IntegracaoRepository();
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
@@ -493,7 +508,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             {
                 while (true)
                 {
-                    if (!ocorreuErro || !bFalhaConexao)
+                    if (!ocorreuErro && !bFalhaConexao)
                     {
                         var lsync = new List<T>();
                         if (xTableName == TableMobile.GetTableNameByModel<EstoqueModel>())
@@ -603,10 +618,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
             catch (Exception ex)
             {
-                if (xTableName.ToUpper().Contains("TB_RECEBIMENTO"))
+                if (xTableName.ToUpper().Contains("TB_RECEBIMENTO") && iTentativa < 2)
                 {
                     await FinanceiroRepository.RemoverTodosRecebimentos<T>();
-                    await SincronizacaoDownloadPaginado<T>(true);
+                    await SincronizacaoDownloadPaginado<T>(true, iTentativa + 1);
                 }
                 else
                 {
@@ -767,6 +782,28 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 integ.AtualizarDataIntegracao(xTableName, idEmp, bFalhaConexao, ocorreuErro, xMensagemErro);
 
             ocorreuErro = currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0;
+        }
+
+        /// <summary>
+        /// Corrige tb_pedidovenda.idClientesOffLine = 0 em pedidos cujo cliente (por idClientes,
+        /// sempre correto) já existe em tb_clientes. Ver comentário no chamador (SincronizacaoDownloadPedido)
+        /// pra contexto do porquê esses pedidos ficaram órfãos.
+        /// </summary>
+        private void RepararIdClientesOffLinePedidosOrfaos()
+        {
+            try
+            {
+                App.Data.Connection.Execute(@"
+                    UPDATE tb_pedidovenda
+                    SET idClientesOffLine = (SELECT c.idClientesOffLine FROM tb_clientes c WHERE c.idClientes = tb_pedidovenda.idClientes)
+                    WHERE idClientesOffLine = 0
+                      AND idClientes IS NOT NULL
+                      AND EXISTS (SELECT 1 FROM tb_clientes c WHERE c.idClientes = tb_pedidovenda.idClientes)");
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException("RepararIdClientesOffLinePedidosOrfaos", false);
+            }
         }
 
 
@@ -1048,7 +1085,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         private List<EmpresaAspnetUsersModel> lRepresentantesToAnalise { get; set; }
 
 
-        private async Task SincronizacaoDownload<T>(bool bForceInicial = false) where T : class
+        private async Task SincronizacaoDownload<T>(bool bForceInicial = false, int iTentativa = 0) where T : class
         {
             IntegracaoRepository integ = new IntegracaoRepository();
 
@@ -1147,10 +1184,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
             catch (Exception ex)
             {
-                if (xTableName.ToUpper().Contains("TB_RECEBIMENTO"))
+                if (xTableName.ToUpper().Contains("TB_RECEBIMENTO") && iTentativa < 2)
                 {
                     await FinanceiroRepository.RemoverTodosRecebimentos<T>();
-                    await SincronizacaoDownload<T>(true);
+                    await SincronizacaoDownload<T>(true, iTentativa + 1);
                 }
                 else
                 {

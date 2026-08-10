@@ -13,7 +13,10 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         {
             if (Source == null)
                 return null;
-            var imageSource = ImageSource.FromResource(Source);
+            // ImageSource.FromResource(string) usa Assembly.GetCallingAssembly() internamente, que
+            // pode resolver o assembly errado em builds AOT (Release) no iOS, fazendo o icone nao
+            // aparecer sem nenhum erro. Passar o assembly explicitamente evita essa ambiguidade.
+            var imageSource = ImageSource.FromResource(Source, System.Reflection.Assembly.GetExecutingAssembly());
             return imageSource;
         }
     }
