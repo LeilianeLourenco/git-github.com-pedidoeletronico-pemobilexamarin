@@ -1148,6 +1148,20 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
             if (idClienteOffLine != null && idClienteOffLine > 0)
             {
                 ItemCliente = ClienteRepository.GetRegistro(idClienteOffLine ?? 0);
+
+                // idClientesOffLine é um id LOCAL (autoincrement) e pode ficar desatualizado mesmo
+                // com o cliente existindo (ex.: cliente reinserido localmente numa sincronização,
+                // ganhando novo id) — reresolve pelo idClientes (id da nuvem, estável) igual à
+                // correção já usada em GetPedidoVendaModel (OS 35452), e corrige o cache no pedido.
+                if ((ItemCliente == null || ItemCliente.Id == 0) && currentModel.idClientes.GetValueOrDefault() > 0)
+                {
+                    var idClienteOffLineCorrigido = ClienteRepository.GetIdClienteOffLine(currentModel.idClientes);
+                    if (idClienteOffLineCorrigido > 0)
+                    {
+                        ItemCliente = ClienteRepository.GetRegistro(idClienteOffLineCorrigido);
+                        currentModel.idClientesOffLine = idClienteOffLineCorrigido;
+                    }
+                }
             }
 
             if (idRepresentante == 0)
