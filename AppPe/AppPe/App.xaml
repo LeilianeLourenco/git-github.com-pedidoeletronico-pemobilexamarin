@@ -394,6 +394,7 @@
 
             <Style TargetType="NavigationPage">
                 <Setter Property="BarTextColor" Value="White" />
+                <Setter Property="BarBackgroundColor" Value="#28B6F6" />
             </Style>
 
             <Style x:Key="Primary" TargetType="Button">

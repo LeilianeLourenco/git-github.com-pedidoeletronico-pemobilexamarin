@@ -388,6 +388,19 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             }
         }
 
+        // No iOS, o NSUrlSessionHandler as vezes nao honra HttpClient.Timeout quando a conexao "morre"
+        // sem RST (ex: troca de wifi/dados) - o await fica pendurado pra sempre sem lancar excecao.
+        // Esse helper forca um limite real usando Task.WhenAny como rede de seguranca.
+        private static async Task<string> GetStringComTimeout(HttpClient client, string requestUri, int iTimeoutSegundos = 100)
+        {
+            var _httpTask = client.GetStringAsync(requestUri);
+            var _timeoutTask = Task.Delay(TimeSpan.FromSeconds(iTimeoutSegundos));
+            var _completedTask = await Task.WhenAny(_httpTask, _timeoutTask);
+            if (_completedTask == _timeoutTask)
+                throw new TimeoutException($"Tempo limite excedido ao acessar {requestUri}");
+            return await _httpTask;
+        }
+
         public static async Task<List<T>> GetListRegistroSync<T>(object param1, DateTime? param2 = null,
             object param3 = null) where T : class
         {
@@ -401,12 +414,16 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 
                 var _apiClient = CurrentHttpClient;
 
-                var jsonResponse = await _apiClient.GetStringAsync(requestUri);
+                var jsonResponse = await GetStringComTimeout(_apiClient, requestUri);
                 lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
 
                 EnvironmentRepository.ExcluirRegistrosNecessarios(TableMobile.GetApiRegistroByModel<T>(), param1);
             }
             catch (System.Net.WebException)
+            {
+                SincronizacaoNewViewModel.bFalhaConexao = true;
+            }
+            catch (TimeoutException)
             {
                 SincronizacaoNewViewModel.bFalhaConexao = true;
             }
@@ -521,11 +538,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
 
                 var _apiClient = CurrentHttpClient;
 
-                var jsonResponse = await CurrentApiMobileHttpClient.GetStringAsync(requestUri);
+                var jsonResponse = await GetStringComTimeout(CurrentApiMobileHttpClient, requestUri);
                 lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
 
             }
             catch (System.Net.WebException)
+            {
+                SincronizacaoNewViewModel.bFalhaConexao = true;
+            }
+            catch (TimeoutException)
             {
                 SincronizacaoNewViewModel.bFalhaConexao = true;
             }

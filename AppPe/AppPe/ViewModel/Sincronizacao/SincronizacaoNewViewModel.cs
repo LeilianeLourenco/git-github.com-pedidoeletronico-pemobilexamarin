@@ -473,7 +473,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         }
 
 
-        private async Task SincronizacaoDownloadPaginado<T>(bool bForceInicial = false) where T : class
+        private async Task SincronizacaoDownloadPaginado<T>(bool bForceInicial = false, int iTentativa = 0) where T : class
         {
             IntegracaoRepository integ = new IntegracaoRepository();
             int idEmp = App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa;
@@ -493,7 +493,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             {
                 while (true)
                 {
-                    if (!ocorreuErro || !bFalhaConexao)
+                    if (!ocorreuErro && !bFalhaConexao)
                     {
                         var lsync = new List<T>();
                         if (xTableName == TableMobile.GetTableNameByModel<EstoqueModel>())
@@ -603,10 +603,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
             catch (Exception ex)
             {
-                if (xTableName.ToUpper().Contains("TB_RECEBIMENTO"))
+                if (xTableName.ToUpper().Contains("TB_RECEBIMENTO") && iTentativa < 2)
                 {
                     await FinanceiroRepository.RemoverTodosRecebimentos<T>();
-                    await SincronizacaoDownloadPaginado<T>(true);
+                    await SincronizacaoDownloadPaginado<T>(true, iTentativa + 1);
                 }
                 else
                 {
@@ -1048,7 +1048,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         private List<EmpresaAspnetUsersModel> lRepresentantesToAnalise { get; set; }
 
 
-        private async Task SincronizacaoDownload<T>(bool bForceInicial = false) where T : class
+        private async Task SincronizacaoDownload<T>(bool bForceInicial = false, int iTentativa = 0) where T : class
         {
             IntegracaoRepository integ = new IntegracaoRepository();
 
@@ -1147,10 +1147,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             }
             catch (Exception ex)
             {
-                if (xTableName.ToUpper().Contains("TB_RECEBIMENTO"))
+                if (xTableName.ToUpper().Contains("TB_RECEBIMENTO") && iTentativa < 2)
                 {
                     await FinanceiroRepository.RemoverTodosRecebimentos<T>();
-                    await SincronizacaoDownload<T>(true);
+                    await SincronizacaoDownload<T>(true, iTentativa + 1);
                 }
                 else
                 {
