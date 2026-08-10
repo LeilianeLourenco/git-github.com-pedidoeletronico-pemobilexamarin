@@ -57,7 +57,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
                             tb_pedidovenda.xAssinatura as xAssinatura,
                             tb_pedidovenda.bGerarPix,
                             TB_EMPRESA_ASPNETUSERS.xEmail DisplayEmail, 
-                            tb_condicaopagamento.xCondicaoPagamento DisplayPrazo, 
+                            tb_condicaopagamento.xCondicaoPagamento DisplayPrazo,
                             tb_clientes.xRazaoSocial DisplayCliente,
                             TB_STATUS.idStatus ,
                             TB_STATUS.xSigla ,
@@ -544,6 +544,15 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
 
                 objPedidoVendaModel = (App.Data.Connection.Query<PedidoVendaModel>(xQuery)).FirstOrDefault();
 
+                // Pedido não encontrado localmente (ex.: já excluído por sincronização em segundo plano
+                // enquanto a tela ficou aberta com dados desatualizados) — retorna null em silêncio,
+                // sem popup de exception pro usuário. Quem chama trata o null.
+                if (objPedidoVendaModel == null)
+                {
+                    new Exception($"Pedido idPedidoVendaOffLine={idPedidoVendaOffLine} não encontrado em TB_PEDIDOVENDA (idEmpresa={idEmpresa})").TrakException(detail: "GetPedidoVendaModel", bShowMessage: false);
+                    return null;
+                }
+
                 xQuery =
                     $"select distinct idProdutoOffLine, idItemAgrupamento from {TableMobile.TB_PEDIDOVENDAITENS} where idPedidoVendaOffLine = {idPedidoVendaOffLine} and idEmpresa = {App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}";
 
@@ -654,7 +663,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Repository
             }
             catch (Exception ex)
             {
-                ex.TrakException();
+                ex.TrakException(detail: "GetPedidoVendaModel", bShowMessage: false);
                 //Insights.Report(ex, Insights.Severity.Error);
             }
             return objPedidoVendaModel;

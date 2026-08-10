@@ -252,6 +252,13 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Pedido
                 ExecuttingAnyCommand = true;
 
                 var pedido = PedidoRepository.GetPedidoVendaModel(currentModel.idPedidoVendaOffLine);
+                if (pedido == null)
+                {
+                    ExecuttingAnyCommand = false;
+                    App.Messages.ShowAsync("Este pedido não foi encontrado. Sincronize e tente novamente.");
+                    return false;
+                }
+
                 UtilNavidate.PushAsync(new PagePedidoNew(pedido));
             }
             return !ExecuttingAnyCommand;

@@ -130,7 +130,8 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Pedido
                 else if (toolbar.Text.ToUpper().Equals("DETALHES"))
                 {
                     var objPedido = PedidoRepository.GetPedidoVendaModel(pedido.idPedidoVendaOffLine);
-                    objPedido.EstoqueInvalido = pedido.EstoqueInvalido;
+                    if (objPedido != null)
+                        objPedido.EstoqueInvalido = pedido.EstoqueInvalido;
                     viewModel.currentModel = pedido;
                     UtilNavidate.PushAsync(new PageDetalhesPedido(viewModel.currentModel));
                 }
