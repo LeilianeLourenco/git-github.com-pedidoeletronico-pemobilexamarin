@@ -2172,7 +2172,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         return;
                 }
 
-                if (icount == 0) 
+                if (icount == 0) // registro ainda não sincronizado
                 {
                     #region Model Específico
 
