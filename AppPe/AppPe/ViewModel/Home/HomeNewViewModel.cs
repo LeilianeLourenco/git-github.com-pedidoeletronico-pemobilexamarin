@@ -257,7 +257,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
             return canExecuteInicial;
         }
 
-        private void StartDados()
+        private async void StartDados()
         {
             if (!App.ForcarAtualizacao)
             {
@@ -271,7 +271,15 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
             }
 
             if (App.ForcarAtualizacao)
-                Sincronizar();
+            {
+                // Exigencia da Apple (diretriz 4.2.3ii): avisar o tamanho/necessidade do download
+                // e pedir confirmacao do usuario antes de iniciar a primeira sincronizacao.
+                bool bContinuar = await App.Messages.ShowConfirmAsync(
+                    "Para usar o aplicativo, é necessário baixar seus dados (clientes, produtos, preços, pedidos e outras informações). Isso pode levar alguns minutos e consumir dados da sua conexão. Deseja continuar?",
+                    accept: "SIM", cancel: "NÃO", title: "PRIMEIRA SINCRONIZAÇÃO");
+                if (bContinuar)
+                    Sincronizar();
+            }
 
             LoginRepository.RefreshTipoUsuario();
         }
