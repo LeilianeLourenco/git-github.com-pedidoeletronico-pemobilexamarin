@@ -2712,7 +2712,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             if (!bFalhaConexao)
             {
                 var xPrimaryKeyName = TableMobile.GetPrimaryKeyNameByModel<T>();
-                if (lsync.Count > 0)
+                if (lsync != null && lsync.Count > 0)
                 {
                     //Metodos executados apenas uma unica vez para limpar seus respectivos registros
                     if (lsync[0].GetType() == typeof(RecebimentoTitulosModel))
@@ -2796,7 +2796,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
             if (!bFalhaConexao)
             {
                 var xPrimaryKeyName = TableMobile.GetPrimaryKeyNameByModel<T>();
-                if (lsync.Count > 0)
+                if (lsync != null && lsync.Count > 0)
                 {
                     currentModel.iCount = page;
                     foreach (var registro in lsync)

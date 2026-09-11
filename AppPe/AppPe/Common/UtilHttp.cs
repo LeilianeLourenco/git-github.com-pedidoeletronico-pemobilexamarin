@@ -415,7 +415,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var _apiClient = CurrentHttpClient;
 
                 var jsonResponse = await GetStringComTimeout(_apiClient, requestUri);
-                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
 
                 EnvironmentRepository.ExcluirRegistrosNecessarios(TableMobile.GetApiRegistroByModel<T>(), param1);
             }
@@ -464,7 +464,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     var response = await _apiClient.PostAsync(requestUri, jsonContent);
 
                     var jsonResponse = await response.Content.ReadAsStringAsync();
-                    lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                    lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
 
                 }
                 if (TableMobile.GetApiRegistroByModel<T>() == "ApiProdutosGrade")
@@ -484,7 +484,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     var response = await _apiClient.PostAsync(requestUri, jsonContent);
 
                     var jsonResponse = await response.Content.ReadAsStringAsync();
-                    lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                    lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
                 }
                 if (TableMobile.GetApiRegistroByModel<T>() == "ApiProdutosComposicaoGrade")
                 {
@@ -506,7 +506,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                     var response = await _apiClient.PostAsync(requestUri, jsonContent);
 
                     var jsonResponse = await response.Content.ReadAsStringAsync();
-                    lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                    lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
                 }
 
             }
@@ -539,7 +539,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var _apiClient = CurrentHttpClient;
 
                 var jsonResponse = await GetStringComTimeout(CurrentApiMobileHttpClient, requestUri);
-                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
 
             }
             catch (System.Net.WebException)
@@ -599,7 +599,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var requestUri = $"api/ApiPedidoVendaMobile/{idEmpresa}/{page}/{dtUltimaAlteracao?.ToString("yyyy-MM-ddTHH:mm:ss")}/{idAspNetUsers}";
                 var jsonResponse = await CurrentApiMobileHttpClient.GetStringAsync(requestUri);
 
-                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
             }
             catch (System.Net.WebException)
             {
@@ -625,7 +625,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var requestUri = $"api/ApiEstoqueMobile/GetEstoque/{idEmpresa}/{page}/{dtUltimaAlteracao?.ToString("yyyy-MM-ddTHH:mm:ss")}";
                 var jsonResponse = await CurrentApiMobileHttpClient.GetStringAsync(requestUri);
 
-                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
             }
             catch (System.Net.WebException)
             {
@@ -680,21 +680,21 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                         var requestUri =
                    $"api/ApiEstoqueMobile/GetTotalASincronizarLocais/{idEmpresa}/{page}/{dtUltimaAlteracao:yyyy-MM-ddTHH:mm:ss}";
                         var jsonResponse = await CurrentApiMobileHttpClient.GetStringAsync(requestUri);
-                        lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                        lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
 
                         return lregistros;
                     case 1:
                         var requestUri2 =
                    $"api/ApiEstoqueMobile/GetTotalASincronizarLocaisClientes/{idEmpresa}/{page}/{dtUltimaAlteracao:yyyy-MM-ddTHH:mm:ss}";
                         var jsonResponse2 = await CurrentApiMobileHttpClient.GetStringAsync(requestUri2);
-                        lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse2);
+                        lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse2) ?? new List<T>();
 
                         return lregistros;
                     case 2:
                         var requestUri3 =
                    $"api/ApiEstoqueMobile/GetTotalASincronizarLocaisRepresentantes/{idEmpresa}/{page}/{dtUltimaAlteracao:yyyy-MM-ddTHH:mm:ss}";
                         var jsonResponse3 = await CurrentApiMobileHttpClient.GetStringAsync(requestUri3);
-                        lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse3);
+                        lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse3) ?? new List<T>();
 
                         return lregistros;
                 }
@@ -857,7 +857,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var requestUri = $"api/ApiAtividadeAgendaMobile/{idEmpresa}/{page}/{dtUltimaAlteracao?.ToString("yyyy-MM-ddTHH:mm:ss")}/{idAspNetUsers}";
                 var jsonResponse = await CurrentApiMobileHttpClient.GetStringAsync(requestUri);
 
-                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
             }
             catch (System.Net.WebException)
             {
@@ -883,7 +883,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var requestUri = $"api/ApiAtividadeAgendaMobile/GetTipoAtividades/{idEmpresa}/{page}/{dtUltimaAlteracao?.ToString("yyyy-MM-ddTHH:mm:ss")}";
                 var jsonResponse = await CurrentApiMobileHttpClient.GetStringAsync(requestUri);
 
-                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
             }
             catch (System.Net.WebException)
             {
@@ -913,7 +913,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var objRegistro = new List<T>();
 
                 if (jsonResponse != null)
-                    objRegistro = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                    objRegistro = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
 
                 return objRegistro;
             }
@@ -1082,7 +1082,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var requestUri =
                     $"api/APIremove/{App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.idEmpresa}/{date:yyyy-MM-ddTHH:mm:ss}";
                 var jsonResponse = await CurrentHttpClient.GetStringAsync(requestUri);
-                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse);
+                lregistros = JsonConvert.DeserializeObject<List<T>>(jsonResponse) ?? new List<T>();
             }
             catch (System.Net.WebException)
             {
