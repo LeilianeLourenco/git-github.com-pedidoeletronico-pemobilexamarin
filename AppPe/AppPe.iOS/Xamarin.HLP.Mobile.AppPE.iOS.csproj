@@ -94,6 +94,7 @@
     <Compile Include="Version.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
+    <BundleResource Include="PrivacyInfo.xcprivacy" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <ITunesArtwork Include="iTunesArtwork%402x" />
     <ITunesArtwork Include="iTunesArtwork" />
