@@ -1320,7 +1320,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     return;
 
                 var cidades = await UtilHttp.GetCidades();
-                var data = JsonConvert.DeserializeObject<List<CidadeIBGE>>(cidades);
+                var data = JsonConvert.DeserializeObject<List<CidadeIBGE>>(cidades) ?? new List<CidadeIBGE>();
 
                 var lista = new List<CidadesModel>();
 
@@ -1331,6 +1331,9 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                 foreach (var item in data)
                 {
+                    if (item == null)
+                        continue;
+
                     lista.Add(new CidadesModel
                     {
                         codigoIBGE = item.id,
@@ -2583,75 +2586,82 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
         private async void AnaliseFinalSincronizacao(string exMessage = "")
         {
-            await MainThread.InvokeOnMainThreadAsync(async () =>
+            try
             {
-                if (!bFalhaTotalDeConexao)
+                await MainThread.InvokeOnMainThreadAsync(async () =>
                 {
-                    IsBusy = false;
-                    await Task.Delay(100);
-
-                    if (bFalhaConexao == false)
+                    if (!bFalhaTotalDeConexao)
                     {
-                        if (exMessage != "" && currentModel.LAlertaSincronizacao.Count(c => c.bErro) == 0)
-                        {
-                            await App.Messages.ShowAsync(exMessage);
-                            await FecharPopup();
+                        IsBusy = false;
+                        await Task.Delay(100);
 
-                            if (exMessage.Contains("encontra-se inativo nessa empresa"))
-                                UtilNavidate.EfetivarLogoff();
-                        }
-                        else if (currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0)
+                        if (bFalhaConexao == false)
                         {
-                            ocorreuErro = true;
-                            await App.Messages.ShowAsync("Algumas inconsistências na sincronização foram encontradas.");
-                            await FecharPopup(true);
+                            if (exMessage != "" && currentModel.LAlertaSincronizacao.Count(c => c.bErro) == 0)
+                            {
+                                await App.Messages.ShowAsync(exMessage);
+                                await FecharPopup();
+
+                                if (exMessage.Contains("encontra-se inativo nessa empresa"))
+                                    UtilNavidate.EfetivarLogoff();
+                            }
+                            else if (currentModel.LAlertaSincronizacao.Count(c => c.bErro) > 0)
+                            {
+                                ocorreuErro = true;
+                                await App.Messages.ShowAsync("Algumas inconsistências na sincronização foram encontradas.");
+                                await FecharPopup(true);
+                            }
+                            else
+                            {
+                                StaticModel.StaticFindClienteModel = null;
+                                StaticModel.StaticFindProdutoModel = null;
+                                StaticModel.lTabelasPrecoCampanhas = null;
+
+                                bForcarSyncInit = false;
+                                lastDateSync =
+                                    App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.UltimaSyncDateTime = DateTime.UtcNow;
+
+                                EmpresaAspnetUsersRepository.AtualizaEmpresaAspnetUsersModel(
+                                    App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel);
+
+                                PageHomeNew.ViewModelStatic.AtualizaImagemApp();
+                                LoginRepository.RefreshTipoUsuario();
+                                AcaoAfterSyncCommand?.Execute(null);
+                                EstoqueRepository.RemoveAllEstoquePedido();
+
+                                if (currentModel.LAlertaSincronizacao.Count(c => c.bErro == false) > 0)
+                                    await FecharPopup(true);
+                                else
+                                    await FecharPopup();
+
+                                var currentUser = EmpresaAspnetUsersRepository.GetUsuario();
+                                if (currentUser.stAtivo == false)
+                                {
+                                    await App.Messages.ShowAsync(
+                                        "Usuário encontra-se inativo na empresa corrente, será necessário o login novamente");
+
+                                    UtilNavidate.EfetivarLogoff();
+                                }
+                            }
                         }
                         else
                         {
-                            StaticModel.StaticFindClienteModel = null;
-                            StaticModel.StaticFindProdutoModel = null;
-                            StaticModel.lTabelasPrecoCampanhas = null;
+                            await App.Messages.ShowAsync(
+                                $"O dispositivo ficou sem internet no decorrer da sincronização, alguns dados podem não ter sido sincronizados. {Environment.NewLine}Sincronize novamente.");
 
-                            bForcarSyncInit = false;
-                            lastDateSync =
-                                App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel.UltimaSyncDateTime = DateTime.UtcNow;
-
-                            EmpresaAspnetUsersRepository.AtualizaEmpresaAspnetUsersModel(
-                                App.CurrentAspnetUserModel.objEmpresaAspnetUsersModel);
-
-                            PageHomeNew.ViewModelStatic.AtualizaImagemApp();
-                            LoginRepository.RefreshTipoUsuario();
-                            AcaoAfterSyncCommand?.Execute(null);
-                            EstoqueRepository.RemoveAllEstoquePedido();
-
-                            if (currentModel.LAlertaSincronizacao.Count(c => c.bErro == false) > 0)
-                                await FecharPopup(true);
-                            else
-                                await FecharPopup();
-
-                            var currentUser = EmpresaAspnetUsersRepository.GetUsuario();
-                            if (currentUser.stAtivo == false)
-                            {
-                                await App.Messages.ShowAsync(
-                                    "Usuário encontra-se inativo na empresa corrente, será necessário o login novamente");
-
-                                UtilNavidate.EfetivarLogoff();
-                            }
+                            await FecharPopup();
                         }
                     }
                     else
                     {
-                        await App.Messages.ShowAsync(
-                            $"O dispositivo ficou sem internet no decorrer da sincronização, alguns dados podem não ter sido sincronizados. {Environment.NewLine}Sincronize novamente.");
-
                         await FecharPopup();
                     }
-                }
-                else
-                {
-                    await FecharPopup();
-                }
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
+            }
         }
 
         #endregion

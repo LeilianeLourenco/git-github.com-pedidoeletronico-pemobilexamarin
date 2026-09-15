@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.HLP.Mobile.AppPE.iOS.Services;
@@ -18,30 +19,37 @@ namespace Xamarin.HLP.Mobile.AppPE.iOS.Services
         {
             Task.Run(async () =>
             {
-                var vm = new SincronizacaoNewViewModel();
-
-                vm.currentModel.OnMensagemChanged += (message) =>
+                try
                 {
+                    var vm = new SincronizacaoNewViewModel();
+
+                    vm.currentModel.OnMensagemChanged += (message) =>
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            MessagingCenter.Send<object, string>(vm, "SyncAttMensagem", message);
+                        });
+                    };
+
+                    vm.currentModel.OnCountChanged += (count) =>
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            MessagingCenter.Send<object, int>(vm, "SyncAttCount", count);
+                        });
+                    };
+
+                    await vm.InitSyncComplete();
+
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        MessagingCenter.Send<object, string>(vm, "SyncAttMensagem", message);
+                        MessagingCenter.Send<object>(vm, "SyncFinalizada");
                     });
-                };
-
-                vm.currentModel.OnCountChanged += (count) =>
+                }
+                catch (Exception ex)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        MessagingCenter.Send<object, int>(vm, "SyncAttCount", count);
-                    });
-                };
-
-                await vm.InitSyncComplete();
-
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    MessagingCenter.Send<object>(vm, "SyncFinalizada");
-                });
+                    ex.TrakException();
+                }
             });
         }
     }

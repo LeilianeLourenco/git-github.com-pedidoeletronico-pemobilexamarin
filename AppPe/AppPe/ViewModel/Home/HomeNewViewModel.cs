@@ -275,7 +275,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
                 // Exigencia da Apple (diretriz 4.2.3ii): avisar o tamanho/necessidade do download
                 // e pedir confirmacao do usuario antes de iniciar a primeira sincronizacao.
                 bool bContinuar = await App.Messages.ShowConfirmAsync(
-                    "Para usar o aplicativo, é necessário baixar seus dados (clientes, produtos, preços, pedidos e outras informações). Isso pode levar alguns minutos e consumir dados da sua conexão. Deseja continuar?",
+                    "Para usar o aplicativo, é necessário baixar seus dados (clientes, produtos, preços, pedidos e outras informações). Dependendo da quantidade de dados cadastrados pela sua empresa, esse download pode variar de alguns MB a mais de 100 MB, e pode levar alguns minutos, consumindo dados da sua conexão. Deseja continuar?",
                     accept: "SIM", cancel: "NÃO", title: "PRIMEIRA SINCRONIZAÇÃO");
                 if (bContinuar)
                     Sincronizar();
