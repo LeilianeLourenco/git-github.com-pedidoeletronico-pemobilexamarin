@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -1319,15 +1320,30 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 if (existeCidades)
                     return;
 
-                var cidades = await UtilHttp.GetCidades();
-                var data = JsonConvert.DeserializeObject<List<CidadeIBGE>>(cidades) ?? new List<CidadeIBGE>();
+                // Dado estático de referência (municípios do IBGE), igual pra todo mundo e praticamente
+                // imutável — embutido no app em vez de buscado por rede a cada primeira sincronização,
+                // evitando dependência da API do IBGE e o loop de milhares de atualizações de UI que
+                // causava crash no iOS (SIGABRT durante essa etapa).
+                var assembly = typeof(CidadesModel).GetTypeInfo().Assembly;
+                const string resourceName = "Xamarin.HLP.Mobile.AppPE.Model.Cidade.Cidades.json";
 
-                var lista = new List<CidadesModel>();
-
-                if (data == null)
+                if (!assembly.GetManifestResourceNames().Contains(resourceName))
+                {
+                    new Exception($"Resource embutido de cidades não encontrado: {resourceName}")
+                        .TrakException("SincronizacaoDownloadCidades", false);
                     return;
+                }
 
-                currentModel.iCount = data.Count;
+                string cidadesJson;
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
+                using (var reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    cidadesJson = await reader.ReadToEndAsync();
+                }
+
+                var data = JsonConvert.DeserializeObject<List<CidadeIBGE>>(cidadesJson) ?? new List<CidadeIBGE>();
+
+                var lista = new List<CidadesModel>(data.Count);
 
                 foreach (var item in data)
                 {
@@ -1336,20 +1352,21 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
                     lista.Add(new CidadesModel
                     {
-                        codigoIBGE = item.id,
+                        codigoIBGE = item.codigoIBGE,
                         nome = item.nome,
-                        uf = item?.microrregiao?.mesorregiao?.UF?.sigla
+                        uf = item.uf
                     });
-
-                    await Task.Delay(10);
-                    currentModel.iCount--;
                 }
 
+                currentModel.iCount = lista.Count;
+
                 App.Data.Connection.InsertAll(lista);
+
+                currentModel.iCount = 0;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Erro ao buscar cidades - {ex.Message}");
+                throw new Exception($"Erro ao carregar cidades - {ex.Message}");
             }
         }
 

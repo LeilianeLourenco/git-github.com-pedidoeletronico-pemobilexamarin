@@ -27,7 +27,14 @@ namespace Xamarin.HLP.Mobile.AppPE.iOS.Services
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
-                            MessagingCenter.Send<object, string>(vm, "SyncAttMensagem", message);
+                            try
+                            {
+                                MessagingCenter.Send<object, string>(vm, "SyncAttMensagem", message);
+                            }
+                            catch (Exception ex)
+                            {
+                                ex.TrakException();
+                            }
                         });
                     };
 
@@ -35,7 +42,14 @@ namespace Xamarin.HLP.Mobile.AppPE.iOS.Services
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
-                            MessagingCenter.Send<object, int>(vm, "SyncAttCount", count);
+                            try
+                            {
+                                MessagingCenter.Send<object, int>(vm, "SyncAttCount", count);
+                            }
+                            catch (Exception ex)
+                            {
+                                ex.TrakException();
+                            }
                         });
                     };
 
@@ -43,7 +57,14 @@ namespace Xamarin.HLP.Mobile.AppPE.iOS.Services
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        MessagingCenter.Send<object>(vm, "SyncFinalizada");
+                        try
+                        {
+                            MessagingCenter.Send<object>(vm, "SyncFinalizada");
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.TrakException();
+                        }
                     });
                 }
                 catch (Exception ex)

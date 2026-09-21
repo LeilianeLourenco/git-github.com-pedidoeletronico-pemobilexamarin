@@ -79,11 +79,13 @@
     <None Remove="Images\PagesIcon\ApplicationTriste.svg" />
     <None Remove="ViewModel\Pedido\Belfast Regular.ttf" />
     <None Remove="ViewModel\Pedido\Belfast Regular2.ttf" />
+    <None Remove="Model\Cidade\Cidades.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="ViewModel\Pedido\Belfast Regular.ttf" />
     <EmbeddedResource Include="ViewModel\Pedido\Beach Thin Normal.ttf" />
+    <EmbeddedResource Include="Model\Cidade\Cidades.json" />
     <EmbeddedResource Include="Images\ApplicationPhone.svg" />
     <EmbeddedResource Include="Images\ApplicationTabelaPreco.svg" />
     <EmbeddedResource Include="Images\HomeIcon\ApplicationHomeCliente.svg" />

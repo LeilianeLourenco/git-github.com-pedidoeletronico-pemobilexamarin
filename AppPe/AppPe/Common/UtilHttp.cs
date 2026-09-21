@@ -1194,29 +1194,6 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
             }
         }
 
-        public static async Task<string> GetCidades()
-        {
-            try
-            {
-                var handler = new HttpClientHandler
-                {
-                    AutomaticDecompression =
-                        System.Net.DecompressionMethods.GZip |
-                        System.Net.DecompressionMethods.Deflate
-                    };
-
-                using (var client = new HttpClient(handler))
-                {
-                    return await client.GetStringAsync(
-                        "https://servicodados.ibge.gov.br/api/v1/localidades/municipios");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro ao buscar cidades - {ex.Message}");
-            }
-        }
-
         //FIM
 
         #endregion
