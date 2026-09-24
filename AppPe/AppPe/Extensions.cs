@@ -339,6 +339,9 @@ namespace Xamarin.HLP.Mobile.AppPE
 
         public static string RemoverAcentos(this string texto)
         {
+            if (texto == null)
+                return texto;
+
             const string comAcentos = "ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
             const string semAcentos = "AAAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUuuuuCc";
 

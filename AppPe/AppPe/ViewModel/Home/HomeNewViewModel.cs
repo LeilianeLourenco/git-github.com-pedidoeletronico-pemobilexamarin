@@ -272,13 +272,22 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Home
 
             if (App.ForcarAtualizacao)
             {
-                // Exigencia da Apple (diretriz 4.2.3ii): avisar o tamanho/necessidade do download
-                // e pedir confirmacao do usuario antes de iniciar a primeira sincronizacao.
-                bool bContinuar = await App.Messages.ShowConfirmAsync(
-                    "Para usar o aplicativo, é necessário baixar seus dados (clientes, produtos, preços, pedidos e outras informações). Dependendo da quantidade de dados cadastrados pela sua empresa, esse download pode variar de alguns MB a mais de 100 MB, e pode levar alguns minutos, consumindo dados da sua conexão. Deseja continuar?",
+                // Exigencia da Apple (diretriz 4.2.3ii): pergunta, divulga tamanho e divulga tempo,
+                // cada um com confirmacao explicita do usuario, antes de iniciar a primeira sincronizacao.
+                bool bDesejaSincronizar = await App.Messages.ShowConfirmAsync(
+                    "Para usar o aplicativo, é necessário baixar seus dados (clientes, produtos, preços, pedidos e outras informações). Deseja fazer a sincronização agora?",
                     accept: "SIM", cancel: "NÃO", title: "PRIMEIRA SINCRONIZAÇÃO");
-                if (bContinuar)
+
+                if (bDesejaSincronizar)
+                {
+                    await App.Messages.ShowAsync(
+                        "Dependendo da quantidade de dados cadastrados pela sua empresa, o download pode variar de alguns MB a mais de 100 MB.");
+
+                    await App.Messages.ShowAsync(
+                        "A sincronização pode levar alguns minutos, dependendo da velocidade da sua internet.");
+
                     Sincronizar();
+                }
             }
 
             LoginRepository.RefreshTipoUsuario();

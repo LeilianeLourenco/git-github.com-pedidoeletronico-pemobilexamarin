@@ -653,8 +653,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                 // completou antes). Numa empresa grande, esta tabela pode só ganhar seu 1º
                 // checkpoint depois de várias sessões de sync — nesse ponto lastDateServerSync já
                 // é "hoje", e usar isso aqui faz a 1ª sincronização pular todo o histórico (busca
-                // fica "desde agora"), voltando 0 registros pra sempre. Usa uma data antiga fixa.
-                _ultimaDataSinc = DateTime.Today.AddYears(-50);
+                // fica "desde agora"), voltando 0 registros pra sempre. Usa uma data fixa.
+                // Limitado a 1 ano (decisão de produto): pedidos mais antigos não são baixados
+                // no app, reduz o peso da primeira sincronização em empresas com muito histórico.
+                _ultimaDataSinc = DateTime.Today.AddYears(-1);
             else
                 _ultimaDataSinc = _ultimaDataSinc.AddMinutes(-10);
 
@@ -2158,6 +2160,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         {
             await Task.Run(() =>
             {
+              // Bloco de tratamento por tipo (abaixo) não tinha proteção alguma contra
+              // exceção — um único campo nulo vindo da API em qualquer tabela travava o
+              // app inteiro (SIGABRT) em vez de só pular aquele registro. Try/catch geral
+              // aqui cobre qualquer bug pontual desse bloco, presente ou futuro.
+              try
+              {
                 var icount = 0;
                 var idPk = registro.GetPropValue(xPrimaryKeyName);
                 if (idPk != null)
@@ -2282,9 +2290,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         //removendo os horários pra inserir novamente
                         PedidoRepository.RemoveHorariosJornadaNova(jornada.idJornada);
 
-                        foreach (var item in jornada.lHorarios)
+                        if (jornada.lHorarios != null)
                         {
-                            App.Data.Connection.Insert(item);
+                            foreach (var item in jornada.lHorarios)
+                            {
+                                App.Data.Connection.Insert(item);
+                            }
                         }
 
                     }
@@ -2529,9 +2540,12 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         //removendo os horários pra inserir novamente
                         PedidoRepository.RemoveHorariosJornadaNova(jornada.idJornada);
 
-                        foreach (var item in jornada.lHorarios)
+                        if (jornada.lHorarios != null)
                         {
-                            App.Data.Connection.Insert(item);
+                            foreach (var item in jornada.lHorarios)
+                            {
+                                App.Data.Connection.Insert(item);
+                            }
                         }
 
                     }
@@ -2556,6 +2570,11 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                     if (empresa != null && !string.IsNullOrEmpty(empresa.imLogoMarca))
                         UtilHttp.SaveImagem(empresa.imLogoMarca);
                 }
+              }
+              catch (Exception ex)
+              {
+                  ex.TrakException();
+              }
             });
         }
 

@@ -11,6 +11,9 @@ namespace Xamarin.HLP.Mobile.AppPE.Model.Cadastros
     {
         public static void SalvarStatusProibidos(int idStatus, IEnumerable<StatusRepresentanteProibido> statusProibido)
         {
+            if (statusProibido == null)
+                return;
+
             foreach (var item in statusProibido)
             {
                 item.idStatus = idStatus;
