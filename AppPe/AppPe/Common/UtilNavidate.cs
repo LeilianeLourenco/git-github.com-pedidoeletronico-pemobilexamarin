@@ -114,16 +114,23 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
         }
         public static async void Sincronizar(PageSyncNew page)
         {
-            var main = Application.Current.MainPage as RootPage;
-            if (main != null)
+            try
             {
-                main.Detail.Opacity = 0.4;
+                var main = Application.Current.MainPage as RootPage;
+                if (main != null)
+                {
+                    main.Detail.Opacity = 0.4;
+                }
+
+                //var page = new PageSyncNew();
+                //page.ViewModel.bForcarSyncInit = bSincronizarTudo;
+
+                await App.Navigation.PushPopupAsync(page, animate: true);
             }
-
-            //var page = new PageSyncNew();
-            //page.ViewModel.bForcarSyncInit = bSincronizarTudo;
-
-            await App.Navigation.PushPopupAsync(page, animate: true);
+            catch (Exception ex)
+            {
+                GoogleInsightsReportingConstants.TrakException("Sincronizar", ex.Message, true);
+            }
         }
 
         public static async void ShowPopupNew(PopupPage page)

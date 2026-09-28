@@ -133,11 +133,18 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
         private async void Current_ConnectivityChanged(object sender,
             Plugin.Connectivity.Abstractions.ConnectivityChangedEventArgs e)
         {
-            if (await App.IsConected() == false)
+            try
             {
-                bFalhaConexao = true;
-                AnaliseFinalSincronizacao();
-                bFalhaTotalDeConexao = true;
+                if (await App.IsConected() == false)
+                {
+                    bFalhaConexao = true;
+                    AnaliseFinalSincronizacao();
+                    bFalhaTotalDeConexao = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.TrakException();
             }
         }
 
@@ -1282,11 +1289,14 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         {
                             await SavePrivate(item.lFaixas, "TB_REGRAS_COMERCIAIS_FAIXAS");
 
-                            foreach (var faixa in item.lFaixas)
+                            // lFaixas/lCriterios podem vir nulos da API (mesmo padrão já causado
+                            // crash em JornadaModel.lHorarios) — sem essa checagem o foreach
+                            // lançava NullReferenceException não tratada.
+                            foreach (var faixa in item.lFaixas ?? Enumerable.Empty<RcFaixasModel>())
                             {
                                 await SavePrivate(faixa.lCriterios, "TB_REGRAS_COMERCIAIS_CRITERIOS");
 
-                                foreach (var criterio in faixa.lCriterios)
+                                foreach (var criterio in faixa.lCriterios ?? Enumerable.Empty<RcCriteriosModel>())
                                 {
                                     await SavePrivate(criterio.lClientes, "TB_REGRAS_COMERCIAIS_FAIXAS_CRITERIO_VINCULO");
                                     //await SavePrivate(criterio.lCategoriasProduto, "TB_REGRAS_COMERCIAIS_CRITERIOS_CATEGORIAPRODUTO");
@@ -1884,7 +1894,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
         private async Task AnaliseExclusao<T>(IReadOnlyCollection<LogExclusaoModel> logs) where T : class, new()
         {
-            if (logs == null) return;
+            if (logs == null || logs.Count == 0) return;
 
             currentModel.Display = logs.FirstOrDefault().xTable;
 

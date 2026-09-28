@@ -21,18 +21,36 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Service
         // sempre executa na thread principal, não importa de onde foi chamado.
         public async Task ShowAsync(string message)
         {
-            await MainThread.InvokeOnMainThreadAsync(async () =>
-                await Application.Current.MainPage.DisplayAlert("AVISO", message, "OK"));
+            // Chamado com frequência de forma fire-and-forget (ex: TrakException) — se
+            // Application.Current.MainPage estiver momentaneamente null (troca de página em
+            // andamento, típico durante a sincronização) o DisplayAlert lança, e como ninguém
+            // está aguardando essa Task, vira exceção não observada capaz de derrubar o app.
+            try
+            {
+                await MainThread.InvokeOnMainThreadAsync(async () =>
+                    await Application.Current.MainPage.DisplayAlert("AVISO", message, "OK"));
+            }
+            catch
+            {
+                // último elo da cadeia de log de erro — não tem pra onde propagar com segurança.
+            }
         }
 
         public async Task<bool> ShowConfirmAsync(string message, string accept = "SIM", string cancel = "NÃO", string title = "CONFIRMAÇÃO")
         {
-            return await MainThread.InvokeOnMainThreadAsync(async () =>
-                await Application.Current.MainPage.DisplayAlert(
-                    title: title,
-                    message: message,
-                    accept: accept,
-                    cancel: cancel));
+            try
+            {
+                return await MainThread.InvokeOnMainThreadAsync(async () =>
+                    await Application.Current.MainPage.DisplayAlert(
+                        title: title,
+                        message: message,
+                        accept: accept,
+                        cancel: cancel));
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 

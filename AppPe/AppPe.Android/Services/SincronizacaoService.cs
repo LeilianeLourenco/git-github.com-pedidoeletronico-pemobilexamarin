@@ -49,40 +49,63 @@ namespace Xamarin.HLP.Mobile.AppPE.Droid.Services
 
             Task.Run(async () =>
             {
-                vm = new SincronizacaoNewViewModel();
-                vm.currentModel.OnMensagemChanged += (message) =>
+                try
                 {
-                    var builder = new NotificationCompat.Builder(this, "sync_channel")
-                        .SetContentTitle("Sincronizando...")
-                        .SetSmallIcon(Resource.Drawable.nuvem)
-                        .SetOngoing(true);
+                    vm = new SincronizacaoNewViewModel();
+                    vm.currentModel.OnMensagemChanged += (message) =>
+                    {
+                        try
+                        {
+                            var builder = new NotificationCompat.Builder(this, "sync_channel")
+                                .SetContentTitle("Sincronizando...")
+                                .SetSmallIcon(Resource.Drawable.nuvem)
+                                .SetOngoing(true);
 
-                    builder.SetContentText(message);
-                    NotificationManagerCompat.From(this).Notify(ServiceRunningNotifId, builder.Build());
+                            builder.SetContentText(message);
+                            NotificationManagerCompat.From(this).Notify(ServiceRunningNotifId, builder.Build());
+
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                MessagingCenter.Send<object, string>(this, "SyncAttMensagem", message);
+                            });
+                        }
+                        catch (System.Exception ex)
+                        {
+                            ex.TrakException();
+                        }
+                    };
+
+                    vm.currentModel.OnCountChanged += (count) =>
+                    {
+                        try
+                        {
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                MessagingCenter.Send<object, int>(this, "SyncAttCount", count);
+                            });
+                        }
+                        catch (System.Exception ex)
+                        {
+                            ex.TrakException();
+                        }
+                    };
+
+                    await vm.InitSyncComplete();
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        MessagingCenter.Send<object, string>(this, "SyncAttMensagem", message);
+                        MessagingCenter.Send<object>(this, "SyncFinalizada");
                     });
-                };
-
-                vm.currentModel.OnCountChanged += (count) =>
+                }
+                catch (System.Exception ex)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        MessagingCenter.Send<object, int>(this, "SyncAttCount", count);
-                    });
-                };
-
-                await vm.InitSyncComplete();
-
-                Device.BeginInvokeOnMainThread(() =>
+                    ex.TrakException();
+                }
+                finally
                 {
-                    MessagingCenter.Send<object>(this, "SyncFinalizada");
-                });
-
-                StopForeground(true);
-                StopSelf();
+                    StopForeground(true);
+                    StopSelf();
+                }
             });
 
             // NotSticky: se o Android matar o serviço (ex.: timeout de foreground service),

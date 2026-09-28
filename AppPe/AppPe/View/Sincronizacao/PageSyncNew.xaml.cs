@@ -49,26 +49,37 @@ namespace Xamarin.HLP.Mobile.AppPE.View.Sincronizacao
 
             MessagingCenter.Subscribe<object>(this, "SyncFinalizada", async (sender) =>
             {
-                var masterDetail = Application.Current.MainPage as MasterDetailPage;
-                if (masterDetail != null)
+                // Handler assíncrono ligado a um Action (equivalente a async void) — nenhum
+                // try/catch de quem chama (Send) consegue proteger isso. Activator.CreateInstance
+                // lança se a página atual não tiver construtor sem parâmetros; sem essa proteção,
+                // uma exceção aqui vira crash não tratado bem no fim da sincronização.
+                try
                 {
-                    Page currentPage = null;
-
-                    if (masterDetail.Detail is NavigationPage navPage)
-                        currentPage = navPage.CurrentPage;
-                    else
-                        currentPage = masterDetail.Detail;
-
-                    if (currentPage != null)
+                    var masterDetail = Application.Current.MainPage as MasterDetailPage;
+                    if (masterDetail != null)
                     {
-                        var novaPagina = (Page)Activator.CreateInstance(currentPage.GetType());
-                        masterDetail.Detail = new NavigationPage(novaPagina);
+                        Page currentPage = null;
 
-                        masterDetail.IsPresented = false;
+                        if (masterDetail.Detail is NavigationPage navPage)
+                            currentPage = navPage.CurrentPage;
+                        else
+                            currentPage = masterDetail.Detail;
+
+                        if (currentPage != null)
+                        {
+                            var novaPagina = (Page)Activator.CreateInstance(currentPage.GetType());
+                            masterDetail.Detail = new NavigationPage(novaPagina);
+
+                            masterDetail.IsPresented = false;
+                        }
+
+                        if (PopupNavigation.Instance.PopupStack.Any())
+                            await App.Navigation.PopPopupAsync();
                     }
-
-                    if (PopupNavigation.Instance.PopupStack.Any())
-                        await App.Navigation.PopPopupAsync();
+                }
+                catch (Exception ex)
+                {
+                    ex.TrakException(bShowMessage: false);
                 }
             });
 

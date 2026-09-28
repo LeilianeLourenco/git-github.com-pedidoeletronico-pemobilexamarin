@@ -1008,7 +1008,7 @@ namespace Xamarin.HLP.Mobile.AppPE.Common
                 var requestUri =
                     $"api/{ApiController}/{param1}/{param2:yyyy-MM-ddTHH:mm:ss}/{(param3 != null ? param3.ToString() : "")}";
                 var jsonResponse = await CurrentHttpClient.GetStringAsync(requestUri);
-                var lregistros = JsonConvert.DeserializeObject<List<PedidosToSyncModel>>(jsonResponse);
+                var lregistros = JsonConvert.DeserializeObject<List<PedidosToSyncModel>>(jsonResponse) ?? new List<PedidosToSyncModel>();
                 return lregistros;
             }
             catch (System.Net.WebException)
