@@ -1882,7 +1882,7 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
 
         #region EXCLUSÃO
 
-        private async void AnaliseExclusao<T>(IReadOnlyCollection<LogExclusaoModel> logs) where T : class, new()
+        private async Task AnaliseExclusao<T>(IReadOnlyCollection<LogExclusaoModel> logs) where T : class, new()
         {
             if (logs == null) return;
 
@@ -1913,7 +1913,10 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                             List<EstoqueModel> _listagemEstoque = new List<EstoqueModel>();
                             var _pedidoVendaModelAux = PedidoRepository.GetPedidoVendaModel(pedidoVendaModel.idPedidoVendaOffLine ?? 0);
 
-                            foreach (var p in _pedidoVendaModelAux.lItens)
+                            // GetPedidoVendaModel pode devolver null (pedido não encontrado localmente
+                            // em silêncio, comportamento documentado do repositório) — sem essa checagem
+                            // o foreach lançava NullReferenceException não tratada aqui.
+                            foreach (var p in _pedidoVendaModelAux?.lItens ?? Enumerable.Empty<PedidoVendaItensModel>())
                             {
                                 EstoqueRepository.RemoveAllEstoqueSincronizacao(p.idProduto ?? 0);
 
@@ -2014,92 +2017,92 @@ namespace Xamarin.HLP.Mobile.AppPE.ViewModel.Sincronizacao
                         switch (registro.ToUpper())
                         {
                             case "TB_PRODUTO_CODIGOCLIENTE":
-                                AnaliseExclusao<tb_produto_codigocliente>(logs: group);
+                                await AnaliseExclusao<tb_produto_codigocliente>(logs: group);
                                 break;
 
                             case TableMobile.TB_PRODUTO:
-                                AnaliseExclusao<ProdutoModel>(logs: group);
+                                await AnaliseExclusao<ProdutoModel>(logs: group);
                                 break;
                             case TableMobile.TB_CONDICAOPAGAMENTO:
-                                AnaliseExclusao<CondicaoPagamentoModel>(logs: group);
+                                await AnaliseExclusao<CondicaoPagamentoModel>(logs: group);
                                 break;
                             case TableMobile.TB_CATEGORIA:
-                                AnaliseExclusao<CategoriaProdutoModel>(logs: group);
+                                await AnaliseExclusao<CategoriaProdutoModel>(logs: group);
                                 break;
                             case TableMobile.TB_RAMOATIVIDADE:
-                                AnaliseExclusao<RamoAtividadeModel>(logs: group);
+                                await AnaliseExclusao<RamoAtividadeModel>(logs: group);
                                 break;
                             case TableMobile.TB_IMAGEM:
-                                AnaliseExclusao<ImagemModel>(logs: group);
+                                await AnaliseExclusao<ImagemModel>(logs: group);
                                 break;
                             case TableMobile.TB_TRANSPORTADORAS:
-                                AnaliseExclusao<TransportadorasModel>(logs: group);
+                                await AnaliseExclusao<TransportadorasModel>(logs: group);
                                 break;
                             case TableMobile.TB_ENDERECO:
-                                AnaliseExclusao<EnderecoModel>(logs: group);
+                                await AnaliseExclusao<EnderecoModel>(logs: group);
                                 break;
                             case TableMobile.TB_CONTATOS:
-                                AnaliseExclusao<ContatoModel>(logs: group);
+                                await AnaliseExclusao<ContatoModel>(logs: group);
                                 break;
                             case TableMobile.TB_CLIENTES:
-                                AnaliseExclusao<ClientesModel>(logs: group);
+                                await AnaliseExclusao<ClientesModel>(logs: group);
                                 break;
                             case TableMobile.TB_CLIENTES_CONDICOESPAGAMENTO:
-                                AnaliseExclusao<ClientesCondicoesPagamentoModel>(logs: group);
+                                await AnaliseExclusao<ClientesCondicoesPagamentoModel>(logs: group);
                                 break;
                             case TableMobile.TB_GRADETAMANHO:
-                                AnaliseExclusao<GradeTamanhoModel>(logs: group);
+                                await AnaliseExclusao<GradeTamanhoModel>(logs: group);
                                 break;
                             case TableMobile.TB_GRADECOR:
-                                AnaliseExclusao<GradeCorModel>(logs: group);
+                                await AnaliseExclusao<GradeCorModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELAPRECO:
-                                AnaliseExclusao<TabelaPrecoModel>(logs: group);
+                                await AnaliseExclusao<TabelaPrecoModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELAPRECOITEM:
-                                AnaliseExclusao<TabelaPrecoItemModel>(logs: group);
+                                await AnaliseExclusao<TabelaPrecoItemModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELA_PRECO_CLIENTES:
-                                AnaliseExclusao<TabelaPrecoClientesModel>(logs: group);
+                                await AnaliseExclusao<TabelaPrecoClientesModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELA_PRECO_REPRESENTANTES:
-                                AnaliseExclusao<TabelaPrecoRepresentantesModel>(logs: group);
+                                await AnaliseExclusao<TabelaPrecoRepresentantesModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELAPRECO_REPRESENTACOES:
-                                AnaliseExclusao<TabelaPrecoRepresentacoesModel>(logs: group);
+                                await AnaliseExclusao<TabelaPrecoRepresentacoesModel>(logs: group);
                                 break;
                             case TableMobile.TB_RECEBIMENTOTITULOS:
-                                AnaliseExclusao<RecebimentoTitulosModel>(logs: group);
+                                await AnaliseExclusao<RecebimentoTitulosModel>(logs: group);
                                 break;
                             case TableMobile.TB_RECEBIMENTOTITULOS_MOVIMENTACOES:
-                                AnaliseExclusao<RecebimentoTitulosMovimentacaoModel>(logs: group);
+                                await AnaliseExclusao<RecebimentoTitulosMovimentacaoModel>(logs: group);
                                 break;
                             case TableMobile.TB_UNIDADEMEDIDA:
-                                AnaliseExclusao<UnidadeMedidaModel>(logs: group);
+                                await AnaliseExclusao<UnidadeMedidaModel>(logs: group);
                                 break;
                             case TableMobile.TB_ATIVIDADES:
-                                AnaliseExclusao<AtividadeAgendaModel>(logs: group);
+                                await AnaliseExclusao<AtividadeAgendaModel>(logs: group);
                                 break;
                             case TableMobile.TB_TIPOATIVIDADESCRM:
-                                AnaliseExclusao<TipoAtividadeAgendaModel>(logs: group);
+                                await AnaliseExclusao<TipoAtividadeAgendaModel>(logs: group);
                                 break;
                             case TableMobile.TB_PEDIDOVENDA:
-                                AnaliseExclusao<PedidoVendaModel>(logs: group);
+                                await AnaliseExclusao<PedidoVendaModel>(logs: group);
                                 break;
                             case TableMobile.TB_STATUS:
-                                AnaliseExclusao<StatusModel>(logs: group);
+                                await AnaliseExclusao<StatusModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELAESCALONADA:
-                                AnaliseExclusao<TabelaEscalonadaModel>(logs: group);
+                                await AnaliseExclusao<TabelaEscalonadaModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELAESCALONADA_FAIXACOMISSAO:
-                                AnaliseExclusao<TabelaEscalonadaFaixaComissaoModel>(logs: group);
+                                await AnaliseExclusao<TabelaEscalonadaFaixaComissaoModel>(logs: group);
                                 break;
                             case TableMobile.TB_TABELAESCALONADA_REPRESENTANTE:
-                                AnaliseExclusao<TabelaEscalonadaRepresentanteModel>(logs: group);
+                                await AnaliseExclusao<TabelaEscalonadaRepresentanteModel>(logs: group);
                                 break;
                             case TableMobile.TB_REPRESENTADA:
-                                AnaliseExclusao<RepresentadaModel>(logs: group);
+                                await AnaliseExclusao<RepresentadaModel>(logs: group);
                                 break;
                             case TableMobile.TB_EMPRESA_ASPNETUSERS_METAS:
                             case TableMobile.TB_EMPRESA_ASPNETUSERS:
